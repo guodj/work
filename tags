@@ -1,0 +1,280 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.8	//
+10	/home/gdj/work/fortran/work1/bz_ap.f90	/^10   end program$/;"	l	program:dfhskhfgks	file:
+10	/home/gdj/work/fortran/work1/char2int.f90	/^10  close(u1);close(u2)$/;"	l	program:jdfsk	file:
+10	/home/gdj/work/fortran/work1/char2int_new.f90	/^10  close(u1);close(u2)$/;"	l	program:jdfsk	file:
+100	/home/gdj/work/fortran/work1/mygamdm.f90	/^100 format(i7,i7,3E12.4)$/;"	l	program:mygamdm	file:
+AutoMinorLocator	/home/gdj/work/python/work2.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
+ChampDensity	/home/gdj/work/python/work2.py	/^class ChampDensity(pd.DataFrame):$/;"	c
+InitialGuess	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function z = InitialGuess(y,I)$/;"	f
+LT_median	/home/gdj/work/python/work2.py	/^    def LT_median(self):$/;"	m	class:ChampDensity
+LagWtdAve	/home/gdj/work/matlab/matlabfunction/LagWtdAve.m	/^function y = LagWtdAve( x,n,deltat,tau )$/;"	f
+MaxNLocator	/home/gdj/work/python/work2.py	/^from matplotlib.ticker import MaxNLocator$/;"	i
+Mlon	/home/gdj/work/python/work2.py	/^    Mlon = property(get_Mlong, set_Mlong, del_Mlong,$/;"	v	class:ChampDensity
+RobustWeights	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function W = RobustWeights(y,z,I,h,wstr)$/;"	f
+__author__	/home/gdj/work/python/pythonforfun.py	/^__author__ = 'Guo Dongjie'$/;"	v
+__author__	/home/gdj/work/python/work2.py	/^__author__ = 'Dongjie Guo'$/;"	v
+__author__	/home/gdj/work/python/work3.py	/^__author__ = 'Dongjie Guo'$/;"	v
+a	/home/gdj/work/python/work2.py	/^    a = f12()$/;"	v
+add_epoch_sb	/home/gdj/work/python/work2.py	/^    def add_epoch_sb(self, exclude_cir=True):$/;"	m	class:ChampDensity
+add_epochtime	/home/gdj/work/python/work2.py	/^    def add_epochtime(self, epoch0, lday=5, rday=5):$/;"	m	class:ChampDensity
+add_imf	/home/gdj/work/python/work2.py	/^    def add_imf(self):$/;"	m	class:ChampDensity
+add_index	/home/gdj/work/python/work2.py	/^    def add_index(self):$/;"	m	class:ChampDensity
+add_updown	/home/gdj/work/python/work2.py	/^    def add_updown(self, latcolumnname='lat'):$/;"	m	class:ChampDensity
+addgrid	/home/gdj/work/matlab/matlabfunction/addgrid.m	/^function  addgrid( h,color,linestyle )$/;"	f
+alt	/home/gdj/work/python/work2.py	/^    alt = property(get_height, set_height, del_height,'altitude in the data')$/;"	v	class:ChampDensity
+altitude	/home/gdj/work/python/work2.py	/^    altitude = property(get_height, set_height, del_height,$/;"	v	class:ChampDensity
+altlon	/home/gdj/work/matlab/matlabfunction/altlon.m	/^function [alt,lon] = altlon( x,y,z )$/;"	f
+ap	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,/;"	v	program:dfhskhfgks
+apt	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,l,apt$/;"	v	program:dfhskhfgks
+argrelextrema	/home/gdj/work/python/work2.py	/^from scipy.signal import argrelextrema$/;"	i
+ax	/home/gdj/work/python/work3.py	/^    ax = plt.subplot()$/;"	v
+bart	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,/;"	v	program:jdfsk
+bart	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,/;"	v	program:jdfsk
+bdate	/home/gdj/work/python/work3.py	/^    bdate = pd.to_datetime('2003-10-4 10:00')$/;"	v
+bday	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,/;"	v	program:jdfsk
+bday	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,/;"	v	program:jdfsk
+betime	/home/gdj/work/python/work3.py	/^    betime = time_champ_orbit_updown(bdate, edate, updown='up')$/;"	v
+bisquare	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function W = bisquare(r,h)$/;"	f
+breakpoint	/home/gdj/work/python/work2.py	/^import pdb   # set breakpoint$/;"	i
+btime	/home/gdj/work/python/work3.py	/^        btime = betime.loc[k-1,'btime']$/;"	v
+bze	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,/;"	v	program:dfhskhfgks
+bzet	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,bzet,/;"	v	program:dfhskhfgks
+bzm	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,/;"	v	program:dfhskhfgks
+bzmt	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,bzet,bzmt$/;"	v	program:dfhskhfgks
+chacheng	/home/gdj/work/matlab/matlabfunction/chacheng.m	/^function y=chacheng(x1,x2)$/;"	f
+contourf_date_lat	/home/gdj/work/python/work2.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho400',$/;"	m	class:ChampDensity
+date2doy	/home/gdj/work/matlab/matlabfunction/date2doy.m	/^function y = date2doy( varargin )$/;"	f
+date2doy	/home/gdj/work/matlab/work1/sea_SB_diff/date2doy.m	/^function y = date2doy( varargin )$/;"	f
+dates	/home/gdj/work/python/work3.py	/^    dates = pd.date_range(bdate.date(), edate.date())$/;"	v
+day	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,/;"	v	program:dfhskhfgks
+day	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day,/;"	v	program:gamdm_test
+dctn	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function y = dctn(y)$/;"	f
+del_Mlong	/home/gdj/work/python/work2.py	/^    def del_Mlong(self):$/;"	m	class:ChampDensity
+del_height	/home/gdj/work/python/work2.py	/^    def del_height(self):$/;"	m	class:ChampDensity
+del_lat	/home/gdj/work/python/work2.py	/^    def del_lat(self):$/;"	m	class:ChampDensity
+del_lon	/home/gdj/work/python/work2.py	/^    def del_lon(self):$/;"	m	class:ChampDensity
+del_rho	/home/gdj/work/python/work2.py	/^    def del_rho(self):$/;"	m	class:ChampDensity
+del_rho400	/home/gdj/work/python/work2.py	/^    def del_rho400(self):$/;"	m	class:ChampDensity
+dens	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day, kp, dens(/;"	v	program:gamdm_test
+dens	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=2.2, dens(/;"	v	program:mygamdm
+density	/home/gdj/work/python/work2.py	/^    density = property(get_rho, set_rho, del_rho,'density in the data')$/;"	v	class:ChampDensity
+density400	/home/gdj/work/python/work2.py	/^    density400 = property(get_rho400, set_rho400, del_rho400,$/;"	v	class:ChampDensity
+denskp	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=2.2, dens(1:3),denskp(/;"	v	program:mygamdm
+df107	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day, kp, dens(1:3), df107$/;"	v	program:gamdm_test
+dfhskhfgks	/home/gdj/work/fortran/work1/bz_ap.f90	/^    program dfhskhfgks$/;"	p
+difference_density_to_previous_orbit	/home/gdj/work/python/work2.py	/^    def difference_density_to_previous_orbit(self, whichcolumn='rho400'):$/;"	m	class:ChampDensity
+doy	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,/;"	v	program:mygamdm
+doy2date	/home/gdj/work/matlab/matlabfunction/doy2date.m	/^function [mm,dd] = doy2date( varargin )$/;"	f
+edate	/home/gdj/work/python/work3.py	/^    edate = pd.to_datetime('2003-10-4 16:00')$/;"	v
+epoch2lrdates	/home/gdj/work/matlab/work2/epoch2lrdates.m	/^function lrdates=epoch2lrdates(epoch_date, lrdays)$/;"	f
+errorbar_tick	/home/gdj/work/matlab/matlabfunction/errorbar_tick.m	/^function errorbar_tick(h,w,xtype)$/;"	f
+etime	/home/gdj/work/python/work3.py	/^        etime = betime.loc[k-1,'etime']$/;"	v
+ezsmoothn	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function z = ezsmoothn(y)$/;"	f
+f	/home/gdj/work/python/work2.py	/^            def f(x):$/;"	f	function:.f6
+f	/home/gdj/work/python/work2.py	/^        def f(x):$/;"	f	function:.f4
+f1	/home/gdj/work/python/pythonforfun.py	/^def f1():$/;"	f
+f1	/home/gdj/work/python/work2.py	/^    def f1(): # test relative_density_to_previous_orbit and contourf_date_lat$/;"	f
+f10	/home/gdj/work/python/work2.py	/^    def f10():$/;"	f
+f107	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107,/;"	v	program:gamdm_test
+f107	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107,/;"	v	program:mygamdm
+f107a	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a,/;"	v	program:gamdm_test
+f107a	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,/;"	v	program:mygamdm
+f107spl3	/home/gdj/work/fortran/work1/gamdm.f90	/^subroutine f107spl3(/;"	s
+f107spl3	/home/gdj/work/fortran/work1/mygamdm.f90	/^subroutine f107spl3(/;"	s
+f11	/home/gdj/work/python/work2.py	/^    def f11():$/;"	f
+f12	/home/gdj/work/python/work2.py	/^    def f12():$/;"	f
+f2	/home/gdj/work/python/pythonforfun.py	/^def f2():$/;"	f
+f2	/home/gdj/work/python/work2.py	/^    def f2():    # relative density to the 0 epoch time.$/;"	f
+f3	/home/gdj/work/python/work2.py	/^    def f3():    # daily average density variation between 2001-2010$/;"	f
+f4	/home/gdj/work/python/work2.py	/^    def f4():    # CHAMP or GRACE LT distributions$/;"	f
+f5	/home/gdj/work/python/work2.py	/^    def f5():$/;"	f
+f6	/home/gdj/work/python/work2.py	/^    def f6():$/;"	f
+f7	/home/gdj/work/python/work2.py	/^    def f7():$/;"	f
+f8	/home/gdj/work/python/work2.py	/^    def f8():$/;"	f
+f9	/home/gdj/work/python/work2.py	/^    def f9():$/;"	f
+findSBseason	/home/gdj/work/matlab/work1/data_SBlist/findSBseason.m	/^function y = findSBseason( x,t )$/;"	f
+findSBseason	/home/gdj/work/matlab/work1/data_processing/findSBseason.m	/^function y = findSBseason( x,t )$/;"	f
+fix_dottedline	/home/gdj/work/matlab/matlabfunction/fix_dottedline.m	/^function fix_dottedline(filename)$/;"	f
+fname1	/home/gdj/work/fortran/work1/bz_ap.f90	/^     character fname1*/;"	v	program:dfhskhfgks
+fname1	/home/gdj/work/fortran/work1/char2int.f90	/^    character fname1*/;"	v	program:jdfsk
+fname1	/home/gdj/work/fortran/work1/char2int_new.f90	/^    character fname1*/;"	v	program:jdfsk
+fname1	/home/gdj/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,/;"	v	program:mygamdm
+fname2	/home/gdj/work/fortran/work1/bz_ap.f90	/^     character fname1*50,fname2*/;"	v	program:dfhskhfgks
+fname2	/home/gdj/work/fortran/work1/char2int.f90	/^    character fname1*100,fname2*/;"	v	program:jdfsk
+fname2	/home/gdj/work/fortran/work1/char2int_new.f90	/^    character fname1*100,fname2*/;"	v	program:jdfsk
+fname2	/home/gdj/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,fname2,/;"	v	program:mygamdm
+fname3	/home/gdj/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,fname2,fname3$/;"	v	program:mygamdm
+gamdm	/home/gdj/work/fortran/work1/gamdm.f90	/^subroutine gamdm(/;"	s
+gamdm	/home/gdj/work/fortran/work1/mygamdm.f90	/^subroutine gamdm(/;"	s
+gamdm_test	/home/gdj/work/fortran/work1/gamdm.f90	/^program gamdm_test$/;"	p
+gc	/home/gdj/work/python/work2.py	/^            import gc$/;"	i
+gc	/home/gdj/work/python/work2.py	/^        import gc$/;"	i
+gc	/home/gdj/work/python/work2.py	/^    import gc$/;"	i
+gcv	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function GCVscore = gcv(p)$/;"	f
+get_Mlong	/home/gdj/work/python/work2.py	/^    def get_Mlong(self):$/;"	m	class:ChampDensity
+get_champ_grace_mdays	/home/gdj/work/matlab/work2/get_champ_grace_mdays.m	/^function [uporbit,downorbit]=get_champ_grace_mdays(lrdays,satellite)$/;"	f
+get_champ_wind	/home/gdj/work/python/work3.py	/^def get_champ_wind(dates):$/;"	f
+get_cirlist	/home/gdj/work/python/work2.py	/^def get_cirlist():$/;"	f
+get_cirlist1	/home/gdj/work/python/work2.py	/^def get_cirlist1():$/;"	f
+get_contourf_rho_mdays	/home/gdj/work/matlab/work2/get_contourf_rho_mdays.m	/^function h=get_contourf_rho_mdays(lrdays,satellite,updown)$/;"	f
+get_date_polarity	/home/gdj/work/python/work2.py	/^def get_date_polarity():$/;"	f
+get_dates_satellite	/home/gdj/work/matlab/work2/get_dates_satellite.m	/^function dates=get_dates_satellite(dates_list,satellite)$/;"	f
+get_density_dates	/home/gdj/work/python/work2.py	/^def get_density_dates(dates,satellite='champ'):$/;"	f
+get_density_dates	/home/gdj/work/python/work3.py	/^def get_density_dates(dates,satellite='champ'):$/;"	f
+get_fig_1234	/home/gdj/work/matlab/work2/get_fig_1234.m	/^function [ha,h1,h2,h3,h4,h5,h6]=get_fig_1234(epoch,lrdays,satellite,updown)$/;"	f
+get_goce_data	/home/gdj/work/python/work2.py	/^def get_goce_data(dates):$/;"	f
+get_goce_mdays	/home/gdj/work/matlab/work2/get_goce_mdays.m	/^function [uporbit,downorbit]=get_goce_mdays(lrdays)$/;"	f
+get_height	/home/gdj/work/python/work2.py	/^    def get_height(self):$/;"	m	class:ChampDensity
+get_imf	/home/gdj/work/python/work2.py	/^def get_imf(dates,dsource = 'Omin',resolution = '1hour'):$/;"	f
+get_imf_AE_PC_5m	/home/gdj/work/python/work3.py	/^def get_imf_AE_PC_5m(dates):$/;"	f
+get_imf_ace_1h_mdays	/home/gdj/work/matlab/work2/get_imf_ace_1h_mdays.m	/^function imf_ace=get_imf_ace_1h_mdays(lrdates)$/;"	f
+get_imf_epoch	/home/gdj/work/matlab/work2/get_imf_epoch.m	/^function imf_epoch=get_imf_epoch(epoch_date,lrdays)$/;"	f
+get_imf_epoch_median	/home/gdj/work/matlab/work2/get_imf_epoch_median.m	/^function imf_epoch_median=get_imf_epoch_median(imf_epoch)$/;"	f
+get_imf_mdays	/home/gdj/work/matlab/work2/get_imf_mdays.m	/^function imf=get_imf_mdays(lrdates)$/;"	f
+get_index	/home/gdj/work/python/work2.py	/^def get_index(dates):$/;"	f
+get_index	/home/gdj/work/python/work3.py	/^def get_index(dates):$/;"	f
+get_lat	/home/gdj/work/python/work2.py	/^    def get_lat(self):$/;"	m	class:ChampDensity
+get_lon	/home/gdj/work/python/work2.py	/^    def get_lon(self):$/;"	m	class:ChampDensity
+get_lon_lat_density	/home/gdj/work/python/work2.py	/^    def get_lon_lat_density(self, whichdensity='rho400', latwindow=10,$/;"	m	class:ChampDensity
+get_lt_lat_density	/home/gdj/work/python/work2.py	/^    def get_lt_lat_density(self, whichdensity='rho400', latwindow=10,$/;"	m	class:ChampDensity
+get_plot_imf_mdays	/home/gdj/work/matlab/work2/get_plot_imf_mdays.m	/^function h=get_plot_imf_mdays(lrdays,str_imf)$/;"	f
+get_rho	/home/gdj/work/python/work2.py	/^    def get_rho(self):$/;"	m	class:ChampDensity
+get_rho400	/home/gdj/work/python/work2.py	/^    def get_rho400(self):$/;"	m	class:ChampDensity
+get_rltrho	/home/gdj/work/matlab/work2/get_satellite_epoch.m	/^function rtlrho=get_rltrho(rho_mdays)$/;"	f
+get_satellite_epoch	/home/gdj/work/matlab/work2/get_satellite_epoch.m	/^function [satellite_epoch,varargout]=get_satellite_epoch(epoch_date,lrdays,satellite)$/;"	f
+get_satellite_lt	/home/gdj/work/python/work2.py	/^def get_satellite_lt():$/;"	f
+get_sblist	/home/gdj/work/python/work2.py	/^def get_sblist():$/;"	f
+get_sblist_select	/home/gdj/work/matlab/work2/get_sblist_select.m	/^function sblist_select=get_sblist_select(sblist,sbtype,season,yncir)$/;"	f
+get_solar_wind_parameters_epoch	/home/gdj/work/matlab/work2/get_solar_wind_parameters_epoch.m	/^function solar_wind_parameters_epoch=get_solar_wind_parameters_epoch(epoch_date,lrdays)$/;"	f
+get_solar_wind_parameters_mdays	/home/gdj/work/matlab/work2/get_solar_wind_parameters_mdays.m	/^function solar_wind_parameters=get_solar_wind_parameters_mdays(lrdates)$/;"	f
+get_sw	/home/gdj/work/python/work2.py	/^def get_sw(dates):$/;"	f
+griddata	/home/gdj/work/python/work2.py	/^from scipy.interpolate import griddata$/;"	i
+gridxy	/home/gdj/work/matlab/matlabfunction/mygriddata.m	/^function gridx0=gridxy(x0,x)$/;"	f
+h	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,/;"	v	program:dfhskhfgks
+hourvalue_change_around_polarity_change	/home/gdj/work/matlab/work1/data_processing/hourvalue_change_around_polarity_change.m	/^function y=hourvalue_change_around_polarity_change(x1,x2)$/;"	f
+i	/home/gdj/work/fortran/work1/bz_ap.f90	/^     in/;"	v	program:dfhskhfgks
+i	/home/gdj/work/fortran/work1/mygamdm.f90	/^  in/;"	v	program:mygamdm
+iday	/home/gdj/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a, iday,/;"	v	program:gamdm_test
+idctn	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function y = idctn(y)$/;"	f
+idf107	/home/gdj/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a, iday, ikp, idf107$/;"	v	program:gamdm_test
+if107	/home/gdj/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107,/;"	v	program:gamdm_test
+if107a	/home/gdj/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a,/;"	v	program:gamdm_test
+ikp	/home/gdj/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a, iday, ikp,/;"	v	program:gamdm_test
+ikp	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=/;"	v	program:mygamdm
+index	/home/gdj/work/python/work3.py	/^    index = get_imf_AE_PC_5m(dates)$/;"	v
+index	/home/gdj/work/python/work3.py	/^    index = index[bdate:edate]$/;"	v
+iost	/home/gdj/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=3,i,j,iost$/;"	v	program:mygamdm
+isDS	/home/gdj/work/matlab/work2/isDS.m	/^function dsdates = isDS( dates )$/;"	f
+isJS	/home/gdj/work/matlab/work2/isJS.m	/^function jsdates = isJS( dates )$/;"	f
+isME	/home/gdj/work/matlab/work2/isME.m	/^function medates = isME( dates )$/;"	f
+isSE	/home/gdj/work/matlab/work2/isSE.m	/^function sedates = isSE( dates )$/;"	f
+is_away_toward	/home/gdj/work/matlab/work2/is_away_toward.m	/^function sblist_select = is_away_toward( sblist )$/;"	f
+is_toward_away	/home/gdj/work/matlab/work2/is_toward_away.m	/^function sblist_select = is_toward_away( sblist )$/;"	f
+isds	/home/gdj/work/matlab/work1/sea_SB_diff/isds.m	/^function y = isds( doy )$/;"	f
+isjs	/home/gdj/work/matlab/work1/sea_SB_diff/isjs.m	/^function y = isjs( doy )$/;"	f
+isme	/home/gdj/work/matlab/work1/sea_SB_diff/isme.m	/^function y = isme( doy )$/;"	f
+isse	/home/gdj/work/matlab/work1/sea_SB_diff/isse.m	/^function y = isse( doy )$/;"	f
+j	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,/;"	v	program:dfhskhfgks
+j	/home/gdj/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=3,i,j,/;"	v	program:mygamdm
+jdfsk	/home/gdj/work/fortran/work1/char2int.f90	/^ program jdfsk$/;"	p
+jdfsk	/home/gdj/work/fortran/work1/char2int_new.f90	/^ program jdfsk$/;"	p
+kp	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day, kp,/;"	v	program:gamdm_test
+kp	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp,/;"	v	program:mygamdm
+l	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,l,/;"	v	program:dfhskhfgks
+l	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,l,/;"	v	program:jdfsk
+l	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,l,/;"	v	program:jdfsk
+latitude	/home/gdj/work/python/work2.py	/^    latitude = property(get_lat, set_lat, del_lat,'Latitudes in the data')$/;"	v	class:ChampDensity
+lon	/home/gdj/work/python/work2.py	/^    lon = property(get_lon, set_lon, del_lon,'longitude in the data')$/;"	v	class:ChampDensity
+lon_lat_contourf	/home/gdj/work/python/work2.py	/^def lon_lat_contourf(ax, lon, lat, data, whichhemisphere='N', **kwargs):$/;"	f
+longitude	/home/gdj/work/python/work2.py	/^    longitude = property(get_lon, set_lon, del_lon,'longitude in the data')$/;"	v	class:ChampDensity
+lt2ang	/home/gdj/work/matlab/matlabfunction/lt2ang.m	/^function ang = lt2ang( lt )$/;"	f
+lt_lat_contourf	/home/gdj/work/python/work2.py	/^def lt_lat_contourf(ax, lt, lat, data, whichhemisphere='N', **kwargs):$/;"	f
+matplotlib	/home/gdj/work/python/pythonforfun.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	/home/gdj/work/python/work2.py	/^import matplotlib.dates as mdates$/;"	i
+matplotlib	/home/gdj/work/python/work2.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	/home/gdj/work/python/work3.py	/^import matplotlib.pyplot as plt$/;"	i
+mdates	/home/gdj/work/python/work2.py	/^import matplotlib.dates as mdates$/;"	i
+minorxy	/home/gdj/work/matlab/matlabfunction/minorxy.m	/^function minorxy(num,lengthf)$/;"	f
+mygamdm	/home/gdj/work/fortran/work1/mygamdm.f90	/^program mygamdm$/;"	p
+mygriddata	/home/gdj/work/matlab/matlabfunction/mygriddata.m	/^function z=mygriddata(x0,y0,z0,x,y)$/;"	f
+mylegend	/home/gdj/work/matlab/matlabfunction/mylegend.m	/^function varargout = mylegend(varargin )$/;"	f
+myplot	/home/gdj/work/matlab/matlabfunction/myplot.m	/^function varargout = myplot(varargin )$/;"	f
+myplot_errorbar_text	/home/gdj/work/matlab/work1/data_processing/myplot_errorbar_text.m	/^function pic = myplot_errorbar_text( yat,yta,yr,texfor)$/;"	f
+myplot_text	/home/gdj/work/matlab/work1/data_processing/myplot_text.m	/^function pic = myplot_text( yat,yat_num,yta,yta_num,yr)$/;"	f
+myplotyy	/home/gdj/work/matlab/matlabfunction/myplotyy.m	/^function [ h,h1,h2 ] = myplotyy( x1,y1,x2,y2 )$/;"	f
+mytext	/home/gdj/work/matlab/matlabfunction/mytext.m	/^function htext = mytext(xr,yr,str,varargin)$/;"	f
+mytitle	/home/gdj/work/matlab/matlabfunction/mytitle.m	/^function tit = mytitle( varargin)$/;"	f
+mytitle_3c	/home/gdj/work/matlab/work1/mytitle_3c.m	/^function tit = mytitle_3c( hand,text1,text2,text3,c1,c2,ypos_rat,font_si)$/;"	f
+myxgrid	/home/gdj/work/matlab/matlabfunction/myxgrid.m	/^function varargout = myxgrid(varargin )$/;"	f
+np	/home/gdj/work/python/pythonforfun.py	/^import numpy as np$/;"	i
+np	/home/gdj/work/python/work2.py	/^import numpy as np$/;"	i
+np	/home/gdj/work/python/work3.py	/^import numpy as np$/;"	i
+numdate	/home/gdj/work/matlab/matlabfunction/numdate.m	/^function yeardoy=numdate(matday)$/;"	f
+orbit_mean	/home/gdj/work/python/work2.py	/^    def orbit_mean(self,lats=(-90,90),updown='up'):$/;"	m	class:ChampDensity
+os	/home/gdj/work/python/work2.py	/^import os$/;"	i
+os	/home/gdj/work/python/work3.py	/^import os$/;"	i
+p	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,/;"	v	program:jdfsk
+p	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,/;"	v	program:jdfsk
+pd	/home/gdj/work/python/pythonforfun.py	/^import pandas as pd$/;"	i
+pd	/home/gdj/work/python/work2.py	/^import pandas as pd$/;"	i
+pd	/home/gdj/work/python/work3.py	/^import pandas as pd$/;"	i
+pdb	/home/gdj/work/python/work2.py	/^import pdb   # set breakpoint$/;"	i
+plot_median	/home/gdj/work/matlab/work1/data_processing/plot_median.m	/^function pic = plot_median(y1,y2,yr)$/;"	f
+plot_text	/home/gdj/work/matlab/matlabfunction/plot_text.m	/^function htext = plot_text(xxtext,yytext,text_str,font_size)$/;"	f
+plot_text_3c	/home/gdj/work/matlab/work1/plot_text_3c.m	/^function htext = plot_text_3c(xxtext,yytext,c1,c2,text1,text2,text3,font_size)$/;"	f
+plt	/home/gdj/work/python/pythonforfun.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	/home/gdj/work/python/work2.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	/home/gdj/work/python/work3.py	/^import matplotlib.pyplot as plt$/;"	i
+polarity	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
+polarity	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
+quiver_champ_wind	/home/gdj/work/python/work3.py	/^def quiver_champ_wind(bdate, edate, pole='N', updown='both', color='b'):$/;"	f
+relative	/home/gdj/work/python/work2.py	/^relative = lambda x: 100*(x-x.mean())\/x.mean()$/;"	v
+relative_density_to_previous_orbit	/home/gdj/work/python/work2.py	/^    def relative_density_to_previous_orbit(self, whichcolumn='rho400'):$/;"	m	class:ChampDensity
+resp2SB	/home/gdj/work/matlab/work1/data_processing/resp2SB.m	/^function [y1,y2]=resp2SB(x1,x2,x3)$/;"	f
+resp2SB	/home/gdj/work/matlab/work1/resp2SB.m	/^function y=resp2SB(x1,x2,x3)$/;"	f
+rtl	/home/gdj/work/python/work2.py	/^        def rtl(x):$/;"	f	function:ChampDensity.difference_density_to_previous_orbit
+rtl	/home/gdj/work/python/work2.py	/^        def rtl(x):$/;"	f	function:ChampDensity.relative_density_to_previous_orbit
+scatter_lt_lat	/home/gdj/work/python/work2.py	/^    def scatter_lt_lat(self, upmarker='o', downmarker='o'):$/;"	m	class:ChampDensity
+set	/home/gdj/work/python/work2.py	/^import pdb   # set breakpoint$/;"	i
+set_Mlong	/home/gdj/work/python/work2.py	/^    def set_Mlong(self, value):$/;"	m	class:ChampDensity
+set_height	/home/gdj/work/python/work2.py	/^    def set_height(self, value):$/;"	m	class:ChampDensity
+set_lat	/home/gdj/work/python/work2.py	/^    def set_lat(self, value):$/;"	m	class:ChampDensity
+set_lon	/home/gdj/work/python/work2.py	/^    def set_lon(self, value):$/;"	m	class:ChampDensity
+set_lon_lat	/home/gdj/work/python/work2.py	/^def set_lon_lat(h, pole='N'):$/;"	f
+set_lt_lat	/home/gdj/work/python/work3.py	/^def set_lt_lat(h, pole='N'):$/;"	f
+set_lt_lat_polar	/home/gdj/work/python/work2.py	/^def set_lt_lat_polar(h, pole='N'):$/;"	f
+set_rho	/home/gdj/work/python/work2.py	/^    def set_rho(self, value):$/;"	m	class:ChampDensity
+set_rho400	/home/gdj/work/python/work2.py	/^    def set_rho400(self, value):$/;"	m	class:ChampDensity
+smoothn	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function [z,s,exitflag] = smoothn(varargin)$/;"	f
+str	/home/gdj/work/fortran/work1/char2int.f90	/^    character fname1*100,fname2*100,str(/;"	v	program:jdfsk
+str	/home/gdj/work/fortran/work1/char2int_new.f90	/^    character fname1*100,fname2*100,str(/;"	v	program:jdfsk
+sub_creat_axes	/home/gdj/work/matlab/matlabfunction/sub_creat_axes.m	/^function h_axes=sub_creat_axes(nrow,nclm,margin,gap)$/;"	f
+subset_season	/home/gdj/work/python/work2.py	/^    def subset_season(self, season):$/;"	m	class:ChampDensity
+time_champ_orbit_updown	/home/gdj/work/python/work3.py	/^def time_champ_orbit_updown(bdate, edate, updown='up'):$/;"	f
+tmp_AE	/home/gdj/work/python/work3.py	/^        tmp_AE = tmp_index.AE$/;"	v
+tmp_AE	/home/gdj/work/python/work3.py	/^    tmp_AE = index.AE$/;"	v
+tmp_index	/home/gdj/work/python/work3.py	/^        tmp_index = index[btime:etime]$/;"	v
+tmp_time	/home/gdj/work/python/work3.py	/^        tmp_time = (tmp_index.index.hour +$/;"	v
+tmp_time	/home/gdj/work/python/work3.py	/^    tmp_time = index.index.hour+index.index.minute\/60+index.index.second\/3600$/;"	v
+tmpf	/home/gdj/work/python/work2.py	/^                        def tmpf(x):$/;"	f	function:.f9
+u1	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,/;"	v	program:dfhskhfgks
+u1	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,/;"	v	program:jdfsk
+u1	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,/;"	v	program:jdfsk
+u1	/home/gdj/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=/;"	v	program:mygamdm
+u2	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,/;"	v	program:dfhskhfgks
+u2	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,/;"	v	program:jdfsk
+u2	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,/;"	v	program:jdfsk
+u2	/home/gdj/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=/;"	v	program:mygamdm
+u3	/home/gdj/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=/;"	v	program:mygamdm
+vline	/home/gdj/work/matlab/matlabfunction/vline.m	/^function hvl=vline(x0)$/;"	f
+year	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,/;"	v	program:dfhskhfgks
+year	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,/;"	v	program:jdfsk
+year	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,/;"	v	program:jdfsk
+year	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,/;"	v	program:mygamdm
+yeardays	/home/gdj/work/matlab/matlabfunction/yeardays.m	/^function y=yeardays(year)$/;"	f
+yncir	/home/gdj/work/matlab/work2/yncir.m	/^function [ycir,ncir] = yncir( sblist )$/;"	f

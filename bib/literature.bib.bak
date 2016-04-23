@@ -1,0 +1,1352 @@
+% This file was created with JabRef 2.10.
+% Encoding: UTF8
+
+
+@Article{Berthelier1976,
+  Title                    = {Influence of the polarity of the interplanetary magnetic field on the annual and the diurnal variations of magnetic activity},
+  Author                   = {Berthelier, Annick},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1976},
+  Number                   = {25},
+  Pages                    = {4546--4552},
+  Volume                   = {81},
+
+  Doi                      = {10.1029/JA081i025p04546},
+  File                     = {Berthelier1976.pdf:Berthelier1976.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Particles and Fields—Magnetosphere: Interaction between solar wind and magnetosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/JA081i025p04546}
+}
+
+@Article{Blanc1980,
+  Title                    = {The ionospheric disturbance dynamo},
+  Author                   = {Blanc, M. and Richmond, A.D.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1980},
+  Number                   = {A4},
+  Pages                    = {1669--1686},
+  Volume                   = {85},
+
+  __markedentry            = {},
+  Doi                      = {10.1029/JA085iA04p01669},
+  File                     = {Blanc1980.pdf:Blanc1980.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Particles and Fields—Ionosphere: Electric fields, Particles and Fields—Ionosphere: Ionospheric disturbances, Particles and Fields—Ionosphere: Plasma motion, convection, or circulation},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.21},
+  Url                      = {http://dx.doi.org/10.1029/JA085iA04p01669}
+}
+
+@Article{Clauer1988,
+  Title                    = {High-latitude dayside electric fields and currents during strong northward interplanetary magnetic field: Observations and model simulation},
+  Author                   = {Clauer, C. Robert and Friis-Christensen, Eigil},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1988},
+  Pages                    = {2749--2757},
+  Volume                   = {93},
+
+  Doi                      = {10.1029/JA093IA04P02749},
+  File                     = {Clauer1988.pdf:Clauer1988.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Polar cap phenomena, Electric fields, Cusp, Magnetopause and boundary layers},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.21},
+  Url                      = {http://dx.doi.org/10.1029/JA093iA04p02749}
+}
+
+@Article{Clausen2014,
+  Title                    = {Thermospheric density perturbations in response to substorms},
+  Author                   = {Clausen, L. B. N. and Milan, S. E. and Grocott, A.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2014},
+  Number                   = {6},
+  Pages                    = {4441--4455},
+  Volume                   = {119},
+
+  Doi                      = {10.1002/2014JA019837},
+  File                     = {Clausen2014.pdf:Clausen2014.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: energy deposition, Substorms, thermosphere, substorm, energy input},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.04},
+  Url                      = {http://dx.doi.org/10.1002/2014JA019837}
+}
+
+@Article{Cowley1991,
+  Title                    = {Dependence of convective flows and particle precipitation in the high-latitude dayside ionosphere on the X and Y components of the interplanetary magnetic field},
+  Author                   = {Cowley, S. W. H. and Morelli, J. P. and Lockwood, M.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1991},
+  Pages                    = {5557--5564},
+  Volume                   = {96},
+
+  __markedentry            = {},
+  Doi                      = {10.1029/90JA02063},
+  File                     = {Cowley1991.pdf:Cowley1991.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Ionosphere/magnetosphere interactions, Current systems, Electric fields, Plasma convection, Polar cap ionosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.21},
+  Url                      = {http://dx.doi.org/10.1029/90JA02063}
+}
+
+@Article{Daglis1999,
+  Title                    = {The terrestrial ring current: Origin, formation, and decay},
+  Author                   = {Daglis, Ioannis A. and Thorne, Richard M. and Baumjohann, Wolfgang and Orsini, Stefano},
+  Journal                  = {Reviews of Geophysics},
+  Year                     = {1999},
+  Number                   = {4},
+  Pages                    = {407--438},
+  Volume                   = {37},
+
+  __markedentry            = {[gdj:]},
+  Doi                      = {10.1029/1999RG900009},
+  File                     = {Daglis1999.pdf:Daglis1999.pdf:PDF},
+  ISSN                     = {1944-9208},
+  Keywords                 = {Ring current, Magnetic storms and substorms, Solar wind/magnetosphere interactions, Magnetosphere/ionosphere interactions},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.18},
+  Url                      = {http://dx.doi.org/10.1029/1999RG900009}
+}
+
+@Article{Deng2007,
+  Title                    = {Possible reasons for underestimating Joule heating in global models: E field variability, spatial resolution, and vertical velocity},
+  Author                   = {Deng, Yue and Ridley, Aaron J.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2007},
+  Note                     = {A09308},
+  Number                   = {A9},
+  Pages                    = {n/a--n/a},
+  Volume                   = {112},
+
+  Doi                      = {10.1029/2006JA012006},
+  File                     = {Deng2007.pdf:Deng2007.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Ionosphere/atmosphere interactions, Plasma convection, Modeling and forecasting, joule heating, global models, variability},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.07},
+  Url                      = {http://dx.doi.org/10.1029/2006JA012006}
+}
+
+@Article{Emmert2015,
+  Title                    = {Thermospheric mass density: A review },
+  Author                   = {J.T. Emmert},
+  Journal                  = {Adv. Space Res.},
+  Year                     = {2015},
+  Number                   = {5},
+  Pages                    = {773 - 824},
+  Volume                   = {56},
+
+  Doi                      = {http://dx.doi.org/10.1016/j.asr.2015.05.038},
+  File                     = {Emmert2015.pdf:Emmert2015.pdf:PDF},
+  ISSN                     = {0273-1177},
+  Keywords                 = {Thermosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.10},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0273117715003944}
+}
+
+@Article{Emmert2010,
+  Title                    = {A computationally compact representation of Magnetic-Apex and Quasi-Dipole coordinates with smooth base vectors},
+  Author                   = {Emmert, J. T. and Richmond, A. D. and Drob, D. P.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2010},
+  Number                   = {A8},
+  Pages                    = {n/a--n/a},
+  Volume                   = {115},
+
+  File                     = {Emmert2010.pdf:Emmert2010.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {geomagnetic coordinates, Quasi-Dipole, modified Apex, 1532 Reference fields: regional, global, 2494 Instruments and techniques, 2447 Modeling and forecasting, 2437 Ionospheric dynamics},
+  Owner                    = {gdj},
+  Timestamp                = {2015.12.07},
+  Url                      = {http://dx.doi.org/10.1029/2010JA015326}
+}
+
+@Article{Forbes1999,
+  Title                    = {Longitudinal structures in lower thermosphere density},
+  Author                   = {Forbes, J. M. and Palo, S. E. and Marcos, F. A.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1999},
+  Number                   = {A3},
+  Pages                    = {4373--4385},
+  Volume                   = {104},
+
+  Abstract                 = {Thermospheric densities near 200 km from the Satellite Electrostatic Triaxial Accelerometer (SETA) experiment during July and December 1983 are analyzed to reveal two types of longitude structures: (1) the so-called “longitude/UT” variation which has been noted in higher-altitude satellite data and incorporated into the mass spectrometer incoherent scatter extension-90 (MSISE-90) empirical model [Hedin, 1991] and (2) “higher-order structures” in the form of longitudinal wave patterns which have not previously been mentioned in the thermosphere-ionosphere literature. The longitude/UT variation in the SETA densities shares many similarities with that embodied in the MSISE-90 model, except for some differences in symmetry about the equator. Interpretation concerning the origin of the observed variation is handicapped by the Sun-synchronous limitations of the satellite orbit and by the convolution of high-latitude heating effects being mapped into the geographic frame while solar-driven latitudinal variations are mapped into the geomagnetic frame. An unambiguous separation of these effects is not possible with the present orbital constraints. The space-time Fourier analysis method of Salby [1982a, b] is applied in an attempt to quantitatively characterize the higher-order structure in the data. The nature of the satellite sampling introduces ambiguities into the determination of zonal wavenumbers and periodicities. There is evidence of s = 1 and s = 2 stationary features, eastward propagating Kelvin waves, and a number of westward propagating waves with zonal wavenumbers s = 0 to s = 6 and periods between 6 and 10 hours. Meyer and Forbes [1997] have recently shown the latter class of waves, referred to as Lamb waves in an isothermal nondissipative atmosphere, to represent the preferred response to broadband forcing of the thermosphere. The present observations may represent the existence of Lamb waves in the thermosphere.},
+  Doi                      = {10.1029/1998JA900036},
+  File                     = {Forbes1999.pdf:Forbes1999.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Magnetospheric Physics: Magnetosphere—outer, MHD waves and instabilities, Meteorology and Atmospheric Dynamics: Thermospheric dynamics, Meteorology and Atmospheric Dynamics: Waves and tides},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.09},
+  Url                      = {http://dx.doi.org/10.1029/1998JA900036}
+}
+
+@Article{Fuller-Rowell1998,
+  Title                    = {The “thermospheric spoon”: A mechanism for the semiannual density variation},
+  Author                   = {Fuller-Rowell, T. J.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1998},
+  Number                   = {A3},
+  Pages                    = {3951--3956},
+  Volume                   = {103},
+
+  Doi                      = {10.1029/97JA03335},
+  File                     = {Fuller-Rowell1998.pdf:Fuller-Rowell1998.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Pressure, density, and temperature, Thermosphere: composition and chemistry, Thermosphere: energy deposition, Meteorology and Atmospheric Dynamics: Thermospheric dynamics},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/97JA03335}
+}
+
+@Article{Gasperini2016,
+  Title                    = {Synthetic Thermosphere Winds Based on CHAMP Neutral and Plasma Density Measurements},
+  Author                   = {Gasperini, F. and Forbes, J. M. and Doornbos, E. N. and Bruinsma, S. L.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2016},
+  Note                     = {2016JA022392},
+  Pages                    = {n/a--n/a},
+
+  __markedentry            = {[gdj:]},
+  Doi                      = {10.1002/2016JA022392},
+  File                     = {Gasperini2016.pdf:Gasperini2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Ionosphere/atmosphere interactions, Modeling and forecasting, Remote sensing, Thermospheric dynamics, Tides and planetary waves, CHAMP synthetic wind, thermosphere wind, thermosphere tides, thermosphere wave coupling},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.20},
+  Url                      = {http://dx.doi.org/10.1002/2016JA022392}
+}
+
+@Article{Glocer2015,
+  Title                    = {Separator reconnection at the magnetopause for predominantly northward and southward IMF: Techniques and results},
+  Author                   = {Glocer, A. and Dorelli, J. and Toth, G. and Komar, C. M. and Cassak, P. A.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Note                     = {2015JA021417},
+  Pages                    = {140-156},
+  Volume                   = {121},
+
+  __markedentry            = {},
+  Doi                      = {10.1002/2015JA021417},
+  File                     = {Glocer2015.pdf:Glocer2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Magnetic reconnection, Numerical modeling, Solar wind/magnetosphere interactions, Mathematical and numerical techniques, Magnetosphere, Reconnection, Flux Transfer Event, Numerical Modeling, Resistive MHD},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.22},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021417}
+}
+
+@Article{Guo2015,
+  Title                    = {Statistical analysis of thermospheric density response to solar wind sector structure},
+  Author                   = {Guo, Dongjie and Lei, Jiuhou and Dou, Xiankang},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Number                   = {6},
+  Pages                    = {5076--5086},
+  Volume                   = {120},
+
+  Doi                      = {10.1002/2015JA021112},
+  File                     = {Guo2015.pdf:Guo2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: energy deposition, Pressure, density, and temperature, Solar/planetary relationships, Thermospheric dynamics, Solar effects, thermospheric mass density, solar wind sector structure, corotating interaction region},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.21},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021112}
+}
+
+@Article{Guo2016,
+  Title                    = {Prolonged multiple excitation of large-scale traveling atmospheric disturbances (TADs) by successive and interacting coronal mass ejections},
+  Author                   = {Guo, Jianpeng and Wei, Fengsi and Feng, Xueshang and Forbes, Jeffrey M. and Wang, Yuming and Liu, Huixin and Wan, Weixing and Yang, Zhiliang and Liu, Chaoxu},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2015JA022076},
+  Pages                    = {n/a--n/a},
+  Volume                   = {121},
+
+  Doi                      = {10.1002/2015JA022076},
+  File                     = {Guo2016.pdf:Guo2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Coronal mass ejections, Acoustic-gravity waves, Coronal mass ejections, Interaction, Multiple gravity waves},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.04},
+  Url                      = {http://dx.doi.org/10.1002/2015JA022076}
+}
+
+@Article{Hedin1991,
+  Title                    = {Extension of the MSIS Thermosphere Model into the middle and lower atmosphere},
+  Author                   = {Hedin, A. E.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1991},
+  Number                   = {A2},
+  Pages                    = {1159--1172},
+  Volume                   = {96},
+
+  Abstract                 = {The MSIS-86 empirical model has been revised in the lower thermosphere and extended into the mesosphere and lower atmosphere to provide a single analytic model for calculating temperature and density profiles representative of the climatological average for various geophysical conditions. Tabulations from the Handbook for MAP 16 are the primary guide for the lower atmosphere and are supplemented by historical rocket and incoherent scatter data in the upper mesosphere and lower thermosphere. Low-order spherical harmonics and Fourier series are used to describe the major variations throughout the atmosphere including latitude, annual, semiannual, and simplified local time and longitude variations. While month to month details cannot be completely represented, lower atmosphere temperature data are fit to an overall standard deviation of 3 K and pressure to 2%. Comparison with rocket and other data indicates that the model represents current knowledge of the climatological average reasonably well, although there is some conflict as to details near the mesopause.},
+  Doi                      = {10.1029/90JA02125},
+  File                     = {Hedin1991.pdf:Hedin1991.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Pressure, density, and temperature},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.09},
+  Url                      = {http://dx.doi.org/10.1029/90JA02125}
+}
+
+@Article{Hedin1987,
+  Title                    = {MSIS-86 Thermospheric Model},
+  Author                   = {Hedin, Alan E.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1987},
+  Number                   = {A5},
+  Pages                    = {4649--4662},
+  Volume                   = {92},
+
+  Doi                      = {10.1029/JA092iA05p04649},
+  File                     = {Hedin1987.pdf:Hedin1987.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Pressure, density, and temperature, Thermosphere: composition and chemistry},
+  Owner                    = {gdj},
+  Timestamp                = {2016.02.20},
+  Url                      = {http://dx.doi.org/10.1029/JA092iA05p04649}
+}
+
+@Article{Hedin1983,
+  Title                    = {A Revised thermospheric model based on mass spectrometer and incoherent scatter data: MSIS-83},
+  Author                   = {Hedin, A. E.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1983},
+  Number                   = {A12},
+  Pages                    = {10170--10188},
+  Volume                   = {88},
+
+  Doi                      = {10.1029/JA088iA12p10170},
+  File                     = {Hedin1983.pdf:Hedin1983.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Owner                    = {gdj},
+  Timestamp                = {2016.02.24},
+  Url                      = {http://dx.doi.org/10.1029/JA088iA12p10170}
+}
+
+@Article{Hedin1985,
+  Title                    = {Morphology of thermospheric composition variations in the quiet polar thermosphere from Dynamics Explorer measurements},
+  Author                   = {Hedin, A. E. and Carignan, G. R.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1985},
+  Number                   = {A6},
+  Pages                    = {5269--5277},
+  Volume                   = {90},
+
+  Abstract                 = {Composition data obtained by the Neutral Atmosphere Composition Spectrometer carried aboard the Dynamics Explorer 2 satellite have been examined for variations in the polar regions during magnetically quiet conditions. A persistent enhancement of N2 density and a depletion of He density are present in the vicinity of the magnetic poles with maximum density response in the morning hours (magnetic) on average. A universal time (UT) variation in average density levels is evident near both the geographic and magnetic poles. There are systematic morphology changes with UT and between summer and winter which are qualitatively consistent with the shifting and spreading of thermospheric heating effects by the global circulation systems driven by EUV and magnetospheric sources. The magnitude of the UT variations is larger in the southern hemisphere on average, and the UT variations are larger in local winter than summer.},
+  Doi                      = {10.1029/JA090iA06p05269},
+  File                     = {Hedin1985.pdf:Hedin1985.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Pressure, density, and temperature, Thermosphere: composition and chemistry},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.09},
+  Url                      = {http://dx.doi.org/10.1029/JA090iA06p05269}
+}
+
+@Article{Hedin1972,
+  Title                    = {Longitudinal variations of thermospheric composition indicating magnetic control of polar heat input},
+  Author                   = {Hedin, A. E. and Reber, C. A.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1972},
+  Number                   = {16},
+  Pages                    = {2871--2879},
+  Volume                   = {77},
+
+  Abstract                 = {Measurements of neutral N2, O, and He densities from Ogo 6 over the south polar region during magnetically quiet periods in late August and early September 1969 indicate that N2 densities, when they are extrapolated to a common altitude, maximize at about 0800 UT near 70° invariant latitude. The density of He has a minimum at this time, and the density of O has a slight maximum. It is proposed that these phenomena are the result of cyclic variations in soft electron precipitation, which heats the thermosphere either directly or through enhanced Joule heating. This heat energy would increase the gas temperature, the increase in the gas temperature leading to the N2 increase, and would vary the composition by generation of a wind system.},
+  Doi                      = {10.1029/JA077i016p02871},
+  File                     = {Hedin1972.pdf:Hedin1972.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Aeronomy, Helium, Nitrogen, Oxygen},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.09},
+  Url                      = {http://dx.doi.org/10.1029/JA077i016p02871}
+}
+
+@Article{Hedin1979,
+  Title                    = {Global model of longitude/UT variations in thermospheric composition and temperature based on mass spectrometer data},
+  Author                   = {Hedin, A. E. and Reber, C. A. and Spencer, N. W. and Brinton, H. C. and Kayser, D. C.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1979},
+  Number                   = {A1},
+  Pages                    = {1--9},
+  Volume                   = {84},
+
+  Abstract                 = {Measurements of N2, O, He, and Ar densities from neutral gas mass spectrometers on four satellites (Ogo 6, Aeros A, AE-C, and AE-D) and inferred O2 and H densities from an ion mass spectrometer on AE-C have been combined to produce a model of longitude/universal time (UT) variations in thermospheric neutral temperature and composition. The longitude/UT model is an extension of the mass spectrometer-incoherent scatter thermospheric model and uses spherical harmonic terms dependent on geographic latitude, longitude, and universal time. The terms which depend only on longitude indicate a temperature enhancement of about 30°K somewhat equatorward of the magnetic poles. The temperature varies also in universal time, the greatest enhancement being about 30°K near 2130 UT in the northern hemisphere and about 70°K near 0930 UT in the southern hemisphere. The extrapolated 120-km variations are generally in phase for Ar and O2 and out of phase for He, O, and H. Changes during magnetic storms are relatively small. The combined longitude and UT variations reflect the influence of the earth's magnetic field but indicate that the variations may not be simply represented in magnetic coordinates. The longitude/UT model helps reduce differences in the local time variation between the incoherent scatter stations.},
+  Doi                      = {10.1029/JA084iA01p00001},
+  File                     = {Hedin1979.pdf:Hedin1979.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.09},
+  Url                      = {http://dx.doi.org/10.1029/JA084iA01p00001}
+}
+
+@Article{Jiang2016,
+  Title                    = {Latitudinal variation of the specific local time of post-midnight enhancement peaks in F-layer electron density at low latitudes: a case study},
+  Author                   = {Jiang, Chunhua and Deng, Chi and Yang, Guobin and Liu, Jing and Zhu, Peng and Yokoyama, Tatsuhiro and Song, Huan and Lan, Ting and Zhou, Chen and Wu, Xiongbin and Zhang, Yuannong and Zhao, Zhengyu and Komolmis, Tharadol and Supnithi, Pornchai and Yatini, Clara Y.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2015JA022319},
+  Pages                    = {n/a--n/a},
+
+  Doi                      = {10.1002/2015JA022319},
+  File                     = {Jiang2016.pdf:Jiang2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Ionospheric dynamics, Electric fields, Equatorial ionosphere, Ionospheric disturbances, Ionospheric nighttime enhancement, Enhancement peak, Latitudinal variation, Meridional wind, Geomagnetic inclination},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.28},
+  Url                      = {http://dx.doi.org/10.1002/2015JA022319}
+}
+
+@Book{JiuhouLei2013,
+  Title                    = {Impact of solar forcing on thermospheric densities and spacecraft orbits from CHAMP and GRACE},
+  Author                   = {Jiuhou Lei, Guangming Chen, Jiyao Xu, Xiankang Dou},
+  Editor                   = {S. Jin, InTech, Rijeka, Croatia},
+  Year                     = {2013},
+  Month                    = {5},
+
+  Doi                      = {10.5772/56599},
+  File                     = {JiuhouLei2013.pdf:JiuhouLei2013.pdf:PDF},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.25}
+}
+
+@Article{Kwak2011,
+  Title                    = {Response of thermosphere density to changes in interplanetary magnetic field sector polarity},
+  Author                   = {Kwak, Y.-S. and Kim, K.-H. and Deng, Y. and Forbes, J. M.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2011},
+  Number                   = {A11},
+  Pages                    = {A11316},
+  Volume                   = {116},
+
+  Doi                      = {10.1029/2011JA016938},
+  File                     = {Kwak2011.pdf:Kwak2011.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: composition and chemistry, Thermosphere: energy deposition, interplanetary magnetic field, sector polarity, thermospheric density},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.10},
+  Url                      = {http://dx.doi.org/10.1029/2011JA016938}
+}
+
+@Article{Kwak2009,
+  Title                    = {Dependence of the high-latitude thermospheric densities on the interplanetary magnetic field},
+  Author                   = {Kwak, Y.-S. and Richmond, A. D. and Deng, Y. and Forbes, J. M. and Kim, K.-H.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2009},
+  Note                     = {A05304},
+  Number                   = {A5},
+  Pages                    = {n/a--n/a},
+  Volume                   = {114},
+
+  Doi                      = {10.1029/2008JA013882},
+  File                     = {Kwak2009.pdf:Kwak2009.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Thermosphere: composition and chemistry, Solar wind/magnetosphere interactions, thermospheric density, high latitude, interplanetary magnetic field},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.14},
+  Url                      = {http://dx.doi.org/10.1029/2008JA013882}
+}
+
+@Article{Lei2010a,
+  Title                    = {Wind and temperature effects on thermosphere mass density response to the November 2004 geomagnetic storm},
+  Author                   = {Lei, Jiuhou and Thayer, Jeffrey P. and Burns, Alan G. and Lu, Gang and Deng, Yue},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2010},
+  Note                     = {A05303},
+  Number                   = {A5},
+  Pages                    = {n/a--n/a},
+  Volume                   = {115},
+
+  Doi                      = {10.1029/2009JA014754},
+  File                     = {Lei2010a.pdf:Lei2010a.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: composition and chemistry, Thermosphere: energy deposition, Satellite drag, thermospheric mass density, neutral composition, geomagnetic storm},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.25},
+  Url                      = {http://dx.doi.org/10.1029/2009JA014754}
+}
+
+@Article{Lei2008a,
+  Title                    = {Rotating solar coronal holes and periodic modulation of the upper atmosphere},
+  Author                   = {Lei, Jiuhou and Thayer, Jeffrey P. and Forbes, Jeffrey M. and Sutton, Eric K. and Nerem, R. Steven},
+  Journal                  = {Geophys. Res. Lett.},
+  Year                     = {2008},
+  Note                     = {L10109},
+  Number                   = {10},
+  Pages                    = {n/a--n/a},
+  Volume                   = {35},
+
+  Doi                      = {10.1029/2008GL033875},
+  File                     = {Lei2008a.pdf:Lei2008a.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Thermosphere: energy deposition, Space and satellite communication, Coronal mass ejections, 9-day oscillation, solar coronal holes, upper thermosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.25},
+  Url                      = {http://dx.doi.org/10.1029/2008GL033875}
+}
+
+@Article{Lei2008,
+  Title                    = {Global thermospheric density variations caused by high-speed solar wind streams during the declining phase of solar cycle 23},
+  Author                   = {Lei, Jiuhou and Thayer, Jeffrey P. and Forbes, Jeffrey M. and Sutton, Eric K. and Nerem, R. Steven and Temmer, Manuela and Veronig, Astrid M.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2008},
+  Note                     = {A11303},
+  Number                   = {A11},
+  Pages                    = {n/a--n/a},
+  Volume                   = {113},
+
+  Doi                      = {10.1029/2008JA013433},
+  File                     = {Lei2008.pdf:Lei2008.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Space and satellite communication, Coronal holes, Periodic oscillations, thermospheric density, fast solar wind streams},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.25},
+  Url                      = {http://dx.doi.org/10.1029/2008JA013433}
+}
+
+@Article{Lei2010,
+  Title                    = {Impact of CIR Storms on Thermosphere Density Variability during the Solar Minimum of 2008},
+  Author                   = {Lei, Jiuhou
+and Thayer, Jeffrey P.
+and Wang, Wenbin
+and McPherron, Robert L.},
+  Journal                  = {Solar Physics},
+  Year                     = {2010},
+  Number                   = {1},
+  Pages                    = {427--437},
+  Volume                   = {274},
+
+  Abstract                 = {The solar minimum of 2008 was exceptionally quiet, with sunspot numbers at their lowest in 75 years. During this unique solar-minimum epoch, however, solar-wind high-speed streams emanating from near-equatorial coronal holes occurred frequently and were the primary contributor to the recurrent geomagnetic activity at Earth. These conditions enabled the isolation of forcing by geomagnetic activity on the preconditioned solar minimum state of the upper atmosphere caused by Corotating Interaction Regions (CIRs). Thermosphere density observations around 400 km from the CHAMP satellite are used to study the thermosphere density response to solar-wind high-speed streams/CIRs. Superposed epoch results show that the thermosphere density responds to high-speed streams globally, and the density at 400 km changes by 75\% on average. The relative changes of neutral density are comparable at different latitudes, although its variability is largest at high latitudes. In addition, the response of thermosphere density to high-speed streams is larger at night than in daytime, indicating the preconditioning effect of the thermosphere response to storms. Finally, the thermosphere density variations at the periods of 9 and 13.5 days associated with CIRs are linked to the spatial distribution of low\thinspace--\thinspacemiddle latitude coronal holes on the basis of the EUVI observations from STEREO.},
+  Doi                      = {10.1007/s11207-010-9563-y},
+  File                     = {Lei2010.pdf:Lei2010.pdf:PDF},
+  ISSN                     = {1573-093X},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.25},
+  Url                      = {http://dx.doi.org/10.1007/s11207-010-9563-y}
+}
+
+@Article{Lei2015,
+  Title                    = {Response of the topside and bottomside ionosphere at low and middle latitudes to the October 2003 superstorms},
+  Author                   = {Lei, Jiuhou and Zhu, Qingyu and Wang, Wenbin and Burns, Alan G. and Zhao, Biqiang and Luan, Xiaoli and Zhong, Jiahao and Dou, Xiankang},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Note                     = {2015JA021310},
+  Number                   = {8},
+  Pages                    = {6974--6986},
+  Volume                   = {120},
+
+  Doi                      = {10.1002/2015JA021310},
+  File                     = {Lei2015.pdf:Lei2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Ionospheric disturbances, Ionospheric storms, Topside ionosphere, Electric fields, topside ionosphere, ionospheric storms, prompt penetration electric fields},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.07},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021310}
+}
+
+@Article{Liu2016,
+  Title                    = {First measurement of horizontal wind and temperature in the lower thermosphere (105-140 km) with a Na Lidar at Andes Lidar Observatory},
+  Author                   = {Liu, Alan Z. and Guo, Yafang and Vargas, Fabio and Swenson, Gary R.},
+  Journal                  = {Geophys. Res. Lett.},
+  Year                     = {2016},
+  Note                     = {2016GL068461},
+  Pages                    = {n/a--n/a},
+  Volume                   = {43},
+
+  Doi                      = {10.1002/2016GL068461},
+  File                     = {Liu2016.pdf:Liu2016.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Mesospheric dynamics, Remote sensing, Thermospheric dynamics, Ionospheres, Instruments and techniques, Na Wind/temperature Lidar, Thermospheric Na, Thermospheric Wind, Thermospheric Temperature},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.09},
+  Url                      = {http://dx.doi.org/10.1002/2016GL068461}
+}
+
+@Article{Liu2005,
+  Title                    = {Global distribution of the thermospheric total mass density derived from CHAMP},
+  Author                   = {Liu, H. and Lühr, H. and Henize, V. and Köhler, W.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2005},
+  Note                     = {A04301},
+  Number                   = {A4},
+  Pages                    = {n/a--n/a},
+  Volume                   = {110},
+
+  __markedentry            = {},
+  Comment                  = {global distribution of thermospheric density},
+  Doi                      = {10.1029/2004JA010741},
+  File                     = {Liu2005.pdf:Liu2005.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Ionosphere/atmosphere interactions, Equatorial ionosphere, Auroral ionosphere, upper atmosphere, thermospheric observations, thermospheric density, magnetic storm time effects},
+  Owner                    = {gdj},
+  Timestamp                = {2015.12.17},
+  Url                      = {http://dx.doi.org/10.1029/2004JA010741}
+}
+
+@Article{Liu2015,
+  Title                    = {A simulation study of the thermosphere mass density response to substorms using GITM},
+  Author                   = {Liu, Xianjing and Ridley, Aaron},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Note                     = {2014JA020962},
+  Pages                    = {7987--8001},
+  Volume                   = {120},
+
+  Doi                      = {10.1002/2014JA020962},
+  File                     = {Liu2015.pdf:Liu2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: energy deposition, Modeling and forecasting, Ionosphere/atmosphere interactions, Magnetic storms and substorms, Polar regions, mass density perturbation, substorms, GITM modeling, Joule heating, hemisphere power},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.08},
+  Url                      = {http://dx.doi.org/10.1002/2014JA020962}
+}
+
+@Article{Liu2014,
+  Title                    = {Altitude variations in the thermosphere mass density response to geomagnetic activity during the recent solar minimum},
+  Author                   = {Liu, X. and Thayer, J. P. and Burns, A. and Wang, W. and Sutton, E.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2014},
+  Number                   = {3},
+  Pages                    = {2160--2177},
+  Volume                   = {119},
+
+  Doi                      = {10.1002/2013JA019453},
+  File                     = {Liu2014.pdf:Liu2014.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: composition and chemistry, Pressure, density, and temperature, Ionospheric storms, Solar activity cycle, Satellite drag, composition, geomagnetic activity, helium, mass density, thermosphere, scale height},
+  Owner                    = {gdj},
+  Timestamp                = {2015.11.09},
+  Url                      = {http://dx.doi.org/10.1002/2013JA019453}
+}
+
+@Article{Majeed2016,
+  Title                    = {Global response of the upper thermospheric winds to large ion drifts in the jovian ovals},
+  Author                   = {Majeed, T. and Bougher, S. W. and Ridley, A. and Waite, J. H. and Gladstone, G. R. and Bell, J.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2015JA021328},
+  Pages                    = {n/a--n/a},
+
+  Doi                      = {10.1002/2015JA021328},
+  File                     = {Majeed2016.pdf:Majeed2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Planetary ionospheres, Electric fields, Ionosphere/magnetosphere interactions, Ionospheric dynamics, Ionosphere/atmosphere interactions, Jupiter's Thermosphere, Jovian Dynamics, Ion-neutral coupling},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.28},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021328}
+}
+
+@Article{McGranaghan2014,
+  Title                    = {Impact of equinoctial high-speed stream structures on thermospheric responses},
+  Author                   = {McGranaghan, Ryan and Knipp, Delores J. and McPherron, Robert L. and Hunt, Linda A.},
+  Journal                  = {Space Weather},
+  Year                     = {2014},
+  Number                   = {4},
+  Pages                    = {277--297},
+  Volume                   = {12},
+
+  Doi                      = {10.1002/2014SW001045},
+  File                     = {McGranaghan2014.pdf:McGranaghan2014.pdf:PDF},
+  ISSN                     = {1542-7390},
+  Keywords                 = {Thermosphere: composition and chemistry, Corotating streams, Solar effects, Forecasting, corotating streams, thermosphere neutral density, coronal streamers},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.25},
+  Url                      = {http://dx.doi.org/10.1002/2014SW001045}
+}
+
+@Article{McPherron2009,
+  Title                    = {Role of the Russell–McPherron effect in the acceleration of relativistic electrons },
+  Author                   = {R.L. McPherron and D.N. Baker and N.U. Crooker},
+  Journal                  = {J. Atmos. Sol-terr. Phy},
+  Year                     = {2009},
+  Note                     = {High Speed Solar Wind Streams and Geospace InteractionsHigh Speed Solar Wind Streams and Geospace Interactions },
+  Number                   = {10–11},
+  Pages                    = {1032 - 1044},
+  Volume                   = {71},
+
+  __markedentry            = {},
+  Doi                      = {http://dx.doi.org/10.1016/j.jastp.2008.11.002},
+  File                     = {McPherron2009.pdf:McPherron2009.pdf:PDF},
+  ISSN                     = {1364-6826},
+  Keywords                 = {Relativistic electrons},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S1364682608003593}
+}
+
+@Article{Newell2007,
+  Title                    = {A nearly universal solar wind-magnetosphere coupling function inferred from 10 magnetospheric state variables},
+  Author                   = {Newell, P. T. and Sotirelis, T. and Liou, K. and Meng, C.-I. and Rich, F. J.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2007},
+  Note                     = {A01206},
+  Number                   = {A1},
+  Pages                    = {n/a--n/a},
+  Volume                   = {112},
+
+  __markedentry            = {},
+  Doi                      = {10.1029/2006JA012015},
+  File                     = {Newell2007.pdf:Newell2007.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Auroral ionosphere, Solar wind/magnetosphere interactions, Magnetosphere/ionosphere interactions, Forecasting, coupling, function, prediction},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.20},
+  Url                      = {http://dx.doi.org/10.1029/2006JA012015}
+}
+
+@Article{Newell2002,
+  Title                    = {Ultraviolet insolation drives seasonal and diurnal space weather variations},
+  Author                   = {Newell, Patrick T. and Sotirelis, Thomas and Skura, Joseph P. and Meng, Ching-I. and Lyatsky, Wladislav},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2002},
+  Note                     = {1305},
+  Number                   = {A10},
+  Pages                    = {SMP 15-1--SMP 15-12},
+  Volume                   = {107},
+
+  __markedentry            = {},
+  Doi                      = {10.1029/2001JA000296},
+  File                     = {Newell2002.pdf:Newell2002.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Magnetosphere/ionosphere interactions, Solar wind/magnetosphere interactions, Auroral phenomena, aurora, insolation, seasonal, magnetosphere, ionosphere, coupling},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.28},
+  Url                      = {http://dx.doi.org/10.1029/2001JA000296}
+}
+
+@Article{OBrien2002,
+  Title                    = {Seasonal and diurnal variation of Dst dynamics},
+  Author                   = {O'Brien, T. P. and McPherron, R. L.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2002},
+  Note                     = {1341},
+  Number                   = {A11},
+  Pages                    = {SMP 3-1--SMP 3-10},
+  Volume                   = {107},
+
+  __markedentry            = {},
+  Doi                      = {10.1029/2002JA009435},
+  File                     = {OBrien2002.pdf:OBrien2002.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Ring current, Magnetospheric configuration and dynamics, Solar wind/magnetosphere interactions, General or miscellaneous, magnetic storms, ring current, semiannual variation},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/2002JA009435}
+}
+
+@Article{Oyama2016,
+  Title                    = {Lower-thermospheric wind variations in auroral patches during the substorm recovery phase},
+  Author                   = {Oyama, Shin-ichiro and Shiokawa, Kazuo and Miyoshi, Yoshizumi and Hosokawa, Keisuke and Watkins, Brenton J. and Kurihara, Junichi and Tsuda, Takuo T. and Fallen, Christopher T.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2015JA022129},
+  Pages                    = {n/a--n/a},
+
+  Doi                      = {10.1002/2015JA022129},
+  File                     = {Oyama2016.pdf:Oyama2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Airglow and aurora, Auroral ionosphere, Ionosphere/magnetosphere interactions, Substorms, aurora, thermosphere, Fabry-Perot interferometer, pulsating aurora, substorm, recovery phase},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.10},
+  Url                      = {http://dx.doi.org/10.1002/2015JA022129}
+}
+
+@Article{Perlongo2016,
+  Title                    = {Universal time effect in the response of the thermosphere to electric field changes},
+  Author                   = {Perlongo, N. J. and Ridley, A. J.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2016},
+  Note                     = {2015JA021636},
+  Pages                    = {n/a--n/a},
+
+  Doi                      = {10.1002/2015JA021636},
+  File                     = {Perlongo2016.pdf:Perlongo2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: energy deposition, Ionosphere/atmosphere interactions, Ionospheric storms, Modeling and forecasting, Thermosphere, Electric Field, UT Effect, Ionosphere, GITM, Solar Wind},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.10},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021636}
+}
+
+@Article{Proelss2011,
+  Title                    = {Density Perturbations in the Upper Atmosphere Caused by the Dissipation of Solar Wind Energy},
+  Author                   = {Prölss, GerdW.},
+  Journal                  = {Surv. Geophys.},
+  Year                     = {2011},
+  Number                   = {2},
+  Pages                    = {101-195},
+  Volume                   = {32},
+
+  Doi                      = {10.1007/s10712-010-9104-0},
+  File                     = {Proelss2011.pdf:Proelss2011.pdf:PDF},
+  ISSN                     = {0169-3298},
+  Keywords                 = {Thermosphere (density and composition); Thermosphere (disturbances and storms); Solar-terrestrial relations (space weather effects)},
+  Language                 = {English},
+  Owner                    = {gdj},
+  Publisher                = {Springer Netherlands},
+  Timestamp                = {2015.10.15},
+  Url                      = {http://dx.doi.org/10.1007/s10712-010-9104-0}
+}
+
+@Article{Qian2015,
+  Title                    = {A simulation study on the impact of altitudinal dependent vertical plasma drift on the equatorial ionosphere in the evening},
+  Author                   = {Qian, Cheng and Lei, Jiuhou and Wang, Wenbin},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Number                   = {4},
+  Pages                    = {2918--2925},
+  Volume                   = {120},
+
+  File                     = {Qian2015.pdf:Qian2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {ionosphere, vertical plasma drift, additional layers, 2415 Equatorial ionosphere, 2437 Ionospheric dynamics, 2447 Modeling and forecasting, 2481 Topside ionosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.07},
+  Url                      = {http://dx.doi.org/10.1002/2014JA020626}
+}
+
+@Article{Qian2013,
+  Title                    = {Annual/semiannual variation of the ionosphere},
+  Author                   = {Qian, Liying and Burns, Alan G. and Solomon, Stanley C. and Wang, Wenbin},
+  Journal                  = {Geophys. Res. Lett.},
+  Year                     = {2013},
+  Number                   = {10},
+  Pages                    = {1928--1933},
+  Volume                   = {40},
+
+  Doi                      = {10.1002/grl.50448},
+  File                     = {Qian2013.pdf:Qian2013.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Thermosphere: composition and chemistry, Ionosphere/atmosphere interactions, Climatology, Middle atmosphere dynamics, Turbulence, annual/semiannual variations, NmF2, neutral density and composition, climatology, eddy diffusion, gravity waves},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1002/grl.50448}
+}
+
+@Article{Qian2016,
+  Title                    = {Effects of the Equatorial Ionosphere Anomaly on the Inter-Hemispheric Circulation in the Thermosphere},
+  Author                   = {Qian, Liying and Burns, Alan G. and Wang, Wenbin and Solomon, Stanley C. and Zhang, Yongliang and Hsu, V.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2015JA022169},
+  Pages                    = {n/a--n/a},
+  Volume                   = {121},
+
+  Doi                      = {10.1002/2015JA022169},
+  File                     = {Qian2016.pdf:Qian2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: composition and chemistry, Pressure, density, and temperature, Ionosphere/atmosphere interactions, Equatorial ionosphere, Thermospheric dynamics, Inter-Hemispheric Circulation, Thermosphere Composition, Equatorial Ionization Anomaly, Ionosphere Winter Anomaly, Vertical Advection, Plasma-Neutral Collisional heating},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.04},
+  Url                      = {http://dx.doi.org/10.1002/2015JA022169}
+}
+
+@Article{Qian2011,
+  Title                    = {Progress in observations and simulations of global change in the upper atmosphere},
+  Author                   = {Qian, Liying and Laštovička, Jan and Roble, Raymond G. and Solomon, Stanley C.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2011},
+  Note                     = {A00H03},
+  Number                   = {A2},
+  Pages                    = {n/a--n/a},
+  Volume                   = {116},
+
+  Doi                      = {10.1029/2010JA016317},
+  File                     = {Qian2011.pdf:Qian2011.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Impacts of global change, Global climate models, Ionospheric dynamics, Climate change and variability, global change in the upper atmosphere and ionosphere, greenhouse effect, trend driver},
+  Owner                    = {gdj},
+  Timestamp                = {2015.11.07},
+  Url                      = {http://dx.doi.org/10.1029/2010JA016317}
+}
+
+@Article{Qian2009,
+  Title                    = {Seasonal variation of thermospheric density and composition},
+  Author                   = {Qian, Liying and Solomon, Stanley C. and Kane, Timothy J.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2009},
+  Note                     = {A01312},
+  Number                   = {A1},
+  Pages                    = {n/a--n/a},
+  Volume                   = {114},
+
+  Doi                      = {10.1029/2008JA013643},
+  File                     = {Qian2009.pdf:Qian2009.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: composition and chemistry, Pressure, density, and temperature, Mesospheric dynamics, thermospheric annual/semiannual variation, thermospheric density and composition, eddy diffusion},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/2008JA013643}
+}
+
+@Article{Richmond1992,
+  Title                    = {Assimilative mapping of ionospheric electrodynamics },
+  Author                   = {A.D. Richmond},
+  Journal                  = {Adv. Space Res.},
+  Year                     = {1992},
+  Number                   = {6},
+  Pages                    = {59 - 68},
+  Volume                   = {12},
+
+  Doi                      = {http://dx.doi.org/10.1016/0273-1177(92)90040-5},
+  File                     = {Richmond1992.pdf:Richmond1992.pdf:PDF},
+  ISSN                     = {0273-1177},
+  Owner                    = {gdj},
+  Timestamp                = {2016.02.20},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/0273117792900405}
+}
+
+@Article{Richmond1995,
+  Title                    = {Ionospheric Electrodynamics Using Magnetic Apex Coordinates},
+  Author                   = {A. D. Richmond},
+  Journal                  = {Journal of geomagnetism and geoelectricity},
+  Year                     = {1995},
+  Number                   = {2},
+  Pages                    = {191-212},
+  Volume                   = {47},
+  Doi                      = {10.5636/jgg.47.191},
+  File                     = {Richmond1995.pdf:Richmond1995.pdf:PDF},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.13}
+}
+
+@Article{Ridley2006,
+  Title                    = {The global ionosphere–thermosphere model },
+  Author                   = {A.J. Ridley and Y. Deng and G. Tóth},
+  Journal                  = {J. Atmos. Sol-terr. Phy},
+  Year                     = {2006},
+  Number                   = {8},
+  Pages                    = {839 - 864},
+  Volume                   = {68},
+
+  Doi                      = {http://dx.doi.org/10.1016/j.jastp.2006.01.008},
+  File                     = {Ridley2006.pdf:Ridley2006.pdf:PDF},
+  ISSN                     = {1364-6826},
+  Keywords                 = {Thermosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2016.01.26},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S1364682606000071}
+}
+
+@Article{Ridley2014,
+  Title                    = {Exploring the efficacy of different electric field models in driving a model of the plasmasphere},
+  Author                   = {Ridley, A. J. and Dodger, A. M. and Liemohn, M. W.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2014},
+  Number                   = {6},
+  Pages                    = {4621--4638},
+  Volume                   = {119},
+
+  Doi                      = {10.1002/2014JA019836},
+  File                     = {Ridley2014.pdf:Ridley2014.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Plasmasphere, Electric fields, Numerical modeling, Plasma convection, Plasmasphere, Electric Fields, Convection, IMAGE EUV},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.31},
+  Url                      = {http://dx.doi.org/10.1002/2014JA019836}
+}
+
+@Article{Roble1987,
+  Title                    = {On the global mean structure of the thermosphere},
+  Author                   = {Roble, R. G. and Ridley, E. C. and Dickinson, R. E.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1987},
+  Pages                    = {8745--8758},
+  Volume                   = {92},
+
+  Doi                      = {10.1029/JA092IA08P08745},
+  File                     = {Roble1987.pdf:Roble1987.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: composition and chemistry, Ionosphere/atmosphere interactions, Modeling and forecasting},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.21},
+  Url                      = {http://dx.doi.org/10.1029/JA092iA08p08745}
+}
+
+@Article{Russell2003,
+  Title                    = {The structure of the magnetopause },
+  Author                   = {C.T. Russell},
+  Journal                  = {Planet. Space Sci.},
+  Year                     = {2003},
+  Note                     = {Key Problems in Space Physics: Thin Magnetospheric Boundaries },
+  Number                   = {12},
+  Pages                    = {731 - 744},
+  Volume                   = {51},
+
+  Doi                      = {http://dx.doi.org/10.1016/S0032-0633(03)00110-7},
+  File                     = {Russell2003.pdf:Russell2003.pdf:PDF},
+  ISSN                     = {0032-0633},
+  Keywords                 = {Flux transfer},
+  Owner                    = {gdj},
+  Timestamp                = {2015.11.04},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0032063303001107}
+}
+
+@Book{Russell2013,
+  Title                    = {Solar Wind and Interplanetary Magnetic Field: A Tutorial},
+  Author                   = {Russell, C. T.},
+  Publisher                = {American Geophysical Union},
+  Year                     = {2013},
+
+  Booktitle                = {Space Weather},
+  Doi                      = {10.1029/GM125p0073},
+  File                     = {Russell2013.pdf:Russell2013.pdf:PDF},
+  ISBN                     = {9781118668351},
+  Keywords                 = {Space environment},
+  Owner                    = {gdj},
+  Pages                    = {73--89},
+  Timestamp                = {2015.11.04},
+  Url                      = {http://dx.doi.org/10.1029/GM125p0073}
+}
+
+@Article{Russell1973,
+  Title                    = {Semiannual variation of geomagnetic activity},
+  Author                   = {Russell, C. T. and McPherron, R. L.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1973},
+  Number                   = {1},
+  Pages                    = {92--108},
+  Volume                   = {78},
+
+  Doi                      = {10.1029/JA078i001p00092},
+  File                     = {Russell1973.pdf:Russell1973.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Particles and Fields—Magnetosphere: General or miscellaneous},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.10},
+  Url                      = {http://dx.doi.org/10.1029/JA078i001p00092}
+}
+
+@Article{Sabbah2000,
+  Title                    = {The role of interplanetary magnetic field and solar wind in modulating both galactic cosmic rays and geomagnetic activity},
+  Author                   = {Sabbah, I.},
+  Journal                  = {Geophys. Res. Lett.},
+  Year                     = {2000},
+  Number                   = {13},
+  Pages                    = {1823--1826},
+  Volume                   = {27},
+
+  Doi                      = {10.1029/2000GL003760},
+  File                     = {Sabbah2000.pdf:Sabbah2000.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Interplanetary Physics: Cosmic rays, Interplanetary Physics: Interplanetary magnetic fields, Interplanetary Physics: Solar wind plasma},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/2000GL003760}
+}
+
+@Article{Storz2005,
+  Title                    = {High accuracy satellite drag model (HASDM) },
+  Author                   = {Mark F. Storz and Bruce R. Bowman and Major James I. Branson and Stephen J. Casali and W. Kent Tobiska},
+  Journal                  = {Adv. Space Res.},
+  Year                     = {2005},
+  Pages                    = {2497 - 2505},
+  Volume                   = {36},
+
+  Doi                      = {10.1016/J.ASR.2004.02.020},
+  File                     = {Storz2005.pdf:Storz2005.pdf:PDF},
+  ISSN                     = {0273-1177},
+  Keywords                 = {Space weather},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.18},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S0273117705002048}
+}
+
+@Article{Svalgaard1973,
+  Title                    = {Polar cap magnetic variations and their relationship with the interplanetary magnetic sector structure},
+  Author                   = {Svalgaard, Leif},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1973},
+  Number                   = {13},
+  Pages                    = {2064--2078},
+  Volume                   = {78},
+
+  Doi                      = {10.1029/JA078i013p02064},
+  File                     = {Svalgaard1973.pdf:Svalgaard1973.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Particles and Fields—Ionosphere: General or miscellaneous, Particles and Fields—Magnetosphere: General or miscellaneous},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/JA078i013p02064}
+}
+
+@Article{Tenfjord2015,
+  Title                    = {How the IMF By induces a By component in the closed magnetosphere - and how it leads to asymmetric currents and convection patterns in the two hemispheres},
+  Author                   = {Tenfjord, P. and Østgaard, N. and Snekvik, K. and Laundal, K. M. and Reistad, J. and Haaland, S. and Milan, S. E.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Note                     = {2015JA021579},
+  Pages                    = {9368--9384},
+  Volume                   = {120},
+
+  Doi                      = {10.1002/2015JA021579},
+  File                     = {Tenfjord2015.pdf:Tenfjord2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Field-aligned currents and current systems, Magnetospheric configuration and dynamics, Numerical modeling, Solar wind/magnetosphere interactions, IMF By, Birkeland Current, Asymmetric currents, azimuthal flow},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.22},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021579}
+}
+
+@Article{Torr1980,
+  Title                    = {A new determination of the ultraviolet heating efficiency of the thermosphere},
+  Author                   = {Torr, Marsha R. and Richards, P. G. and Torr, D. G.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1980},
+  Number                   = {A12},
+  Pages                    = {6819--6826},
+  Volume                   = {85},
+
+  Doi                      = {10.1029/JA085iA12p06819},
+  File                     = {Torr1980.pdf:Torr1980.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Owner                    = {gdj},
+  Timestamp                = {2016.02.19},
+  Url                      = {http://dx.doi.org/10.1029/JA085iA12p06819}
+}
+
+@Article{Tsurutani2006,
+  Title                    = {Corotating solar wind streams and recurrent geomagnetic activity: A review},
+  Author                   = {Tsurutani, Bruce T. and Gonzalez, Walter D. and Gonzalez, Alicia L. C. and Guarnieri, Fernando L. and Gopalswamy, Nat and Grande, Manuel and Kamide, Yohsuke and Kasahara, Yoshiya and Lu, Gang and Mann, Ian and McPherron, Robert and Soraas, Finn and Vasyliunas, Vytenis},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2006},
+  Note                     = {A07S01},
+  Number                   = {A7},
+  Pages                    = {n/a--n/a},
+  Volume                   = {111},
+
+  Doi                      = {10.1029/2005JA011273},
+  File                     = {Tsurutani2006.pdf:Tsurutani2006.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Interplanetary Physics: MHD waves and turbulence, Auroral phenomena, Magnetic storms and substorms, Coronal holes, corotating solar wind streams, HILDCAAs, recurrent geomagnetic activity},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.30},
+  Url                      = {http://dx.doi.org/10.1029/2005JA011273}
+}
+
+@Article{Tsurutani2005,
+  Title                    = {Nonlinear Alfvén waves, discontinuities, proton perpendicular acceleration, and magnetic holes/decreases in interplanetary space and the magnetosphere: intermediate shocks?},
+  Author                   = {Tsurutani, B. T. and Lakhina, G. S. and Pickett, J. S. and Guarnieri, F. L. and Lin, N. and Goldstein, B. E.},
+  Journal                  = {Nonlinear Processes in Geophysics},
+  Year                     = {2005},
+  Number                   = {3},
+  Pages                    = {321--336},
+  Volume                   = {12},
+
+  Doi                      = {10.5194/npg-12-321-2005},
+  File                     = {Tsurutani2005.pdf:Tsurutani2005.pdf:PDF},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.30},
+  Url                      = {http://www.nonlin-processes-geophys.net/12/321/2005/}
+}
+
+@Article{Wilson2006,
+  Title                    = {Response of the thermosphere to Joule heating and particle precipitation},
+  Author                   = {Wilson, G. R. and Weimer, D. R. and Wise, J. O. and Marcos, F. A.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2006},
+  Pages                    = {A10314},
+  Volume                   = {111},
+
+  Doi                      = {10.1029/2005JA011274},
+  File                     = {Wilson2006.pdf:Wilson2006.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Ionosphere/magnetosphere interactions, Electric fields, Current systems, Auroral ionosphere, Joule heating},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.21},
+  Url                      = {http://dx.doi.org/10.1029/2005JA011274}
+}
+
+@Article{Xu2013a,
+  Title                    = {An observational and theoretical study of the longitudinal variation in neutral temperature induced by aurora heating in the lower thermosphere},
+  Author                   = {Xu, Jiyao and Smith, A. K. and Wang, Wenbin and Jiang, Guoying and Yuan, Wei and Gao, Hong and Yue, Jia and Funke, B. and López-Puertas, M. and Russell, James M.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2013},
+  Note                     = {2013JA019144},
+  Number                   = {11},
+  Pages                    = {7410--7425},
+  Volume                   = {118},
+
+  Doi                      = {10.1002/2013JA019144},
+  File                     = {Xu2013a.pdf:Xu2013a.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: energy deposition, Thermospheric dynamics, aurora heating, lower thermosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.10},
+  Url                      = {http://dx.doi.org/10.1002/2013JA019144}
+}
+
+@Article{Xu2013,
+  Title                    = {The longitudinal variation of the daily mean thermospheric mass density},
+  Author                   = {Xu, Jiyao and Wang, Wenbin and Gao, Hong},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2013},
+  Number                   = {1},
+  Pages                    = {515--523},
+  Volume                   = {118},
+
+  __markedentry            = {},
+  Doi                      = {10.1029/2012JA017918},
+  File                     = {Xu2013.pdf:Xu2013.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: composition and chemistry, Thermosphere: energy deposition, Thermospheric dynamics, thermospheric density, longitudinal variation, seasonal variation},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.08},
+  Url                      = {http://dx.doi.org/10.1029/2012JA017918}
+}
+
+@Article{Yamazaki2015,
+  Title                    = {A model of high-latitude thermospheric density},
+  Author                   = {Yamazaki, Yosuke and Kosch, Michael J. and Sutton, Eric K.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2015},
+  Note                     = {2015JA021371},
+  Pages                    = {7903--7917},
+  Volume                   = {120},
+
+  Doi                      = {10.1002/2015JA021371},
+  File                     = {Yamazaki2015.pdf:Yamazaki2015.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Thermosphere: energy deposition, Pressure, density, and temperature, Thermosphere: composition and chemistry, Regional modeling, Thermospheric dynamics, thermosphere, total mass density, high latitude, empirical model, accelerometer data, CHAMP and GRACE satellites},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.08},
+  Url                      = {http://dx.doi.org/10.1002/2015JA021371}
+}
+
+@Article{Yamazaki2015a,
+  Title                    = {North-south asymmetry of the high-latitude thermospheric density: IMF BY effect},
+  Author                   = {Yamazaki, Yosuke and Kosch, Michael J. and Sutton, Eric K.},
+  Journal                  = {Geophys. Res. Lett.},
+  Year                     = {2015},
+  Note                     = {2014GL062748},
+  Number                   = {2},
+  Pages                    = {225--232},
+  Volume                   = {42},
+
+  Doi                      = {10.1002/2014GL062748},
+  File                     = {Yamazaki2015a.pdf:Yamazaki2015a.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Thermosphere: energy deposition, Thermosphere: composition and chemistry, Ionosphere/atmosphere interactions, Ionosphere/magnetosphere interactions, Thermospheric dynamics, north-south asymmetry, high latitudes, thermosphere, atmospheric density, IMF By effect, CHAMP satellite},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.14},
+  Url                      = {http://dx.doi.org/10.1002/2014GL062748}
+}
+
+@Article{Zabotin2016,
+  Title                    = {Oceans are a major source of waves in the thermosphere},
+  Author                   = {Zabotin, Nikolay A. and Godin, Oleg A. and Bullett, Terence W.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2016JA022357},
+  Pages                    = {n/a--n/a},
+
+  Doi                      = {10.1002/2016JA022357},
+  File                     = {Zabotin2016.pdf:Zabotin2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Ionospheric disturbances, Instruments and techniques, Acoustic-gravity waves, Thermospheric dynamics, acoustic gravity waves, infragravity waves, thermosphere, ocean, Dynasonde, DART},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.28},
+  Url                      = {http://dx.doi.org/10.1002/2016JA022357}
+}
+
+@Article{Zhao2012,
+  Title                    = {Seasonal and diurnal variation of geomagnetic activity: Russell-McPherron effect during different IMF polarity and/or extreme solar wind conditions},
+  Author                   = {Zhao, H. and Zong, Q.-G.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2012},
+  Note                     = {A11222},
+  Number                   = {A11},
+  Pages                    = {n/a--n/a},
+  Volume                   = {117},
+
+  Doi                      = {10.1029/2012JA017845},
+  File                     = {Zhao2012.pdf:Zhao2012.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Interplanetary magnetic fields, Interplanetary shocks, Ring current, Solar wind/magnetosphere interactions, Magnetic storms and substorms, Russell-McPherron effect, equinoctial hypothesis, interplanetary magnetic field polarity, interplanetary shock, semiannual variation, storm sudden commencement},
+  Owner                    = {gdj},
+  Timestamp                = {2015.10.23},
+  Url                      = {http://dx.doi.org/10.1029/2012JA017845}
+}
+
+@Article{Zhu2016,
+  Title                    = {Contribution of the topside and bottomside ionosphere to the total electron content during two strong geomagnetic storms},
+  Author                   = {Zhu, Qingyu and Lei, Jiuhou and Luan, Xiaoli and Dou, Xiankang},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2016},
+  Note                     = {2015JA022111},
+  Pages                    = {n/a--n/a},
+  Volume                   = {121},
+
+  Doi                      = {10.1002/2015JA022111},
+  File                     = {Zhu2016.pdf:Zhu2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Topside ionosphere, Ionospheric storms, Midlatitude ionosphere, Equatorial ionosphere, Space weather, topside ionosphere, ionospheric storm, TEC contribution},
+  Owner                    = {gdj},
+  Timestamp                = {2016.03.07},
+  Url                      = {http://dx.doi.org/10.1002/2015JA022111}
+}
+
+@Article{Zurbuchen2006,
+  Title                    = {In-Situ Solar Wind and Magnetic Field Signatures of Interplanetary Coronal Mass Ejections},
+  Author                   = {Zurbuchen, Thomas H.
+and Richardson, Ian G.},
+  Journal                  = {Space Science Reviews},
+  Year                     = {2006},
+  Number                   = {1},
+  Pages                    = {31--43},
+  Volume                   = {123},
+
+  Abstract                 = {The heliospheric counterparts of coronal mass ejections (CMEs) at the Sun, interplanetary coronal mass ejections (ICMEs), can be identified in situ based on a number of magnetic field, plasma, compositional and energetic particle signatures as well as combinations thereof. We summarize these signatures and their implications for understanding the nature of these structures and the physical properties of coronal mass ejections. We conclude that our understanding of ICMEs is far from complete and formulate several challenges that, if addressed, would substantially improve our knowledge of the relationship between CMEs at the Sun and in the heliosphere.},
+  Doi                      = {10.1007/s11214-006-9010-4},
+  File                     = {Zurbuchen2006.pdf:Zurbuchen2006.pdf:PDF},
+  ISSN                     = {1572-9672},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.11},
+  Url                      = {http://dx.doi.org/10.1007/s11214-006-9010-4}
+}
+
+@comment{jabref-meta: selector_keywords:}
+
+@comment{jabref-meta: selector_journal:}
+
+@comment{jabref-meta: groupsversion:3;}
+
+@comment{jabref-meta: groupstree:
+0 AllEntriesGroup:;
+1 ExplicitGroup:review\;0\;Emmert2015\;Proelss2011\;Qian2011\;Russell2
+013\;;
+1 ExplicitGroup:research plan\;0\;Clauer1988\;Cowley1991\;Guo2015\;Kwa
+k2011\;Roble1987\;Storz2005\;Wilson2006\;;
+1 ExplicitGroup:geomagnetic activity\;0\;Berthelier1976\;Newell2007\;O
+Brien2002\;Russell1973\;Sabbah2000\;Svalgaard1973\;Tsurutani2006\;Zhao
+2012\;;
+1 ExplicitGroup:coordinate system\;0\;Emmert2010\;;
+1 ExplicitGroup:thermosphere\;2\;Perlongo2016\;Qian2011\;Qian2016\;Rid
+ley2006\;Roble1987\;Storz2005\;Torr1980\;Wilson2006\;;
+2 ExplicitGroup:dynamics\;0\;Gasperini2016\;Guo2016\;Hedin1983\;Hedin1
+987\;Hedin1991\;Lei2008a\;Liu2016\;Majeed2016\;McGranaghan2014\;Oyama2
+016\;Zabotin2016\;;
+2 ExplicitGroup:density and composition\;0\;Clausen2014\;Emmert2015\;F
+orbes1999\;Fuller-Rowell1998\;Guo2015\;Hedin1972\;Hedin1979\;Hedin1983
+\;Hedin1985\;Hedin1987\;Hedin1991\;JiuhouLei2013\;Kwak2009\;Kwak2011\;
+Lei2008\;Lei2008a\;Lei2010\;Lei2010a\;Liu2005\;Liu2014\;Liu2015\;McGra
+naghan2014\;Proelss2011\;Qian2009\;Xu2013\;Xu2013a\;Yamazaki2015\;Yama
+zaki2015a\;;
+1 ExplicitGroup:ionosphere\;2\;Blanc1980\;Cowley1991\;Jiang2016\;Lei20
+15\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley2006\;Zhu201
+6\;;
+1 ExplicitGroup:magnetosphere\;0\;Glocer2015\;McPherron2009\;Ridley201
+4\;Russell2003\;Tenfjord2015\;Tsurutani2005\;;
+2 ExplicitGroup:ring current\;0\;Daglis1999\;;
+1 ExplicitGroup:solar wind\;0\;Russell2013\;Tsurutani2005\;Tsurutani20
+06\;Zurbuchen2006\;;
+1 ExplicitGroup:MIT coupling\;0\;Newell2002\;Newell2007\;;
+2 ExplicitGroup:Joule heating\;0\;Deng2007\;;
+2 ExplicitGroup:particle precipitation\;0\;Cowley1991\;;
+}
+

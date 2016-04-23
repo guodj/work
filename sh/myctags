@@ -1,0 +1,2 @@
+#!/bin/bash
+ctags -R -f /home/gdj/work/tags /home/gdj/work/python/ /home/gdj/work/matlab/ /home/gdj/work/fortran/ 
