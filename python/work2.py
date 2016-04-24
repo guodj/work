@@ -446,7 +446,7 @@ class ChampDensity(pd.DataFrame):
         return np.nan, np.nan
 
 
-    def orbit_mean(self,lats=(-90,90),updown='up'):
+    def orbit_mean(self,lats=(-85,85),updown='up'):
         """ Get the orbit mean density during specified latitudes and
         specified ascending or descending orbit
 
@@ -1470,33 +1470,52 @@ if __name__=='__main__':
         gracelt = pd.read_csv('/data/Grace23/LT.dat',
                               index_col=[0],parse_dates=[0])
 
+        # select specified sblist and LT
         groupsblist = sblist.groupby('sbtype')
-        atlist = groupsblist.get_group('away-toward')
-        tmp = champlt[champlt.index.isin(atlist.index)]
-        tmp1 = tmp[(tmp.LTup>22) | (tmp.LTup<2)]
-        tmp2 = tmp[(tmp.LTdown>22) | (tmp.LTdown<2)]
+        atlist = groupsblist.get_group('toward-away')
 
         lrday = 5
-        a = []
-        for k in tmp1.index:
-            rho = get_density_dates(
-                    k+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'))
-            rhot = rho.orbit_mean(lats=(-85,-60),updown='up')
-            #  exclude points with Kp>40
-            smindex = get_index(k+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'))
-            smindex = smindex.reindex(rhot.index,method='ffill')
-            rhot = rhot[smindex.Kp<=40]
-            fp, = argrelextrema(np.array(abs(rhot['long']-125)),np.less,order=5)
-            rhot = rhot.iloc[fp]
-            print(rhot.shape[0])
-            if rhot.shape[0]>=8:
-                rhot['rrho'] = (100*(rhot['rho400']-rhot['rho400'].mean())/
-                        rhot['rho400'].mean())
-                rhot['doy'] = rhot.index.dayofyear
-                rhot['epochday'] = (rhot.index-k)/pd.Timedelta('1D')
-                a.append(rhot)
-        a = pd.concat(a)
-
+        if True: #  data preparation
+            a = []
+            for k in ['champ','grace']:
+                if k is 'champ':
+                    tmp = champlt[champlt.index.isin(atlist.index)]
+                else:
+                    tmp = gracelt[gracelt.index.isin(atlist.index)]
+                tmp1 = tmp[(tmp.LTup>21) | (tmp.LTup<3)]
+                tmp2 = tmp[(tmp.LTdown>21) | (tmp.LTdown<3)]
+                for k1 in ['up','down']:
+                    tmp3 = tmp1 if k1 is 'up' else tmp2
+                    for k2 in tmp3.index:
+                        rho = get_density_dates(
+                                k2+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'),
+                                satellite=k)
+                        rhot = rho.orbit_mean(lats=(-30,30),updown=k1)
+                        #  exclude points with Kp>40
+                        smindex = get_index(k2+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'))
+                        smindex = smindex.reindex(rhot.index,method='ffill')
+                        rhot = rhot[smindex.Kp<=40]
+                        #  select longitudes near the south pole
+                        #fp, = argrelextrema(np.array(abs(rhot['long']+55)),np.less,order=5)
+                        #rhot = rhot.iloc[fp]
+                        print(rhot.shape[0])
+                        if rhot.shape[0]>=128:
+                            rhot['rrho'] = (100*(rhot['rho400']-rhot['rho400'].mean())/
+                                    rhot['rho400'].mean())
+                            rhot['doy'] = rhot.index.dayofyear
+                            rhot['epochday'] = (rhot.index-k2)/pd.Timedelta('1D')
+                            a.append(rhot)
+            a = pd.concat(a)
+            a.to_pickle('/data/tmp/t5.dat')
+        a = pd.read_pickle('/data/tmp/t5.dat')
+        x = a.doy
+        y = a.epochday
+        z = a.rrho
+        x0, y0 = np.meshgrid(np.arange(1,366,10), np.arange(-5,5,1.5/24))
+        z0 = griddata((x/5000,y),z,(x0/5000,y0))
+        plt.contourf(x0,y0,z0,levels=np.linspace(-40,60,20))
+        plt.colorbar()
+        plt.show()
         return a
 
 #--------------------------#
