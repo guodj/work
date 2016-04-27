@@ -99,7 +99,7 @@
   Pages                    = {951--959},
   Volume                   = {84},
 
-  __markedentry            = {[gdj:6]},
+  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/JA084iA03p00951},
   File                     = {Crooker1979.pdf:Crooker1979.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -117,6 +117,7 @@
   Number                   = {4},
   Pages                    = {407--438},
   Volume                   = {37},
+
   Doi                      = {10.1029/1999RG900009},
   File                     = {Daglis1999.pdf:Daglis1999.pdf:PDF},
   ISSN                     = {1944-9208},
@@ -134,9 +135,8 @@
   Number                   = {5},
   Pages                    = {2340--2349},
   Volume                   = {118},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1002/jgra.50197},
+  File                     = {Deng2013.pdf:Deng2013.pdf:PDF},
   ISSN                     = {2169-9402},
   Keywords                 = {Thermosphere: energy deposition, Modeling, Ionosphere/atmosphere interactions, Ionosphere/magnetosphere interactions, Particle precipitation, Neutral density, Joule heating, cusp, particle precipitation, simulation, thermosphere},
   Owner                    = {gdj},
@@ -241,6 +241,7 @@
   Pages                    = {187--200},
   Publisher                = {American Geophysical Union},
   Year                     = {2013},
+
   Booktitle                = {Midlatitude Ionospheric Dynamics and Disturbances},
   Doi                      = {10.1029/181GM18},
   File                     = {Fuller-Rowell2013.pdf:Fuller-Rowell2013.pdf:PDF},
@@ -258,6 +259,7 @@
   Year                     = {2016},
   Note                     = {2016JA022392},
   Pages                    = {n/a--n/a},
+
   Doi                      = {10.1002/2016JA022392},
   File                     = {Gasperini2016.pdf:Gasperini2016.pdf:PDF},
   ISSN                     = {2169-9402},
@@ -429,6 +431,26 @@
   Owner                    = {gdj},
   Timestamp                = {2015.10.09},
   Url                      = {http://dx.doi.org/10.1029/JA084iA01p00001}
+}
+
+@Article{Heelis2004,
+  Title                    = {Electrodynamics in the low and middle latitude ionosphere: a tutorial },
+  Author                   = {R.A. Heelis},
+  Journal                  = {Journal of Atmospheric and Solar-Terrestrial Physics },
+  Year                     = {2004},
+  Note                     = {Upper Atmosphere Tutorials from the 2001 Joint \{CEDAR\} \{SCOSTEP\} Meeting },
+  Number                   = {10},
+  Pages                    = {825 - 838},
+  Volume                   = {66},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {http://dx.doi.org/10.1016/j.jastp.2004.01.034},
+  File                     = {Heelis2004.pdf:Heelis2004.pdf:PDF},
+  ISSN                     = {1364-6826},
+  Keywords                 = {Ionosphere electrodynamics},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.26},
+  Url                      = {http://www.sciencedirect.com/science/article/pii/S1364682604000525}
 }
 
 @Article{Jiang2016,
@@ -1196,7 +1218,9 @@ and McPherron, Robert L.},
   Number                   = {8},
   Pages                    = {6837--6850},
   Volume                   = {120},
+
   Doi                      = {10.1002/2015JA021122},
+  File                     = {Walterscheid2015.pdf:Walterscheid2015.pdf:PDF},
   ISSN                     = {2169-9402},
   Keywords                 = {Thermosphere: energy deposition, Ionosphere/atmosphere interactions, Thermospheric dynamics, thermal structure, dynamical adjustment, thermospheric gyres, ion-drag-driven gyres},
   Owner                    = {gdj},
@@ -1376,8 +1400,8 @@ and Richardson, Ian G.},
 
 @comment{jabref-meta: groupstree:
 0 AllEntriesGroup:;
-1 ExplicitGroup:review\;0\;Emmert2015\;Proelss2011\;Qian2011\;Russell2
-013\;;
+1 ExplicitGroup:review\;0\;Emmert2015\;Fuller-Rowell2013\;Heelis2004\;
+Proelss2011\;Qian2011\;Russell2013\;;
 1 ExplicitGroup:research plan\;0\;Clauer1988\;Cowley1991\;Guo2015\;Kwa
 k2011\;Roble1987\;Storz2005\;Wilson2006\;;
 1 ExplicitGroup:geomagnetic activity\;0\;Berthelier1976\;Newell2007\;O
@@ -1395,9 +1419,9 @@ ert2015\;Forbes1999\;Fuller-Rowell1998\;Guo2015\;Hedin1972\;Hedin1979\
 Kwak2011\;Lei2008\;Lei2008a\;Lei2010\;Lei2010a\;Liu2005\;Liu2014\;Liu2
 015\;McGranaghan2014\;Proelss2011\;Qian2009\;Walterscheid2015\;Xu2013\
 ;Xu2013a\;Yamazaki2015\;Yamazaki2015a\;;
-1 ExplicitGroup:ionosphere\;2\;Blanc1980\;Cowley1991\;Jiang2016\;Lei20
-15\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley2006\;Zhu201
-6\;;
+1 ExplicitGroup:ionosphere\;2\;Blanc1980\;Cowley1991\;Heelis2004\;Jian
+g2016\;Lei2015\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley
+2006\;Zhu2016\;;
 1 ExplicitGroup:magnetosphere\;0\;Crooker1979\;Glocer2015\;McPherron20
 09\;Ridley2014\;Russell2003\;Tenfjord2015\;Tsurutani2005\;;
 2 ExplicitGroup:ring current\;0\;Daglis1999\;;
