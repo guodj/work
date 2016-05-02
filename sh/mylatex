@@ -4,17 +4,25 @@
 
 texfile=$1
 texonlyname=${texfile%.*}
-latex $texfile
-if test -f $texonlyname.dvi;then
-    latex $texfile >/dev/null
+if 
+    latex $texonlyname
+then
+    printf 'latex command right.\n\n\n\n\n'
+    bibtex $texonlyname
+    latex $texonlyname >/dev/null
+    latex $texonlyname >/dev/null
     dvipdf $texonlyname.dvi
-fi
-if test -f $texonlyname.log;then
-    rm $texonlyname.log
-fi
-if test -f $texonlyname.aux;then
-    rm $texonlyname.aux
-fi
-if test -f $texonlyname.dvi;then
     rm $texonlyname.dvi
+fi
+rm $texonlyname.log
+rm $texonlyname.aux
+if [ -f $texonlyname.bbl ];then
+    rm $texonlyname.bbl
+fi
+if [ -f $texonlyname.blg ];then
+    rm $texonlyname.blg
+fi
+declare -i aa=2
+if [ $# -eq $aa ];then
+    mv $texonlyname.pdf $2
 fi
