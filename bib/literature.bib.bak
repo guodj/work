@@ -117,6 +117,7 @@
   Number                   = {A10},
   Pages                    = {n/a--n/a},
   Volume                   = {111},
+
   Doi                      = {10.1029/2005JA011518},
   File                     = {Crowley2006.pdf:Crowley2006.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -190,6 +191,7 @@
   Number                   = {A9},
   Pages                    = {n/a--n/a},
   Volume                   = {111},
+
   Doi                      = {10.1029/2005JA011368},
   File                     = {Deng2006.pdf:Deng2006.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -642,8 +644,6 @@ and McPherron, Robert L.},
   Number                   = {A1},
   Pages                    = {n/a--n/a},
   Volume                   = {113},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/2007JA012807},
   File                     = {Lei2008b.pdf:Lei2008b.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1034,6 +1034,25 @@ and McPherron, Robert L.},
   Timestamp                = {2016.04.13}
 }
 
+@Article{Richmond1975,
+  Title                    = {Thermospheric response to a magnetic substorm},
+  Author                   = {Richmond, A. D. and Matsushita, S.},
+  Journal                  = {Journal of Geophysical Research},
+  Year                     = {1975},
+  Number                   = {19},
+  Pages                    = {2839--2850},
+  Volume                   = {80},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/JA080i019p02839},
+  File                     = {Richmond1975.pdf:Richmond1975.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Particles and Fields—Ionosphere: High-latitude ionospheric currents, Particles and Fields—Ionosphere: Ionospheric disturbances, Particles and Fields—Ionosphere: Plasma motion, convection, or circulation},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.29},
+  Url                      = {http://dx.doi.org/10.1029/JA080i019p02839}
+}
+
 @Article{Ridley2006,
   Title                    = {The global ionosphere–thermosphere model },
   Author                   = {A.J. Ridley and Y. Deng and G. Tóth},
@@ -1283,6 +1302,19 @@ and McPherron, Robert L.},
   Url                      = {http://dx.doi.org/10.1002/2015JA021122}
 }
 
+@Article{WanWX2014,
+  Title                    = {Recent investigation on the coupling between the ionosphere and upper atmosphere},
+  Author                   = {Wan W X, Xu J Y.},
+  Journal                  = {Science China: Earth Sciences},
+  Year                     = {2014},
+  Pages                    = {1995-2012},
+  Volume                   = {57},
+
+  File                     = {WanWX2014.pdf:WanWX2014.pdf:PDF},
+  Owner                    = {gdj},
+  Timestamp                = {2016.04.28}
+}
+
 @Article{Wang2008,
   Title                    = {Ionospheric electric field variations during a geomagnetic storm simulated by a coupled magnetosphere ionosphere thermosphere (CMIT) model},
   Author                   = {Wang, Wenbin and Lei, Jiuhou and Burns, Alan G. and Wiltberger, Michael and Richmond, Arthur D. and Solomon, Stanley C. and Killeen, Timothy L. and Talaat, Elsayed R. and Anderson, David N.},
@@ -1292,6 +1324,7 @@ and McPherron, Robert L.},
   Number                   = {18},
   Pages                    = {n/a--n/a},
   Volume                   = {35},
+
   Doi                      = {10.1029/2008GL035155},
   File                     = {Wang2008.pdf:Wang2008.pdf:PDF},
   ISSN                     = {1944-8007},
@@ -1477,17 +1510,16 @@ and Richardson, Ian G.},
 Proelss2011\;Qian2011\;Russell2013\;;
 1 ExplicitGroup:其它文件\;0\;Clauer1988\;Cowley1991\;Guo2015\;Kwak2011\;Ro
 ble1987\;Storz2005\;Wilson2006\;;
-2 ExplicitGroup:MIT卫星\;0\;Crowley2006\;Deng2006\;Fuller-Rowell2013\;Go
-ncharenko2008\;Lei2008\;Lei2008b\;Pancheva2011\;Ridley2006\;Wang2008\;
-;
+2 ExplicitGroup:MIT卫星\;0\;Crowley2006\;Deng2006\;Fuller-Rowell2013\;Le
+i2008\;Lei2008b\;Ridley2006\;WanWX2014\;Wang2008\;;
 2 ExplicitGroup:出国申请\;0\;Clauer1988\;Cowley1991\;Guo2015\;Kwak2011\;Ro
 ble1987\;Storz2005\;Wilson2006\;;
 1 ExplicitGroup:geomagnetic activity\;0\;Berthelier1976\;Newell2007\;O
 Brien2002\;Russell1973\;Sabbah2000\;Svalgaard1973\;Tsurutani2006\;Zhao
 2012\;;
 1 ExplicitGroup:coordinate system\;0\;Emmert2010\;;
-1 ExplicitGroup:thermosphere\;0\;Perlongo2016\;Qian2011\;Qian2016\;Rid
-ley2006\;Roble1987\;Storz2005\;Torr1980\;Wilson2006\;;
+1 ExplicitGroup:thermosphere\;0\;Perlongo2016\;Qian2011\;Qian2016\;Ric
+hmond1975\;Ridley2006\;Roble1987\;Storz2005\;Torr1980\;Wilson2006\;;
 2 ExplicitGroup:dynamics\;0\;Fuller-Rowell2013\;Gasperini2016\;Guo2016
 \;Hedin1983\;Hedin1987\;Hedin1991\;Lei2008a\;Liu2016\;Majeed2016\;McGr
 anaghan2014\;Oyama2016\;Zabotin2016\;;
