@@ -323,10 +323,9 @@ class ChampDensity(pd.DataFrame):
             self added with columns 'isup' and 'isdown'
 
         Note:
-            The results may be wrong at latitudes nearest to the poles
-            But they are not excluded. Because if doing so, the function
-            should not be run 2 times. So please exclude them at the very
-            necessary location.
+            The results may be wrong near poles. But they are not excluded.
+            Because if doing so, the function should not be run 2 times.
+            So please exclude them at the very necessary location.
             Some bugs may exist at the data gap.
         """
         if not self.empty:
@@ -451,15 +450,17 @@ class ChampDensity(pd.DataFrame):
         specified ascending or descending orbit
 
         Input:
-            lats: two elements tuple, selected latitudes: lats[0]<lat<lats[1],
-                  default all latitudes
+            lats: two elements tuple, selected latitudes: lats[0]<=lat<=lats[1]
             updown: ascending or descending orbit
 
         Output:
-            result: DataFrame, orbit mean density
+            result: DataFrame, columns: longitude, height, LT, rho, rho400
+
+        Note:
+            longitudeand LT may be wrong if lats are high latitudes
         """
         self = self.add_updown()
-        tmp = self[self.isup] if updown =='up' else self[~self.isup]  # ascending or decending orbit?
+        tmp = self[self.isup] if updown =='up' else self[~self.isup]  # ascending or descending orbit?
         tmp = tmp[(tmp.lat3>=lats[0]) & (tmp.lat3<=lats[1])]  #  which latitudes?
         tmp['float_time'] = (
                 tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
@@ -1462,7 +1463,8 @@ if __name__=='__main__':
         return
 
     def f12():
-
+        """x axis: day of year; yaxis: epoch day
+        """
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2010-12-31']
 
@@ -1470,11 +1472,27 @@ if __name__=='__main__':
                               index_col=[0],parse_dates=[0])
         gracelt = pd.read_csv('/data/Grace23/LT.dat',
                               index_col=[0],parse_dates=[0])
-
+        if False: # test champlt and gracelt
+            fig, ax = plt.subplots(2,1,sharex=True)
+            plt.hold(True)
+            ax[0].scatter(champlt.index, champlt.LTup, linewidth=0,color='b', label='up')
+            ax[0].scatter(champlt.index, champlt.LTdown, linewidth=0,color='r', label='down')
+            ax[0].set_title('CHAMP')
+            ax[0].legend()
+            ax[1].scatter(gracelt.index, gracelt.LTup, linewidth=0,color='b', label='up')
+            ax[1].scatter(gracelt.index, gracelt.LTdown, linewidth=0,color='r', label='down')
+            ax[1].set_title('GRACE')
+            ax[1].set_xlabel('Year')
+            for k in np.arange(2):
+                ax[k].set_xlim(['2001-1-1','2011-1-1'])
+                ax[k].set_ylim([0,24])
+                ax[k].set_yticks(range(0,25,4))
+            plt.show()
         # select specified sblist and LT
         groupsblist = sblist.groupby('sbtype')
-        atlist = groupsblist.get_group('toward-away')
+        atlist = groupsblist.get_group('away-toward')
 
+        fig = plt.figure()
         lrday = 5
         if True: #  data preparation
             a = []
@@ -1483,8 +1501,8 @@ if __name__=='__main__':
                     tmp = champlt[champlt.index.isin(atlist.index)]
                 else:
                     tmp = gracelt[gracelt.index.isin(atlist.index)]
-                tmp1 = tmp[(tmp.LTup>21) | (tmp.LTup<3)]
-                tmp2 = tmp[(tmp.LTdown>21) | (tmp.LTdown<3)]
+                tmp1 = tmp[(tmp.LTup>12) | (tmp.LTup<12)]
+                tmp2 = tmp[(tmp.LTdown>12) | (tmp.LTdown<12)]
                 for k1 in ['up','down']:
                     tmp3 = tmp1 if k1 is 'up' else tmp2
                     for k2 in tmp3.index:
@@ -1519,6 +1537,34 @@ if __name__=='__main__':
         plt.show()
         return a
 
+
+    def f13():
+        """ superposed epoch analysis
+        """
+        import gc
+        lrday = 5
+        sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2011-1-1']
+        data = [pd.DataFrame(),pd.DataFrame()]
+        for k1, k2 in enumerate(['away-toward', 'toward-away']):
+            sbtmp = sblist[sblist.sbtype==k2]
+            for idate in sbtmp.index:
+                datelist = idate + pd.TimedeltaIndex(np.arange(10)-lrday, 'd')
+                for satellite in ['champ','grace']:
+                    density = get_density_dates(datelist,satellite=satellite)
+                    if density.empty:
+                        continue
+                    density = density.add_updown()
+                    for updown in ['up','down']:
+                        d = density.orbit_mean(updown=updown)
+                        d['epochday'] = d.index - idate
+                        data[k1] = data[k1].append(d)
+        pd.to_pickle(data,'/data/tmp/t6.dat')
+        gc.collect()
+    def f14():
+        return
+
+
 #--------------------------#
     #f5()
     #f6()
@@ -1527,6 +1573,6 @@ if __name__=='__main__':
     #f9()
     #f10()
     #get_lt()
-    a = f12()
+    f13()
     import gc
     gc.collect()
