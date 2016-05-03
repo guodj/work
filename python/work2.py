@@ -1462,6 +1462,7 @@ if __name__=='__main__':
         return
 
     def f12():
+
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2010-12-31']
 
