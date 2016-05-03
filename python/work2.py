@@ -1557,7 +1557,8 @@ if __name__=='__main__':
                     density = density.add_updown()
                     for updown in ['up','down']:
                         d = density.orbit_mean(updown=updown)
-                        d['epochday'] = d.index - idate
+                        d['rrho400'] = 100*(d['rho400'] - d['rho400'].mean())/d['rho400']
+                        d['epochday'] = (d.index - idate)/pd.Timedelta('1D')
                         data[k1] = data[k1].append(d)
         pd.to_pickle(data,'/data/tmp/t6.dat')
         gc.collect()
