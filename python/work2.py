@@ -1539,7 +1539,9 @@ if __name__=='__main__':
 
 
     def f13():
-        """ superposed epoch analysis
+        """ champ and grace densities during epoch days of sblist
+        output:
+        data[dataframe,dataframe] in which data[0] for away-toward, data[1] for toward-away
         """
         import gc
         lrday = 5
@@ -1563,8 +1565,115 @@ if __name__=='__main__':
         pd.to_pickle(data,'/data/tmp/t6.dat')
         gc.collect()
     def f14():
+        """ imf and indices during epoch days of sblist
+        Output:
+        (imf,index): index=[dataframe,dataframe],in which
+        index[0] for away-toward, index[1] for toward-away
+        """
+        import gc
+        lrday = 5
+        sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2011-1-1']
+        dataimf = [pd.DataFrame(),pd.DataFrame()]
+        dataindex = [pd.DataFrame(),pd.DataFrame()]
+        for k1, k2 in enumerate(['away-toward', 'toward-away']):
+            sbtmp = sblist[sblist.sbtype==k2]
+            for idate in sbtmp.index:
+                datelist = idate + pd.TimedeltaIndex(np.arange(10)-lrday, 'd')
+                imf = get_imf(datelist)
+                sgmindex = get_index(datelist)
+                imf['epochday'] = (imf.index - idate)/pd.Timedelta('1D')
+                sgmindex['epochday'] = (sgmindex.index - idate)/pd.Timedelta('1D')
+                dataimf[k1] = dataimf[k1].append(imf)
+                dataindex[k1] = dataindex[k1].append(sgmindex)
+        pd.to_pickle((dataimf,dataindex),'/data/tmp/t7.dat')
+        gc.collect()
         return
+    def f15():
+        """ imf and indices variation during epoch days of sblist
+        """
+        imf, sgmindex = pd.read_pickle('/data/tmp/t7.dat')
+        imfgroup = [imf[k].groupby([imf[k].index.month,np.floor(imf[k].epochday*24)])
+                for k in [0,1]]
+        imfgroup = [imfgroup[k]['Bx','Bye','Bzm'].median() for k in [0,1]]
+        indexgroup = [sgmindex[k].groupby(
+                [sgmindex[k].index.month, np.floor(sgmindex[k].epochday*24)])
+                for k in [0,1]]
+        indexgroup = [indexgroup[k]['ap','f107'].median() for k in [0,1]]
+        for k in [0,1]:
+            imfgroup[k].index.names = ('month', 'epochhour')
+            imfgroup[k] = imfgroup[k].reset_index().pivot(index='epochhour', columns='month')
+            indexgroup[k].index.names = ('month', 'epochhour')
+            indexgroup[k] = indexgroup[k].reset_index().pivot(index='epochhour', columns='month')
+        fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(8,7))
+        for k3 in range(2):
+            plt.sca(ax[3,k3])
+            data = indexgroup[k3]['ap']
+            hc1 = plt.contourf(data.columns, data.index/24, data.values,
+                               levels=np.linspace(0,20,11),
+                               cmap='cool')
+            for k1,k2 in enumerate(['Bx','Bye','Bzm']):
+                plt.sca(ax[k1,k3])
+                data = imfgroup[k3][k2]
+                hc2 = plt.contourf(data.columns, data.index/24, data.values,
+                                   levels=np.linspace(-4,4,11),
+                                   cmap='bwr')
+        for k1 in range(4):
+            for k2 in range(2):
+                plt.sca(ax[k1,k2])
+                plt.xlim([1,12])
+                plt.xticks(np.arange(1,13))
+                plt.ylim([-5,5])
+                plt.yticks(np.arange(-4,5,2))
+        ax[0,0].set_title('away-toward')
+        ax[0,1].set_title('toward-away')
+        cax1 = plt.axes([0.92,0.4,0.02,0.4])
+        plt.colorbar(hc2,cax=cax1,ticks=np.arange(-4,5,2))
+        cax2 = plt.axes([0.92,0.1,0.02,0.18])
+        plt.colorbar(hc1,cax=cax2,ticks=np.arange(0,21,4))
+        plt.show()
+        ax[0,1].set_ylabel('Bx',fontsize=14)
+        ax[1,1].set_ylabel('By',fontsize=14)
+        ax[2,1].set_ylabel('GSM Bz',fontsize=14)
+        ax[3,1].set_ylabel('ap',fontsize=14)
+        ax[3,0].set_xlabel('Month',fontsize=14)
+        ax[3,1].set_xlabel('Month',fontsize=14)
+        plt.sca(ax[2,0])
+        plt.text(-0.2,1,'Epoch day',fontsize=14,
+                 horizontalalignment='center',
+                 verticalalignment='center',
+                 transform=plt.gca().transAxes,
+                 rotation='vertical')
+        return imfgroup
+    def f16():
+        """ CHAMP and GRACE density variations versus date and epoch days
+        """
+        rho = pd.read_pickle('/data/tmp/t6.dat')
+        rho = [rho[k].groupby([rho[k].index.month, np.floor(rho[k].epochday*16)])
+               for k in range(2)]
+        rho = [rho[k]['rrho400'].median() for k in range(2)]
+        for k in range(2):
+            rho[k].index.names = ['month','epochhour']
+            rho[k] = rho[k].reset_index().pivot('epochhour','month')
 
+        fig,ax = plt.subplots(1,2,sharey=True,figsize=(8,4))
+        for k in range(2):
+            plt.sca(ax[k])
+            data = rho[k]['rrho400']
+            hc = plt.contourf(data.columns, data.index/16, data.values,
+                              levels=np.linspace(-30,30,21))
+            plt.xlim([1,12])
+            plt.xticks(range(1,13))
+        ax[0].set_title('away-toward')
+        ax[1].set_title('toward-away')
+        ax[0].set_ylabel('Epoch day',fontsize=14)
+        ax[0].set_xlabel('Month',fontsize=14)
+        ax[1].set_xlabel('Month',fontsize=14)
+        cax = plt.axes([0.92,0.2,0.02,0.6])
+        plt.colorbar(hc,cax=cax,ticks=np.arange(-30,31,10))
+        plt.subplots_adjust(bottom=0.12, wspace=0.1)
+        plt.show()
+        return
 
 #--------------------------#
     #f5()
@@ -1574,6 +1683,6 @@ if __name__=='__main__':
     #f9()
     #f10()
     #get_lt()
-    f13()
+    a = f11()
     import gc
     gc.collect()
