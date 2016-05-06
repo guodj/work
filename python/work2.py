@@ -450,7 +450,7 @@ class ChampDensity(pd.DataFrame):
         specified ascending or descending orbit
 
         Input:
-            lats: two elements tuple, selected latitudes: lats[0]<=lat<=lats[1]
+            lats: two elements tuple, selected latitudes: lats[0]<=lat3<=lats[1]
             updown: ascending or descending orbit
 
         Output:
@@ -1405,12 +1405,12 @@ if __name__=='__main__':
         density = get_density_dates(pd.date_range('2005-1-1','2005-1-10'))
         density.add_updown()
         density = density[density.isup]
-        density = density[abs(density.lat3)<=87]
+        density = density[abs(density.lat3)<87]
         x = (density.index-pd.Timestamp('2004-12-31'))/pd.Timedelta('1D')
         y = density.lat
         z = density.rho400
 
-        fig, ax = plt.subplots(3,2,sharex=True, sharey=True)
+        fig, ax = plt.subplots(3,2,sharex=False, sharey=True)
         plt.sca(ax[0,0])
         plt.tricontourf(x,y,z,levels=np.arange(0,8,0.5)*1e-12)
         plt.xlim(1,10)
@@ -1419,6 +1419,14 @@ if __name__=='__main__':
         plt.title('plt.tricontourf')
         plt.ylabel('Lat')
 
+        xg, yg = np.meshgrid(np.arange(0,10,0.021),np.arange(-90,90,0.1))
+        plt.sca(ax[0,1])
+        zg = griddata((x*10,y),z,(xg*10,yg),method='linear',rescale=False)
+        plt.contourf(xg*100,yg,zg,levels=np.arange(0,8,0.5)*1e-12)
+        plt.xlim(100,1000)
+        plt.ylim(-90,90)
+        plt.yticks(np.arange(-90,91,45))
+        plt.title('contourf x: x*10')
         # dense grids
         xg, yg = np.meshgrid(np.arange(0,10,0.021),np.arange(-90,90,0.1))
         plt.sca(ax[1,0])
@@ -1427,7 +1435,7 @@ if __name__=='__main__':
         plt.xlim(1,10)
         plt.ylim(-90,90)
         plt.yticks(np.arange(-90,91,45))
-        plt.ylabel('$\Delta$t=0.021D, $\Delta$lat=0.1')
+        plt.ylabel('$\Delta$t=0.5H, $\Delta$lat=0.1')
         plt.title('griddata x: x*10')
 
         plt.sca(ax[1,1])
@@ -1472,7 +1480,7 @@ if __name__=='__main__':
                               index_col=[0],parse_dates=[0])
         gracelt = pd.read_csv('/data/Grace23/LT.dat',
                               index_col=[0],parse_dates=[0])
-        if False: # test champlt and gracelt
+        if True: # test champlt and gracelt
             fig, ax = plt.subplots(2,1,sharex=True)
             plt.hold(True)
             ax[0].scatter(champlt.index, champlt.LTup, linewidth=0,color='b', label='up')
@@ -1494,7 +1502,7 @@ if __name__=='__main__':
 
         fig = plt.figure()
         lrday = 5
-        if True: #  data preparation
+        if False: #  data preparation
             a = []
             for k in ['champ','grace']:
                 if k is 'champ':
@@ -1511,9 +1519,9 @@ if __name__=='__main__':
                                 satellite=k)
                         rhot = rho.orbit_mean(lats=(-30,30),updown=k1)
                         #  exclude points with Kp>40
-                        smindex = get_index(k2+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'))
-                        smindex = smindex.reindex(rhot.index,method='ffill')
-                        rhot = rhot[smindex.Kp<=40]
+                        #smindex = get_index(k2+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'))
+                        #smindex = smindex.reindex(rhot.index,method='ffill')
+                        #rhot = rhot[smindex.Kp<=40]
                         #  select longitudes near the south pole
                         #fp, = argrelextrema(np.array(abs(rhot['long']+55)),np.less,order=5)
                         #rhot = rhot.iloc[fp]
@@ -1542,12 +1550,23 @@ if __name__=='__main__':
         """ champ and grace densities during epoch days of sblist
         output:
         data[dataframe,dataframe] in which data[0] for away-toward, data[1] for toward-away
+        data1[dataframe,dataframe] for high-lats in the Northern hemisphere
+        data2[dataframe,dataframe] for middle-lats in the Northern hemisphere
+        data3[dataframe,dataframe] for low-lats
+        data4[dataframe,dataframe] for middle-lats in the Southern hemisphere
+        data5[dataframe,dataframe] for high-lats in the Southern hemisphere
         """
         import gc
         lrday = 5
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2011-1-1']
         data = [pd.DataFrame(),pd.DataFrame()]
+        data1 = [pd.DataFrame(),pd.DataFrame()]
+        data2 = [pd.DataFrame(),pd.DataFrame()]
+        data3 = [pd.DataFrame(),pd.DataFrame()]
+        data4 = [pd.DataFrame(),pd.DataFrame()]
+        data5 = [pd.DataFrame(),pd.DataFrame()]
+        nn = [0,0]
         for k1, k2 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k2]
             for idate in sbtmp.index:
@@ -1555,14 +1574,43 @@ if __name__=='__main__':
                 for satellite in ['champ','grace']:
                     density = get_density_dates(datelist,satellite=satellite)
                     if density.empty:
+                        print('no data')
                         continue
                     density = density.add_updown()
                     for updown in ['up','down']:
+                        nn[k1] = nn[k1]+1
+                        print(nn)
                         d = density.orbit_mean(updown=updown)
                         d['rrho400'] = 100*(d['rho400'] - d['rho400'].mean())/d['rho400']
                         d['epochday'] = (d.index - idate)/pd.Timedelta('1D')
+
+                        d1 = density.orbit_mean(lats=(59,85),updown=updown)
+                        d1['rrho400'] = 100*(d1['rho400'] - d1['rho400'].mean())/d1['rho400']
+                        d1['epochday'] = (d1.index - idate)/pd.Timedelta('1D')
+
+                        d2 = density.orbit_mean(lats=(29,61),updown=updown)
+                        d2['rrho400'] = 100*(d2['rho400'] - d2['rho400'].mean())/d2['rho400']
+                        d2['epochday'] = (d2.index - idate)/pd.Timedelta('1D')
+
+                        d3 = density.orbit_mean(lats=(-31,31),updown=updown)
+                        d3['rrho400'] = 100*(d3['rho400'] - d3['rho400'].mean())/d3['rho400']
+                        d3['epochday'] = (d3.index - idate)/pd.Timedelta('1D')
+
+                        d4 = density.orbit_mean(lats=(-61,-29),updown=updown)
+                        d4['rrho400'] = 100*(d4['rho400'] - d4['rho400'].mean())/d4['rho400']
+                        d4['epochday'] = (d4.index - idate)/pd.Timedelta('1D')
+
+                        d5 = density.orbit_mean(lats=(-85,-59),updown=updown)
+                        d5['rrho400'] = 100*(d5['rho400'] - d5['rho400'].mean())/d5['rho400']
+                        d5['epochday'] = (d5.index - idate)/pd.Timedelta('1D')
+
                         data[k1] = data[k1].append(d)
-        pd.to_pickle(data,'/data/tmp/t6.dat')
+                        data1[k1] = data1[k1].append(d1)
+                        data2[k1] = data2[k1].append(d2)
+                        data3[k1] = data3[k1].append(d3)
+                        data4[k1] = data4[k1].append(d4)
+                        data5[k1] = data5[k1].append(d5)
+        pd.to_pickle((data,data1,data2,data3,data4,data5),'/data/tmp/t6.dat')
         gc.collect()
     def f14():
         """ imf and indices during epoch days of sblist
@@ -1610,14 +1658,12 @@ if __name__=='__main__':
             plt.sca(ax[3,k3])
             data = indexgroup[k3]['ap']
             hc1 = plt.contourf(data.columns, data.index/24, data.values,
-                               levels=np.linspace(0,20,11),
-                               cmap='cool')
+                               levels=np.linspace(0,20,11))
             for k1,k2 in enumerate(['Bx','Bye','Bzm']):
                 plt.sca(ax[k1,k3])
                 data = imfgroup[k3][k2]
                 hc2 = plt.contourf(data.columns, data.index/24, data.values,
-                                   levels=np.linspace(-4,4,11),
-                                   cmap='bwr')
+                                   levels=np.linspace(-4,4,11))
         for k1 in range(4):
             for k2 in range(2):
                 plt.sca(ax[k1,k2])
@@ -1648,29 +1694,56 @@ if __name__=='__main__':
     def f16():
         """ CHAMP and GRACE density variations versus date and epoch days
         """
-        rho = pd.read_pickle('/data/tmp/t6.dat')
-        rho = [rho[k].groupby([rho[k].index.month, np.floor(rho[k].epochday*16)])
-               for k in range(2)]
-        rho = [rho[k]['rrho400'].median() for k in range(2)]
-        for k in range(2):
-            rho[k].index.names = ['month','epochhour']
-            rho[k] = rho[k].reset_index().pivot('epochhour','month')
-
-        fig,ax = plt.subplots(1,2,sharey=True,figsize=(8,4))
+        rho = list(pd.read_pickle('/data/tmp/t6.dat'))
+        fig,ax = plt.subplots(1,2,sharex=False,sharey=True,figsize=(8,4))
         for k in range(2):
             plt.sca(ax[k])
-            data = rho[k]['rrho400']
-            hc = plt.contourf(data.columns, data.index/16, data.values,
-                              levels=np.linspace(-30,30,21))
-            plt.xlim([1,12])
-            plt.xticks(range(1,13))
-        ax[0].set_title('away-toward')
-        ax[1].set_title('toward-away')
-        ax[0].set_ylabel('Epoch day',fontsize=14)
-        ax[0].set_xlabel('Month',fontsize=14)
-        ax[1].set_xlabel('Month',fontsize=14)
-        cax = plt.axes([0.92,0.2,0.02,0.6])
-        plt.colorbar(hc,cax=cax,ticks=np.arange(-30,31,10))
+            plt.scatter(rho[0][k].index.dayofyear +
+                        rho[0][k].index.hour/24+
+                        rho[0][k].index.minute/24/60, rho[0][k].epochday,
+                        s=1,linewidth=0,color='k')
+            plt.xlim([0,367])
+            plt.xticks(np.arange(0,367,60))
+            plt.xlabel('Day of year',fontsize=14)
+            plt.ylabel('Epoch day',fontsize=14)
+        plt.tight_layout()
+
+        fig,ax = plt.subplots(6,2,sharex=True,sharey=True,figsize=(8,10))
+        for k0,k1 in enumerate(['all', '60~90', '30~60','-30~30','-60~-30','-90~-60']):
+            rho[k0] = [rho[k0][k].groupby([rho[k0][k].index.month, np.floor(rho[k0][k].epochday*16)])
+                   for k in range(2)]
+            rho[k0] = [rho[k0][k]['rrho400'].median() for k in range(2)]
+            for k in range(2):
+                rho[k0][k].index.names = ['month','epochhour']
+                rho[k0][k] = rho[k0][k].reset_index().pivot('epochhour','month')
+
+            for k in range(2):
+                plt.sca(ax[k0,k])
+                data = rho[k0][k]['rrho400']
+                hc = plt.contourf(data.columns, data.index/16, data.values,
+                                  levels=np.linspace(-30,30,21))
+                plt.xlim([1,12])
+                plt.xticks(range(1,13))
+                if k is 1:
+                    plt.text(1.1,0.5,'Lat: '+k1, horizontalalignment='center',
+                            verticalalignment='center',
+                            transform=plt.gca().transAxes,
+                            rotation='vertical')
+        ax[0,0].set_title('away-toward')
+        ax[0,1].set_title('toward-away')
+        ax[-1,0].set_xlabel('Month',fontsize=14)
+        ax[-1,1].set_xlabel('Month',fontsize=14)
+        cax = plt.axes([0.3,0.03,0.4,0.01])
+        cbar = plt.colorbar(
+                hc,cax=cax,
+                orientation='horizontal',
+                ticks=np.arange(-30,31,10))
+        cbar.ax.set_title(r'$\rho$ (%)')
+        plt.sca(ax[3,0])
+        plt.text(-0.2,1,'Epoch day', horizontalalignment='center',
+                verticalalignment='center',
+                transform=plt.gca().transAxes,
+                rotation='vertical')
         plt.subplots_adjust(bottom=0.12, wspace=0.1)
         plt.show()
         return
@@ -1683,6 +1756,6 @@ if __name__=='__main__':
     #f9()
     #f10()
     #get_lt()
-    a = f11()
+    a = f15()
     import gc
     gc.collect()

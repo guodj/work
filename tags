@@ -19,6 +19,7 @@ RobustWeights	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function W = Robu
 __author__	/home/gdj/work/python/pythonforfun.py	/^__author__ = 'Guo Dongjie'$/;"	v
 __author__	/home/gdj/work/python/work2.py	/^__author__ = 'Dongjie Guo'$/;"	v
 __author__	/home/gdj/work/python/work3.py	/^__author__ = 'Dongjie Guo'$/;"	v
+a	/home/gdj/work/python/work2.py	/^    a = f13()$/;"	v
 add_epoch_sb	/home/gdj/work/python/work2.py	/^    def add_epoch_sb(self, exclude_cir=True):$/;"	m	class:ChampDensity
 add_epochtime	/home/gdj/work/python/work2.py	/^    def add_epochtime(self, epoch0, lday=5, rday=5):$/;"	m	class:ChampDensity
 add_imf	/home/gdj/work/python/work2.py	/^    def add_imf(self):$/;"	m	class:ChampDensity
@@ -87,6 +88,10 @@ f107spl3	/home/gdj/work/fortran/work1/gamdm.f90	/^subroutine f107spl3(/;"	s
 f107spl3	/home/gdj/work/fortran/work1/mygamdm.f90	/^subroutine f107spl3(/;"	s
 f11	/home/gdj/work/python/work2.py	/^    def f11():$/;"	f
 f12	/home/gdj/work/python/work2.py	/^    def f12():$/;"	f
+f13	/home/gdj/work/python/work2.py	/^    def f13():$/;"	f
+f14	/home/gdj/work/python/work2.py	/^    def f14():$/;"	f
+f15	/home/gdj/work/python/work2.py	/^    def f15():$/;"	f
+f16	/home/gdj/work/python/work2.py	/^    def f16():$/;"	f
 f2	/home/gdj/work/python/pythonforfun.py	/^def f2():$/;"	f
 f2	/home/gdj/work/python/work2.py	/^    def f2():    # relative density to the 0 epoch time.$/;"	f
 f3	/home/gdj/work/python/work2.py	/^    def f3():    # daily average density variation between 2001-2010$/;"	f

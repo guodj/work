@@ -235,6 +235,23 @@
   Url                      = {http://dx.doi.org/10.1029/2010JA015326}
 }
 
+@Article{Foerster2011,
+  Title                    = {Thermospheric vorticity at high geomagnetic latitudes from CHAMP data and its IMF dependence},
+  Author                   = {F\"orster, M. and Haaland, S. E. and Doornbos, E.},
+  Journal                  = {Annales Geophysicae},
+  Year                     = {2011},
+  Number                   = {1},
+  Pages                    = {181--186},
+  Volume                   = {29},
+
+  __markedentry            = {[gdj:]},
+  Doi                      = {10.5194/angeo-29-181-2011},
+  File                     = {Foerster2011.pdf:Foerster2011.pdf:PDF},
+  Owner                    = {gdj},
+  Timestamp                = {2016.05.05},
+  Url                      = {http://www.ann-geophys.net/29/181/2011/}
+}
+
 @Article{Forbes1999,
   Title                    = {Longitudinal structures in lower thermosphere density},
   Author                   = {Forbes, J. M. and Palo, S. E. and Marcos, F. A.},
@@ -764,6 +781,25 @@ and McPherron, Robert L.},
   Url                      = {http://dx.doi.org/10.1002/2015JA021328}
 }
 
+@Article{McCormac1985,
+  Title                    = {Configuration of the high-latitude thermosphere neutral circulation for IMF By negative and positive},
+  Author                   = {McCormac, F. G. and Killeen, T. L. and Gombosi, E. and Hays, P. B. and Spencer, N. W.},
+  Journal                  = {Geophysical Research Letters},
+  Year                     = {1985},
+  Number                   = {4},
+  Pages                    = {155--158},
+  Volume                   = {12},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/GL012i004p00155},
+  File                     = {McCormac1985.pdf:McCormac1985.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Meteorology and Atmospheric Dynamics: Waves and tides},
+  Owner                    = {gdj},
+  Timestamp                = {2016.05.05},
+  Url                      = {http://dx.doi.org/10.1029/GL012i004p00155}
+}
+
 @Article{McGranaghan2014,
   Title                    = {Impact of equinoctial high-speed stream structures on thermospheric responses},
   Author                   = {McGranaghan, Ryan and Knipp, Delores J. and McPherron, Robert L. and Hunt, Linda A.},
@@ -1043,8 +1079,6 @@ and McPherron, Robert L.},
   Number                   = {19},
   Pages                    = {2839--2850},
   Volume                   = {80},
-
-  __markedentry            = {[gdj:6]},
   Doi                      = {10.1029/JA080i019p02839},
   File                     = {Richmond1975.pdf:Richmond1975.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1312,6 +1346,7 @@ and McPherron, Robert L.},
   Volume                   = {57},
 
   __markedentry            = {[gdj:1]},
+  Doi                      = {10.1007/s11430-014-4923-3},
   File                     = {WanWX2014.pdf:WanWX2014.pdf:PDF},
   Owner                    = {gdj},
   Timestamp                = {2016.04.28}

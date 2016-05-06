@@ -5,14 +5,12 @@
 texfile=$1
 texonlyname=${texfile%.*}
 if 
-    latex $texonlyname
+    xelatex $texonlyname
 then
-    printf 'latex command right.\n\n\n\n\n'
+    printf 'xelatex command right.\n\n\n\n\n'
     bibtex $texonlyname
-    latex $texonlyname >/dev/null
-    latex $texonlyname >/dev/null
-    dvipdf $texonlyname.dvi
-    rm $texonlyname.dvi
+    xelatex $texonlyname >/dev/null
+    xelatex $texonlyname >/dev/null
 fi
 rm $texonlyname.{log,aux}
 if [ -f $texonlyname.bbl ];then

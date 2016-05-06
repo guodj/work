@@ -2,6 +2,7 @@
 \usepackage{geometry}    %  页面控制
 \geometry{left=3cm, right=3cm, top=1.0cm, bottom=3cm}
 \usepackage{graphicx}  %插入图片
+\DeclareGraphicsExtensions{.png,.eps}
 
 \begin{document}
 \begin{figure}[!ht]
@@ -12,7 +13,17 @@
     \label{fig1}
 \end{figure}
 
+\begin{figure}[!ht]
+    \begin{center}
+        \includegraphics[width=0.8\textwidth]{/data/output/eps/work2/fig4}
+        \caption{test griddata and contourf, from f11() in $\sim$/work/python/work2.py}
+    \end{center}
+    \label{fig1}
+\end{figure}
+
+\newpage
 Superposed epoch analysis of the thermosphere density response to sector boundary crossings.
+How to use the magnetic apex coordinate?
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.8\textwidth]{/data/output/eps/work2/fig2}
@@ -24,7 +35,7 @@ Superposed epoch analysis of the thermosphere density response to sector boundar
 \begin{figure}[!ht]
     \begin{center}
         \includegraphics[width=0.8\textwidth]{/data/output/eps/work2/fig3}
-        \caption{CHAMP and GRACE density variations versus day of year and epoch days centered at sector boundary crossing date, from f16() in $\sim$/work/python/work2.py. The CIR and CME effects are not excluded.}
+        \caption{CHAMP and GRACE density variations versus day of year and epoch days centered at sector boundary crossing date. The CIR and CME effects are not excluded. Away-toward: 520 up or down cases; toward-away: 534 up or down cases. From f16() in $\sim$/work/python/work2.py. }
     \end{center}
     \label{fig3}
 \end{figure}
