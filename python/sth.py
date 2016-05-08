@@ -68,32 +68,64 @@ def f3():
     from mpl_toolkits.basemap import Basemap
 
     m = Apex()
-    glon, glat = np.meshgrid(np.arange(-180,180.1,5),np.arange(-90,90.1,5))
-    mlat, mlon = m.convert(glat, glon, 'geo', 'apex', height=0)
+    glon, glat = np.meshgrid(np.arange(-180,180,1),np.arange(-90,91,1))
+    mlat, mlon = m.convert(glat, glon, 'geo', 'apex', height=0,datetime=pd.Timestamp('2016-5-7'))
     mlat1, mlt = m.convert(glat, glon, 'geo', 'mlt', datetime=pd.Timestamp('2016-5-7'))
 
-    fig, ax = plt.subplots(1,2,figsize=(13.5,6))
-    plt.sca(ax[0])
-    mp = Basemap(projection='npstere',boundinglat=1,lon_0=0,resolution='l',round=True)
+    fig = plt.figure(figsize=(8,10))
+    ax = plt.subplot(3,2,1)
+    mp = Basemap(projection='npstere',boundinglat=20,lon_0=0,resolution='l',round=True)
     mp.drawcoastlines(linestyle='--',color='black')
-    mp.drawparallels(np.arange(-80.,81.,20.),labels=[False,True,True,False])
-    mp.drawmeridians(np.arange(-180.,181.,20.),labels=[True,True,True,True])
-    matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
-    cs1 = mp.contour(glon,glat,mlat,latlon=True,levels=np.arange(-80,81,20),colors='r')
-    cs2 = mp.contour(glon,glat,mlon,latlon=True,levels=np.arange(-180,181,20),colors='r')
-    plt.clabel(cs1,np.arange(0,81,20),fontsize=12, inline=True,fmt='%d',colors='b')
-    plt.title('NH')
+    mp.drawparallels(np.arange(-80,81,20.),dashes=(10,1),linewidth=2)
+    mp.drawmeridians(np.arange(0,360,60.),labels=[True,True,True,True],
+                     dashes=(10,1),linewidth=2)
 
-    plt.sca(ax[1])
-    mp = Basemap(projection='spstere',boundinglat=-1,lon_0=0,resolution='l',round=True)
-    mp.drawcoastlines(linestyle='--',color='black')
-    mp.drawparallels(np.arange(-80.,81.,20.))
-    mp.drawmeridians(np.arange(-180.,181.,20.),labels=[True,True,True,True])
     matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
     cs1 = mp.contour(glon,glat,mlat,latlon=True,levels=np.arange(-80,81,20),colors='r')
-    cs2 = mp.contour(glon,glat,mlon,latlon=True,levels=np.arange(-180,181,20),colors='r')
-    plt.clabel(cs1,np.arange(-80,1,20),fontsize=9, inline=True,fmt='%d',colors='b')
-    plt.title('SH')
+    cs2 = mp.contour(glon,glat,mlon,latlon=True,levels=np.arange(-180,180,30),colors='r')
+    plt.clabel(cs1,np.arange(0,81,20),fontsize=12, inline=True,fmt='%d',colors='b')
+    plt.title('NH',loc='left',color='r')
+
+    ax = plt.subplot(3,2,2)
+    mp = Basemap(projection='spstere',boundinglat=-20,lon_0=0,resolution='l',round=True)
+    mp.drawcoastlines(linestyle='--',color='black')
+    mp.drawparallels(np.arange(-80,81,20.),dashes=(10,1),linewidth=2)
+    mp.drawmeridians(np.arange(0,360,60.),labels=[True,True,True,True],
+                     dashes=(10,1),linewidth=2)
+
+    matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
+    cs1 = mp.contour(glon,glat,mlat,latlon=True,levels=np.arange(-80,81,20),colors='r')
+    cs2 = mp.contour(glon,glat,mlon,latlon=True,levels=np.arange(-180,180,30),colors='r')
+    plt.clabel(cs1,np.arange(-80,1,20),fontsize=12, inline=True,fmt='%d',colors='b')
+    plt.title('SH',loc='left',color='r')
+
+    ax = plt.subplot(3,1,2)
+    mp = Basemap(projection='cyl',llcrnrlon=-180,llcrnrlat=-90,
+                 urcrnrlon=180,urcrnrlat=90,resolution='l')
+    mp.drawcoastlines(linestyle='--',color='black')
+    mp.drawparallels(np.arange(-90,91,30.),dashes=(10,1),linewidth=2,
+                     labels=[True,False,False,False])
+    mp.drawmeridians(np.arange(0,360,60.),labels=[False,False,False,True],
+                     dashes=(10,1),linewidth=2)
+
+    matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
+    cs1 = mp.contour(glon,glat,mlat,latlon=True,levels=np.arange(-80,81,20),colors='r')
+    cs2 = mp.contour(glon,glat,mlon,latlon=True,levels=np.arange(-180,180,30),colors='r')
+    plt.clabel(cs1,np.arange(-80,81,20),fontsize=12, inline=True,fmt='%d',colors='b')
+
+    ax = plt.subplot(3,1,3)
+    mp = Basemap(projection='cyl',llcrnrlon=-180,llcrnrlat=-90,
+                 urcrnrlon=180,urcrnrlat=90,resolution='l')
+    mp.drawcoastlines(linestyle='--',color='black')
+    mp.drawparallels(np.arange(-90,91,30.),dashes=(10,1),linewidth=2,
+                     labels=[True,False,False,False])
+    mp.drawmeridians(np.arange(0,360,60.),labels=[False,False,False,True],
+                     dashes=(10,1),linewidth=2)
+
+    matplotlib.rcParams['contour.negative_linestyle'] = 'solid'
+    cs1 = mp.contour(glon,glat,mlat1,latlon=True,levels=np.arange(-80,81,20),colors='r')
+    cs2 = mp.contour(glon,glat,mlt,latlon=True,levels=np.arange(0,24,2),colors='r')
+    plt.clabel(cs1,np.arange(-80,81,20),fontsize=12, inline=True,fmt='%d',colors='b')
     plt.show()
     return mlat, mlon
 
