@@ -1557,9 +1557,9 @@ Brien2002\;Russell1973\;Sabbah2000\;Svalgaard1973\;Tsurutani2006\;Zhao
 1 ExplicitGroup:coordinate system\;0\;Emmert2010\;;
 1 ExplicitGroup:thermosphere\;0\;Perlongo2016\;Qian2011\;Qian2016\;Ric
 hmond1975\;Ridley2006\;Roble1987\;Storz2005\;Torr1980\;Wilson2006\;;
-2 ExplicitGroup:dynamics\;0\;Fuller-Rowell2013\;Gasperini2016\;Guo2016
-\;Hedin1983\;Hedin1987\;Hedin1991\;Lei2008a\;Liu2016\;Majeed2016\;McGr
-anaghan2014\;Oyama2016\;Zabotin2016\;;
+2 ExplicitGroup:dynamics\;0\;Foerster2011\;Fuller-Rowell2013\;Gasperin
+i2016\;Guo2016\;Hedin1983\;Hedin1987\;Hedin1991\;Lei2008a\;Liu2016\;Ma
+jeed2016\;McCormac1985\;McGranaghan2014\;Oyama2016\;Zabotin2016\;;
 2 ExplicitGroup:density and composition\;0\;Clausen2014\;Deng2013\;Emm
 ert2015\;Forbes1999\;Fuller-Rowell1998\;Guo2015\;Hedin1972\;Hedin1979\
 ;Hedin1983\;Hedin1985\;Hedin1987\;Hedin1991\;JiuhouLei2013\;Kwak2009\;

@@ -1747,6 +1747,10 @@ if __name__=='__main__':
         plt.subplots_adjust(bottom=0.12, wspace=0.1)
         plt.show()
         return
+    def f17():
+        """Test geomagnetic field
+        """
+        from apexpy import Apex
 
 #--------------------------#
     #f5()
