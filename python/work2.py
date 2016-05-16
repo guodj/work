@@ -312,24 +312,22 @@ class ChampDensity(pd.DataFrame):
             self = self[(311<=doy) | (doy<=36)]
         return ChampDensity(self)
 
-    def add_updown(self, latcolumnname='lat'):
+    def add_updown(self, whichlat='lat'):
         """ add 'isup' and 'isdown' columns to self
         Note that the function is appropriate for continuous data
 
         Args:
-            latcolumnname: data column name used to seperate up and down
+            whichlat: data column name used to seperate up and down
                 orbits
         Returns:
             self added with columns 'isup' and 'isdown'
 
         Note:
-            The results may be wrong near poles. But they are not excluded.
-            Because if doing so, the function should not be run 2 times.
-            So please exclude them at the very necessary location.
+            The results may be wrong near poles.
             Some bugs may exist at the data gap.
         """
         if not self.empty:
-            lat = self[latcolumnname]
+            lat = self[whichlat]
             dlat = lat.diff()
             dlat.iloc[0] = dlat.iloc[1]
             self['isup'] = (dlat > 0)
@@ -580,7 +578,11 @@ class ChampDensity(pd.DataFrame):
             whichcolumn: 'rho', 'rho400', 'rho410' ...
 
         Output:
-            self with columns 'dhour_po' and 'rrho_po' added
+            self with columns 'dhour_po', 'drho_po',
+            'rrho_po' and 'distance' in LT-lat coordinates added
+
+        Note:
+            The pole values may be unreliable
         """
         self = self.add_updown()
         groupdensity = self.groupby(['isup','lat3'])
@@ -590,17 +592,66 @@ class ChampDensity(pd.DataFrame):
             x['rrho_po'] = (x[whichcolumn].diff()/
                             np.roll(x[whichcolumn],1)/
                             x['dhour_po'])
+            x['drho_po'] = (x[whichcolumn].diff()/x['dhour_po'])
+
+            lat = x['lat']/180*np.pi
+            latpo = np.roll(lat, 1)
+            deltaLT = x['LT'].diff()/12*np.pi
+            x['distance'] = 6378*np.arccos(np.sin(lat)*np.sin(latpo) +
+                                           np.cos(lat)*np.cos(latpo)*np.cos(deltaLT))
             return x
         self = groupdensity.apply(rtl)
-        fp2 = (self.dhour_po>1.7)
-        fp3 = (self.dhour_po<1.3)
-        self.loc[(fp2) | (fp3),'rrho_po'] = np.nan
+        fp1 = (self.dhour_po>1.6)
+        fp2 = (self.dhour_po<1.4)
+        fp3 = (self.distance>600)
+        fp = fp1 | fp2 | fp3
+        self.loc[fp,'rrho_po'] = np.nan
+        self.loc[fp,'drho_po'] = np.nan
+        self.loc[fp,'distance'] = np.nan
+        return ChampDensity(self)
 
-        #  relative changes for the maximum and minimum latitudes are unreliable
-        #  due to algorithm of add_updown
-        fp1 = self.lat3<self.lat3.max()
-        fp2 = self.lat3>self.lat3.min()
-        self = self[(fp1) & (fp2)]
+
+    def relative_density_to_previous_orbit_mlt(self, whichcolumn='rho400'):
+        """Relative density between 2 adjecent orbits.
+
+        Input:
+            whichcolumn: 'rho', 'rho400', 'rho410' ...
+
+        Output:
+            self with columns 'dhour_po', 'distance_mlt', 'rrho_po' and 'dpoints' added
+
+        Note:
+            The pole values may be unreliable
+        """
+        Mlat = np.array(self.Mlat)/180*np.pi
+        Mlt = np.array(self.MLT)/12*np.pi
+        time = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1h')
+        rho = np.array(self['rho400'])
+
+        dib, dl = 110, 16
+        dd = np.ones([len(Mlat),dl])*np.nan
+        dh = np.ones([len(Mlat),dl])*np.nan
+        dr = np.ones([len(Mlat),dl])*np.nan
+        dp = np.ones([len(Mlat),dl])*np.nan
+        for di in np.arange(dib,dib+dl):
+            Mlatpo, Mltpo = np.roll(Mlat,di), np.roll(Mlt,di)
+            timepo, rhopo = np.roll(time,di), np.roll(rho,di)
+            dd[di:,di-dib] = 6378*np.arccos(
+                    np.sin(Mlat[di:])*np.sin(Mlatpo[di:]) +
+                    np.cos(Mlat[di:])*np.cos(Mlatpo[di:])*np.cos(Mlt[di:]-Mltpo[di:]))
+            dh[di:,di-dib] = time[di:]-timepo[di:]
+            dr[di:,di-dib] = (rho[di:]-rhopo[di:])/rhopo[di:]/dh[di:,di-dib]
+        ddmin = np.argmin(dd,axis=1)
+
+        ddout = dd[np.arange(len(Mlat)),ddmin]
+        dhout = dh[np.arange(len(Mlat)),ddmin]
+        drout = dr[np.arange(len(Mlat)),ddmin]
+        dpout = ddmin + dib
+        self['dhour_po'], self['distance_mlt'], self['rrho_po'], self['dpoints'] = dhout, ddout, drout, dpout
+        fp1 = self.distance_mlt>800
+        fp2 = (self.dhour_po>2) | (self.dhour_po<1)
+        fp = fp1 | fp2
+        self.loc[fp,['dhour_po', 'distance_mlt', 'rrho_po']] = np.nan
         return ChampDensity(self)
 
 
@@ -614,6 +665,9 @@ class ChampDensity(pd.DataFrame):
 
         Output:
             self with columns 'dhour_po' and 'drho_po' added
+
+        Note:
+            The pole values may be unreliable
         """
         self = self.add_updown()
         groupdensity = self.groupby(['isup','lat3'])
@@ -621,17 +675,22 @@ class ChampDensity(pd.DataFrame):
             x['dhour_po'] = (np.insert(np.diff(x.index),0,'nat')/
                     np.timedelta64(1,'h'))
             x['drho_po'] = (x[whichcolumn].diff()/x['dhour_po'])
+            lat = x['lat']/180*np.pi
+            latpo = np.roll(lat, 1)
+            deltalon = x['long'].diff()/180*np.pi
+            x['distance'] = 6378*np.arccos(np.sin(lat)*np.sin(latpo) +
+                                           np.cos(lat)*np.cos(latpo)*np.cos(deltalon))
             return x
         self = groupdensity.apply(rtl)
-        fp2 = (self.dhour_po>1.7)
-        fp3 = (self.dhour_po<1.3)
+        fp2 = (self.dhour_po>1.6)
+        fp3 = (self.dhour_po<1.5)
         self.loc[(fp2) | (fp3),'drho_po'] = np.nan
 
         #  relative changes for the maximum and minimum latitudes are unreliable
         #  due to algorithm of add_updown
-        fp1 = self.lat3<self.lat3.max()
-        fp2 = self.lat3>self.lat3.min()
-        self = self[(fp1) & (fp2)]
+        #fp1 = self.lat3<self.lat3.max()
+        #fp2 = self.lat3>self.lat3.min()
+        #self = self[(fp1) & (fp2)]
         return ChampDensity(self)
 
 
@@ -796,7 +855,7 @@ def get_density_dates(dates,satellite='champ'):
         index_col=[0]) for fn in fname if os.path.isfile(fn)]
     if rho:
         rho = pd.concat(rho)
-        rho = rho.drop_duplicates()
+        rho = rho.groupby(rho.index).first()  # pd.DataFrame.drop_duplicates() has something wrong
         return ChampDensity(rho)
     else:
         return ChampDensity()
@@ -857,6 +916,26 @@ def get_satellite_lt():
     datelt1.index.name = 'date'
     datelt1.to_csv('/data/Grace23/LT.dat',na_rep=np.nan)
     return
+
+
+def great_circle_distance(loc1,loc2,r=6378):
+    """calculate the great circle distance of two points on a sphere
+
+    Input:
+        loc1: [lat, lon] or (lat, lon), in degree
+        loc2: [lat, lon] or (lat, lon)
+        r: radius of the sphere
+
+    Output:
+        d: distance
+    """
+    lat1 = loc1[0]/180*np.pi
+    lon1 = loc1[1]/180*np.pi
+    lat2 = loc2[0]/180*np.pi
+    lon2 = loc2[1]/180*np.pi
+    d = r*np.arccos(np.sin(lat1)*np.sin(lat2) +
+                    np.cos(lat1)*np.cos(lat2)*np.cos(lon2-lon1))
+    return d
 
 
 if __name__=='__main__':
@@ -1078,10 +1157,10 @@ if __name__=='__main__':
         satellite = 'champ'
         lepoch = 2
         repoch = 7
-        deltat = 1.5/24   #  epoch time bin window
+        deltat = 0.5/24   #  epoch time bin window
 
         fpath = ('/data/tmp/t2.dat')
-        if False:  # data preparation
+        if True:  # data preparation
             density = get_density_dates(pd.date_range('2008-1-1', '2008-12-31'),
                                         satellite='champ')
             density = density.relative_density_to_previous_orbit('rho400')
@@ -1709,6 +1788,7 @@ if __name__=='__main__':
         plt.tight_layout()
 
         fig,ax = plt.subplots(6,2,sharex=True,sharey=True,figsize=(8,10))
+        fig1,ax1 = plt.subplots(6,2,sharex=True,sharey=True,figsize=(8,10))
         for k0,k1 in enumerate(['all', '60~90', '30~60','-30~30','-60~-30','-90~-60']):
             rho[k0] = [rho[k0][k].groupby([rho[k0][k].index.month, np.floor(rho[k0][k].epochday*16)])
                    for k in range(2)]
@@ -1729,11 +1809,18 @@ if __name__=='__main__':
                             verticalalignment='center',
                             transform=plt.gca().transAxes,
                             rotation='vertical')
+
+                plt.sca(ax1[k0,k])
+                for k2 in range(2,4):
+                    plt.plot(data.index/16, data[k2+1])
+                    plt.xlim(-5,5)
+                    plt.ylim(-30,30)
+                    plt.xticks(range(-5,6))
         ax[0,0].set_title('away-toward')
         ax[0,1].set_title('toward-away')
         ax[-1,0].set_xlabel('Month',fontsize=14)
         ax[-1,1].set_xlabel('Month',fontsize=14)
-        cax = plt.axes([0.3,0.03,0.4,0.01])
+        cax = fig.add_axes([0.3,0.03,0.4,0.01])
         cbar = plt.colorbar(
                 hc,cax=cax,
                 orientation='horizontal',
@@ -1747,19 +1834,58 @@ if __name__=='__main__':
         plt.subplots_adjust(bottom=0.12, wspace=0.1)
         plt.show()
         return
+
+
     def f17():
-        """Test geomagnetic field
+        """ MLT/Mlat and LT/Lat distributions of the CHAMP satellites.
         """
-        from apexpy import Apex
+        a = get_density_dates(pd.date_range('2005-3-1','2005-3-10'),satellite='champ')
+        fig, ax = plt.subplots(2,1,sharex=True)
+        plt.sca(ax[0])
+        a.add_updown(whichlat='Mlat')
+        plt.scatter(a.loc[a.isup,'MLT'], a.loc[a.isup,'Mlat'], linewidths=0,label='up')
+        plt.scatter(a.loc[a.isdown,'MLT'], a.loc[a.isdown,'Mlat'], linewidths=0,c='r',label='down')
+        plt.xlim(0,24)
+        plt.ylim(-95,95)
+        plt.xticks(range(0,25,4))
+        plt.yticks(range(-90,91,30))
+        plt.legend(frameon=False,loc='center left')
+        plt.xlabel('MLT')
+        plt.ylabel('MLat')
+
+        plt.sca(ax[1])
+        a.add_updown()
+        plt.scatter(a.loc[a.isup,'LT'], a.loc[a.isup,'lat'], linewidths=0,label='up')
+        plt.scatter(a.loc[a.isdown,'LT'], a.loc[a.isdown,'lat'], linewidths=0,c='r',label='down')
+        plt.xlim(0,24)
+        plt.ylim(-95,95)
+        plt.xticks(range(0,25,4))
+        plt.yticks(range(-90,91,30))
+        plt.legend(frameon=False,loc='center left')
+        plt.xlabel('LT')
+        plt.ylabel('Lat')
+        plt.show()
+
+        fig = plt.figure()
+        dt = a.index.dayofyear+a.index.hour/24+a.index.minute/60/24
+        h = plt.subplot(polar=True)
+        theta = a['MLT']/12*np.pi
+        r = 90 + a['Mlat']
+        hcup = plt.scatter(theta, r, linewidths=0,c=dt,alpha=0.5)
+        set_lt_lat_polar(h,pole='S')
+        h.set_rmax(30)
+        plt.show()
+        return a
 
 #--------------------------#
     #f5()
-    #f6()
-    #f7()
-    #f8()
-    #f9()
-    #f10()
-    #get_lt()
-    a = f15()
+    a=get_density_dates(pd.date_range('2001-1-31','2001-12-31'))
+    a=a.relative_density_to_previous_orbit()
+    fp = ~np.isnan(a.distance)
+    fig=plt.figure()
+    plt.scatter(a.loc[fp,'LT'], a.loc[fp,'distance'])
+    plt.ylim(0,1200)
+    print(len(a[a.distance>800])/len(a[a.distance>=0]))
+    plt.show()
     import gc
     gc.collect()
