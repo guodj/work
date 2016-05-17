@@ -197,7 +197,7 @@ def get_cirlist():
     return pd.DatetimeIndex(cirlist.datetime)
 
 
-def get_cirlist1():
+def get_cirlist_noicme():
     """ Obtain the CIR list during 1998-2009 with the file interfacenoicme
 
     Return: pd.DatetimeIndex
@@ -312,7 +312,7 @@ class ChampDensity(pd.DataFrame):
             self = self[(311<=doy) | (doy<=36)]
         return ChampDensity(self)
 
-    def add_updown(self, whichlat='lat'):
+    def add_updown(self, whichlat='lat3'):
         """ add 'isup' and 'isdown' columns to self
         Note that the function is appropriate for continuous data
 
@@ -330,10 +330,22 @@ class ChampDensity(pd.DataFrame):
             lat = self[whichlat]
             dlat = lat.diff()
             dlat.iloc[0] = dlat.iloc[1]
+            if whichlat=='lat3':
+                fp = (np.abs(dlat)!=3) & (np.abs(dlat)!=0)
+                fpid = np.argwhere(fp).reshape(-1)
+                dlat[fpid] = dlat[fpid+1]
             self['isup'] = (dlat > 0)
             self['isdown'] = (dlat < 0)
+            if whichlat=='lat3':
+                fp1 = self.lat3>=87
+                fp2 = dlat==0
+                fp = fp1 & fp2
+                self.loc[fp,'isdown'] = True
+                fp1 = self.lat3<=-87
+                fp2 = dlat==0
+                fp = fp1 & fp2
+                self.loc[fp,'isup'] = True
             self = self[(self.isup) | (self.isdown)]
-            #self = self[np.abs(self.lat3)<self.lat3.max()]
             return ChampDensity(self)
 
 
@@ -569,7 +581,7 @@ class ChampDensity(pd.DataFrame):
             return hc#, rho
 
 
-    def relative_density_to_previous_orbit(self, whichcolumn='rho400'):
+    def relative_density_to_previous_orbit_lt(self, whichcolumn='rho400'):
         """Get the time interval (dhour_po) between two continuous orbits and
         density relative to in the previous orbit (rrho_po).
         (rho-rho_po)/(rho_po*dhour), unit: /h
@@ -579,7 +591,7 @@ class ChampDensity(pd.DataFrame):
 
         Output:
             self with columns 'dhour_po', 'drho_po',
-            'rrho_po' and 'distance' in LT-lat coordinates added
+            'rrho_po' and 'distance_lt' in LT-lat coordinates added
 
         Note:
             The pole values may be unreliable
@@ -587,27 +599,26 @@ class ChampDensity(pd.DataFrame):
         self = self.add_updown()
         groupdensity = self.groupby(['isup','lat3'])
         def rtl(x):
-            x['dhour_po'] = (np.insert(np.diff(x.index),0,'nat')/
-                    np.timedelta64(1,'h'))
-            x['rrho_po'] = (x[whichcolumn].diff()/
-                            np.roll(x[whichcolumn],1)/
-                            x['dhour_po'])
-            x['drho_po'] = (x[whichcolumn].diff()/x['dhour_po'])
+            x['dhour_po'] = np.insert(np.diff(x.index),0,'nat')/np.timedelta64(1,'h')
+            x['rrho_po'] = x[whichcolumn].diff()/np.roll(x[whichcolumn],1)/x['dhour_po']
+            x['drho_po'] = x[whichcolumn].diff()/x['dhour_po']
 
             lat = x['lat']/180*np.pi
             latpo = np.roll(lat, 1)
             deltaLT = x['LT'].diff()/12*np.pi
-            x['distance'] = 6378*np.arccos(np.sin(lat)*np.sin(latpo) +
-                                           np.cos(lat)*np.cos(latpo)*np.cos(deltaLT))
+            x['distance_lt'] = 6378*np.arccos(
+                    np.sin(lat)*np.sin(latpo) +
+                    np.cos(lat)*np.cos(latpo)*np.cos(deltaLT))
             return x
         self = groupdensity.apply(rtl)
         fp1 = (self.dhour_po>1.6)
-        fp2 = (self.dhour_po<1.4)
-        fp3 = (self.distance>600)
+        fp2 = (self.dhour_po<1.45)
+        fp3 = (self.distance_lt>600)
         fp = fp1 | fp2 | fp3
+        self.loc[fp,'dhour_po'] = np.nan
         self.loc[fp,'rrho_po'] = np.nan
         self.loc[fp,'drho_po'] = np.nan
-        self.loc[fp,'distance'] = np.nan
+        self.loc[fp,'distance_lt'] = np.nan
         return ChampDensity(self)
 
 
@@ -629,10 +640,7 @@ class ChampDensity(pd.DataFrame):
         rho = np.array(self['rho400'])
 
         dib, dl = 110, 16
-        dd = np.ones([len(Mlat),dl])*np.nan
-        dh = np.ones([len(Mlat),dl])*np.nan
-        dr = np.ones([len(Mlat),dl])*np.nan
-        dp = np.ones([len(Mlat),dl])*np.nan
+        dd, dh, dr =4*[np.ones([len(Mlat),dl])*np.nan]
         for di in np.arange(dib,dib+dl):
             Mlatpo, Mltpo = np.roll(Mlat,di), np.roll(Mlt,di)
             timepo, rhopo = np.roll(time,di), np.roll(rho,di)
@@ -647,50 +655,12 @@ class ChampDensity(pd.DataFrame):
         dhout = dh[np.arange(len(Mlat)),ddmin]
         drout = dr[np.arange(len(Mlat)),ddmin]
         dpout = ddmin + dib
-        self['dhour_po'], self['distance_mlt'], self['rrho_po'], self['dpoints'] = dhout, ddout, drout, dpout
+        self['dhour_po'], self['distance_mlt'], self['rrho_po'], self['dpoints'] = (
+                dhout, ddout, drout, dpout)
         fp1 = self.distance_mlt>800
         fp2 = (self.dhour_po>2) | (self.dhour_po<1)
         fp = fp1 | fp2
-        self.loc[fp,['dhour_po', 'distance_mlt', 'rrho_po']] = np.nan
-        return ChampDensity(self)
-
-
-    def difference_density_to_previous_orbit(self, whichcolumn='rho400'):
-        """Get the time interval (dhour_po) between two continuous orbits and
-        the difference density between the current and  previous orbit, drho_po:
-        (rho-rho_po)/dhour, unit: kg/m^3/h
-
-        Input:
-            whichcolumn: 'rho', 'rho400', 'rho410' ...
-
-        Output:
-            self with columns 'dhour_po' and 'drho_po' added
-
-        Note:
-            The pole values may be unreliable
-        """
-        self = self.add_updown()
-        groupdensity = self.groupby(['isup','lat3'])
-        def rtl(x):
-            x['dhour_po'] = (np.insert(np.diff(x.index),0,'nat')/
-                    np.timedelta64(1,'h'))
-            x['drho_po'] = (x[whichcolumn].diff()/x['dhour_po'])
-            lat = x['lat']/180*np.pi
-            latpo = np.roll(lat, 1)
-            deltalon = x['long'].diff()/180*np.pi
-            x['distance'] = 6378*np.arccos(np.sin(lat)*np.sin(latpo) +
-                                           np.cos(lat)*np.cos(latpo)*np.cos(deltalon))
-            return x
-        self = groupdensity.apply(rtl)
-        fp2 = (self.dhour_po>1.6)
-        fp3 = (self.dhour_po<1.5)
-        self.loc[(fp2) | (fp3),'drho_po'] = np.nan
-
-        #  relative changes for the maximum and minimum latitudes are unreliable
-        #  due to algorithm of add_updown
-        #fp1 = self.lat3<self.lat3.max()
-        #fp2 = self.lat3>self.lat3.min()
-        #self = self[(fp1) & (fp2)]
+        self.loc[fp,['dhour_po', 'distance_mlt', 'rrho_po', 'dpoints']] = np.nan
         return ChampDensity(self)
 
 
@@ -758,6 +728,7 @@ class ChampDensity(pd.DataFrame):
 
     def add_epochtime(self, epoch0, lday=5, rday=5):
         """ add epoch times to self
+        *** be careful of the overlap ****
 
         Input:
             epoch0: pd.DatatimeIndex, zero epoch of special cases
@@ -855,6 +826,7 @@ def get_density_dates(dates,satellite='champ'):
         index_col=[0]) for fn in fname if os.path.isfile(fn)]
     if rho:
         rho = pd.concat(rho)
+        # Exclude duplicate points
         rho = rho.groupby(rho.index).first()  # pd.DataFrame.drop_duplicates() has something wrong
         return ChampDensity(rho)
     else:
@@ -940,9 +912,9 @@ def great_circle_distance(loc1,loc2,r=6378):
 
 if __name__=='__main__':
 
-    def f1(): # test relative_density_to_previous_orbit and contourf_date_lat
+    def f1(): # test relative_density_to_previous_orbit_lt and contourf_date_lat
         density = get_density_dates(pd.date_range('2003-10-27','2003-11-3'))
-        density = density.relative_density_to_previous_orbit()
+        density = density.relative_density_to_previous_orbit_lt()
         f = plt.figure()
         plt.subplot(211)
         h = density.contourf_date_lat(
@@ -965,7 +937,7 @@ if __name__=='__main__':
         if False:      # data preparation
             density = get_density_dates(pd.date_range('2001-1-1','2010-12-31'),
                                         satellite=satellite)
-            density = density.relative_density_to_previous_orbit(
+            density = density.relative_density_to_previous_orbit_lt(
                     whichcolumn='rho400')   # updown columns are added here
             density = density.add_epoch_sb(exclude_cir=True)    # add epochat and epochta
 
@@ -1116,7 +1088,9 @@ if __name__=='__main__':
 
         plt.show()
 
-    def f4():    # CHAMP or GRACE LT distributions
+    def f4():
+        """ CHAMP or GRACE LT distributions
+        """
         satellite = 'grace'
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2006-12-31']
@@ -1151,23 +1125,29 @@ if __name__=='__main__':
         plt.show()
 
 
-    #  density response to cir, test relative_density_to_previous_orbit
-    #  and difference_density_to_previous_orbit
     def f5():
+        """  density response to cir, test relative_density_to_previous_orbit_lt
+        """
         satellite = 'champ'
         lepoch = 2
         repoch = 7
         deltat = 0.5/24   #  epoch time bin window
 
         fpath = ('/data/tmp/t2.dat')
-        if True:  # data preparation
-            density = get_density_dates(pd.date_range('2008-1-1', '2008-12-31'),
-                                        satellite='champ')
-            density = density.relative_density_to_previous_orbit('rho400')
-            density = density.difference_density_to_previous_orbit('rho400')
-            cirlist = get_cirlist1()
-            density = density.add_epochtime(cirlist,lday=lepoch,rday=repoch)
-            density = ChampDensity(density[~np.isnan(density.epochtime)])  #  exclude nan
+        if False:  # data preparation
+            cirlist = get_cirlist_noicme()
+            diffcirlist = np.insert(
+                    np.diff(cirlist),0,'NaT')/np.timedelta64(1,'D')
+            fp = np.roll(diffcirlist,-1)>=repoch
+            cirlist = cirlist[fp]
+            cirlist = cirlist[(cirlist>='2008-1-1') & (cirlist<='2008-12-31')]
+            density = []
+            for k in cirlist:
+                rho = get_density_dates(k+pd.TimedeltaIndex(np.arange(-lepoch, repoch),'D'))
+                rho = rho.relative_density_to_previous_orbit_lt('rho400')
+                rho['epochtime'] = (rho.index - k)/pd.Timedelta('1D')
+                density.append(rho)
+            density = pd.concat(density)
             density[['lat3','epochtime','rrho_po', 'drho_po']].to_pickle(fpath)
             import gc
             gc.collect()
@@ -1194,7 +1174,7 @@ if __name__=='__main__':
         epochtime, lat3 = np.meshgrid(epochtime, lat3)
         plt.contourf(epochtime, lat3, tmp_cumprod.values,
                      levels=np.linspace(0,75,11))
-        plt.xlim(-lepoch,repoch)
+        plt.xlim(-lepoch-1,repoch+1)
         plt.ylim(-90,90)
         plt.yticks(np.arange(-90,91,30))
         plt.ylabel('Lat (deg)',fontsize=14)
@@ -1214,7 +1194,7 @@ if __name__=='__main__':
         epochtime, lat3 = np.meshgrid(epochtime, lat3)
         plt.contourf(epochtime, lat3, tmp_cumsum.values/1e-13,
                      levels=np.linspace(0,3,11))
-        plt.xlim(-2,7)
+        plt.xlim(-lepoch-1,repoch+1)
         plt.xlabel('Epoch days', fontsize=14)
         plt.ylim(-90,90)
         plt.yticks(np.arange(-90,91,30))
@@ -1225,14 +1205,15 @@ if __name__=='__main__':
         plt.show()
 
 
-    # another method for calculating density response to CIR
-    # the result shows that this method may be better
     def f6():
+        """ another method for calculating density response to CIR
+            the result shows that this method may be better
+        """
         ldays = 3
         rdays = 7
         fpath = '/data/tmp/t3.dat'
         if False:  # data preparation
-            cirlist = get_cirlist1()
+            cirlist = get_cirlist_noicme()
             diffcirlist = np.insert(
                     np.diff(cirlist),0,'NaT')/np.timedelta64(1,'D')
             fp = np.roll(diffcirlist,-1)>=rdays
@@ -1286,7 +1267,7 @@ if __name__=='__main__':
         """
         sblist = get_sblist()
         sblist = sblist['2001-5-15':'2010-7-1'] # CHAMP date range
-        cirlist = get_cirlist1()
+        cirlist = get_cirlist_noicme()
         cirlist = pd.DatetimeIndex(cirlist.date)
 
         cirdis = []
@@ -1878,14 +1859,16 @@ if __name__=='__main__':
         return a
 
 #--------------------------#
-    #f5()
-    a=get_density_dates(pd.date_range('2001-1-31','2001-12-31'))
-    a=a.relative_density_to_previous_orbit()
-    fp = ~np.isnan(a.distance)
-    fig=plt.figure()
-    plt.scatter(a.loc[fp,'LT'], a.loc[fp,'distance'])
-    plt.ylim(0,1200)
-    print(len(a[a.distance>800])/len(a[a.distance>=0]))
+    f16()
+    #for k in pd.date_range('2002-7-29','2002-7-29'):
+    #    a=get_density_dates([k])
+    #    a.add_updown()
+    #    b1 = a[a.isup]
+    #    b2 = a[a.isdown]
+    #    fig = plt.figure()
+    #    plt.scatter(b1.index,b1.lat3, color='b', linewidths=0)
+    #    plt.scatter(b2.index,b2.lat3, color='r', linewidths=0, alpha=0.5)
+    #    plt.xlim(b1.index.min(), b1.index.max())
     plt.show()
     import gc
     gc.collect()
