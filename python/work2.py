@@ -15,6 +15,9 @@ from scipy.interpolate import griddata
 import pdb   # set breakpoint
 import matplotlib.dates as mdates
 from scipy.signal import argrelextrema
+from apexpy import Apex
+from mpl_toolkits.basemap import Basemap
+import matplotlib
 
 
 def get_date_polarity():
@@ -68,10 +71,10 @@ def get_sblist():
         index_col='dates')
     sblist.replace(['+,-','-,+'], ['away-toward','toward-away'], inplace=True)
     doy = sblist.index.dayofyear
-    sblist.ix[(doy>35)  & (doy<125),'season'] = 'me'
-    sblist.ix[(doy>221) & (doy<311),'season'] = 'se'
-    sblist.ix[(doy>128) & (doy<218),'season'] = 'js'
-    sblist.ix[(doy>311) | (doy<36),'season'] = 'ds'
+    sblist.ix[(doy>=35)  & (doy<=125),'season'] = 'me'
+    sblist.ix[(doy>=221) & (doy<=311),'season'] = 'se'
+    sblist.ix[(doy>125) & (doy<221),'season'] = 'js'
+    sblist.ix[(doy>311) | (doy<35),'season'] = 'ds'
     return sblist
 
 
@@ -746,47 +749,47 @@ class ChampDensity(pd.DataFrame):
 #------------------------end class-------------------------------------#
 
 
-def set_lt_lat_polar(h, pole='N'):
+def set_lt_lat_polar(ax, pole='N', boundinglat=60):
     """Change some default sets of a LT-latitude polar coordinates
 
     Input
-    h: axis handle
+    ax: axis handle
     pole: 'N' or 'S', Northern or Southern Hemisphere
     """
-    h.set_theta_zero_location('S')
-    h.set_thetagrids(angles=[0,90,180,270], labels=[0,6,12,18], fontsize=14)
-    h.set_rmax(90)
+    ax.set_theta_zero_location('S')
+    ax.set_thetagrids(angles=[0,90,180,270], labels=[0,6,12,18], fontsize=14)
     if pole =='N':
-        h.set_rgrids(radii=[30,60,90],
+        ax.set_rgrids(radii=[30,60,90],
                      labels=['$60^\circ$', '$30^\circ$', '$0^\circ$'],
                      angle=135, fontsize=14)
     if pole =='S':
-        h.set_rgrids(radii=[30,60,90],
+        ax.set_rgrids(radii=[30,60,90],
                      labels=['$-60^\circ$', '$-30^\circ$', '$0^\circ$'],
                      angle=135, fontsize=14)
+    ax.set_rmax(90-np.abs(boundinglat))
 
 
-def set_lon_lat(h, pole='N'):
+def set_lon_lat(ax, pole='N',boundinglat=60):
     """change some default sets of a longitude-latitude polar coordinates
 
     Input
-    h: axis handle
+    ax: axis handle
     pole: 'N' or 'S', Northern or Southern Hemisphere
     """
-    h.set_theta_zero_location('S')
+    ax.set_theta_zero_location('S')
     ax.set_thetagrids(
             (-90,0,90,180),
             labels=('$-90^\circ$','$0^\circ$', '$90^\circ$','$\pm180^\circ$'),
             fontsize=14)
-    h.set_rmax(90)
     if pole =='N':
-        h.set_rgrids(radii=[30,60,90],
+        ax.set_rgrids(radii=[30,60,90],
                      labels=['$60^\circ$', '$30^\circ$', '$0^\circ$'],
                      angle=135, fontsize=14)
     if pole =='S':
-        h.set_rgrids(radii=[30,60,90],
+        ax.set_rgrids(radii=[30,60,90],
                      labels=['$-60^\circ$', '$-30^\circ$', '$0^\circ$'],
                      angle=135, fontsize=14)
+    ax.set_rmax(90-np.abs(boundinglat))
 
 
 relative = lambda x: 100*(x-x.mean())/x.mean()
@@ -1768,8 +1771,8 @@ if __name__=='__main__':
             plt.ylabel('Epoch day',fontsize=14)
         plt.tight_layout()
 
-        fig,ax = plt.subplots(6,2,sharex=True,sharey=True,figsize=(8,10))
-        fig1,ax1 = plt.subplots(6,2,sharex=True,sharey=True,figsize=(8,10))
+        fig,ax = plt.subplots(1,2,sharex=True,sharey=True,figsize=(8,4))
+        fig1,ax1 = plt.subplots(3,2,sharex=True,sharey=True,figsize=(8,6))
         for k0,k1 in enumerate(['all', '60~90', '30~60','-30~30','-60~-30','-90~-60']):
             rho[k0] = [rho[k0][k].groupby([rho[k0][k].index.month, np.floor(rho[k0][k].epochday*16)])
                    for k in range(2)]
@@ -1791,16 +1794,28 @@ if __name__=='__main__':
                             transform=plt.gca().transAxes,
                             rotation='vertical')
 
-                plt.sca(ax1[k0,k])
-                for k2 in range(2,4):
-                    plt.plot(data.index/16, data[k2+1])
+                if k0 in [1,3,5]:  # For northern pole, equator, southern pole
+                    plt.sca(ax1[np.int((k0-1)/2),k])
+                    kk = [1,2,3,4] if k==0 else [7,8,9,10]
+                    for k2 in kk:
+                        plt.plot(data.index/16, data[k2], color='gray')
+                    plt.plot(data.index/16, data[kk].median(axis=1), color='r')
                     plt.xlim(-5,5)
-                    plt.ylim(-30,30)
+                    plt.ylim(-40,40)
                     plt.xticks(range(-5,6))
+                    plt.yticks(np.arange(-40,41,20))
+                    if k==0:
+                        plt.ylabel(r'$\rho$ (%)')
+                    plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+                    plt.grid()
         ax[0,0].set_title('away-toward')
         ax[0,1].set_title('toward-away')
         ax[-1,0].set_xlabel('Month',fontsize=14)
         ax[-1,1].set_xlabel('Month',fontsize=14)
+        ax1[0,0].set_title('away-toward')
+        ax1[0,1].set_title('toward-away')
+        ax1[-1,0].set_xlabel('Epoch day',fontsize=14)
+        ax1[-1,1].set_xlabel('Epoch day',fontsize=14)
         cax = fig.add_axes([0.3,0.03,0.4,0.01])
         cbar = plt.colorbar(
                 hc,cax=cax,
@@ -1858,8 +1873,152 @@ if __name__=='__main__':
         plt.show()
         return a
 
+
+    def f18():
+        """ Lat/Lon variations
+        """
+        lday, rday = 5,5
+        sblist = get_sblist()
+        rho = [[pd.DataFrame(), pd.DataFrame()], [pd.DataFrame(),pd.DataFrame()]]
+        if False:
+            for k0, k in enumerate(['away-toward', 'toward-away']):
+                sbtmp = sblist[sblist.sbtype==k]
+                for k1 in sbtmp.index:
+                    epoch = k1+pd.TimedeltaIndex(np.arange(-lday,rday),'D')
+                    density = get_density_dates(epoch)
+                    if density.empty:
+                        continue
+                    density = density.add_index()
+                    l1= len(density)
+                    density = density[density.Kp<=40]
+                    l2= len(density)
+                    if l2<=0.7*l1:
+                        continue
+                    density['epochday'] = (density.index-k1)/pd.Timedelta('1D')
+                    densityn = density[density.lat3>=60]
+                    densityn['rrho400'] = 100*(
+                            densityn['rho400']-densityn['rho400'].mean())/densityn['rho400'].mean()
+                    rho[k0][0] = rho[k0][0].append(densityn)
+
+                    densitys = density[density.lat3<=-60]
+                    densitys['rrho400'] = 100*(
+                            densitys['rho400']-densitys['rho400'].mean())/densitys['rho400'].mean()
+                    rho[k0][1] = rho[k0][1].append(densitys)
+            pd.to_pickle(rho,'/data/tmp/t8.dat')
+        density = pd.read_pickle('/data/tmp/t8.dat')
+        figax = [plt.subplots(2,lday,figsize=[10,3.5],sharex=True, sharey=True) for ddkksfa in range(4)]
+        for k0, k in enumerate(['Away-Toward', 'Toward-Away']):
+            rho = density[k0]
+            for k1,k2 in enumerate(['NH','SH']):
+                rho1 = rho[k1]
+                if k0==0:
+                    rho1 = rho1[(rho1.index.month>=11) |(rho1.index.month<=1)]
+                else:
+                    rho1 = rho1[(rho1.index.month>=11) |(rho1.index.month<=1)]
+                for k3 in np.arange(-lday,rday):   # epoch days
+                    plt.sca(figax[k0*2+k1][1][(k3+lday)//lday,(k3+lday)%lday])
+                    rho2 = rho1[np.floor(rho1.epochday)==k3]
+                    #mlatbin = np.floor(rho2.Mlat/3)*3+1.5
+                    mlatbin = rho2.lat3
+                    mlonbin = np.floor(rho2.long/45)*45+22.5
+                    rho2 = rho2.groupby([mlatbin,mlonbin])['rrho400'].median().reset_index().pivot(
+                            index='lat3',columns='long',values='rrho400')
+                    rho2[rho2.columns[0]+360] = rho2[rho2.columns[0]]
+
+                    if k2 is 'NH':
+                        rho2.iloc[rho2.index.argmax()]=np.nanmean(rho2.iloc[rho2.index.argmax()])
+                        mp = Basemap(projection='npstere',boundinglat=60,lon_0=0,resolution='c',round=True)
+                    else:
+                        rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
+                        mp = Basemap(projection='spstere',boundinglat=-60,lon_0=0,resolution='c',round=True)
+                    mp.drawparallels(np.arange(-80,81,10.),dashes=(1,1),linewidth=0.5)
+                    if k3==-lday:
+                        mp.drawmeridians(np.arange(0,360,60.),labels=[True,True,True,True],
+                                         dashes=(1,1),linewidth=0.5,fontsize=10)
+                    else:
+                        mp.drawmeridians(np.arange(0,360,60.), dashes=(1,1),linewidth=0.5)
+                    mlong,mlatg = np.meshgrid(rho2.columns,rho2.index)
+                    cf = mp.contourf(mlong,mlatg,rho2.values,latlon=True,levels=np.linspace(-30,30,21))
+                    if k2 is 'NH':
+                        mp.scatter(-83.32,82.23,latlon=True,marker='x',c='k')
+                    else:
+                        mp.scatter(126.24,-74.18,latlon=True,marker='x',c='k')
+                cax = plt.axes([0.93,0.2,0.02,0.6])
+                plt.colorbar(cf, cax=cax, ticks=np.arange(-30,31,10))
+                plt.sca(figax[k0*2+k1][1][0,2])
+                plt.title(k+', '+k2)
+
+        return rho2
+    def f19():
+        """ MLat/MLT variations
+        """
+        lday, rday = 5,5
+        sblist = get_sblist()
+        rho = [[pd.DataFrame(), pd.DataFrame()], [pd.DataFrame(),pd.DataFrame()]]
+        if False:
+            for k0, k in enumerate(['away-toward', 'toward-away']):
+                sbtmp = sblist[sblist.sbtype==k]
+                for k1 in sbtmp.index:
+                    epoch = k1+pd.TimedeltaIndex(np.arange(-lday,rday),'D')
+                    density = get_density_dates(epoch)
+                    if density.empty:
+                        continue
+                    density = density.add_index()
+                    l1= len(density)
+                    density = density[density.Kp<=40]
+                    l2= len(density)
+                    if l2<=0.7*l1:
+                        continue
+                    density['epochday'] = (density.index-k1)/pd.Timedelta('1D')
+                    densityn = density[density.Mlat>=60]
+                    densityn['rrho400'] = 100*(
+                            densityn['rho400']-densityn['rho400'].mean())/densityn['rho400'].mean()
+                    rho[k0][0] = rho[k0][0].append(densityn)
+
+                    densitys = density[density.Mlat<=-60]
+                    densitys['rrho400'] = 100*(
+                            densitys['rho400']-densitys['rho400'].mean())/densitys['rho400'].mean()
+                    rho[k0][1] = rho[k0][1].append(densitys)
+            pd.to_pickle(rho,'/data/tmp/t9.dat')
+        density = pd.read_pickle('/data/tmp/t9.dat')
+        figax = [plt.subplots(2,lday,figsize=[10,3.5],
+                 subplot_kw=dict(projection='polar')) for ddkksfa in range(4)]
+        for k0, k in enumerate(['Away-Toward', 'Toward-Away']):
+            rho = density[k0]
+            for k1,k2 in enumerate(['NH','SH']):
+                rho1 = rho[k1]
+                if k0==0:
+                    rho1 = rho1[(rho1.index.month>=2) &(rho1.index.month<=4)]
+                else:
+                    rho1 = rho1[(rho1.index.month>=8) &(rho1.index.month<=10)]
+                for k3 in np.arange(-lday,rday):   # epoch days
+                    plt.sca(figax[k0*2+k1][1][(k3+lday)//lday,(k3+lday)%lday])
+                    rho2 = rho1[np.floor(rho1.epochday)==k3]
+                    mlatbin = np.floor(rho2.Mlat/3)*3+1.5
+                    mltbin = np.floor(rho2.MLT/3)*3+1.5
+                    rho2 = rho2.groupby([mlatbin,mltbin])['rrho400'].median().reset_index().pivot(
+                            index='Mlat',columns='MLT',values='rrho400')
+                    rho2[rho2.columns[0]+24] = rho2[rho2.columns[0]]
+
+                    if k2 is 'NH':
+                        rho2.iloc[rho2.index.argmax()]=np.nanmean(rho2.iloc[rho2.index.argmax()])
+                        mlt,mlat = np.meshgrid(rho2.columns/12*np.pi,90-rho2.index)
+                    else:
+                        rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
+                        mlt,mlat = np.meshgrid(rho2.columns/12*np.pi,90+rho2.index)
+                    cf = plt.contourf(mlt,mlat,rho2.values,levels=np.linspace(-30,30,21))
+                    if k2 is 'NH':
+                        set_lt_lat_polar(plt.gca(), pole='N',boundinglat=60)
+                    else:
+                        set_lt_lat_polar(plt.gca(), pole='S',boundinglat=-60)
+                cax = plt.axes([0.93,0.2,0.02,0.6])
+                plt.colorbar(cf, cax=cax, ticks=np.arange(-30,31,10))
+                plt.sca(figax[k0*2+k1][1][0,2])
+                plt.title(k+', '+k2)
+        return rho2
 #--------------------------#
-    f16()
+    plt.close('all')
+    a = f19()
     #for k in pd.date_range('2002-7-29','2002-7-29'):
     #    a=get_density_dates([k])
     #    a.add_updown()
