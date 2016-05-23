@@ -1879,7 +1879,8 @@ if __name__=='__main__':
         """
         lday, rday = 5,5
         sblist = get_sblist()
-        rho = [[pd.DataFrame(), pd.DataFrame()], [pd.DataFrame(),pd.DataFrame()]]
+        rho = [[pd.DataFrame(), pd.DataFrame(), pd.DataFrame()],
+               [pd.DataFrame(), pd.DataFrame(), pd.DataFrame()]]  #NH, EQ, SH
         if False:
             for k0, k in enumerate(['away-toward', 'toward-away']):
                 sbtmp = sblist[sblist.sbtype==k]
@@ -1895,30 +1896,35 @@ if __name__=='__main__':
                     if l2<=0.7*l1:
                         continue
                     density['epochday'] = (density.index-k1)/pd.Timedelta('1D')
+                    #  Lat: 60 ~ 90
                     densityn = density[density.lat3>=60]
                     densityn['rrho400'] = 100*(
                             densityn['rho400']-densityn['rho400'].mean())/densityn['rho400'].mean()
                     rho[k0][0] = rho[k0][0].append(densityn)
-
+                    #  Lat: -60 ~ 60
+                    densitye = density[(density.lat3<=60) & (density.lat3>=-60)]
+                    densitye['rrho400'] = 100*(
+                            densitye['rho400']-densitye['rho400'].mean())/densitye['rho400'].mean()
+                    rho[k0][1] = rho[k0][1].append(densitye)
+                    #  Lat: -60 ~ -90
                     densitys = density[density.lat3<=-60]
                     densitys['rrho400'] = 100*(
                             densitys['rho400']-densitys['rho400'].mean())/densitys['rho400'].mean()
-                    rho[k0][1] = rho[k0][1].append(densitys)
+                    rho[k0][2] = rho[k0][2].append(densitys)
             pd.to_pickle(rho,'/data/tmp/t8.dat')
         density = pd.read_pickle('/data/tmp/t8.dat')
-        figax = [plt.subplots(2,lday,figsize=[10,3.5],sharex=True, sharey=True) for ddkksfa in range(4)]
+        figax = [plt.subplots(6,lday,figsize=[10,10]) for ddkksfa in range(2)]
         for k0, k in enumerate(['Away-Toward', 'Toward-Away']):
             rho = density[k0]
-            for k1,k2 in enumerate(['NH','SH']):
+            for k1,k2 in enumerate(['NH','EQ','SH']):
                 rho1 = rho[k1]
                 if k0==0:
-                    rho1 = rho1[(rho1.index.month>=11) |(rho1.index.month<=1)]
+                    rho1 = rho1[(rho1.index.month>=2) &(rho1.index.month<=4)]
                 else:
-                    rho1 = rho1[(rho1.index.month>=11) |(rho1.index.month<=1)]
+                    rho1 = rho1[(rho1.index.month>=8) &(rho1.index.month<=10)]
                 for k3 in np.arange(-lday,rday):   # epoch days
-                    plt.sca(figax[k0*2+k1][1][(k3+lday)//lday,(k3+lday)%lday])
+                    plt.sca(figax[k0][1][((k3+lday)//lday)*3+k1,(k3+lday)%lday])
                     rho2 = rho1[np.floor(rho1.epochday)==k3]
-                    #mlatbin = np.floor(rho2.Mlat/3)*3+1.5
                     mlatbin = rho2.lat3
                     mlonbin = np.floor(rho2.long/45)*45+22.5
                     rho2 = rho2.groupby([mlatbin,mlonbin])['rrho400'].median().reset_index().pivot(
@@ -1928,12 +1934,18 @@ if __name__=='__main__':
                     if k2 is 'NH':
                         rho2.iloc[rho2.index.argmax()]=np.nanmean(rho2.iloc[rho2.index.argmax()])
                         mp = Basemap(projection='npstere',boundinglat=60,lon_0=0,resolution='c',round=True)
-                    else:
+                    elif k2 is 'SH':
                         rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
-                        mp = Basemap(projection='spstere',boundinglat=-60,lon_0=0,resolution='c',round=True)
+                        mp = Basemap(projection='spstere',boundinglat=-60,lon_0=180,resolution='c',round=True)
+                    else:
+                        mp = Basemap(
+                                projection='cyl',
+                                llcrnrlat=-60,urcrnrlat=60,
+                                llcrnrlon=-180,urcrnrlon=180,
+                                resolution='c')
                     mp.drawparallels(np.arange(-80,81,10.),dashes=(1,1),linewidth=0.5)
                     if k3==-lday:
-                        mp.drawmeridians(np.arange(0,360,60.),labels=[True,True,True,True],
+                        mp.drawmeridians(np.arange(0,360,60.),labels=[False,False,False,False],
                                          dashes=(1,1),linewidth=0.5,fontsize=10)
                     else:
                         mp.drawmeridians(np.arange(0,360,60.), dashes=(1,1),linewidth=0.5)
@@ -1941,13 +1953,12 @@ if __name__=='__main__':
                     cf = mp.contourf(mlong,mlatg,rho2.values,latlon=True,levels=np.linspace(-30,30,21))
                     if k2 is 'NH':
                         mp.scatter(-83.32,82.23,latlon=True,marker='x',c='k')
-                    else:
+                    elif k2 is 'SH':
                         mp.scatter(126.24,-74.18,latlon=True,marker='x',c='k')
                 cax = plt.axes([0.93,0.2,0.02,0.6])
                 plt.colorbar(cf, cax=cax, ticks=np.arange(-30,31,10))
-                plt.sca(figax[k0*2+k1][1][0,2])
+                plt.sca(figax[k0][1][0,2])
                 plt.title(k+', '+k2)
-
         return rho2
     def f19():
         """ MLat/MLT variations
