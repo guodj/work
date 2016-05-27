@@ -640,10 +640,12 @@ class ChampDensity(pd.DataFrame):
         Mlat = np.array(self.Mlat)/180*np.pi
         Mlt = np.array(self.MLT)/12*np.pi
         time = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1h')
-        rho = np.array(self['rho400'])
+        rho = np.array(self[whichcolumn])
 
         dib, dl = 110, 16
-        dd, dh, dr =4*[np.ones([len(Mlat),dl])*np.nan]
+        dd = np.ones([len(Mlat),dl])*np.nan
+        dh = np.ones([len(Mlat),dl])*np.nan
+        dr = np.ones([len(Mlat),dl])*np.nan
         for di in np.arange(dib,dib+dl):
             Mlatpo, Mltpo = np.roll(Mlat,di), np.roll(Mlt,di)
             timepo, rhopo = np.roll(time,di), np.roll(rho,di)
@@ -2037,16 +2039,8 @@ if __name__=='__main__':
         return rho2
 #--------------------------#
     plt.close('all')
-    a = f18()
-    #for k in pd.date_range('2002-7-29','2002-7-29'):
-    #    a=get_density_dates([k])
-    #    a.add_updown()
-    #    b1 = a[a.isup]
-    #    b2 = a[a.isdown]
-    #    fig = plt.figure()
-    #    plt.scatter(b1.index,b1.lat3, color='b', linewidths=0)
-    #    plt.scatter(b2.index,b2.lat3, color='r', linewidths=0, alpha=0.5)
-    #    plt.xlim(b1.index.min(), b1.index.max())
+    a = get_density_dates(pd.date_range('2005-1-1','2005-1-10'))
+    a = a.relative_density_to_previous_orbit_mlt()
     plt.show()
     import gc
     gc.collect()
