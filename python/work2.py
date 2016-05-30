@@ -771,7 +771,7 @@ def set_lt_lat_polar(ax, pole='N', boundinglat=60):
     ax.set_rmax(90-np.abs(boundinglat))
 
 
-def set_lon_lat(ax, pole='N',boundinglat=60):
+def set_lon_lat_polar(ax, pole='N',boundinglat=60):
     """change some default sets of a longitude-latitude polar coordinates
 
     Input
@@ -2037,10 +2037,119 @@ if __name__=='__main__':
                 plt.sca(figax[k0*2+k1][1][0,2])
                 plt.title(k+', '+k2)
         return rho2
+
+
+    def f20():
+        """ density variation versus Mlat and MLT during sb epoch days
+        using relative_density_to_previous_orbit_mlt()
+        """
+        sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2010-12-31']
+        lday, rday = 5, 5
+        if False:
+            density = [pd.DataFrame(), pd.DataFrame()]  # for at and ta conditions
+            for k, k0 in enumerate(['away-toward', 'toward-away']):
+                sbtmp = sblist[sblist.sbtype==k0]
+                for k1 in sbtmp.index:
+                    rho = get_density_dates(
+                            k1+pd.TimedeltaIndex(np.arange(-lday, rday),'D'))
+                    if rho.empty:
+                        print('no data around', k1)
+                        continue
+                    rho = rho.add_index()
+                    l1 = len(rho)
+                    rho = rho[rho.Kp<=40]
+                    l2 = len(rho)
+                    if l2<0.8*l1:
+                        print('active geomagnetic condition')
+                        continue
+                    rho['epochday'] = (rho.index-k1)/pd.Timedelta('1D')
+                    mlatbin = rho.Mlat//3*3+1.5  #  3 degree bin
+                    mltbin = rho.MLT//3*3+1.5   #   3 hour bin
+                    # Near the poles, the data is sparse
+                    # North
+                    fp = (mlatbin>=87)
+                    mlatbin[fp] = 90
+                    mltbin[fp] = 0
+                    fp = (mlatbin<87) & (mlatbin>=84)
+                    fp1 = (rho.MLT>=6) & (rho.MLT<=18)
+                    mltbin[(fp) & (fp1)] = 12
+                    mltbin[(fp) & (~fp1)] = 0
+                    fp = (mlatbin<84) & (mlatbin>=81)
+                    mltbin[fp] = rho.loc[fp,'MLT']//6*6+3
+                    # South
+                    fp = (mlatbin<=-87)
+                    mlatbin[fp] = -90
+                    mltbin[fp] = 0
+                    fp = (mlatbin>-87) & (mlatbin<=-84)
+                    fp1 = (rho.MLT>=6) & (rho.MLT<=18)
+                    mltbin[(fp) & (fp1)] = 12
+                    mltbin[(fp) & (~fp1)] = 0
+                    fp = (mlatbin>-84) & (mlatbin<=-81)
+                    mltbin[fp] = rho.loc[fp,'MLT']//6*6+3
+
+                    rho = rho.groupby([mlatbin,mltbin])
+                    rho = rho.filter(lambda x: len(np.unique(np.floor(x['epochday'])))==lday+rday)
+                    if rho.empty:
+                        print('There is data gap around', k1)
+                        continue
+                    else:
+                        print('OK')
+                    rho = rho.groupby([mlatbin,mltbin])
+                    def ff(x):
+                        x['rrho400'] = 100*(x['rho400']-x['rho400'].mean())/x['rho400'].mean()
+                        return x
+                    rho = rho.apply(ff)
+                    rho = rho[['Mlat','MLT', 'epochday', 'rrho400']]
+                    density[k] = density[k].append(rho)
+            pd.to_pickle(density, '/data/tmp/t10.dat')
+        density = pd.read_pickle('/data/tmp/t10.dat')
+        fig, ax = plt.subplots(10,2,subplot_kw=dict(projection='polar'))
+        for k, k0 in enumerate(['away-toward', 'toward-away']):
+            rho = density[k]
+            mlatbin = rho.Mlat//3*3+1.5  #  3 degree bin
+            mltbin = rho.MLT//3*3+1.5   #  3 hour bin
+            # Near the poles, the data is sparse
+            # North
+            fp = (mlatbin>=87)
+            mlatbin[fp] = 90
+            mltbin[fp] = 0
+            fp = (mlatbin<87) & (mlatbin>=84)
+            fp1 = (rho.MLT>=6) & (rho.MLT<=18)
+            mltbin[(fp) & (fp1)] = 12
+            mltbin[(fp) & (~fp1)] = 0
+            fp = (mlatbin<84) & (mlatbin>=81)
+            mltbin[fp] = rho.loc[fp,'MLT']//6*6+3
+            # South
+            fp = (mlatbin<=-87)
+            mlatbin[fp] = -90
+            mltbin[fp] = 0
+            fp = (mlatbin>-87) & (mlatbin<=-84)
+            fp1 = (rho.MLT>=6) & (rho.MLT<=18)
+            mltbin[(fp) & (fp1)] = 12
+            mltbin[(fp) & (~fp1)] = 0
+            fp = (mlatbin>-84) & (mlatbin<=-81)
+            mltbin[fp] = rho.loc[fp,'MLT']//6*6+3
+
+            epochbin = rho.epochday//1  # 1 day bin
+            rho = rho.groupby([epochbin,mlatbin,mltbin])['rrho400'].median().reset_index([1,2])
+            for  k1 in range(-lday, rday):
+                plt.sca(ax[k1+lday,k])
+                rhotmp = rho[rho.index==k1]
+                m = Basemap(projection='moll',lon_0=0,resolution='c')
+                plt.tricontourf(rhotmp.MLT/12*180,rhotmp.Mlat,rhotmp.rrho400)
+                #m.pcolormesh(rhotmp.MLT/12*180,rhotmp.Mlat,rhotmp.rrho400,latlon=True,tri=True)
+                #mlatg = np.arange(0,90,3)
+                #mltg = np.arange(0,25,3)
+                #mltg, mlatg = np.meshgrid(mltg, mlatg)
+                #rhotmp = griddata((rhotmp.MLT, rhotmp.Mlat),rhotmp.rrho400,(mltg,mlatg))
+                #lt_lat_contourf(plt.gca(),mltg,mlatg,rhotmp)
+                #set_lt_lat_polar(ax=plt.gca(), pole='N', boundinglat=0)
+        return density
+
 #--------------------------#
     plt.close('all')
-    a = get_density_dates(pd.date_range('2005-1-1','2005-1-10'))
-    a = a.relative_density_to_previous_orbit_mlt()
+    a = f20()
     plt.show()
     import gc
     gc.collect()
