@@ -18,6 +18,7 @@ from scipy.signal import argrelextrema
 from apexpy import Apex
 from mpl_toolkits.basemap import Basemap
 import matplotlib
+import time
 
 
 def get_date_polarity():
@@ -1635,38 +1636,41 @@ if __name__=='__main__':
         for k1, k2 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k2]
             for idate in sbtmp.index:
-                datelist = idate + pd.TimedeltaIndex(np.arange(10)-lrday, 'd')
+                datelist = idate + pd.TimedeltaIndex(np.arange(2*lrday)-lrday, 'd')
                 for satellite in ['champ','grace']:
                     density = get_density_dates(datelist,satellite=satellite)
                     if density.empty:
-                        print('no data')
+                        print('no data around', idate)
+                        continue
+                    if len(np.unique(density.index.dayofyear))!=2*lrday:
+                        print('there is data gap around', idate)
                         continue
                     density = density.add_updown()
                     for updown in ['up','down']:
                         nn[k1] = nn[k1]+1
-                        print(nn)
+                        print(k2,': ', nn)
                         d = density.orbit_mean(updown=updown)
-                        d['rrho400'] = 100*(d['rho400'] - d['rho400'].mean())/d['rho400']
+                        d['rrho400'] = 100*(d['rho400'] - d['rho400'].mean())/d['rho400'].mean()
                         d['epochday'] = (d.index - idate)/pd.Timedelta('1D')
 
                         d1 = density.orbit_mean(lats=(59,85),updown=updown)
-                        d1['rrho400'] = 100*(d1['rho400'] - d1['rho400'].mean())/d1['rho400']
+                        d1['rrho400'] = 100*(d1['rho400'] - d1['rho400'].mean())/d1['rho400'].mean()
                         d1['epochday'] = (d1.index - idate)/pd.Timedelta('1D')
 
                         d2 = density.orbit_mean(lats=(29,61),updown=updown)
-                        d2['rrho400'] = 100*(d2['rho400'] - d2['rho400'].mean())/d2['rho400']
+                        d2['rrho400'] = 100*(d2['rho400'] - d2['rho400'].mean())/d2['rho400'].mean()
                         d2['epochday'] = (d2.index - idate)/pd.Timedelta('1D')
 
                         d3 = density.orbit_mean(lats=(-31,31),updown=updown)
-                        d3['rrho400'] = 100*(d3['rho400'] - d3['rho400'].mean())/d3['rho400']
+                        d3['rrho400'] = 100*(d3['rho400'] - d3['rho400'].mean())/d3['rho400'].mean()
                         d3['epochday'] = (d3.index - idate)/pd.Timedelta('1D')
 
                         d4 = density.orbit_mean(lats=(-61,-29),updown=updown)
-                        d4['rrho400'] = 100*(d4['rho400'] - d4['rho400'].mean())/d4['rho400']
+                        d4['rrho400'] = 100*(d4['rho400'] - d4['rho400'].mean())/d4['rho400'].mean()
                         d4['epochday'] = (d4.index - idate)/pd.Timedelta('1D')
 
                         d5 = density.orbit_mean(lats=(-85,-59),updown=updown)
-                        d5['rrho400'] = 100*(d5['rho400'] - d5['rho400'].mean())/d5['rho400']
+                        d5['rrho400'] = 100*(d5['rho400'] - d5['rho400'].mean())/d5['rho400'].mean()
                         d5['epochday'] = (d5.index - idate)/pd.Timedelta('1D')
 
                         data[k1] = data[k1].append(d)
@@ -1773,7 +1777,96 @@ if __name__=='__main__':
             plt.ylabel('Epoch day',fontsize=14)
         plt.tight_layout()
 
-        fig,ax = plt.subplots(1,2,sharex=True,sharey=True,figsize=(8,4))
+        fig, ax = plt.subplots(3,2,figsize=(7.5,7.1),sharex=True, sharey=True)
+        fig1, ax1 = plt.subplots(3,2,figsize=(7.5,7.1),sharex=True, sharey=True)
+        a = [1,1,1,1]
+        for k0,k1 in enumerate(['60~90','-30~30','-90~-60']):
+            density = rho[k0*2+1]
+            for k3,k2 in enumerate(['away-toward','toward-away']):
+                dentmp = density[k3]
+                if k3==0:
+                    dentmp = dentmp[(dentmp.index.month>=2) & (dentmp.index.month<=4)]
+                else:
+                    dentmp = dentmp[(dentmp.index.month>=8) & (dentmp.index.month<=10)]
+                def percentile(n):
+                    def percentile_(x):
+                        return np.percentile(x,n)
+                    percentile_.__name__ = 'percentile_%s' % n
+                    return percentile_
+                for k4, k5, k6 ,k7, k8, k9 in zip(['gray','red','blue','lightgreen'],
+                                                  ['black','darkred','darkblue','darkgreen'],
+                                                  [4,3,2,1],
+                                                  [1,0.9,0.8,0.7],
+                                                  [1,2,3,4],
+                                                  ['dawn','noon','dusk','night']):
+
+                    if k8==1:
+                        dentmp1 = dentmp[(dentmp.LT>=3) & (dentmp.LT<=9)]
+                    elif k8==2:
+                        dentmp1 = dentmp[(dentmp.LT>=9) & (dentmp.LT<=15)]
+                    elif k8==3:
+                        dentmp1 = dentmp[(dentmp.LT>=15) & (dentmp.LT<=21)]
+                    else:
+                        dentmp1 = dentmp[(dentmp.LT>=21) | (dentmp.LT<=3)]
+                    plt.sca(ax[k0,k3])
+                    #plt.scatter(dentmp1.epochday,dentmp1.rrho400,
+                    #            linewidths=0,color=k4,alpha=k7, zorder=k6)
+                    epochhourbin = dentmp1.epochday*24//3*3+1.5
+                    dentmp11 = dentmp1.groupby(epochhourbin)['rrho400'].agg(
+                            [np.median, percentile(25),percentile(75)])
+                    dentmp11.columns = ['median', 'p25', 'p75']
+                    a[k8-1], = plt.plot(dentmp11.index/24, dentmp11['median'],zorder=k6+10,color=k5,label=k9)
+                    #plt.errorbar(dentmp11.index/24, dentmp11['median'],
+                    #             yerr=[dentmp11['median']-dentmp11.p25,dentmp11.p75-dentmp11['median']],
+                    #             linewidth=1,zorder=k6+10,color=k5)
+                    plt.xlim(-5,5)
+                    plt.xticks(np.arange(-5,6))
+                    plt.ylim(-40,40)
+                plt.grid(which='both')
+
+                    #plt.sca(ax1[k0,k3])
+                    #plt.scatter(dentmp1.epochday,dentmp1.rho400,
+                    #            linewidths=0,color=k4,alpha=k7, zorder=k6)
+                    #epochhourbin = dentmp1.epochday*24//3*3+1.5
+                    #dentmp12 = dentmp1.groupby(epochhourbin)['rho400'].agg(
+                    #        [np.median, percentile(25),percentile(75)])
+                    #dentmp12.columns = ['median', 'p25', 'p75']
+                    #plt.plot(dentmp12.index/24, dentmp12['median'],zorder=k6+10,color=k5,label=k9)
+                    #plt.errorbar(dentmp12.index/24, dentmp12['median'],
+                    #             yerr=[dentmp12['median']-dentmp12.p25,dentmp12.p75-dentmp12['median']],
+                    #             linewidth=1,zorder=k6+10,color=k5,label=k9)
+                    #plt.xlim(-5,5)
+                    #plt.xticks(np.arange(-5,6))
+                    #plt.ylim(0,6e-12)
+                    #plt.yticks(np.arange(0,7,2)*1e-12)
+        plt.figure(fig.number)
+        plt.legend((a[0],a[1],a[2],a[3]),('dawn', 'noon','dusk','night'),
+                   loc=[-1.3,-0.4],frameon=False,ncol=4)
+
+                #dentmp2 = dentmp[(dentmp.LT>=9) & (dentmp.LT<=15)]
+                #plt.scatter(dentmp2.epochday,dentmp2.rrho400,
+                #            linewidths=0,color='blue',alpha=0.8, zorder=1)
+                #epochhourbin = dentmp2.epochday*24//3*3+1.5
+                #dentmp2 = dentmp2.groupby(epochhourbin)['rrho400'].median()
+                #plt.plot(dentmp2.index/24, dentmp2,zorder=11,color='darkblue')
+
+                #dentmp3 = dentmp[(dentmp.LT>=15) & (dentmp.LT<=21)]
+                #plt.scatter(dentmp3.epochday,dentmp3.rrho400,
+                #            linewidths=0,color='red',alpha=0.6,zorder=2)
+                #epochhourbin = dentmp3.epochday*24//3*3+1.5
+                #dentmp3 = dentmp3.groupby(epochhourbin)['rrho400'].median()
+                #plt.plot(dentmp3.index/24, dentmp3,zorder=12,color='darkred')
+
+                #dentmp4 = dentmp[(dentmp.LT>=21) | (dentmp.LT<=3)]
+                #plt.scatter(dentmp4.epochday,dentmp4.rrho400,
+                #            linewidths=0,color='lightgreen',alpha=1,zorder=3)
+                #epochhourbin = dentmp4.epochday*24//3*3+1.5
+                #dentmp4 = dentmp4.groupby(epochhourbin)['rrho400'].median()
+                #plt.plot(dentmp4.index/24, dentmp4,zorder=14,color='darkgreen')
+        return dentmp
+
+
+        fig,ax = plt.subplots(6,2,sharex=True,sharey=True,figsize=(8,10))
         fig1,ax1 = plt.subplots(3,2,sharex=True,sharey=True,figsize=(8,6))
         for k0,k1 in enumerate(['all', '60~90', '30~60','-30~30','-60~-30','-90~-60']):
             rho[k0] = [rho[k0][k].groupby([rho[k0][k].index.month, np.floor(rho[k0][k].epochday*16)])
@@ -1881,95 +1974,122 @@ if __name__=='__main__':
         """
         lday, rday = 5,5
         sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2010-12-31']
         rho = [[pd.DataFrame(), pd.DataFrame(), pd.DataFrame()],
                [pd.DataFrame(), pd.DataFrame(), pd.DataFrame()]]  #NH, EQ, SH
+        nn = [0,0]
+        def ff(x):
+            x['rrho400'] = 100*(x['rho400']-x['rho400'].mean())/x['rho400'].mean()
+            return x
         if False:
             for k0, k in enumerate(['away-toward', 'toward-away']):
                 sbtmp = sblist[sblist.sbtype==k]
                 for k1 in sbtmp.index:
                     epoch = k1+pd.TimedeltaIndex(np.arange(-lday,rday),'D')
-                    density = get_density_dates(epoch)
-                    if density.empty:
-                        continue
-                    density = density.add_index()
-                    l1= len(density)
-                    density = density[density.Kp<=40]
-                    l2= len(density)
-                    if l2<=0.7*l1:
-                        continue
-                    density['epochday'] = (density.index-k1)/pd.Timedelta('1D')
-                    #  Lat: 60 ~ 90
-                    densityn = density[density.lat3>=50]
-                    densityn['rrho400'] = 100*(
-                            densityn['rho400']-densityn['rho400'].mean())/densityn['rho400'].mean()
-                    rho[k0][0] = rho[k0][0].append(densityn)
-                    #  Lat: -60 ~ 60
-                    densitye = density[(density.lat3<=70) & (density.lat3>=-70)]
-                    densitye['rrho400'] = 100*(
-                            densitye['rho400']-densitye['rho400'].mean())/densitye['rho400'].mean()
-                    rho[k0][1] = rho[k0][1].append(densitye)
-                    #  Lat: -60 ~ -90
-                    densitys = density[density.lat3<=-50]
-                    densitys['rrho400'] = 100*(
-                            densitys['rho400']-densitys['rho400'].mean())/densitys['rho400'].mean()
-                    rho[k0][2] = rho[k0][2].append(densitys)
+                    for k2 in ['champ', 'grace']:
+                        density = get_density_dates(epoch,satellite=k2)
+                        if density.empty:
+                            print(k2,' has no data around ',k1)
+                            continue
+                        density = density.add_index()
+                        l1= len(density)
+                        density = ChampDensity(density[density.Kp<=40])
+                        l2= len(density)
+                        if l2<=0.8*l1:
+                            print('geomagnetic active time around ',k1 )
+                            continue
+                        nn[k0] = nn[k0]+1
+                        print(k,nn)
+                        density = density.add_updown()
+                        density['epochday'] = (density.index-k1)/pd.Timedelta('1D')
+                        # Due to small area, lats>=87 are binned together
+                        density.loc[density.lat3==90,'lat3'] = 87
+                        density.loc[density.lat3==-90,'lat3'] = -87
+                        #  Lat: 60 ~ 90
+                        densityn = density[density.lat3>=50]
+                        densityn = densityn.groupby(densityn.isup).apply(ff)
+                        densityn = densityn[['lat3','long','LT','epochday','rho400','rrho400']]
+                        rho[k0][0] = rho[k0][0].append(densityn)
+                        #  Lat: -60 ~ 60
+                        densitye = density[(density.lat3<=70) & (density.lat3>=-70)]
+                        densitye = densitye.groupby(densitye.isup).apply(ff)
+                        densitye = densitye[['lat3','long','LT','epochday','rho400','rrho400']]
+                        rho[k0][1] = rho[k0][1].append(densitye)
+                        #  Lat: -60 ~ -90
+                        densitys = density[density.lat3<=-50]
+                        densitys = densitys.groupby(densitys.isup).apply(ff)
+                        densitys = densitys[['lat3','long','LT','epochday','rho400','rrho400']]
+                        rho[k0][2] = rho[k0][2].append(densitys)
             pd.to_pickle(rho,'/data/tmp/t8.dat')
         density = pd.read_pickle('/data/tmp/t8.dat')
-        figax = plt.subplots(2*lday,4,figsize=[7,11])
+        figax = [1,2,3,4,5,6]
+        figax[0] = plt.subplots(2*lday,4,figsize=[7,11])
+        figax[1] = plt.subplots(2*lday,4,figsize=[7,11])
+        figax[2] = plt.subplots(2*lday,4,figsize=[7,11])
+        figax[3] = plt.subplots(2*lday,4,figsize=[7,11])
+        figax[4] = plt.subplots(2*lday,4,figsize=[7,11])
+        figax[5] = plt.subplots(2*lday,4,figsize=[7,11])
         for k0, k in enumerate(['Away-Toward', 'Toward-Away']):
             rho = density[k0]
-            for k1,k2 in enumerate(['NH','SH']):
-                rho1 = rho[k1*2]
+            for k1,k2 in enumerate(['60~90','-60~60','-60~-90']):
+                rho1 = rho[k1]
                 if k0==0:
-                    rho1 = rho1[(rho1.index.month>=11) |(rho1.index.month<=1)]
+                    rho1 = rho1[(rho1.index.month>=2) &(rho1.index.month<=4)]
                 else:
-                    rho1 = rho1[(rho1.index.month>=11) |(rho1.index.month<=1)]
+                    rho1 = rho1[(rho1.index.month>=8) &(rho1.index.month<=10)]
                 for k3 in np.arange(-lday,rday):   # epoch days
-                    plt.sca(figax[1][k3+lday,k0*2+k1])
-                    rho2 = rho1[np.floor(rho1.epochday)==k3]
-                    mlatbin = rho2.lat3
-                    mlonbin = np.floor(rho2.long/45)*45+22.5
-                    rho2 = rho2.groupby([mlatbin,mlonbin])['rrho400'].median().reset_index().pivot(
-                            index='lat3',columns='long',values='rrho400')
-                    rho2[rho2.columns[0]+360] = rho2[rho2.columns[0]]
+                    for k4,k5 in enumerate(['dawn','noon','dusk','night']):
+                        if k5 is 'dawn':
+                            rho1tmp = rho1[(rho1.LT>3) & (rho1.LT<9)]
+                        elif k5 is 'noon':
+                            rho1tmp = rho1[(rho1.LT>9) & (rho1.LT<15)]
+                        elif k5 is 'dusk':
+                            rho1tmp = rho1[(rho1.LT>15) & (rho1.LT<21)]
+                        else:
+                            rho1tmp = rho1[(rho1.LT>21) | (rho1.LT<3)]
+                        plt.sca(figax[k0*3+k1][1][k3+lday,k4])
+                        rho2 = rho1tmp[np.floor(rho1tmp.epochday)==k3]
+                        mlatbin = rho2.lat3
+                        mlonbin = np.floor(rho2.long/45)*45+22.5
+                        rho2 = rho2.groupby([mlatbin,mlonbin])['rrho400'].median().reset_index().pivot(
+                                index='lat3',columns='long',values='rrho400')
+                        rho2[rho2.columns[0]+360] = rho2[rho2.columns[0]]
 
-                    if k2 is 'NH':
-                        rho2.iloc[rho2.index.argmax()]=np.nanmean(rho2.iloc[rho2.index.argmax()])
-                        mp = Basemap(projection='npstere',boundinglat=60,lon_0=0,resolution='c',round=True)
-                    elif k2 is 'SH':
-                        rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
-                        mp = Basemap(projection='spstere',boundinglat=-60,lon_0=0,resolution='c',round=True)
-                    #else:
-                    #    mp = Basemap(
-                    #            projection='cyl',
-                    #            llcrnrlat=-60,urcrnrlat=60,
-                    #            llcrnrlon=-180,urcrnrlon=180,
-                    #            resolution='c')
-                    mp.drawparallels(np.arange(-80,81,10.),dashes=(1,1),linewidth=0.5)
-                    if k3==-lday and k0*2+k1 in [0,3]:
-                        mp.drawmeridians(np.arange(0,360,60.),
-                                         labels=[True,True,True,True],labelstyle='+/-',
-                                         dashes=(1,1),linewidth=0.5,fontsize=10)
-                    else:
+                        if k2 is '60~90':
+                            # Area of lat3>87 is small, there should be only one value.
+                            rho2.iloc[rho2.index.argmax()]=np.nanmean(rho2.iloc[rho2.index.argmax()])
+                            mp = Basemap(projection='npstere',boundinglat=60,lon_0=0,
+                                         resolution='c',round=True)
+                        elif k2 is '-60~-90':
+                            rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
+                            mp = Basemap(projection='spstere',boundinglat=-60,lon_0=0,
+                                         resolution='c',round=True)
+                        else:
+                            mp = Basemap(projection='cyl',llcrnrlat=-60,urcrnrlat=60,
+                                        llcrnrlon=-180,urcrnrlon=180,resolution='c')
+                        mp.drawparallels(np.arange(-80,81,10.),dashes=(1,1),linewidth=0.5)
                         mp.drawmeridians(np.arange(0,360,60.), dashes=(1,1),linewidth=0.5)
-                    mlong,mlatg = np.meshgrid(rho2.columns,rho2.index)
-                    cf = mp.contourf(mlong,mlatg,rho2.values,
-                                     latlon=True,levels=np.linspace(-30,30,21),
-                                     cmap='bwr')
-                    if k2 is 'NH':
-                        mp.scatter(-83.32,82.23,latlon=True,marker='x',c='k')
-                    elif k2 is 'SH':
-                        mp.scatter(126.24,-74.18,latlon=True,marker='x',c='k')
-                    if k0*2+k1 == 0:
-                        plt.text(-0.5,0.5,k3,transform=plt.gca().transAxes)
-        cax = plt.axes([0.20,0.025,0.6,0.01])
-        plt.colorbar(cf, cax=cax, ticks=np.arange(-30,31,10),orientation='horizontal')
-        plt.sca(figax[1][0,0])
-        plt.text(0,1.3,'Away-Toward (NH, SH)',transform=plt.gca().transAxes)
-        plt.sca(figax[1][0,2])
-        plt.text(0,1.3,'Toward-Away (NH, SH)',transform=plt.gca().transAxes)
-        plt.subplots_adjust(left=0.1,right=0.9,bottom=0.05,top=0.93)
-        return rho2
+
+                        mlong,mlatg = np.meshgrid(rho2.columns,rho2.index)
+                        cf = mp.contourf(mlong,mlatg,rho2.values,
+                                         latlon=True,levels=np.linspace(-30,30,21),
+                                         extend='both')
+                        if k2 is '60~90':
+                            mp.scatter(-83.32,82.23,latlon=True,marker='x',c='k')
+                        elif k2 is '-60~-90':
+                            mp.scatter(126.24,-74.18,latlon=True,marker='x',c='k')
+                        if k3==-lday:
+                            plt.title(k5)
+                plt.text(0.5,0.95,'{:s}: {:s}'.format(k,k2),
+                         horizontalalignment='center',transform=plt.gcf().transFigure)
+        #cax = plt.axes([0.20,0.025,0.6,0.01])
+        #plt.colorbar(cf, cax=cax, ticks=np.arange(-30,31,10),orientation='horizontal')
+        #plt.sca(figax[1][0,0])
+        #plt.text(0,1.3,'Away-Toward (NH, SH)',transform=plt.gca().transAxes)
+        #plt.sca(figax[1][0,2])
+        #plt.text(0,1.3,'Toward-Away (NH, SH)',transform=plt.gca().transAxes)
+        #plt.subplots_adjust(left=0.1,right=0.9,bottom=0.05,top=0.93)
+        return
     def f19():
         """ MLat/MLT variations
         """
@@ -2027,7 +2147,9 @@ if __name__=='__main__':
                     else:
                         rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
                         mlt,mlat = np.meshgrid(rho2.columns/12*np.pi,90+rho2.index)
-                    cf = plt.contourf(mlt,mlat,rho2.values,levels=np.linspace(-30,30,21))
+                    cf = plt.contourf(mlt,mlat,rho2.values,
+                                      levels=np.linspace(-40,40,21),
+                                      extend='both')
                     if k2 is 'NH':
                         set_lt_lat_polar(plt.gca(), pole='N',boundinglat=60)
                     else:
@@ -2041,7 +2163,6 @@ if __name__=='__main__':
 
     def f20():
         """ density variation versus Mlat and MLT during sb epoch days
-        using relative_density_to_previous_orbit_mlt()
         """
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2010-12-31']
@@ -2064,7 +2185,7 @@ if __name__=='__main__':
                         print('active geomagnetic condition')
                         continue
                     rho['epochday'] = (rho.index-k1)/pd.Timedelta('1D')
-                    mlatbin = rho.Mlat//3*3+1.5  #  3 degree bin
+                    mlatbin = rho.Mlat//3*3+3  #  3 degree bin
                     mltbin = rho.MLT//3*3+1.5   #   3 hour bin
                     # Near the poles, the data is sparse
                     # North
@@ -2089,7 +2210,7 @@ if __name__=='__main__':
                     mltbin[fp] = rho.loc[fp,'MLT']//6*6+3
 
                     rho = rho.groupby([mlatbin,mltbin])
-                    rho = rho.filter(lambda x: len(np.unique(np.floor(x['epochday'])))==lday+rday)
+                    rho = rho.filter(lambda x: len(np.unique(np.floor(x['epochday'])))>=lday+rday)
                     if rho.empty:
                         print('There is data gap around', k1)
                         continue
@@ -2104,9 +2225,15 @@ if __name__=='__main__':
                     density[k] = density[k].append(rho)
             pd.to_pickle(density, '/data/tmp/t10.dat')
         density = pd.read_pickle('/data/tmp/t10.dat')
-        fig, ax = plt.subplots(10,2,subplot_kw=dict(projection='polar'))
+        fig, ax = plt.subplots(10,4,figsize=[6,10])
         for k, k0 in enumerate(['away-toward', 'toward-away']):
             rho = density[k]
+            if k==0:
+                fp = (rho.index.month>=2) & (rho.index.month<=4)
+                rho = rho[fp]
+            else:
+                fp = (rho.index.month>=8) & (rho.index.month<=10)
+                rho = rho[fp]
             mlatbin = rho.Mlat//3*3+1.5  #  3 degree bin
             mltbin = rho.MLT//3*3+1.5   #  3 hour bin
             # Near the poles, the data is sparse
@@ -2132,24 +2259,231 @@ if __name__=='__main__':
             mltbin[fp] = rho.loc[fp,'MLT']//6*6+3
 
             epochbin = rho.epochday//1  # 1 day bin
-            rho = rho.groupby([epochbin,mlatbin,mltbin])['rrho400'].median().reset_index([1,2])
+            rho = rho.groupby([epochbin,mlatbin,mltbin])['rrho400'].mean().reset_index([1,2])
             for  k1 in range(-lday, rday):
-                plt.sca(ax[k1+lday,k])
-                rhotmp = rho[rho.index==k1]
-                m = Basemap(projection='moll',lon_0=0,resolution='c')
-                plt.tricontourf(rhotmp.MLT/12*180,rhotmp.Mlat,rhotmp.rrho400)
-                #m.pcolormesh(rhotmp.MLT/12*180,rhotmp.Mlat,rhotmp.rrho400,latlon=True,tri=True)
-                #mlatg = np.arange(0,90,3)
-                #mltg = np.arange(0,25,3)
-                #mltg, mlatg = np.meshgrid(mltg, mlatg)
-                #rhotmp = griddata((rhotmp.MLT, rhotmp.Mlat),rhotmp.rrho400,(mltg,mlatg))
-                #lt_lat_contourf(plt.gca(),mltg,mlatg,rhotmp)
-                #set_lt_lat_polar(ax=plt.gca(), pole='N', boundinglat=0)
-        return density
+                for k2,k3 in enumerate(['NH','SH']):
+                    plt.sca(ax[k1+lday,k*2+k2])
+                    rhotmp = rho[rho.index==k1]
+                    if k2==0:
+                        rhotmp = rhotmp[rhotmp.Mlat>=0]# Northern hemisphere
+                        r = 90-rhotmp.Mlat
+                    else:
+                        rhotmp = rhotmp[rhotmp.Mlat<=-0]# Northern hemisphere
+                        r = 90+rhotmp.Mlat
+                    theta = rhotmp.MLT/12*np.pi+np.pi/2
+                    x = r*np.cos(theta)
+                    y = r*np.sin(theta)
+                    z = np.array(rhotmp.rrho400)
+                    xg, yg = np.meshgrid(np.arange(-90,91,3),np.arange(-90,91,3))
+                    zg = griddata((x,y),z,(xg,yg))
+                    plt.contourf(xg,yg,zg,levels=np.arange(-40,41,3))
+                    plt.axis('equal')
+                    plt.gca().set_xticks([])
+                    plt.gca().set_yticks([])
+                    plt.gca().spines['right'].set_color('none')
+                    plt.gca().spines['top'].set_color('none')
+                    plt.gca().spines['bottom'].set_color('none')
+                    plt.gca().spines['left'].set_color('none')
+                    plt.xlim(-90,90)
+                    plt.ylim(-90,90)
+        return rho
 
+    def f21():
+        """ density variation versus Mlat and Mlon during sb epoch days
+        """
+        sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2010-12-31']
+        lday, rday = 5, 5
+        if False:
+            density = [pd.DataFrame(), pd.DataFrame()]  # for at and ta conditions
+            for k, k0 in enumerate(['away-toward', 'toward-away']):
+                sbtmp = sblist[sblist.sbtype==k0]
+                for k1 in sbtmp.index:
+                    rho = get_density_dates(
+                            k1+pd.TimedeltaIndex(np.arange(-lday, rday),'D'))
+                    if rho.empty:
+                        print('no data around', k1)
+                        continue
+                    rho = rho.add_index()
+                    l1 = len(rho)
+                    rho = rho[rho.Kp<=40]
+                    l2 = len(rho)
+                    if l2<0.8*l1:
+                        print('active geomagnetic condition')
+                        continue
+                    rho['epochday'] = (rho.index-k1)/pd.Timedelta('1D')
+                    latbin = rho.lat//3*3+3  #  3 degree bin
+                    lonbin = rho.long//45*45+22.5   #   3 hour bin
+                    # Near the poles, the data is sparse
+                    # North
+                    fp = (latbin>=87)
+                    latbin[fp] = 90
+                    lonbin[fp] = 0
+                    fp = (latbin<87) & (latbin>=84)
+                    fp1 = (rho.long>=0)
+                    lonbin[(fp) & (fp1)] = 90
+                    lonbin[(fp) & (~fp1)] = -90
+                    fp = (latbin<84) & (latbin>=81)
+                    lonbin[fp] = rho.loc[fp,'long']//90*90+45
+                    # South
+                    fp = (latbin<=-87)
+                    latbin[fp] = -90
+                    lonbin[fp] = 0
+                    fp = (latbin>-87) & (latbin<=-84)
+                    fp1 = (rho.long>=0)
+                    lonbin[(fp) & (fp1)] = 90
+                    lonbin[(fp) & (~fp1)] = -90
+                    fp = (latbin>-84) & (latbin<=-81)
+                    lonbin[fp] = rho.loc[fp,'long']//90*90+45
+
+                    rho = rho.groupby([latbin,lonbin])
+                    rho = rho.filter(lambda x: len(np.unique(np.floor(x['epochday'])))>=lday+rday)
+                    if rho.empty:
+                        print('There is data gap around', k1)
+                        continue
+                    else:
+                        print('OK')
+                    rho = rho.groupby([latbin,lonbin])
+                    def ff(x):
+                        x['rrho400'] = 100*(x['rho400']-x['rho400'].mean())/x['rho400'].mean()
+                        return x
+                    rho = rho.apply(ff)
+                    rho = rho[['lat','long', 'epochday', 'rrho400']]
+                    density[k] = density[k].append(rho)
+            pd.to_pickle(density, '/data/tmp/t11.dat')
+        density = pd.read_pickle('/data/tmp/t11.dat')
+        fig, ax = plt.subplots(10,4,figsize=[6,10])
+        for k, k0 in enumerate(['away-toward', 'toward-away']):
+            rho = density[k]
+            if k==0:
+                fp = (rho.index.month>=2) & (rho.index.month<=4)
+                rho = rho[fp]
+            else:
+                fp = (rho.index.month>=8) & (rho.index.month<=10)
+                rho = rho[fp]
+            latbin = rho.lat//3*3+1.5  #  3 degree bin
+            lonbin = rho.long//45*45+22.5   #  3 hour bin
+            # Near the poles, the data is sparse
+            # North
+            fp = (latbin>=87)
+            latbin[fp] = 90
+            lonbin[fp] = 0
+            fp = (latbin<87) & (latbin>=84)
+            fp1 = (rho.long>=0)
+            lonbin[(fp) & (fp1)] = 90
+            lonbin[(fp) & (~fp1)] = -90
+            fp = (latbin<84) & (latbin>=81)
+            lonbin[fp] = rho.loc[fp,'long']//90*90+45
+            # South
+            fp = (latbin<=-87)
+            latbin[fp] = -90
+            lonbin[fp] = 0
+            fp = (latbin>-87) & (latbin<=-84)
+            fp1 = (rho.long>=0)
+            lonbin[(fp) & (fp1)] = 90
+            lonbin[(fp) & (~fp1)] = -90
+            fp = (latbin>-84) & (latbin<=-81)
+            lonbin[fp] = rho.loc[fp,'long']//90*90+45
+
+            epochbin = rho.epochday//1  # 1 day bin
+            rho = rho.groupby([epochbin,latbin,lonbin])['rrho400'].mean().reset_index([1,2])
+            for  k1 in range(-lday, rday):
+                for k2,k3 in enumerate(['NH','SH']):
+                    plt.sca(ax[k1+lday,k*2+k2])
+                    rhotmp = rho[rho.index==k1]
+                    if k2==0:
+                        rhotmp = rhotmp[rhotmp.lat>=0]# Northern hemisphere
+                        r = 90-rhotmp.lat
+                    else:
+                        rhotmp = rhotmp[rhotmp.lat<=-0]# Northern hemisphere
+                        r = 90+rhotmp.lat
+                    theta = rhotmp.long/180*np.pi
+                    x = r*np.cos(theta)
+                    y = r*np.sin(theta)
+                    z = np.array(rhotmp.rrho400)
+                    xg, yg = np.meshgrid(np.arange(-90,91,3),np.arange(-90,91,3))
+                    zg = griddata((x,y),z,(xg,yg))
+                    plt.contourf(xg,yg,zg,levels=np.arange(-30,31,3))
+                    plt.axis('equal')
+                    plt.gca().set_xticks([])
+                    plt.gca().set_yticks([])
+                    plt.gca().spines['right'].set_color('none')
+                    plt.gca().spines['top'].set_color('none')
+                    plt.gca().spines['bottom'].set_color('none')
+                    plt.gca().spines['left'].set_color('none')
+                    plt.xlim(-90,90)
+                    plt.ylim(-90,90)
+        return rho
+
+
+    def f22():
+        """ density variation versus Mlt during sb epoch days
+        """
+        sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2010-12-31']
+        lday, rday = 5, 5
+        if False:
+            density = [pd.DataFrame(), pd.DataFrame()]  # for at and ta conditions
+            for k, k0 in enumerate(['away-toward', 'toward-away']):
+                sbtmp = sblist[sblist.sbtype==k0]
+                for k1 in sbtmp.index:
+                    rho = get_density_dates(
+                            k1+pd.TimedeltaIndex(np.arange(-lday, rday),'D'))
+                    if rho.empty:
+                        print('no data around', k1)
+                        continue
+                    rho = rho.add_index()
+                    l1 = len(rho)
+                    rho = rho[rho.Kp<=40]
+                    l2 = len(rho)
+                    if l2<0.8*l1:
+                        print('active geomagnetic condition')
+                        continue
+                    rho['epochday'] = (rho.index-k1)/pd.Timedelta('1D')
+                    mlatbin = rho.Mlat//30*30+15  #  3 degree bin
+                    tmp = rho.loc[(rho.MLT>3) & (rho.MLT<9),'rho400']
+                    rho.loc[(rho.MLT>3) & (rho.MLT<9),'rrho400']=100*(tmp-tmp.mean())/tmp.mean()
+                    tmp = rho.loc[(rho.MLT>9) & (rho.MLT<15),'rho400']
+                    rho.loc[(rho.MLT>9) & (rho.MLT<15),'rrho400']=100*(tmp-tmp.mean())/tmp.mean()
+                    tmp = rho.loc[(rho.MLT>15) & (rho.MLT<21),'rho400']
+                    rho.loc[(rho.MLT>15) & (rho.MLT<21),'rrho400']=100*(tmp-tmp.mean())/tmp.mean()
+                    tmp = rho.loc[(rho.MLT>21) | (rho.MLT<3),'rho400']
+                    rho.loc[(rho.MLT>21) | (rho.MLT<3),'rrho400']=100*(tmp-tmp.mean())/tmp.mean()
+                    rho = rho[['Mlat','MLT', 'epochday', 'rho400','rrho400']]
+                    density[k] = density[k].append(rho)
+            pd.to_pickle(density, '/data/tmp/t12.dat')
+        density = pd.read_pickle('/data/tmp/t12.dat')
+        fig, ax = plt.subplots(4,2,sharex=True,sharey=True)
+        for k, k0 in enumerate(['away-toward', 'toward-away']):
+            rho = density[k]
+            if k==0:
+                fp = (rho.index.month>=2) & (rho.index.month<=4)
+                rho = rho[fp]
+            else:
+                fp = (rho.index.month>=8) & (rho.index.month<=10)
+                rho = rho[fp]
+            rho = rho[rho.Mlat>=60]
+            for k1,k2 in enumerate(['dawn','noon','dusk','night']):
+                plt.sca(ax[k1,k])
+                if k1==0:
+                    rhotmp=rho[(rho.MLT>3) & (rho.MLT<9)]
+                elif k1==1:
+                    rhotmp=rho[(rho.MLT>9) & (rho.MLT<15)]
+                elif k1==2:
+                    rhotmp=rho[(rho.MLT>15) & (rho.MLT<21)]
+                else:
+                    rhotmp=rho[(rho.MLT>21) | (rho.MLT<3)]
+                epochbin = rhotmp.epochday*24//3*3
+                rhoz = rhotmp.groupby(epochbin)['rrho400'].mean()
+                plt.plot(rhoz.index/24,rhoz)
+                plt.ylim(-40,60)
+                plt.xlim(-5,5)
+                plt.xticks(np.arange(-5,6))
+                plt.yticks(np.arange(-40,61,20))
+                plt.grid()
 #--------------------------#
     plt.close('all')
-    a = f20()
+    a = f18()
     plt.show()
     import gc
     gc.collect()

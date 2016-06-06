@@ -243,8 +243,6 @@
   Number                   = {1},
   Pages                    = {181--186},
   Volume                   = {29},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.5194/angeo-29-181-2011},
   File                     = {Foerster2011.pdf:Foerster2011.pdf:PDF},
   Owner                    = {gdj},
@@ -790,7 +788,7 @@ and McPherron, Robert L.},
   Pages                    = {155--158},
   Volume                   = {12},
 
-  __markedentry            = {[gdj:6]},
+  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/GL012i004p00155},
   File                     = {McCormac1985.pdf:McCormac1985.pdf:PDF},
   ISSN                     = {1944-8007},
@@ -1498,6 +1496,25 @@ and McPherron, Robert L.},
   Url                      = {http://dx.doi.org/10.1029/2012JA017845}
 }
 
+@Article{Zhou2000,
+  Title                    = {Solar wind control of the polar cusp at high altitude},
+  Author                   = {Zhou, X. W. and Russell, C. T. and Le, G. and Fuselier, S. A. and Scudder, J. D.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2000},
+  Number                   = {A1},
+  Pages                    = {245--251},
+  Volume                   = {105},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/1999JA900412},
+  File                     = {Zhou2000.pdf:Zhou2000.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Cusp, Magnetopause and boundary layers, Magnetospheric configuration and dynamics, Solar wind/magnetosphere interactions},
+  Owner                    = {gdj},
+  Timestamp                = {2016.05.07},
+  Url                      = {http://dx.doi.org/10.1029/1999JA900412}
+}
+
 @Article{Zhu2016,
   Title                    = {Contribution of the topside and bottomside ionosphere to the total electron content during two strong geomagnetic storms},
   Author                   = {Zhu, Qingyu and Lei, Jiuhou and Luan, Xiaoli and Dou, Xiankang},
@@ -1570,7 +1587,7 @@ Kwak2011\;Lei2008\;Lei2008a\;Lei2010\;Lei2010a\;Liu2005\;Liu2014\;Liu2
 g2016\;Lei2015\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley
 2006\;Zhu2016\;;
 1 ExplicitGroup:magnetosphere\;0\;Crooker1979\;Glocer2015\;McPherron20
-09\;Ridley2014\;Russell2003\;Tenfjord2015\;Tsurutani2005\;;
+09\;Ridley2014\;Russell2003\;Tenfjord2015\;Tsurutani2005\;Zhou2000\;;
 2 ExplicitGroup:ring current\;0\;Daglis1999\;;
 1 ExplicitGroup:solar wind\;0\;Russell2013\;Tsurutani2005\;Tsurutani20
 06\;Zurbuchen2006\;;

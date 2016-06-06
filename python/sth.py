@@ -199,6 +199,53 @@ def f4():
     print('未考虑租金上涨；未考虑装修；'
           '未考虑中国租房制度对租房质量的影响；未考虑房子与户口，医疗，孩子教育的关系。')
 
+def f5(x=1000,r=0.1):
+    """每月投资x,投资n年，可以有多少钱？
+    """
+    y1 = np.sum(np.arange(1,13)/12)
+    print('每月投资{:d}元,设年收益{:.0f}%'.format(x,r*100))
+    for n in np.arange(5,31,5):
+        print('{:d}年后，将收获{:.2f}万'.format(n,x*(12+r*y1)*((1+r)**n-1)/r/1e4))
+    return
+
+
+def f6():
+    """定投沪深300指数：
+    1：在不同月份开始结果如何？
+    2：在每月的最高点和最低点开始定投差别如何？
+    注：不考虑管理费，红利等
+    """
+    hs300 = pd.read_csv(
+            '/data/hs300.csv',encoding='gbk',
+            skiprows=1,
+            header=None,
+            names=['date','closep','maxp','minp','openp','volume','amo'],
+            usecols=[0,3,4,5,6,7,8],
+            index_col=0,
+            parse_dates=0)
+    hs300 = hs300.sort_index()
+    hs300m = pd.DataFrame()
+    hs300m['openp'] = hs300['openp'].resample('1M',how='first')
+    hs300m['closep'] = hs300['closep'].resample('1M',how='last')
+    hs300m['maxp'] = hs300['maxp'].resample('1M',how='max')
+    hs300m['minp'] = hs300['minp'].resample('1M',how='min')
+    hs300m['volume'] = hs300['volume'].resample('1M',how='sum')
+    hs300m['amo'] = hs300['amo'].resample('1M',how='sum')
+    pl = hs300m.ix[-1,'closep']
+    pmax = pl/np.array(hs300m.maxp)
+    pmax = (((pmax[::-1].cumsum())/np.arange(1,len(pmax)+1))[::-1]-1)*100
+    pmin = pl/np.array(hs300m.minp)
+    pmin = (((pmin[::-1].cumsum())/np.arange(1,len(pmin)+1))[::-1]-1)*100
+    hs300m['rmax'] = pmax
+    hs300m['rmin'] = pmin
+    plt.figure()
+    plt.plot(hs300m.index,hs300m.rmax,'b',hs300m.index,hs300m.rmin,'r')
+    plt.grid()
+    plt.twinx()
+    plt.plot(hs300m.index,hs300m.closep,'k')
+    plt.show()
+    return pmax, pmin
+
 
 if __name__ == '__main__':
-    a=f4()
+    a=f6()
