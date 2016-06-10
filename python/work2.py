@@ -8,6 +8,7 @@ __author__ = 'Dongjie Guo'
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib as mpl
 import os
 from matplotlib.ticker import AutoMinorLocator
 from matplotlib.ticker import MaxNLocator
@@ -244,7 +245,6 @@ def get_goce_data(dates):
         return goce_data
     else:
         return pd.DataFrame()
-
 
 class ChampDensity(pd.DataFrame):
     """ Subclass of pd.DataFrame FOR champ or grace density data.
@@ -1978,7 +1978,7 @@ if __name__=='__main__':
         rho = [[pd.DataFrame(), pd.DataFrame(), pd.DataFrame()],
                [pd.DataFrame(), pd.DataFrame(), pd.DataFrame()]]  #NH, EQ, SH
         nn = [0,0]
-        def ff(x):
+        def ff(x):  # calculate relative value
             x['rrho400'] = 100*(x['rho400']-x['rho400'].mean())/x['rho400'].mean()
             return x
         if False:
@@ -2021,6 +2021,7 @@ if __name__=='__main__':
                         densitys = densitys[['lat3','long','LT','epochday','rho400','rrho400']]
                         rho[k0][2] = rho[k0][2].append(densitys)
             pd.to_pickle(rho,'/data/tmp/t8.dat')
+        """
         density = pd.read_pickle('/data/tmp/t8.dat')
         figax = [1,2,3,4,5,6]
         figax[0] = plt.subplots(2*lday,4,figsize=[7,11])
@@ -2082,13 +2083,74 @@ if __name__=='__main__':
                             plt.title(k5)
                 plt.text(0.5,0.95,'{:s}: {:s}'.format(k,k2),
                          horizontalalignment='center',transform=plt.gcf().transFigure)
+        """
+        density = pd.read_pickle('/data/tmp/t8.dat')
+        figax = [1,2,3,4,5,6]
+        figax[0] = plt.subplots(2*lday,4,figsize=[7,11],subplot_kw=dict(polar=True))
+        figax[1] = plt.subplots(2*lday,4,figsize=[7,11],sharex=True,sharey=True)
+        figax[2] = plt.subplots(2*lday,4,figsize=[7,11],subplot_kw=dict(polar=True))
+        figax[3] = plt.subplots(2*lday,4,figsize=[7,11],subplot_kw=dict(polar=True))
+        figax[4] = plt.subplots(2*lday,4,figsize=[7,11],sharex=True,sharey=True)
+        figax[5] = plt.subplots(2*lday,4,figsize=[7,11],subplot_kw=dict(polar=True))
+        for k0, k in enumerate(['Away-Toward', 'Toward-Away']):
+            rho = density[k0]
+            for k1,k2 in enumerate(['60~90','-60~60','-60~-90']):
+                rho1 = rho[k1]
+                if k0==0:
+                    rho1 = rho1[(rho1.index.month>=2) &(rho1.index.month<=4)]
+                else:
+                    rho1 = rho1[(rho1.index.month>=8) &(rho1.index.month<=10)]
+                for k3 in np.arange(-lday,rday):   # epoch days
+                    for k4,k5 in enumerate(['dawn','noon','dusk','night']):
+                        if k5 is 'dawn':
+                            rho1tmp = rho1[(rho1.LT>3) & (rho1.LT<9)]
+                        elif k5 is 'noon':
+                            rho1tmp = rho1[(rho1.LT>9) & (rho1.LT<15)]
+                        elif k5 is 'dusk':
+                            rho1tmp = rho1[(rho1.LT>15) & (rho1.LT<21)]
+                        else:
+                            rho1tmp = rho1[(rho1.LT>21) | (rho1.LT<3)]
+                        plt.sca(figax[k0*3+k1][1][k3+lday,k4])
+                        rho2 = rho1tmp[np.floor(rho1tmp.epochday)==k3]
+                        latbin = rho2.lat3
+                        utbin = pd.Series(rho2.index.hour//3*3+1.5,index=rho2.index,name='UT')
+                        rho2 = rho2.groupby([latbin,utbin])['rrho400'].median().reset_index().pivot(
+                                index='lat3',columns='UT',values='rrho400')
+                        rho2[rho2.columns[0]+24] = rho2[rho2.columns[0]]
+
+                        if k2 is '60~90':
+                            # Area of lat3>87 is small, there should be only one value.
+                            rho2.iloc[rho2.index.argmax()]=np.nanmean(rho2.iloc[rho2.index.argmax()])
+                            utg,mlatg = np.meshgrid(rho2.columns,rho2.index)
+                            thetag, rg = utg/12*np.pi, 90-mlatg
+                        elif k2 is '-60~-90':
+                            rho2.iloc[rho2.index.argmin()]=np.nanmean(rho2.iloc[rho2.index.argmin()])
+                            utg,mlatg = np.meshgrid(rho2.columns,rho2.index)
+                            thetag, rg = utg/12*np.pi, 90+mlatg
+                        else:
+                            utg,mlatg = np.meshgrid(rho2.columns,rho2.index)
+                            thetag, rg = utg, mlatg
+
+                        cf = plt.gca().contourf(
+                                thetag,rg,rho2.values,
+                                levels=np.linspace(-30,30,21),
+                                extend='both')
+                        if k2 is '-60~60':
+                            plt.yticks(np.arange(-60,61,30))
+                            plt.xlim(0,24)
+                            plt.xticks(np.arange(0,25,6))
+                        else:
+                            plt.gca().set_rmax(30)
+                            plt.gca().set_theta_zero_location('S')
+                            plt.xticks(np.arange(0,361,60)/180*np.pi,np.arange(0,24,4))
+                            plt.yticks(np.arange(10,31,20),[''])
+                        if k3==-lday:
+                            plt.title(k5)
+                plt.text(0.5,0.95,'{:s}: {:s}'.format(k,k2),
+                         horizontalalignment='center',transform=plt.gcf().transFigure)
+                plt.subplots_adjust(bottom=0.05)
         #cax = plt.axes([0.20,0.025,0.6,0.01])
         #plt.colorbar(cf, cax=cax, ticks=np.arange(-30,31,10),orientation='horizontal')
-        #plt.sca(figax[1][0,0])
-        #plt.text(0,1.3,'Away-Toward (NH, SH)',transform=plt.gca().transAxes)
-        #plt.sca(figax[1][0,2])
-        #plt.text(0,1.3,'Toward-Away (NH, SH)',transform=plt.gca().transAxes)
-        #plt.subplots_adjust(left=0.1,right=0.9,bottom=0.05,top=0.93)
         return
     def f19():
         """ MLat/MLT variations

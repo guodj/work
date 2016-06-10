@@ -10,6 +10,7 @@ Some funny and useful python programmes
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import matplotlib
 
 def f1():
     """
@@ -150,7 +151,7 @@ def f4():
     """
     area = 100
     # 买房
-    bp = 12000  #每平米房价（没算装修，税等）
+    bp = 10000  #每平米房价（没算装修，税等）
     mp = 100000 #装修费用
     r3 = 0.3   #首付比例
     r4 = 0.049 #商贷利率
@@ -214,7 +215,10 @@ def f6():
     1：在不同月份开始结果如何？
     2：在每月的最高点和最低点开始定投差别如何？
     注：不考虑管理费，红利等
+    注：定投策略的前提是指数长期见长
     """
+    myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.local/share/fonts/simsun.ttc')
+    matplotlib.rcParams['axes.unicode_minus'] = False
     hs300 = pd.read_csv(
             '/data/hs300.csv',encoding='gbk',
             skiprows=1,
@@ -231,21 +235,56 @@ def f6():
     hs300m['minp'] = hs300['minp'].resample('1M',how='min')
     hs300m['volume'] = hs300['volume'].resample('1M',how='sum')
     hs300m['amo'] = hs300['amo'].resample('1M',how='sum')
-    pl = hs300m.ix[-1,'closep']
-    pmax = pl/np.array(hs300m.maxp)
-    pmax = (((pmax[::-1].cumsum())/np.arange(1,len(pmax)+1))[::-1]-1)*100
-    pmin = pl/np.array(hs300m.minp)
-    pmin = (((pmin[::-1].cumsum())/np.arange(1,len(pmin)+1))[::-1]-1)*100
-    hs300m['rmax'] = pmax
-    hs300m['rmin'] = pmin
+    #hs300m = hs300m[:'2015-4']
+
+    # 币值成本平均定投
+    ii = 1000 # 初始投资金额
+    r = 0.008 # 每月增加的投资金额
+    t = np.arange(len(hs300m)) #总月数为len(hs300m)
+    cb = ii*(1+r)**t #每月成本
+    zcb = np.cumsum(cb) # 总成本
+    v = zcb*np.nan
+    v[0] = ii
+    for k in np.arange(1,len(hs300m)):
+        pt = hs300m.ix[k,'closep']
+        pl = hs300m.ix[k-1,'closep']
+        v[k] = v[k-1]*pt/pl+cb[k]
     plt.figure()
-    plt.plot(hs300m.index,hs300m.rmax,'b',hs300m.index,hs300m.rmin,'r')
+    plt.plot(hs300m.index,v,'b-',label='收入：币值成本平均')
+    plt.plot(hs300m.index,zcb,'r-',label='成本：币值成本平均')
     plt.grid()
+
+    #价值平均定投
+    ii = 1000  #第一次投资
+    r = 0.008 #月增长率
+    t = np.arange(len(hs300m)) #总月数为len(hs300m)
+    v = ii*(t+1)*(1+r)**t  #价值曲线
+    cb = v*np.nan  #每月成本,指的是单纯工资支出
+    cb[0] = ii
+    zcb = v*np.nan  #总成本,指的是单纯工资总支出
+    zcb[0] = ii
+    tq = v*np.nan  #由于基金净值增加，从基金中提取的钱存到此账户(账户余额>0)
+    tq[0] = 0
+    for k in np.arange(1,len(cb)):
+        nm = v[k]-v[k-1]*hs300m.ix[k,'closep']/hs300m.ix[k-1,'closep']
+        tq[k] = tq[k-1]-nm
+        if tq[k]<0:
+            cb[k] = -tq[k]
+            tq[k] = 0
+        else:
+            cb[k] = 0
+        zcb[k] = zcb[k-1]+cb[k]
+    plt.plot(hs300m.index,v+tq,'b--',label='收入：价值平均')
+    plt.plot(hs300m.index,zcb,'r--',label='成本：价值平均')
+    plt.legend(prop=myfont,loc=2)
     plt.twinx()
-    plt.plot(hs300m.index,hs300m.closep,'k')
+    plt.plot(hs300m.index,hs300m.closep,'gray',label='沪深300指数')
+    print('{:d}个月总成本：{:f}'.format(t[-1],zcb[-1]))
+    print('{:d}个月总收入：{:f}'.format(t[-1],v[-1]+tq[-1]))
     plt.show()
-    return pmax, pmin
+    return cb
 
 
 if __name__ == '__main__':
+    plt.close('all')
     a=f6()
