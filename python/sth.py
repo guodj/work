@@ -212,12 +212,11 @@ def f5(x=1000,r=0.1):
 
 def f6():
     """定投沪深300指数：
-    1：在不同月份开始结果如何？
-    2：在每月的最高点和最低点开始定投差别如何？
     注：不考虑管理费，红利等
     注：定投策略的前提是指数长期见长
     """
-    myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.local/share/fonts/simsun.ttc')
+    #myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.local/share/fonts/simsun.ttc')
+    myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.fonts/s/SIMSUN.ttc')
     matplotlib.rcParams['axes.unicode_minus'] = False
     hs300 = pd.read_csv(
             '/data/hs300.csv',encoding='gbk',
@@ -229,14 +228,15 @@ def f6():
             parse_dates=0)
     hs300 = hs300.sort_index()
     hs300m = pd.DataFrame()
-    hs300m['openp'] = hs300['openp'].resample('1M',how='first')
-    hs300m['closep'] = hs300['closep'].resample('1M',how='last')
-    hs300m['maxp'] = hs300['maxp'].resample('1M',how='max')
-    hs300m['minp'] = hs300['minp'].resample('1M',how='min')
-    hs300m['volume'] = hs300['volume'].resample('1M',how='sum')
-    hs300m['amo'] = hs300['amo'].resample('1M',how='sum')
-    #hs300m = hs300m[:'2015-4']
+    hs300m['openp'] = hs300['openp'].resample('1M').first()
+    hs300m['closep'] = hs300['closep'].resample('1M').last()
+    hs300m['maxp'] = hs300['maxp'].resample('1M').max()
+    hs300m['minp'] = hs300['minp'].resample('1M').min()
+    hs300m['volume'] = hs300['volume'].resample('1M').sum()
+    hs300m['amo'] = hs300['amo'].resample('1M').sum()
+    #hs300m = hs300m['2010-1'::]
 
+    plt.figure()
     # 币值成本平均定投
     ii = 1000 # 初始投资金额
     r = 0.008 # 每月增加的投资金额
@@ -249,9 +249,9 @@ def f6():
         pt = hs300m.ix[k,'closep']
         pl = hs300m.ix[k-1,'closep']
         v[k] = v[k-1]*pt/pl+cb[k]
-    plt.figure()
-    plt.plot(hs300m.index,v,'b-',label='收入：币值成本平均')
-    plt.plot(hs300m.index,zcb,'r-',label='成本：币值成本平均')
+    plt.plot(hs300m.index,v,'b--',label='收入：币值成本平均')
+    #plt.plot(hs300m.index,zcb,'r--',label='成本：币值成本平均')
+    #plt.plot(hs300m.index,v-zcb,'b-',label='净收入：币值成本平均')
     plt.grid()
 
     #价值平均定投
@@ -274,15 +274,15 @@ def f6():
         else:
             cb[k] = 0
         zcb[k] = zcb[k-1]+cb[k]
-    plt.plot(hs300m.index,v+tq,'b--',label='收入：价值平均')
-    plt.plot(hs300m.index,zcb,'r--',label='成本：价值平均')
+    plt.plot(hs300m.index,v,'b',label='收入：价值平均')
+    plt.plot(hs300m.index,tq,'r',label='收入：价值平均')
+    plt.plot(hs300m.index,zcb,'k',label='成本：价值平均')
+    #plt.plot(hs300m.index,v+tq-zcb,'r-',label='净收入：价值平均')
     plt.legend(prop=myfont,loc=2)
-    plt.twinx()
-    plt.plot(hs300m.index,hs300m.closep,'gray',label='沪深300指数')
-    print('{:d}个月总成本：{:f}'.format(t[-1],zcb[-1]))
-    print('{:d}个月总收入：{:f}'.format(t[-1],v[-1]+tq[-1]))
+    plt.figure()
+    plt.plot(hs300.index,hs300.closep,'gray',marker='o',markersize=3,label='沪深300指数')
     plt.show()
-    return cb
+    return hs300
 
 
 if __name__ == '__main__':
