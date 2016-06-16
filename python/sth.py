@@ -215,8 +215,8 @@ def f6():
     注：不考虑管理费，红利等
     注：定投策略的前提是指数长期见长
     """
-    #myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.local/share/fonts/simsun.ttc')
-    myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.fonts/s/SIMSUN.ttc')
+    myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.local/share/fonts/simsun.ttc')
+    #myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.fonts/s/SIMSUN.ttc')
     matplotlib.rcParams['axes.unicode_minus'] = False
     hs300 = pd.read_csv(
             '/data/hs300.csv',encoding='gbk',
@@ -287,4 +287,4 @@ def f6():
 
 if __name__ == '__main__':
     plt.close('all')
-    a=f6()
+    a=f3()
