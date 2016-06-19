@@ -2467,12 +2467,96 @@ if __name__=='__main__':
         """Near the geodetic poles, the longitude and LT are not important;
         so it is a good location for the research of UT variation
         """
+        def percentile(n):
+            def percentile_(x):
+                return np.percentile(x,n)
+            percentile_.__name__ = 'percentile_%s' % n
+            return percentile_
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2010-12-31']
-        for k in sblist.index
+        density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]]
+        sbn = [0,0]
+        if False:
+            for k00,k in enumerate(['away-toward','toward-away']):
+                sbtmp = sblist[sblist.sbtype==k]
+                for k1 in sbtmp.index:
+                    for k2 in ['champ','grace']:
+                        rho = get_density_dates(k1+pd.TimedeltaIndex(range(-5,5),'D'), k2)
+                        if rho.empty:
+                            print('no data around',k1)
+                            continue
+                        rho = rho.add_index()
+                        l1 = len(rho)
+                        rho = rho[rho.Kp<=40]
+                        l2 = len(rho)
+                        if l2<0.8*l1:
+                            print('active geomagnetic condition around', k1)
+                            continue
+                        rho1 = rho[rho.lat3>=87]  # north pole
+                        if len(np.unique(rho1.index.dayofyear))!=10:
+                            print('there is data gap around', k1)
+                            continue
+                        rho1['epochday'] = (rho1.index-k1)/pd.Timedelta('1D')
+                        rho1['rrho400'] = 100*(rho1.rho400-rho1['rho400'].mean())/rho1['rho400'].mean()
+                        density[k00][0] = density[k00][0].append(
+                                rho1[['rho400','epochday','rrho400']])
+
+                        rho2 = rho[rho.lat3<=-87]  # south pole
+                        if len(np.unique(rho2.index.dayofyear))!=10:
+                            print('there is data gap around', k1)
+                            continue
+                        rho2['epochday'] = (rho2.index-k1)/pd.Timedelta('1D')
+                        rho2['rrho400'] = 100*(rho2.rho400-rho2['rho400'].mean())/rho2['rho400'].mean()
+                        density[k00][1] = density[k00][1].append(
+                                rho2[['rho400','epochday','rrho400']])
+
+                        sbn[k00] = sbn[k00]+1
+                        print(sbn)
+            pd.to_pickle(density, '/data/tmp/t13.dat')
+        density = pd.read_pickle('/data/tmp/t13.dat')
+        fig,ax = plt.subplots(2,2,sharex=True,sharey=True,figsize=(9,7))
+        for k00,k in enumerate(['away-toward','toward-away']):
+            for k11, k1 in enumerate(['N','S']):
+                plt.sca(ax[k11,k00])
+                density1 = density[k00][k11]
+                if density1.empty:
+                    continue
+                if k00 == 0:
+                    density1 = density1[(density1.index.month>=2) & (density1.index.month<=4)]
+                if k00 == 1:
+                    density1 = density1[(density1.index.month>=8) & (density1.index.month<=10)]
+                density1['epochbin'] = density1.epochday*24//3*3+1.5
+                density1 = density1.groupby('epochbin')['rrho400'].agg(
+                        [np.median, percentile(25),percentile(75)])
+                density1.columns = ['median', 'p25', 'p75']
+                plt.plot(density1.index/24, density1['median'],'k')
+                plt.plot(density1.index/24, density1['p25'],'gray')
+                plt.plot(density1.index/24, density1['p75'],'gray')
+                #plt.errorbar(density1.index/24, density1['median'],
+                #             yerr=[density1['median']-density1.p25,density1.p75-density1['median']],
+                #             linewidth=1)
+                plt.xlim(-5,5)
+                plt.xticks(np.arange(-5,6))
+                plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
+                plt.ylim(-30,60)
+                plt.yticks(np.arange(-30,61,30))
+                plt.grid()
+                plt.grid(which='minor',dashes=(4,1))
+                if k00==0 and k11==0:
+                    plt.title('Away-Toward')
+                if k00==1 and k11==0:
+                    plt.title('Toward-Away')
+                if k00==0:
+                    plt.ylabel(r'$\Delta\rho$ (%)')
+                if k11==1:
+                    plt.xlabel('Epoch Day')
+                plt.subplots_adjust(wspace=0.04)
+                plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
+        return
+
 #--------------------------#
     plt.close('all')
-    a = f16()
+    a = f24()
     plt.show()
     import gc
     gc.collect()
