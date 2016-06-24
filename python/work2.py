@@ -2459,7 +2459,12 @@ if __name__=='__main__':
                 plt.sca(ax[k00][k11])
                 rho = get_density_dates(k,k1)
                 rho = rho.add_updown()
-                fp = (rho.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1H')
+                #tmp = rho.index
+                #tmp1 = (rho.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1H')
+                #tmp2 = np.insert(np.diff(tmp1),0,0)
+                #tmp3, = np.where(tmp2>1)
+                #tmp = np.insert(tmp,tmp3,tmp[tmp3-1]+pd.Timedelta('0.5H'))
+                #rho = rho.reindex(tmp)
                 plt.plot(rho.index,rho.rho400/1e-12,'gray')
                 for k22,k2 in enumerate(['up','down']):
                     if k2=='up':
