@@ -23,8 +23,8 @@ RobustWeights	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function W = Robu
 __author__	/home/gdj/work/python/sth.py	/^__author__ = 'Guo Dongjie'$/;"	v
 __author__	/home/gdj/work/python/work2.py	/^__author__ = 'Dongjie Guo'$/;"	v
 __author__	/home/gdj/work/python/work3.py	/^__author__ = 'Dongjie Guo'$/;"	v
-a	/home/gdj/work/python/sth.py	/^    a=f5(x=1000, r=0.2)$/;"	v
-a	/home/gdj/work/python/work2.py	/^    a = f18()$/;"	v
+a	/home/gdj/work/python/sth.py	/^    a=f3()$/;"	v
+a	/home/gdj/work/python/work2.py	/^    a = f23()$/;"	v
 add_epoch_sb	/home/gdj/work/python/work2.py	/^    def add_epoch_sb(self, exclude_cir=True):$/;"	m	class:ChampDensity
 add_epochtime	/home/gdj/work/python/work2.py	/^    def add_epochtime(self, epoch0, lday=5, rday=5):$/;"	m	class:ChampDensity
 add_imf	/home/gdj/work/python/work2.py	/^    def add_imf(self):$/;"	m	class:ChampDensity
@@ -53,6 +53,7 @@ bzm	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,/;"	v	program:dfh
 bzmt	/home/gdj/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,bzet,bzmt$/;"	v	program:dfhskhfgks
 chacheng	/home/gdj/work/matlab/matlabfunction/chacheng.m	/^function y=chacheng(x1,x2)$/;"	f
 contourf_date_lat	/home/gdj/work/python/work2.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho400',$/;"	m	class:ChampDensity
+data_gap_nan	/home/gdj/work/python/work2.py	/^    def data_gap_nan(self):$/;"	m	class:ChampDensity
 date2doy	/home/gdj/work/matlab/matlabfunction/date2doy.m	/^function y = date2doy( varargin )$/;"	f
 date2doy	/home/gdj/work/matlab/work1/sea_SB_diff/date2doy.m	/^function y = date2doy( varargin )$/;"	f
 dates	/home/gdj/work/python/work3.py	/^    dates = pd.date_range(bdate.date(), edate.date())$/;"	v
@@ -80,9 +81,7 @@ errorbar_tick	/home/gdj/work/matlab/matlabfunction/errorbar_tick.m	/^function er
 etime	/home/gdj/work/python/work3.py	/^        etime = betime.loc[k-1,'etime']$/;"	v
 ezsmoothn	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function z = ezsmoothn(y)$/;"	f
 f	/home/gdj/work/python/work2.py	/^            def f(x):$/;"	f	function:.f6
-f	/home/gdj/work/python/work2.py	/^        def f(x):$/;"	f	function:.f4
 f1	/home/gdj/work/python/sth.py	/^def f1():$/;"	f
-f1	/home/gdj/work/python/work2.py	/^    def f1(): # test relative_density_to_previous_orbit_lt and contourf_date_lat$/;"	f
 f10	/home/gdj/work/python/work2.py	/^    def f10():$/;"	f
 f107	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107,/;"	v	program:gamdm_test
 f107	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107,/;"	v	program:mygamdm
@@ -100,23 +99,25 @@ f17	/home/gdj/work/python/work2.py	/^    def f17():$/;"	f
 f18	/home/gdj/work/python/work2.py	/^    def f18():$/;"	f
 f19	/home/gdj/work/python/work2.py	/^    def f19():$/;"	f
 f2	/home/gdj/work/python/sth.py	/^def f2():$/;"	f
-f2	/home/gdj/work/python/work2.py	/^    def f2():    # relative density to the 0 epoch time.$/;"	f
 f20	/home/gdj/work/python/work2.py	/^    def f20():$/;"	f
 f21	/home/gdj/work/python/work2.py	/^    def f21():$/;"	f
 f22	/home/gdj/work/python/work2.py	/^    def f22():$/;"	f
+f23	/home/gdj/work/python/work2.py	/^    def f23():$/;"	f
+f24	/home/gdj/work/python/work2.py	/^    def f24():$/;"	f
+f25	/home/gdj/work/python/work2.py	/^    def f25():$/;"	f
 f3	/home/gdj/work/python/sth.py	/^def f3():$/;"	f
-f3	/home/gdj/work/python/work2.py	/^    def f3():    # daily average density variation between 2001-2010$/;"	f
+f3	/home/gdj/work/python/work2.py	/^    def f3():$/;"	f
 f4	/home/gdj/work/python/sth.py	/^def f4():$/;"	f
-f4	/home/gdj/work/python/work2.py	/^    def f4():$/;"	f
 f5	/home/gdj/work/python/sth.py	/^def f5(x=1000,r=0.1):$/;"	f
 f5	/home/gdj/work/python/work2.py	/^    def f5():$/;"	f
+f6	/home/gdj/work/python/sth.py	/^def f6():$/;"	f
 f6	/home/gdj/work/python/work2.py	/^    def f6():$/;"	f
 f7	/home/gdj/work/python/work2.py	/^    def f7():$/;"	f
 f8	/home/gdj/work/python/work2.py	/^    def f8():$/;"	f
 f9	/home/gdj/work/python/work2.py	/^    def f9():$/;"	f
 ff	/home/gdj/work/python/work2.py	/^                    def ff(x):$/;"	f	function:.f20
 ff	/home/gdj/work/python/work2.py	/^                    def ff(x):$/;"	f	function:.f21
-ff	/home/gdj/work/python/work2.py	/^        def ff(x):$/;"	f	function:.f18
+ff	/home/gdj/work/python/work2.py	/^        def ff(x):  # calculate relative value$/;"	f	function:.f18
 findSBseason	/home/gdj/work/matlab/work1/data_SBlist/findSBseason.m	/^function y = findSBseason( x,t )$/;"	f
 findSBseason	/home/gdj/work/matlab/work1/data_processing/findSBseason.m	/^function y = findSBseason( x,t )$/;"	f
 fix_dottedline	/home/gdj/work/matlab/matlabfunction/fix_dottedline.m	/^function fix_dottedline(filename)$/;"	f
@@ -217,13 +218,14 @@ lt2ang	/home/gdj/work/matlab/matlabfunction/lt2ang.m	/^function ang = lt2ang( lt
 lt_lat_contourf	/home/gdj/work/python/work2.py	/^def lt_lat_contourf(ax, lt, lat, data, whichhemisphere='N', **kwargs):$/;"	f
 matplotlib	/home/gdj/work/python/sth.py	/^    import matplotlib$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^    import matplotlib.pyplot as plt$/;"	i
+matplotlib	/home/gdj/work/python/sth.py	/^import matplotlib$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/gdj/work/python/work2.py	/^import matplotlib$/;"	i
 matplotlib	/home/gdj/work/python/work2.py	/^import matplotlib.dates as mdates$/;"	i
 matplotlib	/home/gdj/work/python/work2.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/work3.py	/^import matplotlib.pyplot as plt$/;"	i
 mdates	/home/gdj/work/python/work2.py	/^import matplotlib.dates as mdates$/;"	i
 minorxy	/home/gdj/work/matlab/matlabfunction/minorxy.m	/^function minorxy(num,lengthf)$/;"	f
+mpl	/home/gdj/work/python/work2.py	/^import matplotlib as mpl$/;"	i
 mygamdm	/home/gdj/work/fortran/work1/mygamdm.f90	/^program mygamdm$/;"	p
 mygriddata	/home/gdj/work/matlab/matlabfunction/mygriddata.m	/^function z=mygriddata(x0,y0,z0,x,y)$/;"	f
 mylegend	/home/gdj/work/matlab/matlabfunction/mylegend.m	/^function varargout = mylegend(varargin )$/;"	f
@@ -251,7 +253,11 @@ pd	/home/gdj/work/python/work2.py	/^import pandas as pd$/;"	i
 pd	/home/gdj/work/python/work3.py	/^import pandas as pd$/;"	i
 pdb	/home/gdj/work/python/work2.py	/^import pdb   # set breakpoint$/;"	i
 percentile	/home/gdj/work/python/work2.py	/^                def percentile(n):$/;"	f	function:.f16
+percentile	/home/gdj/work/python/work2.py	/^        def percentile(n):$/;"	f	function:.f24
+percentile	/home/gdj/work/python/work2.py	/^        def percentile(n):$/;"	f	function:.f25
 percentile_	/home/gdj/work/python/work2.py	/^                    def percentile_(x):$/;"	f	function:.f16.percentile
+percentile_	/home/gdj/work/python/work2.py	/^            def percentile_(x):$/;"	f	function:.f24.percentile
+percentile_	/home/gdj/work/python/work2.py	/^            def percentile_(x):$/;"	f	function:.f25.percentile
 plot_median	/home/gdj/work/matlab/work1/data_processing/plot_median.m	/^function pic = plot_median(y1,y2,yr)$/;"	f
 plot_text	/home/gdj/work/matlab/matlabfunction/plot_text.m	/^function htext = plot_text(xxtext,yytext,text_str,font_size)$/;"	f
 plot_text_3c	/home/gdj/work/matlab/work1/plot_text_3c.m	/^function htext = plot_text_3c(xxtext,yytext,c1,c2,text1,text2,text3,font_size)$/;"	f
@@ -262,6 +268,7 @@ plt	/home/gdj/work/python/work3.py	/^import matplotlib.pyplot as plt$/;"	i
 polarity	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
 polarity	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
 quiver_champ_wind	/home/gdj/work/python/work3.py	/^def quiver_champ_wind(bdate, edate, pole='N', updown='both', color='b'):$/;"	f
+rc	/home/gdj/work/python/work2.py	/^from matplotlib import rc$/;"	i
 relative	/home/gdj/work/python/work2.py	/^relative = lambda x: 100*(x-x.mean())\/x.mean()$/;"	v
 relative_density_to_previous_orbit_lt	/home/gdj/work/python/work2.py	/^    def relative_density_to_previous_orbit_lt(self, whichcolumn='rho400'):$/;"	m	class:ChampDensity
 relative_density_to_previous_orbit_mlt	/home/gdj/work/python/work2.py	/^    def relative_density_to_previous_orbit_mlt(self, whichcolumn='rho400'):$/;"	m	class:ChampDensity

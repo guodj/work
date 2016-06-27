@@ -749,6 +749,19 @@ class ChampDensity(pd.DataFrame):
                     self[maxlepoch:maxrepoch].index - k)/np.timedelta64(1,'D')
         return ChampDensity(self)
 
+
+    def data_gap_nan(self):
+        """ If there are data gaps,insert nan, for plt.plot
+        """
+        tmp = self.index
+        tmp1 = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1H')
+        tmp2 = np.insert(np.diff(tmp1),0,0)
+        tmp3 = np.argwhere(tmp2>2)
+        tmp3 = tmp3.reshape((tmp3.size,))
+        tmp = np.insert(tmp,tmp3,tmp[tmp3-1]+pd.Timedelta('0.5H'))
+        return self.reindex(tmp)
+
+
 #------------------------end class-------------------------------------#
 
 
@@ -2459,26 +2472,19 @@ if __name__=='__main__':
                 plt.sca(ax[k00][k11])
                 rho = get_density_dates(k,k1)
                 rho = rho.add_updown()
-                #tmp = rho.index
-                #tmp1 = (rho.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1H')
-                #tmp2 = np.insert(np.diff(tmp1),0,0)
-                #tmp3, = np.where(tmp2>1)
-                #tmp = np.insert(tmp,tmp3,tmp[tmp3-1]+pd.Timedelta('0.5H'))
-                #rho = rho.reindex(tmp)
-                plt.plot(rho.index,rho.rho400/1e-12,'gray')
+                rhop = rho.data_gap_nan()
+                plt.plot(rhop.index,rhop.rho400/1e-12,'gray')
                 for k22,k2 in enumerate(['up','down']):
                     if k2=='up':
                         rho1 = rho[rho.isup]
                     if k2=='down':
                         rho1 = rho[rho.isdown]
                     for k3 in np.arange(87,90,3):
-                        plt.plot(rho1[rho1.lat3==k3].index,
-                                 rho1[rho1.lat3==k3].rho400/1e-12,
-                                 'b',alpha=0.8)
+                        rhop = ChampDensity(rho1[rho1.lat3==k3]).data_gap_nan()
+                        plt.plot(rhop.index, rhop.rho400/1e-12, 'b',alpha=0.8)
                     for k3 in np.arange(-90,-86,3):
-                        plt.plot(rho1[rho1.lat3==k3].index,
-                                 rho1[rho1.lat3==k3].rho400/1e-12,
-                                 'r',alpha=0.5)
+                        rhop = ChampDensity(rho1[rho1.lat3==k3]).data_gap_nan()
+                        plt.plot(rhop.index, rhop.rho400/1e-12, 'r',alpha=0.5)
                 plt.ylabel(k1.upper())
                 plt.xlim(dates[k00][0],dates[k00][-1]+pd.Timedelta('1D'))
                 plt.xticks(dates[k00],dates[k00].strftime('%m-%d'))
