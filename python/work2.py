@@ -2449,45 +2449,69 @@ if __name__=='__main__':
     def f23():
         """ For two special cases: 02-10-11~02-10-13 and 08-10-14~08-10-16
         """
-        dates = [pd.date_range('2002-10-9','2002-10-19'),
-                 pd.date_range('2009-9-8','2009-9-18')]
-        fig=[1,1]
-        ax=[1,1]
-        fig[0],ax[0] = plt.subplots(4,1,sharex=True)
-        fig[1],ax[1] = plt.subplots(4,1,sharex=True)
-        for k00,k in enumerate(dates):
-            idx = get_index(k)
-            imf = get_imf(k)
-            plt.sca(ax[k00][2])
+        #sblist = get_sblist()
+        #sblist = sblist['2001-1-1':'2010-12-31']
+        datesa = [pd.date_range('2002-10-9','2002-10-19'),
+                 pd.date_range('2001-6-22','2001-7-1'),
+                 pd.date_range('2001-10-7','2001-10-29'),
+                 pd.date_range('2001-11-10','2001-11-19'),
+                 pd.date_range('2001-12-19','2001-12-28'),
+                 pd.date_range('2002-1-2','2002-1-11'),
+                 pd.date_range('2002-3-14','2002-3-23'),
+                 pd.date_range('2002-5-1','2002-5-10'),
+                 pd.date_range('2002-10-9','2002-10-28'),
+                 pd.date_range('2007-1-3','2007-1-12'),
+                 pd.date_range('2008-12-25','2009-1-3'),
+                 pd.date_range('2009-11-30','2009-12-09'),
+                 pd.date_range('2010-3-18','2010-3-19')]
+        #for k00,k in enumerate(sblist.index):
+        #    dates = k+pd.TimedeltaIndex(np.arange(-5,5),'D')
+        for k00,k in enumerate(datesa):
+            dates = k
+            fig,ax = plt.subplots(4,1,sharex=True,figsize=(7,11))
+            idx = get_index(dates)
+            imf = get_imf(dates)
+            plt.sca(ax[2])
             plt.axhline(y=0,color='gray',linestyle='-')
             plt.plot(imf.index,imf.Bx,'b',label='Bx')
             plt.plot(imf.index,imf.Bym,'r',label='By')
             plt.plot(imf.index,imf.Bzm,'k',label='Bz')
             plt.ylabel('Bx, By, Bz')
             plt.legend(fontsize=10,frameon=False,loc='best',ncol=3)
-            plt.sca(ax[k00][3])
+            plt.gca().yaxis.set_major_locator(MaxNLocator(5))
+
+            plt.sca(ax[3])
             plt.plot(idx.index,idx.AE,'k')
             plt.ylabel('AE')
+            plt.gca().yaxis.set_major_locator(MaxNLocator(5))
+            plt.xlabel('Date of {:d}'.format(dates[0].year))
             for k11,k1 in enumerate(['champ','grace']):
-                plt.sca(ax[k00][k11])
-                rho = get_density_dates(k,k1)
+                plt.sca(ax[k11])
+                rho = get_density_dates(dates,k1)
+                if rho.empty:
+                    print('No data for {:s}'.format(k1))
+                    continue
                 rho = rho.add_updown()
                 rhop = rho.data_gap_nan()
                 plt.plot(rhop.index,rhop.rho400/1e-12,'gray')
-                for k22,k2 in enumerate(['up','down']):
-                    if k2=='up':
-                        rho1 = rho[rho.isup]
-                    if k2=='down':
-                        rho1 = rho[rho.isdown]
-                    for k3 in np.arange(87,90,3):
-                        rhop = ChampDensity(rho1[rho1.lat3==k3]).data_gap_nan()
-                        plt.plot(rhop.index, rhop.rho400/1e-12, 'b',alpha=0.8)
-                    for k3 in np.arange(-90,-86,3):
-                        rhop = ChampDensity(rho1[rho1.lat3==k3]).data_gap_nan()
-                        plt.plot(rhop.index, rhop.rho400/1e-12, 'r',alpha=0.5)
+                #for k22,k2 in enumerate(['up','down']):
+                #    if k2=='up':
+                #        rho1 = rho[rho.isup]
+                #    if k2=='down':
+                #        rho1 = rho[rho.isdown]
+                for k3 in np.arange(87,91,3):
+                    rhop = ChampDensity(rho[rho.lat3==k3]).data_gap_nan()
+                    plt.plot(rhop.index, rhop.rho400/1e-12, 'b',alpha=0.8)
+                for k3 in np.arange(-90,-86,3):
+                    rhop = ChampDensity(rho[rho.lat3==k3]).data_gap_nan()
+                    plt.plot(rhop.index, rhop.rho400/1e-12, 'r',alpha=0.5)
+                plt.gca().yaxis.set_major_locator(MaxNLocator(5))
                 plt.ylabel(k1.upper())
-                plt.xlim(dates[k00][0],dates[k00][-1]+pd.Timedelta('1D'))
-                plt.xticks(dates[k00],dates[k00].strftime('%m-%d'))
+                plt.xlim(dates[0],dates[-1]+pd.Timedelta('1D'))
+                plt.xticks(dates,dates.strftime('%m-%d'))
+            plt.show()
+            input()
+            plt.close()
         return
 
 
@@ -2545,7 +2569,47 @@ if __name__=='__main__':
             pd.to_pickle(density, '/data/tmp/t13.dat')
 
         density = pd.read_pickle('/data/tmp/t13.dat')
-        fig,ax = plt.subplots(2,2,sharex=True,sharey=True,figsize=(9,7))
+        fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(10,10))
+        for k00,k in enumerate(['away-toward','toward-away']):
+            for k11, k1 in enumerate(['N','S']):
+                density1 = density[k00][k11]
+                if density1.empty:
+                    continue
+                for k22, k2 in enumerate(['me','se','js','ds']):
+                    plt.sca(ax[k22,k00*2+k11])
+                    if k2 is 'me':
+                        fp = (density1.index.month>=2) & (density1.index.month<=4)
+                    if k2 is 'se':
+                        fp = (density1.index.month>=8) & (density1.index.month<=10)
+                    if k2 is 'js':
+                        fp = (density1.index.month>=5) & (density1.index.month<=7)
+                    if k2 is 'ds':
+                        fp = (density1.index.month>=11) | (density1.index.month<=1)
+                    density2 = density1[fp]
+                    density2['epochbin'] = density2.epochday*24//3*3+1.5
+                    density2 = density2.groupby('epochbin')['rrho400'].agg(
+                            [np.median, percentile(25),percentile(75)])
+                    density2.columns = ['median', 'p25', 'p75']
+                    plt.plot(density2.index/24, density2['median'],'k')
+                    plt.plot(density2.index/24, density2['p25'],'gray')
+                    plt.plot(density2.index/24, density2['p75'],'gray')
+                    plt.xlim(-5,5)
+                    plt.xticks(np.arange(-5,6))
+                    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
+                    plt.ylim(-30,60)
+                    plt.yticks(np.arange(-30,61,30))
+                    plt.grid(which='minor',dashes=(4,1))
+                    plt.grid(which='major',axis='y',dashes=(4,1))
+                    if k00*2+k11==0:
+                        plt.ylabel(r'$\Delta\rho$ (%)')
+                    if k22==3:
+                        plt.xlabel('Epoch Day')
+                    plt.subplots_adjust(wspace=0.04)
+                    plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
+        plt.text(0.25,0.92,'Away-Toward',transform=plt.gcf().transFigure)
+        plt.text(0.65,0.92,'Toward-Away',transform=plt.gcf().transFigure)
+
+        fig,ax = plt.subplots(2,2,sharex=True,sharey=True,figsize=(10,10))
         for k00,k in enumerate(['away-toward','toward-away']):
             for k11, k1 in enumerate(['N','S']):
                 plt.sca(ax[k11,k00])
@@ -2553,44 +2617,9 @@ if __name__=='__main__':
                 if density1.empty:
                     continue
                 if k00 == 0:
-                    density1 = density1[(density1.index.month>=2) & (density1.index.month<=4)]
+                    density1 = density1[(density1.index.month>=5) & (density1.index.month<=5)]
                 if k00 == 1:
-                    density1 = density1[(density1.index.month>=8) & (density1.index.month<=10)]
-                density1['epochbin'] = density1.epochday*24//3*3+1.5
-                density1 = density1.groupby('epochbin')['rrho400'].agg(
-                        [np.median, percentile(25),percentile(75)])
-                density1.columns = ['median', 'p25', 'p75']
-                plt.plot(density1.index/24, density1['median'],'k')
-                plt.plot(density1.index/24, density1['p25'],'gray')
-                plt.plot(density1.index/24, density1['p75'],'gray')
-                plt.xlim(-5,5)
-                plt.xticks(np.arange(-5,6))
-                plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
-                plt.ylim(-30,60)
-                plt.yticks(np.arange(-30,61,30))
-                plt.grid(which='minor',dashes=(4,1))
-                plt.grid(which='major',axis='y',dashes=(4,1))
-                if k00==0 and k11==0:
-                    plt.title('Away-Toward')
-                if k00==1 and k11==0:
-                    plt.title('Toward-Away')
-                if k00==0:
-                    plt.ylabel(r'$\Delta\rho$ (%)')
-                if k11==1:
-                    plt.xlabel('Epoch Day')
-                plt.subplots_adjust(wspace=0.04)
-                plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
-        fig,ax = plt.subplots(2,2,sharex=True,sharey=True,figsize=(9,7))
-        for k00,k in enumerate(['away-toward','toward-away']):
-            for k11, k1 in enumerate(['N','S']):
-                plt.sca(ax[k11,k00])
-                density1 = density[k00][k11]
-                if density1.empty:
-                    continue
-                if k00 == 0:
-                    density1 = density1[(density1.index.month>=2) & (density1.index.month<=4)]
-                if k00 == 1:
-                    density1 = density1[(density1.index.month>=8) & (density1.index.month<=10)]
+                    density1 = density1[(density1.index.month>=5) & (density1.index.month<=5)]
                 density1['epochbin'] = density1.epochday*24//3*3+1.5
                 density1 = density1.groupby('epochbin')['MLT'].agg(
                         [np.median, percentile(25),percentile(75)])
@@ -2742,7 +2771,7 @@ if __name__=='__main__':
         return
 #--------------------------#
     plt.close('all')
-    a = f23()
+    a = f24()
     plt.show()
     import gc
     gc.collect()
