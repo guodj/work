@@ -137,9 +137,10 @@
   Month                    = {APR 14},
   Volume                   = {37},
 
-  __markedentry            = {[gdj:6]},
+  __markedentry            = {[gdj:]},
   Article-number           = {{L07110}},
   Doi                      = {10.1029/2009GL042143},
+  File                     = {Crowley2010.pdf:Crowley2010.pdf:PDF},
   ISSN                     = {{0094-8276}},
   Orcid-numbers            = {{Lei, Jiuhou/0000-0002-4374-5083
  Sutton, Eric/0000-0003-1424-7189}},
@@ -859,6 +860,25 @@ and McPherron, Robert L.},
   Url                      = {http://www.sciencedirect.com/science/article/pii/S1364682608003593}
 }
 
+@Article{Newell1989,
+  Title                    = {Dipole tilt angle effects on the latitude of the cusp and cleft/low-latitude boundary layer},
+  Author                   = {Newell, Patrick T. and Meng, Ching-I.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {1989},
+  Number                   = {A6},
+  Pages                    = {6949--6953},
+  Volume                   = {94},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/JA094iA06p06949},
+  File                     = {Newell1989.pdf:Newell1989.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Cusp, Magnetopause and boundary layers, Energetic particles: precipitating, Magnetospheric configuration and dynamics, Solar wind/magnetosphere interactions},
+  Owner                    = {gdj},
+  Timestamp                = {2016.07.01},
+  Url                      = {http://dx.doi.org/10.1029/JA094iA06p06949}
+}
+
 @Article{Newell2007,
   Title                    = {A nearly universal solar wind-magnetosphere coupling function inferred from 10 magnetospheric state variables},
   Author                   = {Newell, P. T. and Sotirelis, T. and Liou, K. and Meng, C.-I. and Rich, F. J.},
@@ -925,8 +945,6 @@ and McPherron, Robert L.},
   Number                   = {4},
   Pages                    = {3564--3577},
   Volume                   = {121},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1002/2015JA022129},
   File                     = {Oyama2016a.pdf:Oyama2016a.pdf:PDF},
   ISSN                     = {2169-9402},
@@ -1532,6 +1550,7 @@ and McPherron, Robert L.},
   Number                   = {A1},
   Pages                    = {245--251},
   Volume                   = {105},
+
   Doi                      = {10.1029/1999JA900412},
   File                     = {Zhou2000.pdf:Zhou2000.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1615,6 +1634,7 @@ g2016\;Lei2015\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley
 1 ExplicitGroup:magnetosphere\;0\;Crooker1979\;Glocer2015\;McPherron20
 09\;Ridley2014\;Russell2003\;Tenfjord2015\;Tsurutani2005\;Zhou2000\;;
 2 ExplicitGroup:ring current\;0\;Daglis1999\;;
+2 ExplicitGroup:cusp\;0\;Newell1989\;;
 1 ExplicitGroup:solar wind\;0\;Russell2013\;Tsurutani2005\;Tsurutani20
 06\;Zurbuchen2006\;;
 1 ExplicitGroup:MIT coupling\;0\;Newell2002\;Newell2007\;;
