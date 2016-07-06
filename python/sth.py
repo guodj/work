@@ -285,6 +285,33 @@ def f6():
     return hs300
 
 
+def f7():
+    """沪深300指数每月的哪一天最小：
+    """
+    myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.local/share/fonts/simsun.ttc')
+    #myfont = matplotlib.font_manager.FontProperties(fname='/home/gdj/.fonts/s/SIMSUN.ttc')
+    matplotlib.rcParams['axes.unicode_minus'] = False
+    hs300 = pd.read_csv(
+            '/data/hs300.csv',encoding='gbk',
+            skiprows=1,
+            header=None,
+            names=['date','closep','maxp','minp','openp','volume','amo'],
+            usecols=[0,3,4,5,6,7,8],
+            index_col=0,
+            parse_dates=0)
+    hs300 = hs300.sort_index()
+    hs300 = hs300[hs300.volume!=0]
+    hs3001 = hs300.groupby([hs300.index.year,hs300.index.day])['closep','maxp','minp','openp'].median()
+    fig = plt.figure()
+    for k0 in hs3001.index.get_level_values(0):
+        plt.plot(hs3001.loc[k0].index,hs3001.loc[k0].closep,'b',marker='o')
+    plt.xlim(1,31)
+    #没有统计上的规律
+    plt.show()
+
+    return hs3001
+
+
 if __name__ == '__main__':
     plt.close('all')
-    a=f3()
+    a=f7()
