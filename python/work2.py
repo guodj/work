@@ -324,7 +324,7 @@ class ChampDensity(pd.DataFrame):
             dlat.iloc[0] = dlat.iloc[1]
             if whichlat=='lat3':
                 fp = (np.abs(dlat)!=3) & (np.abs(dlat)!=0)
-                fpid = np.argwhere(fp).reshape(-1)
+                fpid = np.argwhere(fp).reshape(-1)[:-1]
                 dlat[fpid] = dlat[fpid+1]
             self['isup'] = (dlat > 0)
             self['isdown'] = (dlat < 0)
@@ -437,15 +437,24 @@ class ChampDensity(pd.DataFrame):
         Returns:
             upLT, downLT: Local times for ascending and descending orbits.
         Note:
-            if local times are [0,0,24,24], the result is 12, this is wrong.
-            for high latitudes, the results may be not right
+            Only low latitudes (-30<lat<30) are considered.
         """
-        if not self.empty:
-            self = self.add_updown()
-            grouped = self.groupby(self.isup)['LT']
-            lt = grouped.median()
-            return lt[True], lt[False]
-        return np.nan, np.nan
+        output = [np.nan,np.nan]
+        if self.empty:
+            return output
+        rho = self.add_updown()
+        rho = rho[(rho.lat3>=-30) &(rho.lat3<=30)]
+        if rho.empty:
+            return output
+        grouped = rho.groupby(rho.isup)['LT']
+        for name, group in grouped:
+            k0 = 0 if name is True else 1
+            group1 = group
+            if group1.max()-group1.min()>22:
+                group1[group1<2] = group1[group1<2]+24
+            output[k0] = np.median(group1)
+            output[k0] = output[k0]%24
+        return output
 
 
     def orbit_mean(self,lats=(-85,85),updown='up'):
@@ -885,6 +894,7 @@ def get_satellite_lt():
     for kdate in datelt.index:
         density = get_density_dates([kdate])
         datelt.loc[kdate,['LTup', 'LTdown']] = density.LT_median()
+        print('champ ',kdate)
     datelt.index.name = 'date'
     datelt.to_csv('/data/CHAMP23/LT.dat',na_rep=np.nan)
 
@@ -893,6 +903,7 @@ def get_satellite_lt():
     for kdate in datelt1.index:
         density = get_density_dates([kdate],satellite='grace')
         datelt1.loc[kdate,['LTup', 'LTdown']] = density.LT_median()
+        print('grace ',kdate)
     datelt1.index.name = 'date'
     datelt1.to_csv('/data/Grace23/LT.dat',na_rep=np.nan)
     return
@@ -1234,91 +1245,6 @@ if __name__=='__main__':
         return
 
 
-    def f10():
-        """Case study of the density response to SBs
-        """
-        sblist = get_sblist()
-        sblist = sblist['2001-1-1':'2010-12-31']
-        nn = 0
-        sdates = ['2002-9-15','2002-10-14','2003-9-30','2003-10-22',
-                  '2006-10-7','2006-11-4','2007-2-22','2007-6-29',
-                  '2008-10-18','2008-10-30','2009-9-13']
-        sdates = pd.DatetimeIndex(sdates)
-        for k in sdates:
-            adates = k+pd.TimedeltaIndex(np.arange(-5,5),'D')
-            sw = get_sw(adates)
-            imf = get_imf(adates)
-            sgindex = get_index(adates)
-            rhoom = [1,1,1,1,1,1,1,1]
-            ltom = [2,2,2,2,2,2,2,2]
-            for k11,k1 in enumerate(['champ','grace']):
-                rho = get_density_dates(adates,satellite=k1)
-                if rho.empty:
-                    break
-                for k22,k2 in enumerate(['north','south']):
-                    if k2 is 'north':
-                        lats = (60,90)
-                    if k2 is 'south':
-                        lats = (-90,-60)
-                    for k33,k3 in enumerate(['up', 'down']):
-                        if k3 is 'up':
-                            updown = 'up'
-                        if k3 is 'down':
-                            updown = 'down'
-                        rhorho = rho.orbit_mean(lats=lats,updown=updown)
-                        rhoom[k11*4+k22*2+k33] = rhorho
-                        ltom[k11*4+k22*2+k33] = rhorho.LT.median()
-            if rho.empty:
-                continue
-            else:
-                nn = nn + 1
-                print(nn)
-            fig,ax = plt.subplots(7,1,sharex=True,figsize=(7,10))
-            ax[0].plot(sw.index, sw.speed,'darkgreen',linewidth=2)
-            ax[0].set_ylabel(r'$\mathsf{V_{SW}}$',fontsize=14)
-
-            ax[1].plot(imf.index, imf.Bx,'darkblue',linewidth=2)
-            ax[1].plot(imf.index, imf.Bye,'darkred',linewidth=2)
-            ax[1].axhline(0,color='gray',linestyle='--',zorder=0)
-            ax[1].set_ylabel(r'$B_x, B_y$',fontsize=14)
-
-            ax[2].plot(imf.index, imf.Bzm,'darkcyan',linewidth=2)
-            ax[2].axhline(0,color='gray',linestyle='--',zorder=0)
-            ax[2].set_ylabel(r'$B_z$',fontsize=14)
-
-            ax[3].plot(sgindex.index, sgindex.f107,'darkorange',linewidth=2)
-            ax[3].set_ylabel(r'$F10.7$',fontsize=14)
-
-            ax[4].plot(sgindex.index, sgindex.ap,'purple',linewidth=2)
-            ax[4].set_ylabel(r'$ap$',fontsize=14)
-
-            for k1,k2,k3 in zip([0,1,4,5],
-                                ['b-','g-','r-','k-'],
-                                ['CHAMP','CHAMP','GRACE','GRACE']):
-                ax[5].plot(rhoom[k1].index, rhoom[k1].rho400/1e-12,k2,
-                           linewidth=2,label=k3+'LT: {:.1f}'.format(ltom[k1]),zorder=1)
-            plt.sca(ax[5])
-            plt.legend(loc=0,frameon=False,fontsize=10,ncol=2)
-            for k1,k2,k3 in zip([2,3,6,7],
-                                ['b-','g-','r-','k-'],
-                                ['CHAMP','CHAMP','GRACE','GRACE']):
-                ax[6].plot(rhoom[k1].index, rhoom[k1].rho400/1e-12,k2,
-                           linewidth=2,label=k3+'LT: {:.1f}'.format(ltom[k1]),zorder=1)
-            plt.sca(ax[6])
-            plt.legend(loc=0,frameon=False,fontsize=10,ncol=2)
-            for k1 in range(7):
-                ax[k1].set_xlim(adates.min(),adates.max()+pd.Timedelta('1D'))
-                ax[k1].xaxis.set_ticks(adates)
-                ax[k1].grid(axis='x')
-                ax[k1].yaxis.set_major_locator(MaxNLocator(nbins=4,prune='upper'))
-            ax[-1].xaxis.set_ticklabels(adates.strftime('%y/%m/%d'),rotation=45)
-            plt.subplots_adjust(hspace=0.03,top=0.95,right=0.95)
-            plt.show()
-            input()
-            plt.close()
-        return
-
-
     def f11():
         """test griddata and contourf
         """
@@ -1392,6 +1318,7 @@ if __name__=='__main__':
 
     def f12():
         """x axis: day of year; yaxis: epoch day
+        CHAMP and GRACE LT in every day,test LT_median
         """
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2010-12-31']
@@ -1406,64 +1333,18 @@ if __name__=='__main__':
             ax[0].scatter(champlt.index, champlt.LTup, linewidth=0,color='b', label='up')
             ax[0].scatter(champlt.index, champlt.LTdown, linewidth=0,color='r', label='down')
             ax[0].set_title('CHAMP')
-            ax[0].legend()
+            ax[0].set_ylabel('Local Time')
+            ax[0].legend(frameon=True)
             ax[1].scatter(gracelt.index, gracelt.LTup, linewidth=0,color='b', label='up')
             ax[1].scatter(gracelt.index, gracelt.LTdown, linewidth=0,color='r', label='down')
             ax[1].set_title('GRACE')
             ax[1].set_xlabel('Year')
+            ax[1].set_ylabel('Local Time')
             for k in np.arange(2):
                 ax[k].set_xlim(['2001-1-1','2011-1-1'])
                 ax[k].set_ylim([0,24])
                 ax[k].set_yticks(range(0,25,4))
             plt.show()
-        # select specified sblist and LT
-        groupsblist = sblist.groupby('sbtype')
-        atlist = groupsblist.get_group('away-toward')
-
-        fig = plt.figure()
-        lrday = 5
-        if False: #  data preparation
-            a = []
-            for k in ['champ','grace']:
-                if k is 'champ':
-                    tmp = champlt[champlt.index.isin(atlist.index)]
-                else:
-                    tmp = gracelt[gracelt.index.isin(atlist.index)]
-                tmp1 = tmp[(tmp.LTup>12) | (tmp.LTup<12)]
-                tmp2 = tmp[(tmp.LTdown>12) | (tmp.LTdown<12)]
-                for k1 in ['up','down']:
-                    tmp3 = tmp1 if k1 is 'up' else tmp2
-                    for k2 in tmp3.index:
-                        rho = get_density_dates(
-                                k2+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'),
-                                satellite=k)
-                        rhot = rho.orbit_mean(lats=(-30,30),updown=k1)
-                        #  exclude points with Kp>40
-                        #smindex = get_index(k2+pd.TimedeltaIndex(np.arange(-lrday,lrday),'D'))
-                        #smindex = smindex.reindex(rhot.index,method='ffill')
-                        #rhot = rhot[smindex.Kp<=40]
-                        #  select longitudes near the south pole
-                        #fp, = argrelextrema(np.array(abs(rhot['long']+55)),np.less,order=5)
-                        #rhot = rhot.iloc[fp]
-                        print(rhot.shape[0])
-                        if rhot.shape[0]>=128:
-                            rhot['rrho'] = (100*(rhot['rho400']-rhot['rho400'].mean())/
-                                    rhot['rho400'].mean())
-                            rhot['doy'] = rhot.index.dayofyear
-                            rhot['epochday'] = (rhot.index-k2)/pd.Timedelta('1D')
-                            a.append(rhot)
-            a = pd.concat(a)
-            a.to_pickle('/data/tmp/t5.dat')
-        a = pd.read_pickle('/data/tmp/t5.dat')
-        x = a.doy
-        y = a.epochday
-        z = a.rrho
-        x0, y0 = np.meshgrid(np.arange(1,366,10), np.arange(-5,5,1.5/24))
-        z0 = griddata((x/5000,y),z,(x0/5000,y0))
-        plt.contourf(x0,y0,z0,levels=np.linspace(-40,60,20))
-        plt.colorbar()
-        plt.show()
-        return a
 
 
     def f13():
@@ -2704,10 +2585,73 @@ if __name__=='__main__':
                     ax[0,k11*2+k00].set_title(k0)
                     plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
 
+    def f26():
+        """xaxis: epoch time, yaxis: rrho400 for different seasons and sector polarity.
+        """
+        sblist = get_sblist()
+        sblist = sblist['2001-1-1':'2010-12-31']
+        density = [pd.DataFrame(),pd.DataFrame()] # [AT, TA]
+        sbn = [0,0]  # length of sblist
+        if False:
+            for k00,k in enumerate(['away-toward','toward-away']):
+                sbtmp = sblist[sblist.sbtype==k]
+                for k1 in sbtmp.index:
+                    rho = get_density_dates(k1+pd.TimedeltaIndex(range(-5,5),'D'), satellite='grace')
+                    if rho.empty:
+                        print('no data around',k1)
+                        continue
+                    rho = rho.add_index()
+                    l1 = len(rho)
+                    rho = ChampDensity(rho[rho.Kp<=40])
+                    l2 = len(rho)
+                    if l2<0.8*l1:
+                        print('active geomagnetic condition around', k1)
+                        continue
+                    rhoom = [rho.orbit_mean(lats=(-90,90), updown=kk) for kk in ['up','down']]
+                    for k2 in range(2):
+                        tmp = rhoom[k2]['rho400']
+                        rhoom[k2]['rrho400'] = 100*(tmp-tmp.mean())/tmp.mean()
+                        rhoom[k2]['epochday'] = (rhoom[k2].index-k1)/pd.Timedelta('1D')
+                    rhoom = pd.concat(rhoom)
+                    density[k00] = density[k00].append(rhoom)
+                    sbn[k00] = sbn[k00]+1
+                    print(sbn)
+            pd.to_pickle((density,sbn), '/data/tmp/t26.dat')
+        density, sbn = pd.read_pickle('/data/tmp/t26.dat')
+        fig, ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(8.6,8.5))
+        for k00,k0 in enumerate(['Away-Toward','Toward-Away']):
+            rho = density[k00]
+            for k11,k1 in enumerate(['Feb-Apr','Aug-Oct','May-Jul','Nov-Jan']):
+                plt.sca(ax[k11,k00])
+                if k1 is 'Feb-Apr':
+                    fp = (rho.index.month>=2) & (rho.index.month<=4)
+                if k1 is 'Aug-Oct':
+                    fp = (rho.index.month>=8) & (rho.index.month<=10)
+                if k1 is 'May-Jul':
+                    fp = (rho.index.month>=5) & (rho.index.month<=7)
+                if k1 is 'Nov-Jan':
+                    fp = (rho.index.month>=11) | (rho.index.month<=1)
+                rho1 = rho[fp]
+                rho1['hourbin'] = rho1['epochday']*24//0.5*0.5+0.25
+                rho1 = rho1.groupby('hourbin')['rrho400'].median()
+                plt.plot(rho1.index/24,rho1)
+                plt.xlim(-5,5)
+                plt.gca().yaxis.set_major_locator(MaxNLocator(4))
+                ax[k11,0].set_ylabel(r'$\Delta\rho$ (%)')
+                ax[-1,k00].set_xlabel(r'Epoch Time (day)')
+                ax[0,k00].set_title(k0)
+                plt.grid()
+        plt.text(0.91,0.8,'Feb - Apr',transform=plt.gcf().transFigure,fontsize=11)
+        plt.text(0.91,0.59,'Aug - Oct',transform=plt.gcf().transFigure,fontsize=11)
+        plt.text(0.91,0.38,'May - Jul',transform=plt.gcf().transFigure,fontsize=11)
+        plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
+        return
+
+
 
 #--------------------------#
     plt.close('all')
-    a = f24()
+    a=f26()
     plt.show()
     import gc
     gc.collect()
