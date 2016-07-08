@@ -1,0 +1,118 @@
+\documentclass[draft,jgrga]{/home/gdj/文档/template/agu_template/AGUTeX}
+\usepackage{lineno}
+\linenumbers*[1]
+%  To add line numbers to lines with equations:
+%  \begin{linenomath*}
+%  \begin{equation}
+%  \end{equation}
+%  \end{linenomath*}
+\usepackage{graphicx}
+\setkeys{Gin}{draft=false}
+\authorrunninghead{GUO ET AL.}
+\titlerunninghead{SHORT TITLE}
+\authoraddr{Corresponding author: Jiuhou Lei, Department of Space Physics, 
+University of Science and Technology of China, Hefei, Anhui, China. (leijh@ustc.edu.cn)}
+\begin{document}
+
+\title{Title of the article}
+\authors{Dongjie Guo,\altaffilmark{1,2}
+Jiuhou Lei,\altaffilmark{1} and
+Aaron Ridley\altaffilmark{2}}
+\altaffiltext{1}{University of Science and Technology of China.}
+\altaffiltext{2}{University of Michigan.}
+
+\begin{abstract}
+    Some lines
+\end{abstract}
+
+\begin{article}
+\section{Introduction}
+    Some lines
+\section{Materials and Methods}
+    Some lines
+\section{Results}
+    Some lines
+\subsection{Simulations}
+    Some lines
+\subsubsection{Simulation 1}
+    Some lines
+\subsubsection{Simulation 2}
+    Some lines
+\subsection{Real Data}
+    Some lines
+\section{Discussion}
+    Some lines
+\begin{acknowledgments}
+
+    some lines
+\end{acknowledgments}
+\bibliography{/home/gdj/work/bib/literature}
+\bibliographystyle{/home/gdj/文档/template/agu_template/BibTeX/agufull08}
+\end{article}
+%------------------------------
+%
+% EXAMPLE MATH FORMULA
+%
+%\begin{equation}
+%\label{eq:emc}
+%e = mc^2
+%\end{equation}
+%\begin{eqnarray}
+%  x_{1} & = & (x - x_{0}) \cos \Theta \nonumber \\
+%        && + (y - y_{0}) \sin \Theta  \nonumber \\
+%  y_{1} & = & -(x - x_{0}) \sin \Theta \nonumber \\
+%        && + (y - y_{0}) \cos \Theta.
+%\end{eqnarray}
+%
+%------------------------------
+%
+% EXAMPLE FIGURE
+%
+%\begin{figure}
+%    \centering
+%    \noindent\includegraphics[width=0.8\textwidth]{/data/output/fig/work2/fig2}
+%    \caption{Caption text here}
+%    \label{figure_label}
+%\end{figure}
+%
+%------------------------------
+%
+% EXAMPLE TABLE
+%
+%\begin{table}
+%\caption{Time of the Transition Between Phase 1 and Phase 2\tablenotemark{a}}
+%\centering
+%\begin{tabular}{l c}
+%\hline
+% Run  & Time (min)  \\
+%\hline
+%  $l1$  & 260   \\
+%  $l2$  & 300   \\
+%  $l3$  & 340   \\
+%  $h1$  & 270   \\
+%  $h2$  & 250   \\
+%  $h3$  & 380   \\
+%  $r1$  & 370   \\
+%  $r2$  & 390   \\
+%\hline
+%\end{tabular}
+%\tablenotetext{a}{Footnote text here.}
+%\end{table}
+%------------------------------
+%
+% EXAMPLE CITING
+%
+%...as shown by \textit{Kilby} [2008].
+%...as shown by {\textit  {Lewin}} [1976], {\textit  {Carson}} [1986], {\textit  {Bartholdy and Billi}} [2002], and {\textit  {Rinaldi}} [2003].
+%...has been shown [\textit{Kilby et al.}, 2008].
+%...has been shown [{\textit  {Lewin}}, 1976; {\textit  {Carson}}, 1986; {\textit  {Bartholdy and Billi}}, 2002; {\textit  {Rinaldi}}, 2003].
+%...has been shown [e.g., {\textit  {Lewin}}, 1976; {\textit  {Carson}}, 1986; {\textit  {Bartholdy and Billi}}, 2002; {\textit  {Rinaldi}}, 2003].
+
+%...as shown by \citet{jskilby}.
+%...as shown by \citet{lewin76}, \citet{carson86}, \citet{bartoldy02}, and \citet{rinaldi03}.
+%...has been shown \citep{jskilbye}.
+%...has been shown \citep{lewin76,carson86,bartoldy02,rinaldi03}.
+%...has been shown \citep [e.g.,][]{lewin76,carson86,bartoldy02,rinaldi03}.
+% Please use ONLY \citet and \citep for reference citations.
+%------------------------------
+\end{document}
