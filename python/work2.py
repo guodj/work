@@ -2516,6 +2516,8 @@ if __name__=='__main__':
         return
 ################################################################################
     def f25():
+        """ What is the UT time at which the pole densities maximize
+        """
         sbdates = get_date_polarity()
         sbdates = sbdates['2001-1-1':'2010-12-31']
         density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(), pd.DataFrame()]]# an,as,tn,ts
@@ -2526,32 +2528,25 @@ if __name__=='__main__':
                 for k1 in sbdates1.index:
                     rho = get_density_dates([k1],satellite='grace')
                     if rho.empty:
-                        print('No data around ', k1)
+                        print('No data at ', k1)
                         continue
                     sgmindex = get_index([k1])
-                    if (sgmindex.Kp>40).any():
+                    if ((sgmindex.Kp.mean())>40):
                         print('Geomagnetic activity is high at ', k1)
                         continue
                     sgmindex = sgmindex.reindex(rho.index, method='ffill')
                     rho = pd.concat([rho, sgmindex], axis=1)
                     rho['uthour'] = rho.index.hour+rho.index.minute/60+rho.index.second/3600
-                    rhon, rhos = rho[rho.lat3==90], rho[rho.lat3==-90]
-                    rhon['rrho400'] = 100*(
-                            rhon['rho400']-rhon['rho400'].mean())/rhon['rho400'].mean()
-                    rhos['rrho400'] = 100*(
-                            rhos['rho400']-rhos['rho400'].mean())/rhos['rho400'].mean()
-                    if len(rhon)<=8:
-                        print('Data gap at the north pole at ',k1)
-                    else:
-                        density[k00][0] = density[k00][0].append(
-                                rhon[['rho400','rrho400','MLT','uthour']])
-                        nn[k00][0] = nn[k00][0]+1
-                    if len(rhos)<=8:
-                        print('Data gap at the south pole at ',k1)
-                    else:
-                        density[k00][1] = density[k00][1].append(
-                                rhos[['rho400','rrho400','MLT','uthour','f107']])
-                        nn[k00][1] = nn[k00][1]+1
+                    rhop = rho[(rho.lat3==90) | (rho.lat3==-90)]
+                    rhop = rhop.groupby('lat3').filter(lambda x: len(x)>8).groupby('lat3')
+                    for name,group in rhop:
+                        kk = 0 if name==90 else 1
+                        group1 = group
+                        group1['rrho400'] = 100*(
+                                group1['rho400']-group1['rho400'].mean())/group1['rho400'].mean()
+                        density[k00][kk] = density[k00][kk].append(
+                                group1[['rho400','rrho400','MLT','uthour']])
+                        nn[k00][kk] = nn[k00][kk]+1
                     print(nn)
             pd.to_pickle((density,nn), '/data/tmp/t25.dat')
 
@@ -2571,7 +2566,7 @@ if __name__=='__main__':
                         rho2 = rho1[(rho1.index.month>=5) & (rho1.index.month<=7)]
                     if k2 is 'Nov-Jan':
                         rho2 = rho1[(rho1.index.month>=11) | (rho1.index.month<=1)]
-                    rho2['hourbin'] = rho2['uthour']//0.5*0.5+0.25
+                    rho2['hourbin'] = rho2['uthour']//1.5*1.5+0.75
                     rho2 = rho2.groupby(rho2.hourbin)['rrho400'].median()
                     plt.plot(rho2.index,rho2)
                     plt.xlim(0,24)
@@ -2584,9 +2579,12 @@ if __name__=='__main__':
                     ax[-1,k11*2+k00].set_xlabel('UT (hour)')
                     ax[0,k11*2+k00].set_title(k0)
                     plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
+        return
 
     def f26():
         """xaxis: epoch time, yaxis: rrho400 for different seasons and sector polarity.
+        What is the maximum variation in the thermospheric density and the corresponding season and
+        epoch time
         """
         sblist = get_sblist()
         sblist = sblist['2001-1-1':'2010-12-31']
@@ -2632,7 +2630,7 @@ if __name__=='__main__':
                 if k1 is 'Nov-Jan':
                     fp = (rho.index.month>=11) | (rho.index.month<=1)
                 rho1 = rho[fp]
-                rho1['hourbin'] = rho1['epochday']*24//0.5*0.5+0.25
+                rho1['hourbin'] = rho1['epochday']*24//1.5*1.5+0.75
                 rho1 = rho1.groupby('hourbin')['rrho400'].median()
                 plt.plot(rho1.index/24,rho1)
                 plt.xlim(-5,5)
@@ -2647,11 +2645,9 @@ if __name__=='__main__':
         plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
         return
 
-
-
 #--------------------------#
     plt.close('all')
-    a=f26()
+    a=f24()
     plt.show()
     import gc
     gc.collect()
