@@ -45,6 +45,7 @@
   Year                     = {2016},
   Note                     = {2016JA022432},
   Pages                    = {n/a--n/a},
+
   Doi                      = {10.1002/2016JA022432},
   File                     = {Cai2016.pdf:Cai2016.pdf:PDF},
   ISSN                     = {2169-9402},
@@ -132,6 +133,7 @@
   Number                   = {A12},
   Pages                    = {16925--16944},
   Volume                   = {94},
+
   Doi                      = {10.1029/JA094iA12p16925},
   File                     = {Crowley1989.pdf:Crowley1989.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -169,6 +171,7 @@
 
   Month                    = {APR 14},
   Volume                   = {37},
+
   Article-number           = {{L07110}},
   Doi                      = {10.1029/2009GL042143},
   File                     = {Crowley2010.pdf:Crowley2010.pdf:PDF},
@@ -370,7 +373,7 @@
   Publisher                = {American Geophysical Union},
   Year                     = {2013},
 
-  __markedentry            = {[gdj:1]},
+  __markedentry            = {},
   Booktitle                = {Midlatitude Ionospheric Dynamics and Disturbances},
   Doi                      = {10.1029/181GM18},
   File                     = {Fuller-Rowell2013.pdf:Fuller-Rowell2013.pdf:PDF},
@@ -695,7 +698,7 @@
   Pages                    = {A11303},
   Volume                   = {113},
 
-  __markedentry            = {[gdj:1]},
+  __markedentry            = {},
   Doi                      = {10.1029/2008JA013433},
   File                     = {Lei2008.pdf:Lei2008.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -735,7 +738,7 @@ and McPherron, Robert L.},
   Pages                    = {A01314},
   Volume                   = {113},
 
-  __markedentry            = {[gdj:1]},
+  __markedentry            = {},
   Doi                      = {10.1029/2007JA012807},
   File                     = {Lei2008b.pdf:Lei2008b.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -810,6 +813,7 @@ and McPherron, Robert L.},
   Number                   = {1},
   Pages                    = {165--180},
   Volume                   = {28},
+
   Doi                      = {10.5194/angeo-28-165-2010},
   File                     = {Liu2010.pdf:Liu2010.pdf:PDF},
   Owner                    = {gdj},
@@ -857,12 +861,13 @@ and McPherron, Robert L.},
   Title                    = {Thermospheric up-welling in the cusp region: Evidence from CHAMP
  observations},
   Author                   = {Luhr, H and Rother, M and Kohler, W and Ritter, P and Grunwaldt, L},
-  Journal                  = {GEOPHYSICAL RESEARCH LETTERS},
+  Journal                  = {Geophys. Res. Lett.},
   Year                     = {2004},
 
   Month                    = {MAR 18},
   Number                   = {6},
   Volume                   = {31},
+
   Abstract                 = {{{[}1] The satellite CHAMP with its sensitive accelerometer on board
  provides the opportunity to investigate the thermospheric dynamics in
  great detail. In this study we concentrate on density structures in the
@@ -966,6 +971,7 @@ and McPherron, Robert L.},
   Number                   = {A6},
   Pages                    = {6949--6953},
   Volume                   = {94},
+
   Doi                      = {10.1029/JA094iA06p06949},
   File                     = {Newell1989.pdf:Newell1989.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1503,7 +1509,7 @@ and McPherron, Robert L.},
   Pages                    = {1995-2012},
   Volume                   = {57},
 
-  __markedentry            = {[gdj:1]},
+  __markedentry            = {},
   Doi                      = {10.1007/s11430-014-4923-3},
   File                     = {WanWX2014.pdf:WanWX2014.pdf:PDF},
   Owner                    = {gdj},
@@ -1627,6 +1633,7 @@ and McPherron, Robert L.},
   Year                     = {2016},
   Note                     = {2016GL069029},
   Pages                    = {n/a--n/a},
+
   Doi                      = {10.1002/2016GL069029},
   File                     = {Yu2016.pdf:Yu2016.pdf:PDF},
   ISSN                     = {1944-8007},
