@@ -2491,7 +2491,6 @@ if __name__=='__main__':
                 group1 = group
                 if group1.max()-group1.min()>20:
                     group1[group1<4] = group1[group1<4]+24
-                    print(group1)
                 tmp = pd.DataFrame(
                         {'median':np.median(group1),
                          'p25':np.percentile(group1,25),
@@ -2645,9 +2644,27 @@ if __name__=='__main__':
         plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
         return
 
+
+    def f27():
+        """ What is the largest height changes at the north and south poles in one day for grace satellite?
+        The result shows that they are about 1.3 km for both north and south poles.
+        """
+        deltah = np.zeros([3650,2])
+        for k00, k0 in enumerate(pd.date_range('2001-1-1','2010-12-31')):
+            rho = get_density_dates([k0],satellite='grace')
+            if rho.empty:
+                continue
+            rhons = rho[rho.lat3==90], rho[rho.lat3==-90]
+            deltah[k00,:] = [rhons[kk].height.max()-rhons[kk].height.min() for kk in range(2)]
+        deltah = deltah[deltah.all(axis=1)]
+        print(np.nanmax(deltah,axis=0))
+        print(np.nanmin(deltah,axis=0))
+        print(np.nanmean(deltah,axis=0))
+        return deltah
+
 #--------------------------#
     plt.close('all')
-    a=f24()
+    a = f27()
     plt.show()
     import gc
     gc.collect()
