@@ -2412,8 +2412,9 @@ if __name__=='__main__':
                             continue
                         rho1['epochday'] = (rho1.index-k1)/pd.Timedelta('1D')
                         rho1['rrho400'] = 100*(rho1.rho400-rho1['rho400'].mean())/rho1['rho400'].mean()
+                        rho1['rrho'] = 100*(rho1.rho-rho1['rho'].mean())/rho1['rho'].mean()
                         density[k00][0] = density[k00][0].append(
-                                rho1[['rho400','epochday','rrho400','MLT','Mlat']])
+                                rho1[['epochday','MLT','Mlat','rho','rrho','rho400','rrho400']])
 
                         #rho2 = rho[rho.lat3<=-87]  # south pole
                         rho2 = rho[rho.lat3==-90]  # only consider the grace
@@ -2422,18 +2423,22 @@ if __name__=='__main__':
                             continue
                         rho2['epochday'] = (rho2.index-k1)/pd.Timedelta('1D')
                         rho2['rrho400'] = 100*(rho2.rho400-rho2['rho400'].mean())/rho2['rho400'].mean()
+                        rho2['rrho'] = 100*(rho2.rho-rho2['rho'].mean())/rho2['rho'].mean()
                         density[k00][1] = density[k00][1].append(
-                                rho2[['rho400','epochday','rrho400','MLT','Mlat']])
+                                rho2[['epochday','MLT','Mlat','rho','rrho','rho400','rrho400']])
                         sbn[k00] = sbn[k00]+1
                         print(sbn)
             pd.to_pickle(density, '/data/tmp/t13.dat')
 
+        # Pole density variation as a function of epoch time at different seasons and sbtype.
         density = pd.read_pickle('/data/tmp/t13.dat')
-        fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
+        fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(14,8))
+        fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
+              ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
         for k00,k in enumerate(['away-toward','toward-away']):
             for k11, k1 in enumerate(['N','S']):
                 density1 = density[k00][k11]
-                #density1 = density1['2001-1-1':'2005-12-31']
+                density1 = density1['2002-1-1':'2004-12-31']
                 if density1.empty:
                     continue
                 for k22, k2 in enumerate(['me','se','js','ds']):
@@ -2454,7 +2459,7 @@ if __name__=='__main__':
                     plt.plot(density2.index/24, density2['p25'],'gray',
                              density2.index/24, density2['p75'],'gray',
                              linestyle='--',dashes=(2,1),linewidth=1)
-                    plt.plot(density2.index/24, density2['median'],'b',linewidth=1.5)
+                    plt.plot(density2.index/24, density2['median'],'b',linewidth=2)
                     plt.xlim(-5,5)
                     plt.xticks(np.arange(-4,5,2))
                     plt.gca().xaxis.set_minor_locator(AutoMinorLocator(4))
@@ -2468,17 +2473,59 @@ if __name__=='__main__':
                     if k22==3:
                         plt.xlabel('Epoch Time (day)',fontsize=12)
                     plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
+                    plt.text(0,1.05,fl[k22][k00*2+k11], transform=plt.gca().transAxes)
         plt.subplots_adjust(left=0.1,wspace=0.04)
-        plt.text(0.21,0.92,'Away - Toward',transform=plt.gcf().transFigure)
-        plt.text(0.61,0.92,'Toward - Away',transform=plt.gcf().transFigure)
+        plt.text(0.21,0.94,'Away - Toward',transform=plt.gcf().transFigure)
+        plt.text(0.61,0.94,'Toward - Away',transform=plt.gcf().transFigure)
         plt.text(0.91,0.8,'Feb - Apr',transform=plt.gcf().transFigure,fontsize=11)
         plt.text(0.91,0.59,'Aug - Oct',transform=plt.gcf().transFigure,fontsize=11)
         plt.text(0.91,0.38,'May - Jul',transform=plt.gcf().transFigure,fontsize=11)
         plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
 
-        fig,ax = plt.subplots(1,2,sharex=True,sharey=True,figsize=(8,3))
+        # Density variations at solar maximum and minimum.
+        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(8,8))
+        density1 = density[0][1] # for away-toward and south pole
+        fl = ['(a)','(b)']
+        for k00,k0 in enumerate(['Solar maximum','Solar minimum']):
+            plt.sca(ax[k00])
+            if k0 is 'Solar maximum':
+                density2 = density1['2002-1-1':'2004-12-31']
+            if k0 is 'Solar minimum':
+                density2 = density1['2008-1-1':'2010-12-31']
+            density2 = density2[(density2.index.month>=8) & (density2.index.month<=10)]
+            density2['epochbin'] = density2.epochday*24//1.5*1.5+0.75
+            density2 = density2.groupby('epochbin')['rrho400'].agg(
+                    [np.median, percentile(25),percentile(75)])
+            density2.columns = ['median', 'p25', 'p75']
+            plt.plot(density2.index/24, density2['p25'],'gray',
+                     density2.index/24, density2['p75'],'gray',
+                     linestyle='--',dashes=(2,1),linewidth=1)
+            plt.plot(density2.index/24, density2['median'],'b',linewidth=1.5)
+            plt.xlim(-5,5)
+            plt.xticks(np.arange(-5,6,1))
+            plt.gca().yaxis.set_minor_locator(AutoMinorLocator(3))
+            plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
+            plt.ylim(-30,60)
+            plt.yticks(np.arange(-30,61,30))
+            #plt.grid(which='minor',dashes=(4,1))
+            #plt.grid(which='major',axis='y',dashes=(4,1))
+            plt.grid(dashes=(4,1))
+            plt.ylabel(r'$\Delta\rho$ (%)',fontsize=14)
+            if k00==1:
+                plt.xlabel('Epoch Time (day)',fontsize=14)
+            if k00==0:
+                plt.title('Year: 02 - 04')
+            if k00==1:
+                plt.title('Year: 08 - 10')
+            plt.text(0.1,0.8,'S',transform=plt.gca().transAxes)
+            plt.text(0,1.05,fl[k00], transform=plt.gca().transAxes)
+        plt.subplots_adjust(left=0.1,wspace=0.04)
+
+        # Magnetic local time changes at two poles as a function of UT
+        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(8,8))
         density1 = [pd.concat((density[0][0],density[1][0])),
                     pd.concat((density[0][1],density[1][1]))]
+        fl = ['(a)','(b)']
         for k11, k1 in enumerate(['N','S']):
             plt.sca(ax[k11])
             density2 = density1[k11]
@@ -2499,7 +2546,8 @@ if __name__=='__main__':
                 tmp = tmp%24
                 density3 = density3.append(tmp)
             plt.plot(density3.index, density3['median'],'ko')
-            plt.axhline(y=12,color='gray',linestyle='-')
+            if k1 == 'S':
+                plt.axvline(x=16,color='blue',linestyle='-')
             plt.xlim(0,24)
             plt.xticks(np.arange(0,25,6))
             plt.ylim(0,24)
@@ -2507,10 +2555,11 @@ if __name__=='__main__':
             plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
             plt.gca().yaxis.set_minor_locator(AutoMinorLocator(6))
             plt.grid(dashes=(4,1))
-            plt.xlabel('UT (hour)')
-            if k11==0:
-                plt.ylabel('MLT (hour)')
+            if k11==1:
+                plt.xlabel('UT (hour)')
+            plt.ylabel('MLT (hour)')
             plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
+            plt.text(0,1.05,fl[k11], transform=plt.gca().transAxes)
         plt.subplots_adjust(bottom=0.2)
         return
 ################################################################################
@@ -2581,7 +2630,7 @@ if __name__=='__main__':
         return
 
     def f26():
-        """xaxis: epoch time, yaxis: rrho400 for different seasons and sector polarity.
+        """xaxis: epoch time, yaxis: orbit mean rrho400 for different seasons and sector polarity.
         What is the maximum variation in the thermospheric density and the corresponding season and
         epoch time
         """
@@ -2646,8 +2695,8 @@ if __name__=='__main__':
 
 
     def f27():
-        """ What is the largest height changes at the north and south poles in one day for grace satellite?
-        The result shows that they are about 1.3 km for both north and south poles.
+        """The mean height change at geographical poles is about 0.7 km in a day. The largest height change is
+        about 1.3 km.
         """
         deltah = np.zeros([3650,2])
         for k00, k0 in enumerate(pd.date_range('2001-1-1','2010-12-31')):
@@ -2662,9 +2711,40 @@ if __name__=='__main__':
         print(np.nanmean(deltah,axis=0))
         return deltah
 
+
+    def f28():
+        """GRACE altitude change during years from 2002 to 2010
+        """
+        if False:
+            altitude = np.zeros(3650)
+            for k00, k0 in enumerate(pd.date_range('2001-1-1','2010-12-31')):
+                rho = get_density_dates([k0],satellite='grace')
+                if rho.empty:
+                    continue
+                altitude[k00] = rho.height.mean()
+            altitude = altitude[altitude!=0]
+            pd.to_pickle(altitude, '/data/tmp/t28.dat')
+        altitude = pd.read_pickle('/data/tmp/t28.dat')
+        plt.plot(altitude)
+
+
+    def f29():
+        """CHAMP altitude change during years from 2001 to 2010
+        """
+        if False:
+            altitude = np.zeros(3650)
+            for k00, k0 in enumerate(pd.date_range('2001-1-1','2010-12-31')):
+                rho = get_density_dates([k0],satellite='champ')
+                if rho.empty:
+                    continue
+                altitude[k00] = rho.height.mean()
+            altitude = altitude[altitude!=0]
+            pd.to_pickle(altitude, '/data/tmp/t29.dat')
+        altitude = pd.read_pickle('/data/tmp/t29.dat')
+        plt.plot(altitude)
 #--------------------------#
     plt.close('all')
-    a = f27()
+    a = f24()
     plt.show()
     import gc
     gc.collect()

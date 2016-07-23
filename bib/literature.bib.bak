@@ -2,6 +2,24 @@
 % Encoding: UTF8
 
 
+@Article{Anderson1988,
+  Title                    = {Origin of density enhancements in the winter polar cap ionosphere},
+  Author                   = {Anderson, D. N. and Buchau, J. and Heelis, R. A.},
+  Journal                  = {Radio Science},
+  Year                     = {1988},
+  Number                   = {4},
+  Pages                    = {513--519},
+  Volume                   = {23},
+
+  Doi                      = {10.1029/RS023i004p00513},
+  File                     = {Anderson1988.pdf:Anderson1988.pdf:PDF},
+  ISSN                     = {1944-799X},
+  Keywords                 = {Ionization processes, Polar cap ionosphere, Plasma convection, Modeling and forecasting},
+  Owner                    = {gdj},
+  Timestamp                = {2016.07.15},
+  Url                      = {http://dx.doi.org/10.1029/RS023i004p00513}
+}
+
 @Article{Berthelier1976,
   Title                    = {Influence of the polarity of the interplanetary magnetic field on the annual and the diurnal variations of magnetic activity},
   Author                   = {Berthelier, Annick},
@@ -800,7 +818,6 @@
   Pages                    = {5269--5277},
   Volume                   = {90},
 
-  __markedentry            = {[gdj:1]},
   Abstract                 = {Composition data obtained by the Neutral Atmosphere Composition Spectrometer carried aboard the Dynamics Explorer 2 satellite have been examined for variations in the polar regions during magnetically quiet conditions. A persistent enhancement of N2 density and a depletion of He density are present in the vicinity of the magnetic poles with maximum density response in the morning hours (magnetic) on average. A universal time (UT) variation in average density levels is evident near both the geographic and magnetic poles. There are systematic morphology changes with UT and between summer and winter which are qualitatively consistent with the shifting and spreading of thermospheric heating effects by the global circulation systems driven by EUV and magnetospheric sources. The magnitude of the UT variations is larger in the southern hemisphere on average, and the UT variations are larger in local winter than summer.},
   Doi                      = {10.1029/JA090iA06p05269},
   File                     = {Hedin1985.pdf:Hedin1985.pdf:PDF},
@@ -1201,6 +1218,25 @@ and McPherron, Robert L.},
   Url                      = {http://dx.doi.org/10.1002/2013JA019453}
 }
 
+@Article{Lockwood1992,
+  Title                    = {Production of polar cap electron density patches by transient magnetopause reconnection},
+  Author                   = {Lockwood, M. and Carlson, H. C.},
+  Journal                  = {Geophysical Research Letters},
+  Year                     = {1992},
+  Number                   = {17},
+  Pages                    = {1731--1734},
+  Volume                   = {19},
+
+  __markedentry            = {[gdj:]},
+  Doi                      = {10.1029/92GL01993},
+  File                     = {Lockwood1992.pdf:Lockwood1992.pdf:PDF},
+  ISSN                     = {1944-8007},
+  Keywords                 = {Ionosphere: Polar ionosphere, Ionosphere: Plasma temperature and density, Ionosphere: Plasma convection, Magnetospheric Physics: Solar wind-magnetosphere interactions},
+  Owner                    = {gdj},
+  Timestamp                = {2016.07.16},
+  Url                      = {http://dx.doi.org/10.1029/92GL01993}
+}
+
 @Article{Luehr2012,
   Title                    = {In-Situ CHAMP Observation of Ionosphere-Thermosphere Coupling},
   Author                   = {Luehr, Hermann and Park, Jaeheung and Ritter, Patricia and Liu, Huixin},
@@ -1255,6 +1291,25 @@ and McPherron, Robert L.},
   Researcherid-numbers     = {{Ritter, Patricia/D-7411-2013}},
   Timestamp                = {2016.07.05},
   Unique-id                = {{ISI:000220436600010}}
+}
+
+@Article{Ma1995,
+  Title                    = {Effect of polar cap patches on the polar thermosphere},
+  Author                   = {Ma, Ti-Ze and Schunk, R. W.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {1995},
+  Number                   = {A10},
+  Pages                    = {19701--19713},
+  Volume                   = {100},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/95JA01122},
+  File                     = {Ma1995.pdf:Ma1995.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: composition and chemistry, Ionosphere/atmosphere interactions, Polar cap ionosphere},
+  Owner                    = {gdj},
+  Timestamp                = {2016.07.16},
+  Url                      = {http://dx.doi.org/10.1029/95JA01122}
 }
 
 @Article{Majeed2016,
@@ -1398,7 +1453,6 @@ and McPherron, Robert L.},
   Pages                    = {8921--8927},
   Volume                   = {94},
 
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/JA094iA07p08921},
   File                     = {Newell1989a.pdf:Newell1989a.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1834,6 +1888,7 @@ and McPherron, Robert L.},
   Number                   = {5},
   Pages                    = {1659-1672},
   Volume                   = {23},
+
   Doi                      = {10.5194/angeo-23-1659-2005},
   File                     = {Schlegel2005.pdf:Schlegel2005.pdf:PDF},
   ISSN                     = {{0992-7689}},
@@ -1874,6 +1929,7 @@ and McPherron, Robert L.},
   Month                    = {NOV 11},
   Number                   = {21},
   Volume                   = {30},
+
   Article-number           = {{2109}},
   Doi                      = {10.1029/2003GL017668},
   File                     = {Shepherd2003.pdf:Shepherd2003.pdf:PDF},
@@ -2335,12 +2391,6 @@ and Richardson, Ian G.},
   Url                      = {http://dx.doi.org/10.1007/s11214-006-9010-4}
 }
 
-@Article{,
-  Doi                      = {10.1029/JA094iA07p08921},
-  Owner                    = {gdj},
-  Timestamp                = {2016.07.13}
-}
-
 @comment{jabref-meta: selector_keywords:}
 
 @comment{jabref-meta: selector_journal:}
@@ -2371,11 +2421,11 @@ jeed2016\;McCormac1985\;McGranaghan2014\;Oyama2016a\;Zabotin2016\;;
 ;Fuller-Rowell1998\;Guo2015\;Hedin1972\;Hedin1979\;Hedin1983\;Hedin198
 5\;Hedin1987\;Hedin1991\;JiuhouLei2013\;Kwak2009\;Kwak2011\;Lei2008\;L
 ei2008a\;Lei2010\;Lei2010a\;Liu2005\;Liu2010\;Liu2014\;Liu2015\;Luhr20
-04\;McGranaghan2014\;Proelss2011\;Qian2009\;Rentz2008\;Walterscheid201
-5\;Xu2013\;Xu2013a\;Yamazaki2015\;Yamazaki2015a\;;
-1 ExplicitGroup:ionosphere\;0\;Blanc1980\;Cowley1991\;Heelis2004\;Jian
-g2016\;Lei2015\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley
-2006\;Zhu2016\;;
+04\;Ma1995\;McGranaghan2014\;Proelss2011\;Qian2009\;Rentz2008\;Walters
+cheid2015\;Xu2013\;Xu2013a\;Yamazaki2015\;Yamazaki2015a\;;
+1 ExplicitGroup:ionosphere\;0\;Anderson1988\;Blanc1980\;Cowley1991\;He
+elis2004\;Jiang2016\;Lei2015\;Lockwood1992\;Qian2013\;Qian2015\;Richmo
+nd1992\;Richmond1995\;Ridley2006\;Zhu2016\;;
 1 ExplicitGroup:magnetosphere\;0\;Crooker1979\;Glocer2015\;McPherron20
 09\;Ridley2014\;Russell2003\;Tenfjord2015\;Tsurutani2005\;Yu2016\;Zhou
 2000\;;
@@ -2391,9 +2441,9 @@ g2016\;Lei2015\;Qian2013\;Qian2015\;Richmond1992\;Richmond1995\;Ridley
 mons2008\;Cousins2012\;Crooker1979\;Crowley2010\;Demars2007\;Deng2008\
 ;Deng2011\;Deng2013\;Deng2015\;Fujiwara2007\;Guo2015\;Hedin1972\;Hedin
 1979\;Hedin1985\;Kervalishvili2013\;Knipp2011\;Lei2010a\;Li2011\;Liu20
-10\;Luehr2012\;Luhr2004\;McHarg2005\;Moe2008\;Newell1989\;Newell1989a\
-;Rentz2008\;Sadler2012\;Schlegel2005\;Sheng2015\;Shepherd2003\;Wilson2
-006\;Xu2013a\;Yordanova2007\;Zhang2012\;Zhang2015\;Zhou2000\;Zivkovic2
-015\;;
+05\;Liu2010\;Luehr2012\;Luhr2004\;McHarg2005\;Moe2008\;Newell1989\;New
+ell1989a\;Rentz2008\;Sadler2012\;Schlegel2005\;Sheng2015\;Shepherd2003
+\;Wilson2006\;Xu2013a\;Yordanova2007\;Zhang2012\;Zhang2015\;Zhou2000\;
+Zivkovic2015\;;
 }
 
