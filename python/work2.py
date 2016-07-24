@@ -2744,7 +2744,7 @@ if __name__=='__main__':
         plt.plot(altitude)
 #--------------------------#
     plt.close('all')
-    a = f24()
+    a = f15()
     plt.show()
     import gc
     gc.collect()
