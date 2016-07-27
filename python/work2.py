@@ -2432,13 +2432,13 @@ if __name__=='__main__':
 
         # Pole density variation as a function of epoch time at different seasons and sbtype.
         density = pd.read_pickle('/data/tmp/t13.dat')
-        fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(14,8))
+        fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
         fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
               ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
         for k00,k in enumerate(['away-toward','toward-away']):
             for k11, k1 in enumerate(['N','S']):
                 density1 = density[k00][k11]
-                density1 = density1['2002-1-1':'2004-12-31']
+                #density1 = density1['2002-1-1':'2004-12-31']
                 if density1.empty:
                     continue
                 for k22, k2 in enumerate(['me','se','js','ds']):
@@ -2500,7 +2500,7 @@ if __name__=='__main__':
             plt.plot(density2.index/24, density2['p25'],'gray',
                      density2.index/24, density2['p75'],'gray',
                      linestyle='--',dashes=(2,1),linewidth=1)
-            plt.plot(density2.index/24, density2['median'],'b',linewidth=1.5)
+            plt.plot(density2.index/24, density2['median'],'b',linewidth=2)
             plt.xlim(-5,5)
             plt.xticks(np.arange(-5,6,1))
             plt.gca().yaxis.set_minor_locator(AutoMinorLocator(3))
@@ -2744,7 +2744,7 @@ if __name__=='__main__':
         plt.plot(altitude)
 #--------------------------#
     plt.close('all')
-    a = f15()
+    a = f24()
     plt.show()
     import gc
     gc.collect()
