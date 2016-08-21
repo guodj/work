@@ -1227,7 +1227,6 @@ and McPherron, Robert L.},
   Pages                    = {1731--1734},
   Volume                   = {19},
 
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/92GL01993},
   File                     = {Lockwood1992.pdf:Lockwood1992.pdf:PDF},
   ISSN                     = {1944-8007},
@@ -1302,7 +1301,7 @@ and McPherron, Robert L.},
   Pages                    = {19701--19713},
   Volume                   = {100},
 
-  __markedentry            = {[gdj:6]},
+  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/95JA01122},
   File                     = {Ma1995.pdf:Ma1995.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1442,6 +1441,25 @@ and McPherron, Robert L.},
   Owner                    = {gdj},
   Timestamp                = {2016.07.01},
   Url                      = {http://dx.doi.org/10.1029/JA094iA06p06949}
+}
+
+@Article{Newell1988,
+  Title                    = {The cusp and the cleft/boundary layer: Low-altitude identification and statistical local time variation},
+  Author                   = {Newell, Patrick T. and Meng, Ching-I.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {1988},
+  Number                   = {A12},
+  Pages                    = {14549--14556},
+  Volume                   = {93},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/JA093iA12p14549},
+  File                     = {Newell1988.pdf:Newell1988.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Energetic particles: precipitating, Magnetospheric configuration and dynamics, Magnetotail, Solar wind interactions with unmagnetized bodies},
+  Owner                    = {gdj},
+  Timestamp                = {2016.07.17},
+  Url                      = {http://dx.doi.org/10.1029/JA093iA12p14549}
 }
 
 @Article{Newell1989a,
@@ -2391,6 +2409,12 @@ and Richardson, Ian G.},
   Url                      = {http://dx.doi.org/10.1007/s11214-006-9010-4}
 }
 
+@Article{,
+  Doi                      = {10.1029/2004JA010884},
+  Owner                    = {gdj},
+  Timestamp                = {2016.08.21}
+}
+
 @comment{jabref-meta: selector_keywords:}
 
 @comment{jabref-meta: selector_journal:}
@@ -2441,9 +2465,9 @@ nd1992\;Richmond1995\;Ridley2006\;Zhu2016\;;
 mons2008\;Cousins2012\;Crooker1979\;Crowley2010\;Demars2007\;Deng2008\
 ;Deng2011\;Deng2013\;Deng2015\;Fujiwara2007\;Guo2015\;Hedin1972\;Hedin
 1979\;Hedin1985\;Kervalishvili2013\;Knipp2011\;Lei2010a\;Li2011\;Liu20
-05\;Liu2010\;Luehr2012\;Luhr2004\;McHarg2005\;Moe2008\;Newell1989\;New
-ell1989a\;Rentz2008\;Sadler2012\;Schlegel2005\;Sheng2015\;Shepherd2003
-\;Wilson2006\;Xu2013a\;Yordanova2007\;Zhang2012\;Zhang2015\;Zhou2000\;
-Zivkovic2015\;;
+05\;Liu2010\;Luehr2012\;Luhr2004\;McHarg2005\;Moe2008\;Newell1988\;New
+ell1989\;Newell1989a\;Rentz2008\;Sadler2012\;Schlegel2005\;Sheng2015\;
+Shepherd2003\;Wilson2006\;Xu2013a\;Yordanova2007\;Zhang2012\;Zhang2015
+\;Zhou2000\;Zivkovic2015\;;
 }
 

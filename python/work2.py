@@ -1435,6 +1435,7 @@ if __name__=='__main__':
                     dataimf[k00] = dataimf[k00].append(imf)
                     dataindex[k00] = dataindex[k00].append(sgmindex)
             pd.to_pickle((dataimf,dataindex),'/data/tmp/t7.dat')
+        #---------------------------------------------------------------------------------#
 
         imf, sgmindex = pd.read_pickle('/data/tmp/t7.dat')
         imfgroup = [
@@ -1451,7 +1452,7 @@ if __name__=='__main__':
             imfgroup[k] = imfgroup[k].reset_index().pivot(index='epochhour', columns='month')
             indexgroup[k].index.names = ('month', 'epochhour')
             indexgroup[k] = indexgroup[k].reset_index().pivot(index='epochhour', columns='month')
-        fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(8,7))
+        fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(7.76,8))
         for k in range(2):
             plt.sca(ax[3,k])
             data = indexgroup[k]['ap']
@@ -1461,11 +1462,13 @@ if __name__=='__main__':
             plt.xticks(np.arange(1,13))
             plt.ylim([-5,5])
             plt.yticks(np.arange(-4,5,2))
+            plt.tick_params('both',direction='out',length=4)
             if k is 1:
                 axpo = np.array(plt.gca().get_position())
                 cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
                 cbar = plt.colorbar(mappable=hc1,cax=cax,ticks=np.arange(0,21,5))
                 cbar.set_label('ap')
+                plt.tick_params('both',length=4)
             for k11,k1 in enumerate(['Bx','Bye','Bzm']):
                 tl = ['Bx','By','Bz']
                 plt.sca(ax[k11,k])
@@ -1475,16 +1478,20 @@ if __name__=='__main__':
                 plt.xticks(np.arange(1,13))
                 plt.ylim([-5,5])
                 plt.yticks(np.arange(-4,5,2))
+                plt.tick_params('both',direction='out',length=4)
                 if k is 1:
                     axpo = np.array(plt.gca().get_position())
                     cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
                     cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=np.arange(-4,5,2))
                     cbar.set_label('{:s} (nT)'.format(tl[k11]))
-        ax[0,0].set_title('Away-Toward')
-        ax[0,1].set_title('Toward-Away')
+                    plt.tick_params('both',length=4)
+        title1 = ax[0,0].set_title('Away-Toward')
+        title2 = ax[0,1].set_title('Toward-Away')
+        title1.set_position((0.5,1.05))
+        title2.set_position((0.5,1.05))
         ax[-1,0].set_xlabel('Month',fontsize=14)
         ax[-1,1].set_xlabel('Month',fontsize=14)
-        plt.text(0.06,0.5,'Epoch Time (day)',fontsize=14,
+        plt.text(0.03,0.5,'Epoch Time (day)',fontsize=14,
                  verticalalignment='center',
                  transform=plt.gcf().transFigure,
                  rotation='vertical')
@@ -2473,7 +2480,7 @@ if __name__=='__main__':
                     if k22==3:
                         plt.xlabel('Epoch Time (day)',fontsize=12)
                     plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
-                    plt.text(0,1.05,fl[k22][k00*2+k11], transform=plt.gca().transAxes)
+                    #plt.text(0,1.05,fl[k22][k00*2+k11], transform=plt.gca().transAxes)
         plt.subplots_adjust(left=0.1,wspace=0.04)
         plt.text(0.21,0.94,'Away - Toward',transform=plt.gcf().transFigure)
         plt.text(0.61,0.94,'Toward - Away',transform=plt.gcf().transFigure)
@@ -2483,7 +2490,7 @@ if __name__=='__main__':
         plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
 
         # Density variations at solar maximum and minimum.
-        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(8,8))
+        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
         density1 = density[0][1] # for away-toward and south pole
         fl = ['(a)','(b)']
         for k00,k0 in enumerate(['Solar maximum','Solar minimum']):
@@ -2519,10 +2526,10 @@ if __name__=='__main__':
                 plt.title('Year: 08 - 10')
             plt.text(0.1,0.8,'S',transform=plt.gca().transAxes)
             plt.text(0,1.05,fl[k00], transform=plt.gca().transAxes)
-        plt.subplots_adjust(left=0.1,wspace=0.04)
+        plt.subplots_adjust(left=0.1,wspace=0.04,bottom=0.1)
 
         # Magnetic local time changes at two poles as a function of UT
-        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(8,8))
+        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
         density1 = [pd.concat((density[0][0],density[1][0])),
                     pd.concat((density[0][1],density[1][1]))]
         fl = ['(a)','(b)']
@@ -2560,7 +2567,7 @@ if __name__=='__main__':
             plt.ylabel('MLT (hour)')
             plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
             plt.text(0,1.05,fl[k11], transform=plt.gca().transAxes)
-        plt.subplots_adjust(bottom=0.2)
+        plt.subplots_adjust(bottom=0.1)
         return
 ################################################################################
     def f25():
@@ -2744,7 +2751,7 @@ if __name__=='__main__':
         plt.plot(altitude)
 #--------------------------#
     plt.close('all')
-    a = f24()
+    a = f15()
     plt.show()
     import gc
     gc.collect()
