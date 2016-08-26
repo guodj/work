@@ -1457,7 +1457,7 @@ if __name__=='__main__':
             plt.sca(ax[3,k])
             data = indexgroup[k]['ap']
             hc1 = plt.contourf(data.columns, data.index/24, data.values,
-                               levels=np.linspace(0,20,11))
+                               levels=np.linspace(0,20,11),cmap='bwr')
             plt.xlim([1,12])
             plt.xticks(np.arange(1,13))
             plt.ylim([-5,5])
@@ -1473,7 +1473,8 @@ if __name__=='__main__':
                 tl = ['Bx','By','Bz']
                 plt.sca(ax[k11,k])
                 data = imfgroup[k][k1]
-                hc2 = plt.contourf(data.columns, data.index/24, data.values,levels=np.linspace(-4,4,11))
+                hc2 = plt.contourf(data.columns, data.index/24, data.values,levels=np.linspace(-4,4,11),
+                        cmap='bwr')
                 plt.xlim([1,12])
                 plt.xticks(np.arange(1,13))
                 plt.ylim([-5,5])
