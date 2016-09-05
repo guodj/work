@@ -2405,6 +2405,9 @@ if __name__=='__main__':
                         if rho.empty:
                             print('no data around',k1)
                             continue
+                        # The geomagnetic activity is not considered, because cusp density
+                        # enhancement occurs in both geomagnetic quiet and active conditions
+                        """
                         rho = rho.add_index()
                         l1 = len(rho)
                         rho = rho[rho.Kp<=40]
@@ -2412,9 +2415,10 @@ if __name__=='__main__':
                         if l2<0.8*l1:
                             print('active geomagnetic condition around', k1)
                             continue
-
+                        """
                         #rho1 = rho[rho.lat3>=87]  # north pole
                         rho1 = rho[rho.lat3==90]  # only consider the grace
+                        #Make sure that there is data in each day
                         if len(np.unique(rho1.index.dayofyear))!=10:
                             print('there is data gap around', k1)
                             continue
@@ -2443,6 +2447,8 @@ if __name__=='__main__':
         fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
         fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
               ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
+        # case number in each season catagary
+        nn = np.zeros([4,4])*np.nan
         for k00,k in enumerate(['away-toward','toward-away']):
             for k11, k1 in enumerate(['N','S']):
                 density1 = density[k00][k11]
@@ -2460,6 +2466,8 @@ if __name__=='__main__':
                     if k2 is 'ds':
                         fp = (density1.index.month>=11) | (density1.index.month<=1)
                     density2 = density1[fp]
+                    nn[k22, k00*2+k11] = len(np.unique(
+                            density2[(density2.epochday>=0) & (density2.epochday<1)].index.date))
                     density2['epochbin'] = density2.epochday*24//1.5*1.5+0.75
                     density2 = density2.groupby('epochbin')['rrho400'].agg(
                             [np.median, percentile(25),percentile(75)])
@@ -2489,6 +2497,7 @@ if __name__=='__main__':
         plt.text(0.91,0.59,'Aug - Oct',transform=plt.gcf().transFigure,fontsize=11)
         plt.text(0.91,0.38,'May - Jul',transform=plt.gcf().transFigure,fontsize=11)
         plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
+        print(nn)
 
         # Density variations at solar maximum and minimum.
         fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
