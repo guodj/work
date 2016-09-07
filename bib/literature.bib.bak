@@ -1277,8 +1277,6 @@ and McPherron, Robert L.},
   Number                   = {A10},
   Pages                    = {19701--19713},
   Volume                   = {100},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/95JA01122},
   File                     = {Ma1995.pdf:Ma1995.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1424,8 +1422,6 @@ and McPherron, Robert L.},
   Year                     = {1988},
   Pages                    = {14549--14556},
   Volume                   = {93},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/JA093IA12P14549},
   File                     = {Newell1988.pdf:Newell1988.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1952,6 +1948,19 @@ and McPherron, Robert L.},
   Timestamp                = {2016.08.27}
 }
 
+@Book{Svalgaard1976,
+  Title                    = {Interplanetary sector structure 1947--1975},
+  Author                   = {Svalgaard, L.},
+  Year                     = {1976},
+  Month                    = {Feb},
+
+  __markedentry            = {[gdj:6]},
+  Abstractnote             = {This report is an extension of “An Atlas of Interplanetary Sector Structure 1957--1974” to include earlier years back to 1947 and also the years 1932--1933 and 1975. (GRA)},
+  Owner                    = {gdj},
+  Place                    = {United States},
+  Timestamp                = {2016.09.06}
+}
+
 @Article{Svalgaard1973,
   Title                    = {Polar cap magnetic variations and their relationship with the interplanetary magnetic sector structure},
   Author                   = {Svalgaard, Leif},
@@ -2432,7 +2441,7 @@ mons2008\;Cousins2012\;Crooker1979\;Crowley2010\;Demars2007\;Deng2008\
 1979\;Hedin1985\;Kervalishvili2013\;Knipp2011\;Lei2010a\;Li2011\;Liu20
 05\;Liu2010\;Luehr2012\;Luhr2004\;McHarg2005\;Moe2008\;Newell1988\;New
 ell1989\;Newell1989a\;Rentz2008\;Sadler2012\;Schlegel2005\;Sheng2015\;
-Shepherd2003\;Sutton2011\;Wilson2006\;Xu2013\;Xu2013a\;Yordanova2007\;
-Zhang2012\;Zhang2015\;Zhou2000\;Zivkovic2015\;;
+Shepherd2003\;Sutton2011\;Svalgaard1976\;Wilson2006\;Xu2013\;Xu2013a\;
+Yordanova2007\;Zhang2012\;Zhang2015\;Zhou2000\;Zivkovic2015\;;
 }
 
