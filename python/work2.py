@@ -1469,7 +1469,7 @@ if __name__=='__main__':
                 axpo = np.array(plt.gca().get_position())
                 cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
                 cbar = plt.colorbar(mappable=hc1,cax=cax,ticks=np.arange(0,401,100))
-                cbar.set_label('ap')
+                cbar.set_label('AE')
                 plt.tick_params('both',length=4)
             for k11,k1 in enumerate(['Bx','Bye','Bzm']):
                 tl = ['Bx','By','Bz']
