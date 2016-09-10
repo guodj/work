@@ -1446,7 +1446,7 @@ if __name__=='__main__':
                 sgmindex[k].groupby(
                 [sgmindex[k].index.month, np.floor(sgmindex[k].epochday*24)])
                 for k in [0,1]]
-        indexgroup = [indexgroup[k]['ap','f107'].median() for k in [0,1]]
+        indexgroup = [indexgroup[k]['ap','AE'].median() for k in [0,1]]
         for k in [0,1]:
             imfgroup[k].index.names = ('month', 'epochhour')
             imfgroup[k] = imfgroup[k].reset_index().pivot(index='epochhour', columns='month')
@@ -1455,18 +1455,20 @@ if __name__=='__main__':
         fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(7.76,8))
         for k in range(2):
             plt.sca(ax[3,k])
-            data = indexgroup[k]['ap']
+            data = indexgroup[k]['AE']
             hc1 = plt.contourf(data.columns, data.index/24, data.values,
-                               levels=np.linspace(0,20,11),cmap='bwr')
+                               levels=np.linspace(0,400,11),cmap='bwr')
             plt.xlim([1,12])
             plt.xticks(np.arange(1,13))
             plt.ylim([-5,5])
-            plt.yticks(np.arange(-4,5,2))
-            plt.tick_params('both',direction='out',length=4)
+            plt.yticks(np.arange(-6,5,2),fontsize=14)
+            plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+            plt.tick_params(axis='both',which='major',direction='out',length=5)
+            plt.tick_params(axis='both',which='minor',direction='out',length=3)
             if k is 1:
                 axpo = np.array(plt.gca().get_position())
                 cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
-                cbar = plt.colorbar(mappable=hc1,cax=cax,ticks=np.arange(0,21,5))
+                cbar = plt.colorbar(mappable=hc1,cax=cax,ticks=np.arange(0,401,100))
                 cbar.set_label('ap')
                 plt.tick_params('both',length=4)
             for k11,k1 in enumerate(['Bx','Bye','Bzm']):
@@ -1478,8 +1480,10 @@ if __name__=='__main__':
                 plt.xlim([1,12])
                 plt.xticks(np.arange(1,13))
                 plt.ylim([-5,5])
-                plt.yticks(np.arange(-4,5,2))
-                plt.tick_params('both',direction='out',length=4)
+                plt.yticks(np.arange(-6,5,2),fontsize=14)
+                plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+                plt.tick_params(axis='both',which='major',direction='out',length=5)
+                plt.tick_params(axis='both',which='minor',direction='out',length=3)
                 if k is 1:
                     axpo = np.array(plt.gca().get_position())
                     cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
@@ -2761,7 +2765,7 @@ if __name__=='__main__':
         plt.plot(altitude)
 #--------------------------#
     plt.close('all')
-    a = f24()
+    a = f15()
     plt.show()
     import gc
     gc.collect()

@@ -1277,6 +1277,7 @@ and McPherron, Robert L.},
   Number                   = {A10},
   Pages                    = {19701--19713},
   Volume                   = {100},
+
   Doi                      = {10.1029/95JA01122},
   File                     = {Ma1995.pdf:Ma1995.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1422,6 +1423,7 @@ and McPherron, Robert L.},
   Year                     = {1988},
   Pages                    = {14549--14556},
   Volume                   = {93},
+
   Doi                      = {10.1029/JA093IA12P14549},
   File                     = {Newell1988.pdf:Newell1988.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1956,6 +1958,7 @@ and McPherron, Robert L.},
 
   __markedentry            = {[gdj:6]},
   Abstractnote             = {This report is an extension of “An Atlas of Interplanetary Sector Structure 1957--1974” to include earlier years back to 1947 and also the years 1932--1933 and 1975. (GRA)},
+  File                     = {Svalgaard1976.pdf:Svalgaard1976.pdf:PDF},
   Owner                    = {gdj},
   Place                    = {United States},
   Timestamp                = {2016.09.06}
