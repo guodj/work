@@ -1420,14 +1420,14 @@ if __name__=='__main__':
         """ imf and indices variation during epoch days of sblist
         """
         sblist = get_sblist()
-        sblist = sblist['2001-1-1':'2010-12-31']
+        sblist = sblist['2002-1-1':'2010-12-31']
         dataimf = [pd.DataFrame(),pd.DataFrame()]
         dataindex = [pd.DataFrame(),pd.DataFrame()]
         if False:  # data preparation
             for k00, k0 in enumerate(['away-toward', 'toward-away']):
                 sbtmp = sblist[sblist.sbtype==k0]
                 for k1 in sbtmp.index:
-                    datelist = k1 + pd.TimedeltaIndex(range(-5,5), 'D')
+                    datelist = k1 + pd.TimedeltaIndex(range(-3,3), 'D')
                     imf = get_imf(datelist)
                     sgmindex = get_index(datelist)
                     imf['epochday'] = (imf.index - k1)/pd.Timedelta('1D')
@@ -1460,9 +1460,8 @@ if __name__=='__main__':
                                levels=np.linspace(0,400,11),cmap='bwr')
             plt.xlim([1,12])
             plt.xticks(np.arange(1,13))
-            plt.ylim([-5,5])
+            plt.ylim([-3,3])
             plt.yticks(np.arange(-6,5,2),fontsize=14)
-            plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
             plt.tick_params(axis='both',which='major',direction='out',length=5)
             plt.tick_params(axis='both',which='minor',direction='out',length=3)
             if k is 1:
@@ -1479,9 +1478,8 @@ if __name__=='__main__':
                         cmap='bwr')
                 plt.xlim([1,12])
                 plt.xticks(np.arange(1,13))
-                plt.ylim([-5,5])
-                plt.yticks(np.arange(-6,5,2),fontsize=14)
-                plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+                plt.ylim([-3,3])
+                plt.yticks(np.arange(-3,4,1),fontsize=14)
                 plt.tick_params(axis='both',which='major',direction='out',length=5)
                 plt.tick_params(axis='both',which='minor',direction='out',length=3)
                 if k is 1:
@@ -2405,7 +2403,7 @@ if __name__=='__main__':
                 for k1 in sbtmp.index:
                     #for k2 in ['champ','grace']:
                     for k2 in ['grace']:  # only consider the grace
-                        rho = get_density_dates(k1+pd.TimedeltaIndex(range(-5,5),'D'), k2)
+                        rho = get_density_dates(k1+pd.TimedeltaIndex(range(-3,3),'D'), k2)
                         if rho.empty:
                             print('no data around',k1)
                             continue
@@ -2423,7 +2421,7 @@ if __name__=='__main__':
                         #rho1 = rho[rho.lat3>=87]  # north pole
                         rho1 = rho[rho.lat3==90]  # only consider the grace
                         #Make sure that there is data in each day
-                        if len(np.unique(rho1.index.dayofyear))!=10:
+                        if len(np.unique(rho1.index.dayofyear))!=6:
                             print('there is data gap around', k1)
                             continue
                         rho1['epochday'] = (rho1.index-k1)/pd.Timedelta('1D')
@@ -2434,7 +2432,7 @@ if __name__=='__main__':
 
                         #rho2 = rho[rho.lat3<=-87]  # south pole
                         rho2 = rho[rho.lat3==-90]  # only consider the grace
-                        if len(np.unique(rho2.index.dayofyear))!=10:
+                        if len(np.unique(rho2.index.dayofyear))!=6:
                             print('there is data gap around', k1)
                             continue
                         rho2['epochday'] = (rho2.index-k1)/pd.Timedelta('1D')
@@ -2480,14 +2478,19 @@ if __name__=='__main__':
                              density2.index/24, density2['p75'],'gray',
                              linestyle='--',dashes=(2,1),linewidth=1)
                     plt.plot(density2.index/24, density2['median'],'b',linewidth=2)
-                    plt.xlim(-5,5)
-                    plt.xticks(np.arange(-4,5,2))
-                    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(4))
+                    plt.xlim(-3,3)
+                    plt.xticks(np.arange(-3,4,1),('',-2,-1,0,1,2,''))
+                    #plt.gca().xaxis.set_minor_locator(AutoMinorLocator(4))
+                    if k1 is 'S':
+                        plt.vlines(np.arange(-3,3)+15.5/24,-30,60,linestyle='--',linewidth=1,color='r')
+                    if k1 is 'N':
+                        plt.vlines(np.arange(-3,3)+5.5/24,-30,60,linestyle='--',linewidth=1,color='r')
                     plt.ylim(-30,60)
                     plt.yticks(np.arange(-30,61,30))
                     #plt.grid(which='minor',dashes=(4,1))
                     #plt.grid(which='major',axis='y',dashes=(4,1))
-                    plt.grid(dashes=(4,1))
+                    plt.grid(axis='y',dashes=(4,1))
+                    plt.tick_params(axis='both',which='major',direction='out',length=5)
                     if k00*2+k11==0:
                         plt.ylabel(r'$\Delta\rho$ (%)')
                     if k22==3:
@@ -2504,7 +2507,7 @@ if __name__=='__main__':
         print(nn)
 
         # Density variations at solar maximum and minimum.
-        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
+        fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(6.35,7.02))
         density1 = density[0][1] # for away-toward and south pole
         fl = ['(a)','(b)']
         for k00,k0 in enumerate(['Solar maximum','Solar minimum']):
@@ -2522,25 +2525,26 @@ if __name__=='__main__':
                      density2.index/24, density2['p75'],'gray',
                      linestyle='--',dashes=(2,1),linewidth=1)
             plt.plot(density2.index/24, density2['median'],'b',linewidth=2)
-            plt.xlim(-5,5)
-            plt.xticks(np.arange(-5,6,1))
-            plt.gca().yaxis.set_minor_locator(AutoMinorLocator(3))
-            plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
+            plt.xlim(-3,3)
+            plt.xticks(np.arange(-3,4,1))
+            plt.vlines(np.arange(-3,3)+15.5/24,-30,61,linestyle='--',linewidth=1,color='r')
             plt.ylim(-30,60)
             plt.yticks(np.arange(-30,61,30))
+            plt.tick_params(axis='both',which='major',direction='out',length=5)
             #plt.grid(which='minor',dashes=(4,1))
             #plt.grid(which='major',axis='y',dashes=(4,1))
-            plt.grid(dashes=(4,1))
+            plt.grid(axis='y',dashes=(4,1))
             plt.ylabel(r'$\Delta\rho$ (%)',fontsize=14)
             if k00==1:
                 plt.xlabel('Epoch Time (day)',fontsize=14)
             if k00==0:
-                plt.title('Year: 02 - 04')
+                a = plt.title('Year: 02 - 04')
             if k00==1:
-                plt.title('Year: 08 - 10')
+                a = plt.title('Year: 08 - 10')
+            a.set_position((0.5,1.06))
             plt.text(0.1,0.8,'S',transform=plt.gca().transAxes)
             plt.text(0,1.05,fl[k00], transform=plt.gca().transAxes)
-        plt.subplots_adjust(left=0.1,wspace=0.04,bottom=0.1)
+        plt.subplots_adjust(left=0.15,wspace=0.04,hspace=0.24,bottom=0.1)
 
         # Magnetic local time changes at two poles as a function of UT
         fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
