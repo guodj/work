@@ -4,19 +4,9 @@ Class for the champ and grace density
 
 import numpy as np
 import pandas as pd
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.dates as mdates
 from matplotlib.ticker import AutoMinorLocator
-from matplotlib.ticker import MaxNLocator
-from matplotlib import rc
-from mpl_toolkits.basemap import Basemap
-import os
 from scipy.interpolate import griddata
-from scipy.signal import argrelextrema
-import pdb   # set breakpoint
-import time
-from apexpy import Apex
 
 class ChampDensity(pd.DataFrame):
     """ Subclass of pd.DataFrame FOR champ or grace density data.

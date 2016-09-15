@@ -1,0 +1,39 @@
+0  Longitude                              
+1  Latitude                               
+2  Altitude                               
+3  Rho                                    
+4  [O(!U3!NP)           ]                 
+5  [O!D2!N              ]                 
+6  [N!D2!N              ]                 
+7  [N(!U4!NS)           ]                 
+8  [NO                  ]                 
+9  [N(!U2!ND)           ]                 
+10  [N(!U2!NP)           ]                 
+11  [H                   ]                 
+12  [He                  ]                 
+13  [CO!D2!N             ]                 
+14  [O(!U1!ND)           ]                 
+15  Temperature                            
+16  V!Dn!N (east)                          
+17  V!Dn!N (north)                         
+18  V!Dn!N (up)                            
+19  V!Dn!N (up,O(!U3!NP)           )       
+20  V!Dn!N (up,O!D2!N              )       
+21  V!Dn!N (up,N!D2!N              )       
+22  V!Dn!N (up,N(!U4!NS)           )       
+23  V!Dn!N (up,NO                  )       
+24  [O_4SP_!U+!N         ]                 
+25  [O!D2!U+!N           ]                 
+26  [N!D2!U+!N           ]                 
+27  [N!U+!N              ]                 
+28  [NO!U+!N             ]                 
+29  [O(!U2!ND)!U+!N      ]                 
+30  [O(!U2!NP)!U+!N      ]                 
+31  [H!U+!N              ]                 
+32  [He!U+!N             ]                 
+33  [e-                  ]                 
+34  eTemperature                           
+35  iTemperature                           
+36  V!Di!N (east)                          
+37  V!Di!N (north)                         
+38  V!Di!N (up)                            
