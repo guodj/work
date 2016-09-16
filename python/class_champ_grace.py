@@ -1,7 +1,17 @@
-"""
-Class for the champ and grace density
-"""
+#--------------------------------------------------------------------------------
+# v 1.0,  on Fri Sep 16 23:23:39 CST 2016
+#
+# By Dongjie, USTC
+#
+# Class for the CHAMP and GRACE 3-degree densities.
+#
+# Methods contained:
+#       get_variables: get column names
+#       add_updown: Find the ascending and decending orbits
+#
+#--------------------------------------------------------------------------------
 
+# Global imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
@@ -9,75 +19,57 @@ from matplotlib.ticker import AutoMinorLocator
 from scipy.interpolate import griddata
 
 class ChampDensity(pd.DataFrame):
-    """ Subclass of pd.DataFrame FOR champ or grace density data.
-    """
-    #----------------------------------------------------------------#
-    # Another name for ChampDensity.lat
-    def get_lat(self):
-        return self.lat
-    def set_lat(self, value):
-        self.lat = value
-    def del_lat(self):
-        del self.lat
-    latitude = property(get_lat, set_lat, del_lat,'Latitudes in the data')
-    # Another name for ChampDensity.long
-    def get_lon(self):
-        return self.long
-    def set_lon(self, value):
-        self.long = value
-    def del_lon(self):
-        del self.long
-    lon = property(get_lon, set_lon, del_lon,'longitude in the data')
-    longitude = property(get_lon, set_lon, del_lon,'longitude in the data')
-    # Another name for ChampDensity.height
-    def get_height(self):
-        return self.height
-    def set_height(self, value):
-        self.height = value
-    def del_height(self):
-        del self.height
-    altitude = property(get_height, set_height, del_height,
-                        'altitude in the data')
-    alt = property(get_height, set_height, del_height,'altitude in the data')
-    # Another name for ChampDensity.rho
-    def get_rho(self):
-        return self.rho
-    def set_rho(self, value):
-        self.rho = value
-    def del_rho(self):
-        del self.rho
-    density = property(get_rho, set_rho, del_rho,'density in the data')
-    # Another name for ChampDensity.rho400
-    def get_rho400(self):
-        return self.rho400
-    def set_rho400(self, value):
-        self.rho400 = value
-    def del_rho400(self):
-        del self.rho400
-    density400 = property(get_rho400, set_rho400, del_rho400,
-                          'density at 400km in the data')
-    # Another name for ChampDensity.Mlong
-    def get_Mlong(self):
-        return self.Mlong
-    def set_Mlong(self, value):
-        self.Mlong = value
-    def del_Mlong(self):
-        del self.Mlong
-    Mlon = property(get_Mlong, set_Mlong, del_Mlong,
-                    'Magnetic longitude in the data')
-    #-------------------------------------------------------------------------#
+    def __init__(dataframe=None,dates=('2005-1-1'),satellite='champ'):
+        """ Get champ or grace data during specified dates.
+
+        Args:
+            dates: specified dates which can be args of pd.to_datetime(). and if a
+                single date is given , it shoule be in format such as ['2005-1-1'],
+                so pd.to_datetime() can convert it to pd.DatetimeIndex class
+            satellite: 'champ' or 'grace'
+        Returns:
+            dataframe of champ or grace density indexed with datetime. the columns
+            are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
+            msis_rho, ...
+        """
+        dates = pd.to_datetime(dates)
+        dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+        # champ and grace data are in this date range
+        if satellite == 'champ':
+            fname = ['/data/CHAMP23/csv/{:s}/ascii/'
+                     'Density_3deg_{:s}_{:s}.ascii'.format(
+                         k.strftime('%Y'),
+                         k.strftime('%y'),
+                         k.strftime('%j')) for k in dates]
+        elif satellite == 'grace':
+            fname = ['/data/Grace23/csv/{:s}/ascii/'
+                     'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
+                         k.strftime('%Y'),
+                         k.strftime('%y'),
+                         k.strftime('%j')) for k in dates]
+        rho = [pd.read_csv(
+            fn,
+            parse_dates=[0],
+            index_col=[0]) for fn in fname if os.path.isfile(fn)]
+        if rho:
+            rho = pd.concat(rho)
+            # Exclude duplicate points, pd.DataFrame.drop_duplicates() has something wrong
+            rho = rho.groupby(rho.index).first()
+            return ChampDensity(rho)
+        else:
+            return ChampDensity()
+
     def add_updown(self, whichlat='lat3'):
-        """ add 'isup' and 'isdown' columns to self
+        """ Add 'isup' and 'isdown' columns to self
         Note that the function is appropriate for continuous data
 
         Args:
-            whichlat: data column name used to seperate up and down
-                orbits
+            whichlat: data column name used to seperate up and down orbits
         Returns:
             self added with columns 'isup' and 'isdown'
 
         Note:
-            The results may be wrong near poles.
+            The results may be inappropriate near poles.
             Some bugs may exist at the data gap.
         """
         if not self.empty:
