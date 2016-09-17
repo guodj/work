@@ -1,12 +1,14 @@
 #--------------------------------------------------------------------------------
-# v 1.0,  on Fri Sep 16 23:23:39 CST 2016
+# v 1.0
 #
-# By Dongjie, USTC
+# By Dongjie, USTC, on Fri Sep 16 23:23:39 CST 2016
 #
 # Class for the CHAMP and GRACE 3-degree densities.
 # Also include a function to read data from file
 #
 # containe:
+#       get_density_dates: Get density from CHAMP or GRACE satellites
+#
 #       print_variable_name: Print the column names
 #
 #       print_dates: Print the data dates

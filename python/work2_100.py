@@ -20,7 +20,8 @@ from scipy.signal import argrelextrema
 import pdb   # set breakpoint
 import time
 from apexpy import Apex
-from class_champ_grace import ChampDensity
+from class_champ_grace import *
+from imf_index_sw import *
 
 
 def get_date_polarity():
@@ -79,142 +80,6 @@ def get_sblist():
     sblist.ix[(doy>125) & (doy<221),'season'] = 'js'
     sblist.ix[(doy>311) | (doy<35),'season'] = 'ds'
     return sblist
-
-
-def get_imf(dates,dsource = 'Omin',resolution = '1hour'):
-    """Obtain IMF data in selected dates
-
-    Args:
-        dates: pd.DatetimeIndex or array of strings.
-        dsource: 'ACE' or 'Omin'
-        resolution: '5minute' or '1hour'
-    returns:
-        pd.DataFrame, IMF data indexed with datetime
-    """
-    dates = pd.to_datetime(dates)
-    years = np.unique(dates.strftime('%Y'))
-    if dsource == 'ACE':
-        # ACE only has 1h resolution data
-        fpath = '/data/ACE_IMF_1h/'
-        fname = ['{:s}imf{:s}_csv.txt'.format(fpath,k) for k in years]
-        bad_data = -999.9
-        imf = [pd.read_csv(fn,parse_dates = [0],index_col = [0])
-               for fn in fname if os.path.isfile(fn)]
-    elif dsource == 'Omin':
-        if resolution == '5minute':
-            fpath = '/data/Omin_SW_IMF_5min/IMF_5min/csv/'
-            fname = ['{:s}imf_5min_{:s}_csv.lst'.format(fpath,k) for k in years]
-            bad_data = 9999.99
-        elif resolution == '1hour':
-            fpath = '/data/Omin_SW_IMF_1h/IMF/csv/'
-            fname = ['{:s}imf{:s}_csv.txt'.format(fpath,k) for k in years]
-            bad_data = 999.9
-        imf = [pd.read_csv(fn,parse_dates = [0],index_col = [0])
-               for fn in fname if os.path.isfile(fn)]
-    if imf:
-        imf = pd.concat(imf)
-        fp = np.floor(imf.index.to_julian_date()+0.5).isin(
-            dates.to_julian_date()+0.5)
-        imf = imf.loc[fp]
-        imf = imf.replace(bad_data,np.nan)
-        return imf
-    else:
-        return pd.DataFrame()
-
-
-def get_index(dates):
-    """Obtain solar or geomagnetic indics data in selected dates.
-    Only 1-hour resolution data is included
-
-    Args:
-        dates: pd.DatetimeIndex or array of strings.
-    returns:
-        pd.DataFrame, data indexed with datetime
-    """
-    dates = pd.to_datetime(dates)
-    years = np.unique(dates.strftime('%Y'))
-    fname = ['/data/Omin_Solar_Geo_index_1h/csv/'
-             'index{:s}_csv.txt'.format(y) for y in years]
-    index = [pd.read_csv(
-            fn,
-            parse_dates=[0],
-            index_col=[0]) for fn in fname if os.path.isfile(fn)]
-    if index:
-        index = pd.concat(index)
-        fp = np.floor(index.index.to_julian_date()+0.5).isin(
-            dates.to_julian_date()+0.5)
-        index = index.loc[fp]
-        index.loc[index.Kp==99, 'Kp'] = np.nan
-        index.loc[index.R==999, 'R'] = np.nan
-        index.loc[index.Dst==99999, 'Dst'] = np.nan
-        index.loc[index.ap==999, 'ap'] = np.nan
-        index.loc[index.f107==999.9, 'f107'] = np.nan
-        index.loc[index.AE==9999, 'AE'] = np.nan
-        index.loc[index.AL==99999, 'AL'] = np.nan
-        index.loc[index.AU==99999, 'AU'] = np.nan
-        index.loc[index.pc==999.9, 'pc'] = np.nan
-        return index
-    else:
-        return pd.DataFrame()
-
-
-def get_sw(dates):
-    """Obtain solar wind data in selected dates.
-    Only 1-hour resolution data is included
-
-    Args:
-        dates: pd.DatetimeIndex or array of strings.
-    returns:
-        pd.DataFrame, data indexed with datetime
-    """
-    dates = pd.to_datetime(dates)
-    years = np.unique(dates.strftime('%Y'))
-    fname = ['/data/Omin_SW_IMF_1h/SW_l1/csv/'
-             'plasma{:s}_csv.txt'.format(y) for y in years]
-    plasma = [pd.read_csv(
-            fn,
-            parse_dates=[0],
-            index_col=[0]) for fn in fname if os.path.isfile(fn)]
-    if plasma:
-        plasma = pd.concat(plasma)
-        fp = np.floor(plasma.index.to_julian_date()+0.5).isin(
-            dates.to_julian_date()+0.5)
-        plasma = plasma.loc[fp]
-        plasma.loc[plasma.temperature==9999999., 'temperature'] = np.nan
-        plasma.loc[plasma.proten_density==999.9, 'proten_density'] = np.nan
-        plasma.loc[plasma.speed==9999., 'speed'] = np.nan
-        plasma.loc[plasma.flow_lon==999.9, 'flow_lon'] = np.nan
-        plasma.loc[plasma.flow_lat==999.9, 'flow_lat'] = np.nan
-        plasma.loc[plasma.pressure==99.99, 'pressure'] = np.nan
-        return plasma
-    else:
-        return pd.DataFrame()
-
-
-def get_cirlist():
-    """ Obtain the CIR list during 1995-2006 created by R. McPherron
-
-    Return: pd.DatetimeIndex
-    """
-    fname = '/data/CIRlist/streaminterfacelist.txt'
-    cirlist = pd.read_csv(
-            fname, delim_whitespace=True, comment='%', header=None,
-            usecols=[0,1], names=['date','time'],
-            parse_dates={'datetime': [0,1]})
-    return pd.DatetimeIndex(cirlist.datetime)
-
-
-def get_cirlist_noicme():
-    """ Obtain the CIR list during 1998-2009 with the file interfacenoicme
-
-    Return: pd.DatetimeIndex
-    """
-    fname = '/data/CIRlist/interfacenoicme.txt'
-    cirlist = pd.read_csv(
-            fname, delim_whitespace=True, comment='%', header=None,
-            usecols=[0,1], names=['date','time'],
-            parse_dates={'datetime': [0,1]})
-    return pd.DatetimeIndex(cirlist.datetime)
 
 
 def get_goce_data(dates):
@@ -294,47 +159,6 @@ def set_lon_lat_polar(ax, pole='N',boundinglat=60):
 
 
 relative = lambda x: 100*(x-x.mean())/x.mean()
-
-
-def get_density_dates(dates,satellite='champ'):
-    """ get champ or grace data during specified dates.
-
-    Args:
-        dates: specified dates which can be args of pd.to_datetime(). and if a
-            single date is given , it shoule be in format such as ['2005-1-1'],
-            so pd.to_datetime() can convert it to DatetimeIndex class
-        satellite: 'champ' or 'grace'
-    Returns:
-        dataframe of champ or grace density indexed with datetime. the columns
-        are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
-        msis_rho, ...
-    """
-    dates = pd.to_datetime(dates)
-    dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
-    # champ and grace data are in this date range
-    if satellite == 'champ':
-        fname = ['/data/CHAMP23/csv/{:s}/ascii/'
-                 'Density_3deg_{:s}_{:s}.ascii'.format(
-                     k.strftime('%Y'),
-                     k.strftime('%y'),
-                     k.strftime('%j')) for k in dates]
-    elif satellite == 'grace':
-        fname = ['/data/Grace23/csv/{:s}/ascii/'
-                 'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
-                     k.strftime('%Y'),
-                     k.strftime('%y'),
-                     k.strftime('%j')) for k in dates]
-    rho = [pd.read_csv(
-        fn,
-        parse_dates=[0],
-        index_col=[0]) for fn in fname if os.path.isfile(fn)]
-    if rho:
-        rho = pd.concat(rho)
-        # Exclude duplicate points
-        rho = rho.groupby(rho.index).first()  # pd.DataFrame.drop_duplicates() has something wrong
-        return ChampDensity(rho)
-    else:
-        return ChampDensity()
 
 
 def contourf_lt_lat(ax, lt, lat, data, whichhemisphere='N', **kwargs):
