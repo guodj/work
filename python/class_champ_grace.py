@@ -4,60 +4,84 @@
 # By Dongjie, USTC
 #
 # Class for the CHAMP and GRACE 3-degree densities.
+# Also include a function to read data from file
 #
-# Methods contained:
-#       get_variables: get column names
-#       add_updown: Find the ascending and decending orbits
+# containe:
+#       print_variable_name: Print the column names
 #
+#       print_dates: Print the data dates
+#
+#       LT_median: Calculate the median local time of the ascending and
+#               descending orbits.
+#
+#       add_updown: Add 2 columns that show the ascending and decending orbits
+#
+#       orbit_mean: Calculate the orbit mean longitude, height, local time,
+#               rho, rho400.
+#
+#       satellite_position_lt_lat: show the satellite location in LT-LAT
+#               coordinates
+#
+#       data_gap_nan: Add nan to data gap, used for plot. There is a data gap
+#               when the time interval is greater than 2 hours
+#
+#       contourf_date_lat: Contourf of rho, rho400... as a function of date and
+#               lat
+#
+#       ..........
 #--------------------------------------------------------------------------------
 
 # Global imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
-from matplotlib.ticker import AutoMinorLocator
+import os
 from scipy.interpolate import griddata
 
 class ChampDensity(pd.DataFrame):
-    def __init__(dataframe=None,dates=('2005-1-1'),satellite='champ'):
-        """ Get champ or grace data during specified dates.
 
-        Args:
-            dates: specified dates which can be args of pd.to_datetime(). and if a
-                single date is given , it shoule be in format such as ['2005-1-1'],
-                so pd.to_datetime() can convert it to pd.DatetimeIndex class
-            satellite: 'champ' or 'grace'
+    def print_variable_name(self):
+        # Print column names in self
+        if self.empty:
+            return
+        for k00,k0 in enumerate(self.columns):
+            print(k00,': ',k0)
+
+
+    def print_dates(self):
+        # Print dates of the data
+        if self.empty:
+            return
+        print(pd.DatetimeIndex(np.unique(self.index.date)))
+
+
+    def LT_median(self):
+        """ Get the local time of the ascending and descending satellite orbit.
+        Only for a short-period continuous period.
+
         Returns:
-            dataframe of champ or grace density indexed with datetime. the columns
-            are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
-            msis_rho, ...
+            upLT, downLT: Local times for ascending and descending orbits.
+        Note:
+            Only low latitudes (-30<lat<30) are considered.
         """
-        dates = pd.to_datetime(dates)
-        dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
-        # champ and grace data are in this date range
-        if satellite == 'champ':
-            fname = ['/data/CHAMP23/csv/{:s}/ascii/'
-                     'Density_3deg_{:s}_{:s}.ascii'.format(
-                         k.strftime('%Y'),
-                         k.strftime('%y'),
-                         k.strftime('%j')) for k in dates]
-        elif satellite == 'grace':
-            fname = ['/data/Grace23/csv/{:s}/ascii/'
-                     'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
-                         k.strftime('%Y'),
-                         k.strftime('%y'),
-                         k.strftime('%j')) for k in dates]
-        rho = [pd.read_csv(
-            fn,
-            parse_dates=[0],
-            index_col=[0]) for fn in fname if os.path.isfile(fn)]
-        if rho:
-            rho = pd.concat(rho)
-            # Exclude duplicate points, pd.DataFrame.drop_duplicates() has something wrong
-            rho = rho.groupby(rho.index).first()
-            return ChampDensity(rho)
-        else:
-            return ChampDensity()
+        output = [np.nan,np.nan]
+        if self.empty:
+            return output
+        rho = self.add_updown()
+        rho = rho[(rho.lat3>=-30) &(rho.lat3<=30)]
+        if rho.empty:
+            return output
+        grouped = rho.groupby(rho.isup)['LT']
+        for name, group in grouped:
+            k0 = 0 if name is True else 1
+            group1 = group
+            if group1.max()-group1.min()>22:
+                group1[group1<2] = group1[group1<2]+24
+            output[k0] = np.median(group1)
+            output[k0] = output[k0]%24
+        print('Ascending LT: %4.1f, Descending LT: %4.1f'%(output[0],output[1]))
+        return output
+
 
     def add_updown(self, whichlat='lat3'):
         """ Add 'isup' and 'isdown' columns to self
@@ -93,6 +117,149 @@ class ChampDensity(pd.DataFrame):
                 self.loc[fp,'isup'] = True
             self = self[(self.isup) | (self.isdown)]
             return ChampDensity(self)
+
+
+    def orbit_mean(self,lats=(-85,85),updown='up'):
+        """ Get the orbit mean density during specified latitude range and
+        specified ascending or descending orbit
+
+        Input:
+            lats: two elements tuple, selected latitudes: lats[0]<=lat3<=lats[1]
+            updown: ascending or descending orbit
+
+        Output:
+            result: DataFrame, columns: longitude, height, LT, rho, rho400
+
+        Note:
+            longitudeand LT may be wrong if lats are high latitudes
+        """
+        self = self.add_updown()
+        tmp = self[self.isup] if updown =='up' else self[~self.isup]  # ascending or descending orbit?
+        tmp = tmp[(tmp.lat3>=lats[0]) & (tmp.lat3<=lats[1])]  #  which latitudes?
+        tmp['float_time'] = (
+                tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
+        # Below is a good method to calculate orbit number
+        tmp['difft'] = np.insert(
+                np.diff(tmp.index)/pd.Timedelta('1h'), 0, np.nan)
+        tmp['orbitn'] = 0
+        tmp.loc[tmp.difft>0.5,'orbitn']=1
+        tmp['orbitn'] = tmp['orbitn'].cumsum()
+
+        # There are at least half of the expected points, only for CHAMP and GRACE data
+        grouped = tmp.groupby('orbitn').filter(
+                lambda x: len(x.index)>(lats[1]-lats[0])/3/2).groupby('orbitn')
+        result = grouped.agg(
+                {'float_time': np.nanmean,
+                 'long':np.nanmedian,
+                 'height':np.nanmean,
+                 'LT':np.nanmedian,
+                 'rho':np.nanmean,
+                 'rho400':np.nanmean})
+        result['float_time'] = (result['float_time']*24*3600).round()
+        result['datetime'] = (pd.Timestamp('2000-1-1') +
+                              pd.TimedeltaIndex(result.float_time,'S'))
+        result = result.set_index('datetime')
+        result = result.drop('float_time',axis=1)
+        return result
+
+
+    def satellite_position_lt_lat(self, mag=False, upmarker='o', downmarker='o'):
+        """ Show the lt and lat positions of the satellite in a polar
+        coordinate.
+
+        Input:
+            mag: if True, for MLT and Mlat position
+            upmarker: the same as 'marker' parameter in plt.scatter
+            downmarker: the same as 'marker' parameter in plt.scatter
+
+        Output:
+            hcup, hcdown: scatter handles for the up and down orbits,
+                respectively.
+        """
+        if self.empty:
+            return
+        lt='MLT' if mag else 'LT'
+        lat='Mlat' if mag else 'lat'
+        self = self.add_updown()
+        thetaup = self.loc[self.isup, lt]/12*np.pi
+        rup = 90 - self.loc[self.isup, lat]
+        hcup = plt.scatter(thetaup, rup, marker=upmarker, linewidths=0)
+
+        thetadown = self.loc[self.isdown, lt]/12*np.pi
+        rdown = 90 - self.loc[self.isdown, lat]
+        hcdown = plt.scatter(thetadown, rdown,
+                             marker=downmarker, linewidths=0)
+        return hcup, hcdown
+
+
+    def data_gap_nan(self):
+        """ If there are data gaps,insert nan, for plt.plot
+        """
+        tmp = self.index
+        tmp1 = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1H')
+        tmp2 = np.insert(np.diff(tmp1),0,0)
+        tmp3 = np.argwhere(tmp2>2)
+        tmp3 = tmp3.reshape((tmp3.size,))
+        tmp = np.insert(tmp,tmp3,tmp[tmp3-1]+pd.Timedelta('0.5H'))
+        return self.reindex(tmp)
+
+
+    def contourf_date_lat(self, ax, whichcolumn='rho400',
+                          updown='up', **kwargs):
+        """ A contourf of multiple-day density versus date and latitude.
+
+        Args:
+            ax: axis handle
+            whichcolumn: string, 'rho400', 'rho', 'rho410'.
+            updown: string, 'up' or 'down'
+            **kwargs: for contourf
+        Return:
+            hc: handle of the contourf plot
+        """
+        from matplotlib.ticker import AutoMinorLocator
+        if not self.empty:
+            self['epochday'] = ((self.index-self.index.min())
+                    .total_seconds()/(24*3600))
+            btime = self['epochday'].min()
+            etime = self['epochday'].max()
+
+            self = self.add_updown()
+            if updown == 'up':
+                tmp = self[self.isup]
+            elif updown == 'down':
+                tmp = self[self.isdown]
+
+            ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
+            lat0 = np.arange(-90,91,3)
+            ut, lat = np.meshgrid(ut0, lat0)
+            rho = griddata((tmp['epochday'], tmp.lat),
+                           tmp[whichcolumn], (ut, lat),
+                           method='linear', rescale=True)
+            for index, k in enumerate(ut0):
+                fp = abs(tmp['epochday']-k)<0.5/24
+                if not fp.any():
+                    rho[:,index]=np.nan
+
+            hc = ax.contourf(ut, lat, rho, 10, **kwargs)
+
+            ax.set_xlim(np.floor(btime),np.floor(etime)+1)
+            ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
+            ax.set_xticklabels(pd.date_range(
+                    tmp.index[0],
+                    tmp.index[-1]+pd.Timedelta('1d')).
+                    strftime('%m-%d'),rotation=45)
+            ax.set_ylim(-90,90)
+            ax.set_yticks(np.arange(-90,91,30))
+            ax.xaxis.set_minor_locator(AutoMinorLocator(4))
+            ax.yaxis.set_minor_locator(AutoMinorLocator(3))
+            ax.tick_params(which='both', width=1.2)
+            ax.tick_params(which='major', length=7)
+            ax.tick_params(which='minor', length=4)
+            ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
+            ax.set_xlabel('Date of Year: {:d}'
+                          .format(tmp.index[0].year),fontsize=14)
+            ax.set_ylabel('Latitude', fontsize=14)
+            return hc#, rho
 
 
     def get_lt_lat_density(self, whichdensity='rho400', latbin=10,
@@ -182,159 +349,6 @@ class ChampDensity(pd.DataFrame):
         else:
             lon, lat = np.meshgrid(df.columns, df.index)
             return lon, lat, df.values
-
-
-    def LT_median(self):
-        """ Get the local time of the ascending and descending satellite orbit.
-        Only for a short-period continuous period.
-
-        Returns:
-            upLT, downLT: Local times for ascending and descending orbits.
-        Note:
-            Only low latitudes (-30<lat<30) are considered.
-        """
-        output = [np.nan,np.nan]
-        if self.empty:
-            return output
-        rho = self.add_updown()
-        rho = rho[(rho.lat3>=-30) &(rho.lat3<=30)]
-        if rho.empty:
-            return output
-        grouped = rho.groupby(rho.isup)['LT']
-        for name, group in grouped:
-            k0 = 0 if name is True else 1
-            group1 = group
-            if group1.max()-group1.min()>22:
-                group1[group1<2] = group1[group1<2]+24
-            output[k0] = np.median(group1)
-            output[k0] = output[k0]%24
-        return output
-
-
-    def orbit_mean(self,lats=(-85,85),updown='up'):
-        """ Get the orbit mean density during specified latitudes and
-        specified ascending or descending orbit
-
-        Input:
-            lats: two elements tuple, selected latitudes: lats[0]<=lat3<=lats[1]
-            updown: ascending or descending orbit
-
-        Output:
-            result: DataFrame, columns: longitude, height, LT, rho, rho400
-
-        Note:
-            longitudeand LT may be wrong if lats are high latitudes
-        """
-        self = self.add_updown()
-        tmp = self[self.isup] if updown =='up' else self[~self.isup]  # ascending or descending orbit?
-        tmp = tmp[(tmp.lat3>=lats[0]) & (tmp.lat3<=lats[1])]  #  which latitudes?
-        tmp['float_time'] = (
-                tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
-        # Below is a good method to calculate orbit number
-        tmp['difft'] = np.insert(
-                np.diff(tmp.index)/pd.Timedelta('1h'), 0, np.nan)
-        tmp['orbitn'] = 0
-        tmp.loc[tmp.difft>0.5,'orbitn']=1
-        tmp['orbitn'] = tmp['orbitn'].cumsum()
-
-        # There are at least half of the expected points, only for CHAMP and GRACE data
-        grouped = tmp.groupby('orbitn').filter(
-                lambda x: len(x.index)>(lats[1]-lats[0])/3/2).groupby('orbitn')
-        result = grouped.agg(
-                {'float_time': np.nanmean,
-                 'long':np.nanmedian,
-                 'height':np.nanmean,
-                 'LT':np.nanmedian,
-                 'rho':np.nanmean,
-                 'rho400':np.nanmean})
-        result['float_time'] = (result['float_time']*24*3600).round()
-        result['datetime'] = (pd.Timestamp('2000-1-1') +
-                              pd.TimedeltaIndex(result.float_time,'S'))
-        result = result.set_index('datetime')
-        result = result.drop('float_time',axis=1)
-        return result
-
-
-    def scatter_lt_lat(self, upmarker='o', downmarker='o'):
-        """ Show the lt and lat positions of the satellite in a polar
-        coordinate.
-
-        Input:
-            upmarker: the same as 'marker' parameter in plt.scatter
-            downmarker: the same as 'marker' parameter in plt.scatter
-
-        Output:
-            hcup, hcdown: scatter handles for the up and down orbits,
-                respectively.
-        """
-        if not self.empty:
-            self = self.add_updown()
-            thetaup = self.loc[self.isup, 'LT']/12*np.pi
-            rup = 90 - self.loc[self.isup, 'lat']
-            hcup = plt.scatter(thetaup, rup, marker=upmarker, linewidths=0)
-
-            thetadown = self.loc[self.isdown, 'LT']/12*np.pi
-            rdown = 90 - self.loc[self.isdown, 'lat']
-            hcdown = plt.scatter(thetadown, rdown,
-                                 marker=downmarker, linewidths=0)
-            return hcup, hcdown
-
-
-    def contourf_date_lat(self, ax, whichcolumn='rho400',
-                          updown='up', **kwargs):
-        """ A contourf of multiple-day density versus date and latitude.
-
-        Args:
-            ax: axis handle
-            whichcolumn: string, 'rho400', 'rho', 'rho410'.
-            updown: string, 'up' or 'down'
-            **kwargs: for contourf
-        Return:
-            hc: handle of the contourf plot
-        """
-        if not self.empty:
-            self['epochday'] = ((self.index-self.index.min())
-                    .total_seconds()/(24*3600))
-            btime = self['epochday'].min()
-            etime = self['epochday'].max()
-
-            self = self.add_updown()
-            if updown == 'up':
-                tmp = self[self.isup]
-            elif updown == 'down':
-                tmp = self[self.isdown]
-
-            ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
-            lat0 = np.arange(-90,91,3)
-            ut, lat = np.meshgrid(ut0, lat0)
-            rho = griddata((tmp['epochday'], tmp.lat),
-                           tmp[whichcolumn], (ut, lat),
-                           method='linear', rescale=True)
-            for index, k in enumerate(ut0):
-                fp = abs(tmp['epochday']-k)<0.5/24
-                if not fp.any():
-                    rho[:,index]=np.nan
-
-            hc = ax.contourf(ut, lat, rho, 10, **kwargs)
-
-            ax.set_xlim(np.floor(btime),np.floor(etime)+1)
-            ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
-            ax.set_xticklabels(pd.date_range(
-                    tmp.index[0],
-                    tmp.index[-1]+pd.Timedelta('1d')).
-                    strftime('%m-%d'),rotation=45)
-            ax.set_ylim(-90,90)
-            ax.set_yticks(np.arange(-90,91,30))
-            ax.xaxis.set_minor_locator(AutoMinorLocator(4))
-            ax.yaxis.set_minor_locator(AutoMinorLocator(3))
-            ax.tick_params(which='both', width=1.2)
-            ax.tick_params(which='major', length=7)
-            ax.tick_params(which='minor', length=4)
-            ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
-            ax.set_xlabel('Date of Year: {:d}'
-                          .format(tmp.index[0].year),fontsize=14)
-            ax.set_ylabel('Latitude', fontsize=14)
-            return hc#, rho
 
 
     def relative_density_to_previous_orbit_lt(self, whichcolumn='rho400'):
@@ -502,16 +516,51 @@ class ChampDensity(pd.DataFrame):
         return ChampDensity(self)
 
 
-    def data_gap_nan(self):
-        """ If there are data gaps,insert nan, for plt.plot
-        """
-        tmp = self.index
-        tmp1 = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1H')
-        tmp2 = np.insert(np.diff(tmp1),0,0)
-        tmp3 = np.argwhere(tmp2>2)
-        tmp3 = tmp3.reshape((tmp3.size,))
-        tmp = np.insert(tmp,tmp3,tmp[tmp3-1]+pd.Timedelta('0.5H'))
-        return self.reindex(tmp)
 
+def get_density_dates(dates,satellite='champ'):
+    """ get champ or grace data during specified dates.
 
-#------------------------end class-------------------------------------#
+    Args:
+        dates: specified dates which can be args of pd.to_datetime(). and if a
+            single date is given , it shoule be in format such as ['2005-1-1'],
+            so pd.to_datetime() can convert it to DatetimeIndex class
+        satellite: 'champ' or 'grace'
+    Returns:
+        dataframe of champ or grace density indexed with datetime. the columns
+        are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
+        msis_rho, ...
+    """
+    dates = pd.to_datetime(dates)
+    dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+    # champ and grace data are in this date range
+    if satellite == 'champ':
+        fname = ['/data/CHAMP23/csv/{:s}/ascii/'
+                 'Density_3deg_{:s}_{:s}.ascii'.format(
+                     k.strftime('%Y'),
+                     k.strftime('%y'),
+                     k.strftime('%j')) for k in dates]
+    elif satellite == 'grace':
+        fname = ['/data/Grace23/csv/{:s}/ascii/'
+                 'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
+                     k.strftime('%Y'),
+                     k.strftime('%y'),
+                     k.strftime('%j')) for k in dates]
+    rho = [pd.read_csv(
+        fn,
+        parse_dates=[0],
+        index_col=[0]) for fn in fname if os.path.isfile(fn)]
+    if rho:
+        rho = pd.concat(rho)
+        # Exclude duplicate points
+        # pd.DataFrame.drop_duplicates() has something wrong
+        rho = rho.groupby(rho.index).first()
+        return ChampDensity(rho)
+    else:
+        return ChampDensity()
+# END
+#--------------------------------------------------------------------------------
+# for test
+if __name__=='__main__':
+    a = get_density_dates(pd.date_range('2005-1-2','2005-1-2'))
+    a.contourf_date_lat(plt.subplot())
+    plt.show()
