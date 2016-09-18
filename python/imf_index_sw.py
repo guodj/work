@@ -156,9 +156,6 @@ def get_cirlist_noicme():
 
 def plot_imf_index_sw(bdate, edate, variables):
     # Plot variables in panels
-    IMFv = ('Bx', 'Bye', 'Bym', 'Bze','Bzm')
-    indexv = ('Kp', 'R', 'Dst', 'ap', 'AE', 'AL', 'AU', 'pc', 'f107')
-    swv = ('temperature', 'proten_density', 'flow_lat','flow_lon','pressure','speed')
     dates = pd.date_range(bdate,edate)
     imf = get_imf(dates)
     index = get_index(dates)
@@ -175,9 +172,24 @@ def plot_imf_index_sw(bdate, edate, variables):
 
 
 #TEST
+#--------------------------------------------------------------------------------
 if __name__ == '__main__':
+    from pylab import *
+    import matplotlib.dates as mdates
+    hours = mdates.HourLocator(range(0,25,3))
+    hoursfmt = mdates.DateFormatter('%H')
+    fig,ax = plot_imf_index_sw('2010-1-1','2010-12-31',['Bx','Bye'])
+    for k0 in range(2):
+        plt.sca(ax[k0])
+        ax[k0].set_ylim(-10,10)
+        plt.grid(axis='y',dashes=(4,1))
+    ax[1].xaxis.set_major_locator(hours)
+    ax[1].xaxis.set_major_formatter(hoursfmt)
+    plt.show()
     for date in pd.date_range('2010-1-1','2010-12-31'):
-        plot_imf_index_sw(date,date,['Bx','Bye'])
-        plt.show()
+        ax[1].set_xlim(date,date+pd.Timedelta('1D'))
+        ax[1].set_xlabel(date.date())
+        # By default, figures won't change until end of the script
+        # draw() forces a figure redraw
+        draw()
         input()
-        plt.close()
