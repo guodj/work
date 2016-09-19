@@ -18,38 +18,31 @@ import pandas as pd
 import numpy as np
 import os
 import matplotlib.pyplot as plt
-def get_imf(dates,dsource = 'Omin',resolution = '1hour'):
-    """Obtain IMF data in selected dates
+def get_imf(dates,resolution = '1hour'):
+    """Obtain Omin IMF data in selected dates
 
     Args:
         dates: pd.DatetimeIndex or array of strings.
-        dsource: 'ACE' or 'Omin'
         resolution: '5minute' or '1hour'
     returns:
         pd.DataFrame, IMF data indexed with datetime
     """
     dates = pd.to_datetime(dates)
     years = np.unique(dates.strftime('%Y'))
-    if dsource == 'ACE':
-        # ACE only has 1h resolution data
-        fpath = '/data/ACE_IMF_1h/'
+    if resolution in ['5minute','5m']:
+        fpath = '/data/Omin_5m/IMF_5min/csv/'
+        fname = ['{:s}imf_5min_{:s}_csv.lst'.format(fpath,k) for k in years]
+        bad_data = 9999.99
+    elif resolution in ['1hour','1h']:
+        fpath = '/data/Omin_1h/IMF/csv/'
         fname = ['{:s}imf{:s}_csv.txt'.format(fpath,k) for k in years]
-        bad_data = -999.9
-        imf = [pd.read_csv(fn,parse_dates = [0],index_col = [0])
-               for fn in fname if os.path.isfile(fn)]
-    elif dsource == 'Omin':
-        if resolution == '5minute':
-            fpath = '/data/Omin_SW_IMF_5min/IMF_5min/csv/'
-            fname = ['{:s}imf_5min_{:s}_csv.lst'.format(fpath,k) for k in years]
-            bad_data = 9999.99
-        elif resolution == '1hour':
-            fpath = '/data/Omin_SW_IMF_1h/IMF/csv/'
-            fname = ['{:s}imf{:s}_csv.txt'.format(fpath,k) for k in years]
-            bad_data = 999.9
-        imf = [pd.read_csv(fn,parse_dates = [0],index_col = [0])
-               for fn in fname if os.path.isfile(fn)]
+        bad_data = 999.9
+    imf = [pd.read_csv(fn,parse_dates = [0],index_col = [0])
+           for fn in fname if os.path.isfile(fn)]
     if imf:
         imf = pd.concat(imf)
+        # Two ways to convert date to number:
+        # 1, to_julian_date; 2, (date1-date2)/'1D'
         fp = np.floor(imf.index.to_julian_date()+0.5).isin(
             dates.to_julian_date()+0.5)
         imf = imf.loc[fp]
@@ -59,9 +52,8 @@ def get_imf(dates,dsource = 'Omin',resolution = '1hour'):
         return pd.DataFrame()
 
 
-def get_index(dates):
+def get_index(dates,resolution = '1hour'):
     """Obtain solar or geomagnetic indics data in selected dates.
-    Only 1-hour resolution data is included
 
     Args:
         dates: pd.DatetimeIndex or array of strings.
@@ -70,8 +62,13 @@ def get_index(dates):
     """
     dates = pd.to_datetime(dates)
     years = np.unique(dates.strftime('%Y'))
-    fname = ['/data/Omin_Solar_Geo_index_1h/csv/'
-             'index{:s}_csv.txt'.format(y) for y in years]
+    if resolution in ['1hour','1h','1H']:
+        fname = ['/data/Omin_1h/index/csv/'
+                 'index{:s}_csv.txt'.format(y) for y in years]
+    elif resolution in ['5minute','5m']:
+        # Only for AE and PC
+        fname = ['/data/Omin_5m/IMF_AE_PC_01_12_5m/csv/'
+                 '{:s}_csv.lst'.format(y) for y in years]
     index = [pd.read_csv(
             fn,
             parse_dates=[0],
@@ -79,17 +76,22 @@ def get_index(dates):
     if index:
         index = pd.concat(index)
         fp = np.floor(index.index.to_julian_date()+0.5).isin(
-            dates.to_julian_date()+0.5)
-        index = index.loc[fp]
-        index.loc[index.Kp==99, 'Kp'] = np.nan
-        index.loc[index.R==999, 'R'] = np.nan
-        index.loc[index.Dst==99999, 'Dst'] = np.nan
-        index.loc[index.ap==999, 'ap'] = np.nan
-        index.loc[index.f107==999.9, 'f107'] = np.nan
-        index.loc[index.AE==9999, 'AE'] = np.nan
-        index.loc[index.AL==99999, 'AL'] = np.nan
-        index.loc[index.AU==99999, 'AU'] = np.nan
-        index.loc[index.pc==999.9, 'pc'] = np.nan
+                dates.to_julian_date()+0.5)
+        if resolution in ['1hour','1h','1H']:
+            index = index.loc[fp]
+            index.loc[index.Kp==99, 'Kp'] = np.nan
+            index.loc[index.R==999, 'R'] = np.nan
+            index.loc[index.Dst==99999, 'Dst'] = np.nan
+            index.loc[index.ap==999, 'ap'] = np.nan
+            index.loc[index.f107==999.9, 'f107'] = np.nan
+            index.loc[index.AE==9999, 'AE'] = np.nan
+            index.loc[index.AL==99999, 'AL'] = np.nan
+            index.loc[index.AU==99999, 'AU'] = np.nan
+            index.loc[index.pc==999.9, 'pc'] = np.nan
+        elif resolution in ['5minute','5m']:
+            index.rename(columns={'PC':'pc'},inplace=True)
+            index.loc[index.AE==99999, 'AE'] = np.nan
+            index.loc[index.pc==999.99, 'pc'] = np.nan
         return index
     else:
         return pd.DataFrame()
@@ -106,7 +108,7 @@ def get_sw(dates):
     """
     dates = pd.to_datetime(dates)
     years = np.unique(dates.strftime('%Y'))
-    fname = ['/data/Omin_SW_IMF_1h/SW_l1/csv/'
+    fname = ['/data/Omin_1h/SW_l1/csv/'
              'plasma{:s}_csv.txt'.format(y) for y in years]
     plasma = [pd.read_csv(
             fn,
@@ -154,11 +156,14 @@ def get_cirlist_noicme():
     return pd.DatetimeIndex(cirlist.datetime)
 
 
-def plot_imf_index_sw(bdate, edate, variables):
+def plot_imf_index_sw(bdate, edate, variables,res='1hour'):
     # Plot variables in panels
+    # res can be '1h' or '5m', '5m' is only for IMF, AE, PC
+    vl = {'Bx':'$B_x$ (nT)', 'Bye':'GSE $B_y$ (nT)', 'Bze':'GSE $B_z$ (nT)',
+          'Bym':'GSM $B_y$ (nT)', 'Bzm':'GSM $B_z$ (nT)','AE':'AE','pc':'PC'}
     dates = pd.date_range(bdate,edate)
-    imf = get_imf(dates)
-    index = get_index(dates)
+    imf = get_imf(dates,res)
+    index = get_index(dates,res)
     sw = get_sw(dates)
     comb = pd.concat([imf,index,sw],axis=1)
 
@@ -167,28 +172,39 @@ def plot_imf_index_sw(bdate, edate, variables):
     for k00, k0 in enumerate(variables):
         plt.sca(ax[k00])
         plt.plot(comb.index, comb[k0])
-        plt.title(k0)
+        plt.ylabel(vl[k0])
     return fig, ax
-
 
 #TEST
 #--------------------------------------------------------------------------------
 if __name__ == '__main__':
     from pylab import *
     import matplotlib.dates as mdates
+    from matplotlib.ticker import AutoMinorLocator
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
-    fig,ax = plot_imf_index_sw('2010-1-1','2010-12-31',['Bx','Bye'])
+    fig,ax = plot_imf_index_sw('2010-1-1','2010-12-31',['Bx','Bye','AE'],'5minute')
     for k0 in range(2):
         plt.sca(ax[k0])
-        ax[k0].set_ylim(-10,10)
-        plt.grid(axis='y',dashes=(4,1))
-    ax[1].xaxis.set_major_locator(hours)
-    ax[1].xaxis.set_major_formatter(hoursfmt)
+        plt.ylim(-10,10)
+        plt.yticks(np.arange(-10,11,5))
+        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
+        plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
+        plt.grid(dashes=(4,1))
+        plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
+    plt.sca(ax[2])
+    plt.ylim(0,800)
+    plt.yticks(np.arange(0,801,200))
+    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
+    plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+    plt.grid(dashes=(4,1))
+
+    ax[-1].xaxis.set_major_locator(hours)
+    ax[-1].xaxis.set_major_formatter(hoursfmt)
     plt.show()
     for date in pd.date_range('2010-1-1','2010-12-31'):
-        ax[1].set_xlim(date,date+pd.Timedelta('1D'))
-        ax[1].set_xlabel(date.date())
+        ax[-1].set_xlim(date,date+pd.Timedelta('1D'))
+        ax[-1].set_xlabel('Hours of date: '+date.date().strftime('%Y-%m-%d'))
         # By default, figures won't change until end of the script
         # draw() forces a figure redraw
         draw()

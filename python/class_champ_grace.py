@@ -9,26 +9,27 @@
 # containe:
 #       get_density_dates: Get density from CHAMP or GRACE satellites
 #
-#       print_variable_name: Print the column names
+#       class: ChampDensity,
+#           print_variable_name: Print the column names
 #
-#       print_dates: Print the data dates
+#           print_dates: Print the data dates
 #
-#       LT_median: Calculate the median local time of the ascending and
+#           LT_median: Calculate the median local time of the ascending and
 #               descending orbits.
 #
-#       add_updown: Add 2 columns that show the ascending and decending orbits
+#           add_updown: Add 2 columns that show the ascending and decending orbits
 #
-#       orbit_mean: Calculate the orbit mean longitude, height, local time,
-#               rho, rho400.
+#           orbit_mean: Calculate the orbit mean longitude, height, local time,
+#                   rho, rho400.
 #
-#       satellite_position_lt_lat: show the satellite location in LT-LAT
-#               coordinates
+#           satellite_position_lt_lat: show the satellite location in LT-LAT
+#                   coordinates
 #
-#       data_gap_nan: Add nan to data gap, used for plot. There is a data gap
-#               when the time interval is greater than 2 hours
+#           data_gap_nan: Add nan to data gap, used for plot. There is a data gap
+#                   when the time interval is greater than 2 hours
 #
-#       contourf_date_lat: Contourf of rho, rho400... as a function of date and
-#               lat
+#           contourf_date_lat: Contourf of rho, rho400... as a function of date and
+#                   lat
 #
 #       ..........
 #--------------------------------------------------------------------------------
@@ -39,6 +40,48 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
+
+def get_density_dates(dates,satellite='champ'):
+    """ get champ or grace data during specified dates.
+
+    Args:
+        dates: specified dates which can be args of pd.to_datetime(). and if a
+            single date is given , it shoule be in format such as ['2005-1-1'],
+            so pd.to_datetime() can convert it to DatetimeIndex class
+        satellite: 'champ' or 'grace'
+    Returns:
+        dataframe of champ or grace density indexed with datetime. the columns
+        are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
+        msis_rho, ...
+    """
+    dates = pd.to_datetime(dates)
+    dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+    # champ and grace data are in this date range
+    if satellite == 'champ':
+        fname = ['/data/CHAMP23/csv/{:s}/ascii/'
+                 'Density_3deg_{:s}_{:s}.ascii'.format(
+                     k.strftime('%Y'),
+                     k.strftime('%y'),
+                     k.strftime('%j')) for k in dates]
+    elif satellite == 'grace':
+        fname = ['/data/Grace23/csv/{:s}/ascii/'
+                 'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
+                     k.strftime('%Y'),
+                     k.strftime('%y'),
+                     k.strftime('%j')) for k in dates]
+    rho = [pd.read_csv(
+        fn,
+        parse_dates=[0],
+        index_col=[0]) for fn in fname if os.path.isfile(fn)]
+    if rho:
+        rho = pd.concat(rho)
+        # Exclude duplicate points
+        # pd.DataFrame.drop_duplicates() has something wrong
+        rho = rho.groupby(rho.index).first()
+        return ChampDensity(rho)
+    else:
+        return ChampDensity()
+
 
 class ChampDensity(pd.DataFrame):
 
@@ -165,14 +208,13 @@ class ChampDensity(pd.DataFrame):
         return result
 
 
-    def satellite_position_lt_lat(self, mag=False, upmarker='o', downmarker='o'):
+    def satellite_position_lt_lat(self, mag=False, ns='N'):
         """ Show the lt and lat positions of the satellite in a polar
         coordinate.
 
         Input:
             mag: if True, for MLT and Mlat position
-            upmarker: the same as 'marker' parameter in plt.scatter
-            downmarker: the same as 'marker' parameter in plt.scatter
+            ns: N or S for North and South hemispheres, respectively
 
         Output:
             hcup, hcdown: scatter handles for the up and down orbits,
@@ -182,16 +224,11 @@ class ChampDensity(pd.DataFrame):
             return
         lt='MLT' if mag else 'LT'
         lat='Mlat' if mag else 'lat'
-        self = self.add_updown()
-        thetaup = self.loc[self.isup, lt]/12*np.pi
-        rup = 90 - self.loc[self.isup, lat]
-        hcup = plt.scatter(thetaup, rup, marker=upmarker, linewidths=0)
-
-        thetadown = self.loc[self.isdown, lt]/12*np.pi
-        rdown = 90 - self.loc[self.isdown, lat]
-        hcdown = plt.scatter(thetadown, rdown,
-                             marker=downmarker, linewidths=0)
-        return hcup, hcdown
+        ct = self[lat]>0 if ns is 'N' else self[lat]<0
+        theta = self.loc[ct,lt]/12*np.pi
+        r = 90 - abs(self.loc[ct,lat])
+        hc = plt.scatter(theta, r, linewidths=0)
+        return hc
 
 
     def data_gap_nan(self):
@@ -519,50 +556,19 @@ class ChampDensity(pd.DataFrame):
 
 
 
-def get_density_dates(dates,satellite='champ'):
-    """ get champ or grace data during specified dates.
-
-    Args:
-        dates: specified dates which can be args of pd.to_datetime(). and if a
-            single date is given , it shoule be in format such as ['2005-1-1'],
-            so pd.to_datetime() can convert it to DatetimeIndex class
-        satellite: 'champ' or 'grace'
-    Returns:
-        dataframe of champ or grace density indexed with datetime. the columns
-        are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
-        msis_rho, ...
-    """
-    dates = pd.to_datetime(dates)
-    dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
-    # champ and grace data are in this date range
-    if satellite == 'champ':
-        fname = ['/data/CHAMP23/csv/{:s}/ascii/'
-                 'Density_3deg_{:s}_{:s}.ascii'.format(
-                     k.strftime('%Y'),
-                     k.strftime('%y'),
-                     k.strftime('%j')) for k in dates]
-    elif satellite == 'grace':
-        fname = ['/data/Grace23/csv/{:s}/ascii/'
-                 'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
-                     k.strftime('%Y'),
-                     k.strftime('%y'),
-                     k.strftime('%j')) for k in dates]
-    rho = [pd.read_csv(
-        fn,
-        parse_dates=[0],
-        index_col=[0]) for fn in fname if os.path.isfile(fn)]
-    if rho:
-        rho = pd.concat(rho)
-        # Exclude duplicate points
-        # pd.DataFrame.drop_duplicates() has something wrong
-        rho = rho.groupby(rho.index).first()
-        return ChampDensity(rho)
-    else:
-        return ChampDensity()
 # END
 #--------------------------------------------------------------------------------
 # for test
 if __name__=='__main__':
-    a = get_density_dates(pd.date_range('2005-1-2','2005-1-2'))
-    a.contourf_date_lat(plt.subplot())
+    den = get_density_dates(pd.date_range('2005-1-2','2005-1-2'))
+    ax = plt.subplot(polar=True)
+    hc = den.satellite_position_lt_lat(mag=True)
+    #--------------------------------------------------------------------------------
+    # Set polar(lat, LT) coordinates
+    ax.set_rmax(30)
+    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    ax.set_theta_zero_location('S')
+    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #--------------------------------------------------------------------------------
     plt.show()
+

@@ -49,6 +49,7 @@ Alts	/home/gdj/work/python/Cailei/tst0.py	/^Alts = data[2][0][0] \/ 1000.0$/;"	v
 Apex	/home/gdj/work/python/sth.py	/^    from apexpy import Apex$/;"	i
 Apex	/home/gdj/work/python/work2_100.py	/^from apexpy import Apex$/;"	i
 AutoMinorLocator	/home/gdj/work/python/class_champ_grace.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
+AutoMinorLocator	/home/gdj/work/python/imf_index_sw.py	/^    from matplotlib.ticker import AutoMinorLocator$/;"	i
 AutoMinorLocator	/home/gdj/work/python/work2_100.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
 AutoMinorLocator	/home/gdj/work/python/work2_101.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
 Basemap	/home/gdj/work/python/sth.py	/^    from mpl_toolkits.basemap import Basemap$/;"	i
@@ -618,13 +619,13 @@ get_g	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^def get_g(h):$/;"	f
 get_gitm_vars_range	/home/gdj/work/python/Cailei/get_gitm_data_range.py	/^def get_gitm_vars_range(file_to_read, iAlt, vars_to_read=-1):$/;"	f
 get_goce_data	/home/gdj/work/python/work2_100.py	/^def get_goce_data(dates):$/;"	f
 get_goce_mdays	/home/gdj/work/matlab/work2/get_goce_mdays.m	/^function [uporbit,downorbit]=get_goce_mdays(lrdays)$/;"	f
-get_imf	/home/gdj/work/python/imf_index_sw.py	/^def get_imf(dates,dsource = 'Omin',resolution = '1hour'):$/;"	f
+get_imf	/home/gdj/work/python/imf_index_sw.py	/^def get_imf(dates,resolution = '1hour'):$/;"	f
 get_imf_AE_PC_5m	/home/gdj/work/python/work3_100.py	/^def get_imf_AE_PC_5m(dates):$/;"	f
 get_imf_ace_1h_mdays	/home/gdj/work/matlab/work2/get_imf_ace_1h_mdays.m	/^function imf_ace=get_imf_ace_1h_mdays(lrdates)$/;"	f
 get_imf_epoch	/home/gdj/work/matlab/work2/get_imf_epoch.m	/^function imf_epoch=get_imf_epoch(epoch_date,lrdays)$/;"	f
 get_imf_epoch_median	/home/gdj/work/matlab/work2/get_imf_epoch_median.m	/^function imf_epoch_median=get_imf_epoch_median(imf_epoch)$/;"	f
 get_imf_mdays	/home/gdj/work/matlab/work2/get_imf_mdays.m	/^function imf=get_imf_mdays(lrdates)$/;"	f
-get_index	/home/gdj/work/python/imf_index_sw.py	/^def get_index(dates):$/;"	f
+get_index	/home/gdj/work/python/imf_index_sw.py	/^def get_index(dates,resolution = '1hour'):$/;"	f
 get_index	/home/gdj/work/python/work3_100.py	/^def get_index(dates):$/;"	f
 get_lon_lat_density	/home/gdj/work/python/class_champ_grace.py	/^    def get_lon_lat_density(self, whichdensity='rho400', latbin=10,$/;"	m	class:ChampDensity
 get_lt_lat_density	/home/gdj/work/python/class_champ_grace.py	/^    def get_lt_lat_density(self, whichdensity='rho400', latbin=10,$/;"	m	class:ChampDensity
@@ -692,6 +693,8 @@ header	/home/gdj/work/python/Cailei/t.py	/^header = read_gitm_file_header('F:\\\
 header	/home/gdj/work/python/Cailei/test.py	/^header = read_gitm_header()$/;"	v
 header	/home/gdj/work/python/Cailei/tst - 副本.py	/^header = read_gitm_file_header(file)$/;"	v
 header	/home/gdj/work/python/Cailei/tst0.py	/^header = read_gitm_file_header(file)$/;"	v
+hours	/home/gdj/work/python/imf_index_sw.py	/^    hours = mdates.HourLocator(range(0,25,3))$/;"	v
+hoursfmt	/home/gdj/work/python/imf_index_sw.py	/^    hoursfmt = mdates.DateFormatter('%H')$/;"	v
 hourvalue_change_around_polarity_change	/home/gdj/work/matlab/work1/data_processing/hourvalue_change_around_polarity_change.m	/^function y=hourvalue_change_around_polarity_change(x1,x2)$/;"	f
 hs	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^hs = []$/;"	v
 hs	/home/gdj/work/python/Cailei/plot_gitm_pres.py	/^hs = []$/;"	v
@@ -922,6 +925,7 @@ matplotlib	/home/gdj/work/python/Cailei/tst0.py	/^import matplotlib.transforms a
 matplotlib	/home/gdj/work/python/class_champ_grace.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/gitm_routines.py	/^import matplotlib.dates as dates$/;"	i
 matplotlib	/home/gdj/work/python/gitm_routines.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	/home/gdj/work/python/imf_index_sw.py	/^    import matplotlib.dates as mdates$/;"	i
 matplotlib	/home/gdj/work/python/imf_index_sw.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^    import matplotlib$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^    import matplotlib.pyplot as plt$/;"	i
@@ -972,6 +976,7 @@ maxi	/home/gdj/work/python/Cailei/test.py	/^maxi  = np.max(AllData2D)*1.05$/;"	v
 maxi	/home/gdj/work/python/Cailei/tst - 副本.py	/^maxi  = np.max(AllData2D)*1.05$/;"	v
 maxi	/home/gdj/work/python/Cailei/tst.py	/^maxi = np.max(AllData2D)*1.05$/;"	v
 maxi	/home/gdj/work/python/Cailei/tst0.py	/^maxi = 2.e-13  # np.max(AllData2D)*1.05$/;"	v
+mdates	/home/gdj/work/python/imf_index_sw.py	/^    import matplotlib.dates as mdates$/;"	i
 mdates	/home/gdj/work/python/work2_100.py	/^import matplotlib.dates as mdates$/;"	i
 minAlt	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^minAlt = 100$/;"	v
 minAlt	/home/gdj/work/python/Cailei/plot_gitm_on_lon.py	/^minAlt = 100$/;"	v
@@ -1176,7 +1181,7 @@ pi	/home/gdj/work/python/Cailei/plot_gitm_pres_line.py	/^from math import pi$/;"
 pi	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^from math import pi$/;"	i
 pi	/home/gdj/work/python/Cailei/plot_gitm_vup_line.py	/^from math import pi$/;"	i
 pi	/home/gdj/work/python/Cailei/tst0.py	/^from math import pi$/;"	i
-plot_imf_index_sw	/home/gdj/work/python/imf_index_sw.py	/^def plot_imf_index_sw(bdate, edate, variables):$/;"	f
+plot_imf_index_sw	/home/gdj/work/python/imf_index_sw.py	/^def plot_imf_index_sw(bdate, edate, variables,res='1hour'):$/;"	f
 plot_median	/home/gdj/work/matlab/work1/data_processing/plot_median.m	/^function pic = plot_median(y1,y2,yr)$/;"	f
 plot_text	/home/gdj/work/matlab/matlabfunction/plot_text.m	/^function htext = plot_text(xxtext,yytext,text_str,font_size)$/;"	f
 plot_text_3c	/home/gdj/work/matlab/work1/plot_text_3c.m	/^function htext = plot_text_3c(xxtext,yytext,c1,c2,text1,text2,text3,font_size)$/;"	f
