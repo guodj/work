@@ -11,7 +11,6 @@ import matplotlib.pyplot as plt
 from champ_grace import *
 from goce import *
 from imf_index_sw import *
-from pylab import *
 
 def func1():
     #----------------------------------------
@@ -21,6 +20,7 @@ def func1():
     #     2, CHAMP, GRACE and GOCE orbits overlap
     #----------------------------------------
     # For IMF and AE
+    from pylab import draw # Use draw()
     import matplotlib.dates as mdates
     from matplotlib.ticker import AutoMinorLocator
     hours = mdates.HourLocator(range(0,25,3))
@@ -53,9 +53,9 @@ def func1():
     for date in pd.date_range('2010-1-1','2010-12-31'):
         ax1[-1].set_xlim(date,date+pd.Timedelta('1D'))
         ax1[-1].set_xlabel('Hours of date: '+date.date().strftime('%Y-%m-%d'))
+        plt.tight_layout()
         # By default, figures won't change until end of the script
         # draw() forces a figure redraw
-        plt.tight_layout()
         draw()
         # for satellites
         denchamptmp = ChampDensity(denchamp[date:date+pd.Timedelta('1D')])
@@ -63,15 +63,15 @@ def func1():
         dengocetmp = GoceDensity(dengoce[date:date+pd.Timedelta('1D')])
         fig2 = plt.figure(figsize=(7,6.5))
         ax2 = plt.subplot(polar=True)
-        hc = denchamptmp.satellite_position_lt_lat()
-        hc.set_color('r')
-        hc.set_label('CHAMP')
-        hc = dengracetmp.satellite_position_lt_lat()
-        hc.set_color('b')
-        hc.set_label('GRACE')
-        hc = dengocetmp.satellite_position_lt_lat()
-        hc.set_color('k')
-        hc.set_label('GOCE')
+        hc = denchamptmp.satellite_position_lt_lat(ns='N')
+        hc.set_color('r') if not hc is None else None
+        hc.set_label('CHAMP') if not hc is None else None
+        hc = dengracetmp.satellite_position_lt_lat(ns='N')
+        hc.set_color('b') if not hc is None else None
+        hc.set_label('GRACE') if not hc is None else None
+        hc = dengocetmp.satellite_position_lt_lat(ns='N')
+        hc.set_color('k') if not hc is None else None
+        hc.set_label('GOCE') if not hc is None else None
         #--------------------------------------------------------------------------------
         # Set polar(lat, LT) coordinates
         ax2.set_rmax(30)
@@ -83,7 +83,7 @@ def func1():
         hl = ax2.legend(loc=(0.85,0.8))
         plt.show()
         input()
-        close(fig2)
+        plt.close(fig2)
 
 # END
 if __name__ == '__main__':

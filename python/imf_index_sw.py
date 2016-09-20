@@ -158,6 +158,7 @@ def get_cirlist_noicme():
 
 def plot_imf_index_sw(ax, bdate, edate, variables,res='1hour'):
     # ax should be created with plt.subplots() outside
+    # variables should be a list or tuple even if only one variable
     # Plot variables in panels
     # res can be '1h' or '5m', '5m' is only for IMF, AE, PC
     vl = {'Bx':'$B_x$ (nT)', 'Bye':'GSE $B_y$ (nT)', 'Bze':'GSE $B_z$ (nT)',
@@ -168,9 +169,8 @@ def plot_imf_index_sw(ax, bdate, edate, variables,res='1hour'):
     sw = get_sw(dates)
     comb = pd.concat([imf,index,sw],axis=1)
 
-    nv = len(variables)
     for k00, k0 in enumerate(variables):
-        plt.sca(ax[k00])
+        plt.sca(ax[k00]) if len(variables)>1 else plt.sca(ax)
         plt.plot(comb.index, comb[k0])
         plt.ylabel(vl[k0])
     return
@@ -183,29 +183,31 @@ if __name__ == '__main__':
     from matplotlib.ticker import AutoMinorLocator
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
-    fig,ax = plt.subplots(3,1,sharex=True)
-    plot_imf_index_sw(ax,'2010-1-1','2010-12-31',['Bx','Bye','AE'],'5minute')
-    for k0 in range(2):
-        plt.sca(ax[k0])
-        plt.ylim(-10,10)
-        plt.yticks(np.arange(-10,11,5))
-        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
-        plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
-        plt.grid(dashes=(4,1))
-        plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
-    plt.sca(ax[2])
-    plt.ylim(0,800)
-    plt.yticks(np.arange(0,801,200))
-    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
-    plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
-    plt.grid(dashes=(4,1))
-    ax[-1].xaxis.set_major_locator(hours)
-    ax[-1].xaxis.set_major_formatter(hoursfmt)
-    plt.show()
-    for date in pd.date_range('2010-1-1','2010-12-31'):
-        ax[-1].set_xlim(date,date+pd.Timedelta('1D'))
-        ax[-1].set_xlabel('Hours of date: '+date.date().strftime('%Y-%m-%d'))
-        # By default, figures won't change until end of the script
-        # draw() forces a figure redraw
-        draw()
-        input()
+    fig,ax = plt.subplots(1,1,sharex=True)
+    plot_imf_index_sw(ax,'2010-1-1','2010-1-31',['Bx'],'5minute')
+    #fig,ax = plt.subplots(3,1,sharex=True)
+    #plot_imf_index_sw(ax,'2010-1-1','2010-12-31',['Bx','Bye','AE'],'5minute')
+    #for k0 in range(2):
+    #    plt.sca(ax[k0])
+    #    plt.ylim(-10,10)
+    #    plt.yticks(np.arange(-10,11,5))
+    #    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
+    #    plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
+    #    plt.grid(dashes=(4,1))
+    #    plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
+    #plt.sca(ax[2])
+    #plt.ylim(0,800)
+    #plt.yticks(np.arange(0,801,200))
+    #plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
+    #plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
+    #plt.grid(dashes=(4,1))
+    #ax[-1].xaxis.set_major_locator(hours)
+    #ax[-1].xaxis.set_major_formatter(hoursfmt)
+    #plt.show()
+    #for date in pd.date_range('2010-1-1','2010-12-31'):
+    #    ax[-1].set_xlim(date,date+pd.Timedelta('1D'))
+    #    ax[-1].set_xlabel('Hours of date: '+date.date().strftime('%Y-%m-%d'))
+    #    # By default, figures won't change until end of the script
+    #    # draw() forces a figure redraw
+    #    draw()
+    #    input()
