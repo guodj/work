@@ -7,7 +7,7 @@
 # Also include a function to read data from file
 #
 # containe:
-#       get_density_dates: Get density from CHAMP or GRACE satellites
+#       get_champ_grace_data: Get density from CHAMP or GRACE satellites
 #
 #       class: ChampDensity,
 #           print_variable_name: Print the column names
@@ -41,7 +41,7 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
-def get_density_dates(dates,satellite='champ'):
+def get_champ_grace_data(dates,satellite='champ'):
     """ get champ or grace data during specified dates.
 
     Args:
@@ -190,9 +190,11 @@ class ChampDensity(pd.DataFrame):
         tmp.loc[tmp.difft>0.5,'orbitn']=1
         tmp['orbitn'] = tmp['orbitn'].cumsum()
 
-        # There are at least half of the expected points, only for CHAMP and GRACE data
+        # There are at least half of the expected points
+        maxn = tmp.orbitn.max()
+        dp = len(tmp)
         grouped = tmp.groupby('orbitn').filter(
-                lambda x: len(x.index)>(lats[1]-lats[0])/3/2).groupby('orbitn')
+                lambda x: len(x.index)>dp/maxn/2).groupby('orbitn')
         result = grouped.agg(
                 {'float_time': np.nanmean,
                  'long':np.nanmedian,
@@ -560,7 +562,7 @@ class ChampDensity(pd.DataFrame):
 #--------------------------------------------------------------------------------
 # for test
 if __name__=='__main__':
-    den = get_density_dates(pd.date_range('2005-1-2','2005-1-2'))
+    den = get_champ_grace_data(pd.date_range('2005-1-2','2005-1-2'))
     ax = plt.subplot(polar=True)
     hc = den.satellite_position_lt_lat(mag=True)
     #--------------------------------------------------------------------------------

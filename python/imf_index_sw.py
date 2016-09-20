@@ -156,7 +156,8 @@ def get_cirlist_noicme():
     return pd.DatetimeIndex(cirlist.datetime)
 
 
-def plot_imf_index_sw(bdate, edate, variables,res='1hour'):
+def plot_imf_index_sw(ax, bdate, edate, variables,res='1hour'):
+    # ax should be created with plt.subplots() outside
     # Plot variables in panels
     # res can be '1h' or '5m', '5m' is only for IMF, AE, PC
     vl = {'Bx':'$B_x$ (nT)', 'Bye':'GSE $B_y$ (nT)', 'Bze':'GSE $B_z$ (nT)',
@@ -168,12 +169,11 @@ def plot_imf_index_sw(bdate, edate, variables,res='1hour'):
     comb = pd.concat([imf,index,sw],axis=1)
 
     nv = len(variables)
-    fig, ax = plt.subplots(nv,1,sharex=True)
     for k00, k0 in enumerate(variables):
         plt.sca(ax[k00])
         plt.plot(comb.index, comb[k0])
         plt.ylabel(vl[k0])
-    return fig, ax
+    return
 
 #TEST
 #--------------------------------------------------------------------------------
@@ -183,7 +183,8 @@ if __name__ == '__main__':
     from matplotlib.ticker import AutoMinorLocator
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
-    fig,ax = plot_imf_index_sw('2010-1-1','2010-12-31',['Bx','Bye','AE'],'5minute')
+    fig,ax = plt.subplots(3,1,sharex=True)
+    plot_imf_index_sw(ax,'2010-1-1','2010-12-31',['Bx','Bye','AE'],'5minute')
     for k0 in range(2):
         plt.sca(ax[k0])
         plt.ylim(-10,10)
@@ -198,7 +199,6 @@ if __name__ == '__main__':
     plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
     plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
     plt.grid(dashes=(4,1))
-
     ax[-1].xaxis.set_major_locator(hours)
     ax[-1].xaxis.set_major_formatter(hoursfmt)
     plt.show()

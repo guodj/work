@@ -11,7 +11,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 import pdb   # set breakpoint
-from class_champ_grace import *
+from champ_grace import *
 from imf_index_sw import *
 
 
@@ -144,7 +144,7 @@ def f2():
             for k1 in sbtmp.index:
                 #for k2 in ['champ','grace']:
                 for k2 in ['grace']:  # only consider the grace
-                    rho = get_density_dates(k1+pd.TimedeltaIndex(range(-3,3),'D'), k2)
+                    rho = get_champ_grace_data(k1+pd.TimedeltaIndex(range(-3,3),'D'), k2)
                     if rho.empty:
                         print('no data around',k1)
                         continue

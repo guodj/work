@@ -173,10 +173,9 @@ class GoceDensity(pd.DataFrame):
         result = grouped.agg(
                 {'float_time': np.nanmean,
                  'long':np.nanmedian,
-                 'height':np.nanmean,
+                 'alt':np.nanmean,
                  'LT':np.nanmedian,
-                 'rho':np.nanmean,
-                 'rho400':np.nanmean})
+                 'rho':np.nanmean})
         result['float_time'] = (result['float_time']*24*3600).round()
         result['datetime'] = (pd.Timestamp('2000-1-1') +
                               pd.TimedeltaIndex(result.float_time,'S'))
@@ -190,7 +189,8 @@ class GoceDensity(pd.DataFrame):
         coordinate.
 
         Input:
-            mag: if True, for MLT and Mlat position
+            mag: if True, for MLT and Mlat position, Note that
+                False is not supported now
             ns: N or S for North and South hemispheres, respectively
 
         Output:
@@ -212,6 +212,16 @@ class GoceDensity(pd.DataFrame):
 #--------------------------------------------------------------------------------
 #TEST
 if __name__ == '__main__':
-    den = get_goce_data(pd.date_range('2010-1-1','2010-1-1'))
+    den = get_goce_data(pd.date_range('2010-4-1','2010-4-1'))
     den.print_variable_name()
     den.print_dates()
+    ax = plt.subplot(polar=True)
+    hc = den.satellite_position_lt_lat(mag=False)
+    #--------------------------------------------------------------------------------
+    # Set polar(lat, LT) coordinates
+    ax.set_rmax(30)
+    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    ax.set_theta_zero_location('S')
+    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #--------------------------------------------------------------------------------
+    plt.show()
