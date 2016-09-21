@@ -19,17 +19,14 @@
 #
 #           add_updown: Add 2 columns that show the ascending and decending orbits
 #
-#           orbit_mean: Calculate the orbit mean longitude, height, local time,
-#                   rho, rho400.
+#           orbit_mean: Calculate the orbit mean longitude, altitude, local time,
+#                   density.
 #
 #           satellite_position_lt_lat: show the satellite location in LT-LAT
-#                   coordinates
+#                   or MLT-MLAT coordinates
 #
-#           data_gap_nan: Add nan to data gap, used for plot. There is a data gap
-#                   when the time interval is greater than 2 hours
-#
-#           contourf_date_lat: Contourf of rho, rho400... as a function of date and
-#                   lat
+#           contourf_date_lat: Contourf of rho or winds as a function of
+#                   date and latitude
 #
 #       ..........
 #--------------------------------------------------------------------------------
@@ -208,11 +205,64 @@ class GoceDensity(pd.DataFrame):
         return hc
 
 
+    def contourf_date_lat(self, ax, whichcolumn='rho',
+                          updown='up', **kwargs):
+        """ A contourf of multiple-day density versus date and latitude.
+
+        Args:
+            ax: axis handle
+            whichcolumn: string, 'rho', 'cr_wnd_e', 'cr_wnd_n','cr_wnd_u'.
+            **kwargs: for contourf
+        Return:
+            hc: handle of the contourf plot
+        """
+        from matplotlib.ticker import AutoMinorLocator
+        from scipy.interpolate import griddata
+        import matplotlib.dates as mdates
+        from matplotlib.ticker import AutoMinorLocator
+        if not self.empty:
+            self['epochday'] = (self.index-self.index.min())/pd.Timedelta('1D')
+            btime = self['epochday'].min()
+            etime = self['epochday'].max()
+
+            ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
+            lat0 = np.arange(0,361,1)
+            ut, lat = np.meshgrid(ut0, lat0)
+            rho = griddata((self['epochday'], self.arglat),
+                           self[whichcolumn], (ut, lat),
+                           method='linear', rescale=True)
+            for index, k in enumerate(ut0):
+                fp = abs(self['epochday']-k)<0.5/24
+                if not fp.any():
+                    rho[:,index]=np.nan
+
+            hc = ax.contourf(ut, lat, rho, 10, **kwargs)
+
+            ax.set_xlim(np.floor(btime),np.floor(etime)+1)
+            ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
+            ax.set_xticklabels(pd.date_range(
+                    self.index[0],
+                    self.index[-1]+pd.Timedelta('1d')).
+                    strftime('%m-%d'),rotation=45)
+            ax.set_ylim(0,360)
+            ax.set_yticks(np.arange(0,361,90))
+            ax.xaxis.set_minor_locator(AutoMinorLocator(4))
+            ax.yaxis.set_minor_locator(AutoMinorLocator(3))
+            ax.tick_params(which='both', width=1.2)
+            ax.tick_params(which='major', length=7)
+            ax.tick_params(which='minor', length=4)
+            ax.tick_params(which='both',direction='out')
+            ax.set_xlabel('Date of Year: {:d}'
+                          .format(self.index[0].year),fontsize=14)
+            ax.set_ylabel('Argument of Latitude', fontsize=14)
+            return hc
+
+
 #END
 #--------------------------------------------------------------------------------
 #TEST
 if __name__ == '__main__':
-    den = get_goce_data(pd.date_range('2010-4-1','2010-4-1'))
+    den = get_goce_data(pd.date_range('2010-4-1','2010-4-30'))
     den.print_variable_name()
     den.print_dates()
     ax = plt.subplot(polar=True)
@@ -224,4 +274,8 @@ if __name__ == '__main__':
     ax.set_theta_zero_location('S')
     ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
     #--------------------------------------------------------------------------------
+    ax = plt.subplot()
+    den.contourf_date_lat(ax,whichcolumn='cr_wnd_e')
+    plt.tight_layout()
     plt.show()
+

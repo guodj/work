@@ -259,16 +259,12 @@ class ChampDensity(pd.DataFrame):
         """
         from matplotlib.ticker import AutoMinorLocator
         if not self.empty:
-            self['epochday'] = ((self.index-self.index.min())
-                    .total_seconds()/(24*3600))
+            self['epochday'] = (self.index-self.index.min())/pd.Timedelta('1D')
             btime = self['epochday'].min()
             etime = self['epochday'].max()
 
             self = self.add_updown()
-            if updown == 'up':
-                tmp = self[self.isup]
-            elif updown == 'down':
-                tmp = self[self.isdown]
+            tmp = self[self.isup] if updown is 'up' else self[self.isdown]
 
             ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
             lat0 = np.arange(-90,91,3)

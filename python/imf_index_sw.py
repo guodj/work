@@ -156,9 +156,10 @@ def get_cirlist_noicme():
     return pd.DatetimeIndex(cirlist.datetime)
 
 
-def plot_imf_index_sw(ax, bdate, edate, variables,res='1hour'):
+def plot_imf_index_sw(ax, bdate, edate, variables,res='1hour', **kwargs):
     # ax should be created with plt.subplots() outside
     # variables should be a list or tuple even if only one variable
+    # kwargs are parameters for plot
     # Plot variables in panels
     # res can be '1h' or '5m', '5m' is only for IMF, AE, PC
     vl = {'Bx':'$B_x$ (nT)', 'Bye':'GSE $B_y$ (nT)', 'Bze':'GSE $B_z$ (nT)',
@@ -171,7 +172,7 @@ def plot_imf_index_sw(ax, bdate, edate, variables,res='1hour'):
 
     for k00, k0 in enumerate(variables):
         plt.sca(ax[k00]) if len(variables)>1 else plt.sca(ax)
-        plt.plot(comb.index, comb[k0])
+        plt.plot(comb.index, comb[k0], **kwargs)
         plt.ylabel(vl[k0])
     return
 

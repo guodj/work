@@ -25,8 +25,8 @@ def func1():
     from matplotlib.ticker import AutoMinorLocator
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
-    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(6,8)) # for IMF and AE
-    plot_imf_index_sw(ax1,'2010-1-1','2010-12-31',['Bx','Bye','AE'],'5minute')
+    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # for IMF and AE
+    plot_imf_index_sw(ax1,'2009-11-1','2010-12-31',['Bx','Bye','AE'],'5minute')
     for k0 in range(2):
         plt.sca(ax1[k0])
         plt.ylim(-10,10)
@@ -45,22 +45,24 @@ def func1():
     ax1[-1].xaxis.set_major_formatter(hoursfmt)
     # For satellites
     if False:
-        denchamp = get_champ_grace_data(pd.date_range('2010-1-1','2010-12-31'),satellite='champ')
-        dengrace = get_champ_grace_data(pd.date_range('2010-1-1','2010-12-31'),satellite='grace')
-        dengoce = get_goce_data(pd.date_range('2010-1-1','2010-12-31'))
+        denchamp = get_champ_grace_data(pd.date_range('2009-11-1','2010-12-31'),satellite='champ')
+        dengrace = get_champ_grace_data(pd.date_range('2009-11-1','2010-12-31'),satellite='grace')
+        dengoce = get_goce_data(pd.date_range('2009-11-1','2010-12-31'))
         pd.to_pickle((denchamp, dengrace, dengoce),'/data/tmp/w3_00.dat')
     denchamp, dengrace, dengoce = pd.read_pickle('/data/tmp/w3_00.dat')
-    for date in pd.date_range('2010-1-1','2010-12-31'):
-        ax1[-1].set_xlim(date,date+pd.Timedelta('1D'))
-        ax1[-1].set_xlabel('Hours of date: '+date.date().strftime('%Y-%m-%d'))
+    for date in pd.date_range('2009-11-1','2010-12-31'):
+        ax1[-1].set_xlim(date,date+pd.Timedelta('2D'))
+        ax1[-1].set_xlabel('Hours of date: '+
+                           date.date().strftime('%Y-%m-%d')+
+                           '/'+(date+pd.Timedelta('1D')).date().strftime('%d'))
         plt.tight_layout()
         # By default, figures won't change until end of the script
         # draw() forces a figure redraw
         draw()
         # for satellites
-        denchamptmp = ChampDensity(denchamp[date:date+pd.Timedelta('1D')])
-        dengracetmp = ChampDensity(dengrace[date:date+pd.Timedelta('1D')])
-        dengocetmp = GoceDensity(dengoce[date:date+pd.Timedelta('1D')])
+        denchamptmp = ChampDensity(denchamp[date:date+pd.Timedelta('2D')])
+        dengracetmp = ChampDensity(dengrace[date:date+pd.Timedelta('2D')])
+        dengocetmp = GoceDensity(dengoce[date:date+pd.Timedelta('2D')])
         fig2 = plt.figure(figsize=(7,6.5))
         ax2 = plt.subplot(polar=True)
         hc = denchamptmp.satellite_position_lt_lat(ns='N')
@@ -78,7 +80,8 @@ def func1():
         ax2.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
         ax2.set_theta_zero_location('S')
         ax2.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-        ax2.set_title('Date: '+date.date().strftime('%Y-%m-%d'))
+        ax2.set_title('Date: '+date.date().strftime('%Y-%m-%d')+'/'+
+                      (date+pd.Timedelta('1D')).date().strftime('%d'))
         #--------------------------------------------------------------------------------
         hl = ax2.legend(loc=(0.85,0.8))
         plt.show()
