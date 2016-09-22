@@ -89,6 +89,9 @@ def get_index(dates,resolution = '1hour'):
             index.loc[index.AU==99999, 'AU'] = np.nan
             index.loc[index.pc==999.9, 'pc'] = np.nan
         elif resolution in ['5minute','5m']:
+            # The files include Bym and Bzm.
+            index.drop(['Bym','Bzm'],axis=1,inplace=True)
+            # For consistency with the 1-h result
             index.rename(columns={'PC':'pc'},inplace=True)
             index.loc[index.AE==99999, 'AE'] = np.nan
             index.loc[index.pc==999.99, 'pc'] = np.nan
