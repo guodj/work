@@ -10,7 +10,7 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from champ_grace import *
 from goce import *
-from imf_index_sw import *
+from omni import *
 
 def func1():
     #----------------------------------------
@@ -26,7 +26,7 @@ def func1():
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
     fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # for IMF and AE
-    plot_imf_index_sw(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'5minute')
+    plot_omni(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'5minute')
     for k0 in range(2):
         plt.sca(ax1[k0])
         plt.ylim(-10,10)

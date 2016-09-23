@@ -12,7 +12,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 import pdb   # set breakpoint
 from champ_grace import *
-from imf_index_sw import *
+from omni import *
 
 
 
@@ -43,60 +43,38 @@ def f1():
     # imf and indices variation during epoch days of sblist
     sblist = get_sblist()
     sblist = sblist['2002-1-1':'2010-12-31']
-    dataimf = [pd.DataFrame(),pd.DataFrame()]
-    dataindex = [pd.DataFrame(),pd.DataFrame()]
+    data = [pd.DataFrame(),pd.DataFrame()]
     if False:  # data preparation
         for k00, k0 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k0]
             for k1 in sbtmp.index:
-                datelist = k1 + pd.TimedeltaIndex(range(-3,3), 'D')
-                imf = get_imf(datelist)
-                sgmindex = get_index(datelist)
-                imf['epochday'] = (imf.index - k1)/pd.Timedelta('1D')
-                sgmindex['epochday'] = (sgmindex.index - k1)/pd.Timedelta('1D')
-                dataimf[k00] = dataimf[k00].append(imf)
-                dataindex[k00] = dataindex[k00].append(sgmindex)
-        pd.to_pickle((dataimf,dataindex),'/data/tmp/w2_07.dat')
+                print(k1,k0)
+                bdate = k1-pd.Timedelta('3D')
+                edate = k1+pd.Timedelta('2D')
+                data_tmp = get_omni(bdate,edate,['Bx','Bym','Bzm','AE'],res='1h')
+                #print(data_tmp)
+                data_tmp['epochday'] = (data_tmp.index - k1)/pd.Timedelta('1D')
+                data[k00] = data[k00].append(data_tmp)
+        pd.to_pickle(data,'/data/tmp/w2_07.dat')
     # END of data preperation
 
-    imf, sgmindex = pd.read_pickle('/data/tmp/w2_07.dat')
-    imfgroup = [
-            imf[k].groupby([imf[k].index.month,np.floor(imf[k].epochday*24)])
+    data = pd.read_pickle('/data/tmp/w2_07.dat')
+    datagroup = [
+            data[k].groupby([data[k].index.month,np.floor(data[k].epochday*24)])
             for k in [0,1]]
-    imfgroup = [imfgroup[k]['Bx','Bye','Bzm'].median() for k in [0,1]]
-    indexgroup = [
-            sgmindex[k].groupby(
-            [sgmindex[k].index.month, np.floor(sgmindex[k].epochday*24)])
-            for k in [0,1]]
-    indexgroup = [indexgroup[k]['ap','AE'].median() for k in [0,1]]
+    datagroup = [datagroup[k].median() for k in [0,1]]
     for k in [0,1]:
-        imfgroup[k].index.names = ('month', 'epochhour')
-        imfgroup[k] = imfgroup[k].reset_index().pivot(index='epochhour', columns='month')
-        indexgroup[k].index.names = ('month', 'epochhour')
-        indexgroup[k] = indexgroup[k].reset_index().pivot(index='epochhour', columns='month')
+        datagroup[k].index.names = ('month', 'epochhour')
+        datagroup[k] = datagroup[k].reset_index().pivot(index='epochhour', columns='month')
     fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(7.76,8))
     for k in range(2):
-        plt.sca(ax[3,k])
-        data = indexgroup[k]['AE']
-        hc1 = plt.contourf(data.columns, data.index/24, data.values,
-                           levels=np.linspace(0,400,11),cmap='bwr')
-        plt.xlim([1,12])
-        plt.xticks(np.arange(1,13))
-        plt.ylim([-3,3])
-        plt.yticks(np.arange(-6,5,2),fontsize=14)
-        plt.tick_params(axis='both',which='major',direction='out',length=5)
-        plt.tick_params(axis='both',which='minor',direction='out',length=3)
-        if k is 1:
-            axpo = np.array(plt.gca().get_position())
-            cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
-            cbar = plt.colorbar(mappable=hc1,cax=cax,ticks=np.arange(0,401,100))
-            cbar.set_label('AE')
-            plt.tick_params('both',length=4)
-        for k11,k1 in enumerate(['Bx','Bye','Bzm']):
-            tl = ['Bx','By','Bz']
+        for k11,k1 in enumerate(['Bx','Bym','Bzm','AE']):
+            tl = ['Bx (nT)','By (nT)','Bz (nT)','AE']
+            levels = np.linspace(0,400,11) if k1 is 'AE' else np.linspace(-4,4,11)
+            ticks = np.arange(0,401,100) if k1 is 'AE' else np.arange(-4,5,2)
             plt.sca(ax[k11,k])
-            data = imfgroup[k][k1]
-            hc2 = plt.contourf(data.columns, data.index/24, data.values,levels=np.linspace(-4,4,11),
+            data1 = datagroup[k][k1]
+            hc2 = plt.contourf(data1.columns, data1.index/24, data1.values,levels=levels,
                     cmap='bwr')
             plt.xlim([1,12])
             plt.xticks(np.arange(1,13))
@@ -107,8 +85,8 @@ def f1():
             if k is 1:
                 axpo = np.array(plt.gca().get_position())
                 cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
-                cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=np.arange(-4,5,2))
-                cbar.set_label('{:s} (nT)'.format(tl[k11]))
+                cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=ticks)
+                cbar.set_label(tl[k11])
                 plt.tick_params('both',length=4)
     title1 = ax[0,0].set_title('Away-Toward')
     title2 = ax[0,1].set_title('Toward-Away')
@@ -138,7 +116,7 @@ def f2():
     sblist = sblist['2001-1-1':'2010-12-31']
     density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]] # [[ATN,ATS],[TAN,TAS]]
     sbn = [0,0]
-    if True:
+    if False:
         for k00,k in enumerate(['away-toward','toward-away']):
             sbtmp = sblist[sblist.sbtype==k]
             for k1 in sbtmp.index:
@@ -333,7 +311,7 @@ def f2():
 #--------------------------------------------------------------------------------
 if __name__=='__main__':
     plt.close('all')
-    a = f2()
+    a = f1()
     plt.show()
     import gc
     gc.collect()
