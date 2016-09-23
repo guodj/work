@@ -3,10 +3,10 @@
 #
 # By Dongjie, USTC, on Fri Sep 16 23:23:39 CST 2016
 #
-# Class for the CHAMP and GRACE 3-degree densities.
-# Also include a function to read data from file
+# Class for the CHAMP and GRACE 3-degree densities and winds.
+# Also include functions to read data from file
 #
-# containe:
+# Contain:
 #       get_champ_grace_data: Get density from CHAMP or GRACE satellites
 #
 #       class: ChampDensity,
@@ -30,6 +30,10 @@
 #
 #           contourf_date_lat: Contourf of rho, rho400... as a function of date and
 #                   lat
+# Change:
+#        Include wind handling
+#            1, get_champ_wind
+#            2, class ChampWind, subclass of ChampDensity in order to use its function.
 #
 #       ..........
 #--------------------------------------------------------------------------------
@@ -42,7 +46,7 @@ import os
 from scipy.interpolate import griddata
 
 def get_champ_grace_data(dates,satellite='champ'):
-    """ get champ or grace data during specified dates.
+    """ get champ or grace density data during specified dates.
 
     Args:
         dates: specified dates which can be args of pd.to_datetime(). and if a
@@ -53,6 +57,11 @@ def get_champ_grace_data(dates,satellite='champ'):
         dataframe of champ or grace density indexed with datetime. the columns
         are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
         msis_rho, ...
+    Note:
+        In other read-data functions, I used 'bdate' and 'edate' in replace of
+        'dates' to be more reasonable.
+        I also include 'variables' argument to be read specific parameters in
+        order to save memory and time.
     """
     dates = pd.to_datetime(dates)
     dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
@@ -82,6 +91,27 @@ def get_champ_grace_data(dates,satellite='champ'):
     else:
         return ChampDensity()
 
+
+def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
+    # Get champ winds during 'bdate' and 'edate' with the variables
+    # variables is a list(tuple) containing ''
+    bdate = pd.Timestamp(bdate)
+    edate = pd.Timestamp(edate)
+    dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
+    fname = ['/data/CHAMP23/Winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
+            format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
+            for k in dates]
+    variables = list(variables)
+    variables.extend(['date'])
+    wind = [pd.read_csv(fn,parse_dates=['date'],index_col=['date'],
+                        usecols=variables,squeeze=True)
+            for fn in fname if os.path.isfile(fn)]
+    if wind:
+        wind = pd.concat(wind)
+        wind = wind[bdate:(edate+pd.Timedelta('1D'))]
+        return ChampWind(wind)
+    else:
+        ChampWind()
 
 class ChampDensity(pd.DataFrame):
 
@@ -211,16 +241,12 @@ class ChampDensity(pd.DataFrame):
 
 
     def satellite_position_lt_lat(self, mag=False, ns='N'):
-        """ Show the lt and lat positions of the satellite in a polar
+        """ Show the (M)lt and (M)lat positions of the satellite in a polar
         coordinate.
 
         Input:
             mag: if True, for MLT and Mlat position
             ns: N or S for North and South hemispheres, respectively
-
-        Output:
-            hcup, hcdown: scatter handles for the up and down orbits,
-                respectively.
         """
         if self.empty:
             return
@@ -553,20 +579,54 @@ class ChampDensity(pd.DataFrame):
         return ChampDensity(self)
 
 
+class ChampWind(ChampDensity):
+    def satellite_position_lt_lat(self, mag=False, ns='N'):
+        """ Show the (M)lt and (M)lat positions of the satellite in a polar
+        coordinate.
+
+        Input:
+            mag: if True, for MLT and Mlat position
+            ns: N or S for North and South hemispheres, respectively
+        """
+        if self.empty:
+            return
+        tmp = self
+        if mag:
+            from apexpy import Apex
+            import datetime as dt
+            a = Apex(date=2005)
+            mlat,mlt = a.convert(tmp.lat, tmp.long,'geo','mlt', datetime=dt.datetime(2005,1,1))
+            tmp['Mlat'] = mlat
+            tmp['MLT'] = mlt
+        ltp='MLT' if mag else 'LT'
+        latp='Mlat' if mag else 'lat'
+        ct = tmp[latp]>0 if ns is 'N' else tmp[latp]<0
+        theta = tmp.loc[ct,ltp]/12*np.pi
+        r = 90 - abs(tmp.loc[ct,latp])
+        hc = plt.scatter(theta, r, linewidths=0)
+        return hc
+
+
+
 
 # END
 #--------------------------------------------------------------------------------
 # for test
 if __name__=='__main__':
-    den = get_champ_grace_data(pd.date_range('2005-1-2','2005-1-2'))
+    #------------------------------------------------------------
+    #    den = get_champ_grace_data(pd.date_range('2005-1-2','2005-1-2'))
+    #    ax = plt.subplot(polar=True)
+    #    hc = den.satellite_position_lt_lat(mag=True)
+    #    #----------------------------------------
+    #    # Set polar(lat, LT) coordinates
+    #    ax.set_rmax(30)
+    #    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    #    ax.set_theta_zero_location('S')
+    #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #    #----------------------------------------
+    #    plt.show()
+    #------------------------------------------------------------
+    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
     ax = plt.subplot(polar=True)
-    hc = den.satellite_position_lt_lat(mag=True)
-    #--------------------------------------------------------------------------------
-    # Set polar(lat, LT) coordinates
-    ax.set_rmax(30)
-    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-    ax.set_theta_zero_location('S')
-    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-    #--------------------------------------------------------------------------------
+    wind.satellite_position_lt_lat(mag=True)
     plt.show()
-

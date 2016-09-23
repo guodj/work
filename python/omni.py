@@ -15,6 +15,7 @@ import os
 import matplotlib.pyplot as plt
 
 def get_omni(bdate, edate,variables,res='1h'):
+    # Get multiple days omni data.
     # variables should be list or tuple even if only one variable.
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
