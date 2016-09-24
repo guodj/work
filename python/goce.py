@@ -225,7 +225,7 @@ class GoceDensity(pd.DataFrame):
             btime = self['epochday'].min()
             etime = self['epochday'].max()
 
-            ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
+            ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.1/24)
             lat0 = np.arange(0,361,1)
             ut, lat = np.meshgrid(ut0, lat0)
             rho = griddata((self['epochday'], self.arglat),

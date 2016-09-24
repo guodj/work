@@ -31,9 +31,9 @@
 #           contourf_date_lat: Contourf of rho, rho400... as a function of date and
 #                   lat
 # Change:
-#        Include wind handling
-#            1, get_champ_wind
-#            2, class ChampWind, subclass of ChampDensity in order to use its function.
+#        Include wind handling, on Sat Sep 24 02:18:03 CST 2016
+#            1, get_champ_wind, Get Champ wind
+#            2, class ChampWind, Subclass of ChampDensity in order to use its function.
 #
 #       ..........
 #--------------------------------------------------------------------------------
@@ -93,8 +93,8 @@ def get_champ_grace_data(dates,satellite='champ'):
 
 
 def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
-    # Get champ winds during 'bdate' and 'edate' with the variables
-    # variables is a list(tuple) containing ''
+    # Get champ winds during 'bdate' and 'edate'
+    # variables is a list(tuple)
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
@@ -108,7 +108,7 @@ def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','win
             for fn in fname if os.path.isfile(fn)]
     if wind:
         wind = pd.concat(wind)
-        wind = wind[bdate:(edate+pd.Timedelta('1D'))]
+        wind = wind[bdate:edate]
         return ChampWind(wind)
     else:
         ChampWind()
@@ -282,10 +282,12 @@ class ChampDensity(pd.DataFrame):
             **kwargs: for contourf
         Return:
             hc: handle of the contourf plot
+        ----------------------------------------
+        x axis: days from '2000-1-1'
         """
         from matplotlib.ticker import AutoMinorLocator
         if not self.empty:
-            self['epochday'] = (self.index-self.index.min())/pd.Timedelta('1D')
+            self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
             btime = self['epochday'].min()
             etime = self['epochday'].max()
 
@@ -595,9 +597,14 @@ class ChampWind(ChampDensity):
             from apexpy import Apex
             import datetime as dt
             a = Apex(date=2005)
-            mlat,mlt = a.convert(tmp.lat, tmp.long,'geo','mlt', datetime=dt.datetime(2005,1,1))
-            tmp['Mlat'] = mlat
+            mlat,mlt = a.convert(tmp.lat, tmp.long, 'geo','mlt', datetime=tmp.index)
             tmp['MLT'] = mlt
+            tmp['Mlat'] = mlat
+            #for k00,k0 in enumerate(tmp.index):
+            #    mlat,mlt = a.convert(tmp.ix[k00,'lat'], tmp.ix[k00,'long'],
+            #                         'geo','mlt', datetime=k0)
+            #    tmp.ix[k00,'Mlat'] = mlat
+            #    tmp.ix[k00,'MLT'] = mlt
         ltp='MLT' if mag else 'LT'
         latp='Mlat' if mag else 'lat'
         ct = tmp[latp]>0 if ns is 'N' else tmp[latp]<0
@@ -607,8 +614,84 @@ class ChampWind(ChampDensity):
         return hc
 
 
+    def contourf_date_lat(self, ax, whichcolumn='wind', updown='up', **kwargs):
+        """ A contourf of multiple-day wind versus date and latitude.
+
+        Args:
+            ax: axis handle
+            whichcolumn: string, 'wind', 'winde', 'windn'.
+            updown: string, 'up' or 'down'
+            **kwargs: for contourf
+        Return:
+            hc: handle of the contourf plot
+        ----------------------------------------
+        x axis: days from '2000-1-1'
+        """
+        from matplotlib.ticker import AutoMinorLocator
+        if not self.empty:
+            #self['epochday'] = (self.index-self.index.min())/pd.Timedelta('1D')
+            self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
+            btime = self['epochday'].min()
+            etime = self['epochday'].max()
+
+            self = self.add_updown()
+            tmp = self[self.isup] if updown is 'up' else self[self.isdown]
+
+            ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.5/24, 0.5/24)
+            lat0 = np.arange(-90,91,3)
+            ut, lat = np.meshgrid(ut0, lat0)
+            windt = griddata((tmp['epochday'], tmp.lat), tmp[whichcolumn], (ut, lat),
+                             method='linear', rescale=True)
+            for index, k in enumerate(ut0):
+                fp = abs(tmp['epochday']-k)<0.5/24
+                if not fp.any():
+                    windt[:,index]=np.nan
+            hc = ax.contourf(
+                    ut, lat, windt,
+                    levels=np.linspace(np.nanpercentile(windt,1),np.nanpercentile(windt,99),11),
+                    **kwargs)
+            ax.set_xlim(np.floor(btime),np.floor(etime)+1)
+            ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
+            ax.set_xticklabels(pd.date_range(
+                    tmp.index[0],
+                    tmp.index[-1]+pd.Timedelta('1d')).
+                    strftime('%m-%d'),rotation=45)
+            ax.set_ylim(-90,90)
+            ax.set_yticks(np.arange(-90,91,30))
+            ax.xaxis.set_minor_locator(AutoMinorLocator(4))
+            ax.yaxis.set_minor_locator(AutoMinorLocator(3))
+            ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
+            ax.set_xlabel('Date of Year: {:d}'
+                          .format(tmp.index[0].year),fontsize=14)
+            ax.set_ylabel('Latitude', fontsize=14)
+            return hc#, windt
 
 
+    def polar_quiver_wind(self, ax,ns='S'):
+        # Wind vector in lat-long coordinates.
+        # For different map projections, the arithmetics to calculate xywind
+        # are different
+        from mpl_toolkits.basemap import Basemap
+        if self.empty:
+            return
+        projection,fc = ('npstere',1) if ns=='N' else ('spstere',-1)
+        m = Basemap(projection=projection,boundinglat=0,lon_0=0,resolution='l')
+        m.drawcoastlines(color='gray',zorder=1)
+        m.fillcontinents(color='lightgray',zorder=0)
+        dt = self.index.min() + (self.index.max()-self.index.min())/2
+        m.nightshade(dt)
+        m.drawparallels(np.arange(-80,81,20))
+        m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
+        lat = self.lat
+        lon = self.long
+        winde = self.winde
+        windn = self.windn
+        wind = self.wind
+        # only right for the npstere and spstere
+        xwind = wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
+        ywind = wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
+        m.quiver(np.array(lon),np.array(lat),xwind*10,ywind*10,latlon=True)
+        return m
 # END
 #--------------------------------------------------------------------------------
 # for test
@@ -626,7 +709,21 @@ if __name__=='__main__':
     #    #----------------------------------------
     #    plt.show()
     #------------------------------------------------------------
-    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
-    ax = plt.subplot(polar=True)
-    wind.satellite_position_lt_lat(mag=True)
+    #    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
+    #    plt.figure()
+    #    ax = plt.subplot(polar=True)
+    #    wind.satellite_position_lt_lat(mag=True)
+    #    density = get_champ_grace_data(pd.date_range('2005-1-1','2005-1-10'))
+    #    plt.figure()
+    #    ax = plt.subplot(polar=True)
+    #    density.satellite_position_lt_lat(mag=True)
+    #    plt.show()
+    #------------------------------------------------------------
+    #    wind = get_champ_wind('2005-1-1','2005-1-10')
+    #    ax = plt.subplot()
+    #    wind.contourf_date_lat(ax,whichcolumn='wind')
+    #    plt.show()
+    wind = get_champ_wind('2005-8-1 0:0:0','2005-8-1 1:30:0')
+    ax = plt.subplot()
+    m = wind.polar_quiver_wind(ax)
     plt.show()
