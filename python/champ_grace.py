@@ -667,7 +667,7 @@ class ChampWind(ChampDensity):
             return hc#, windt
 
 
-    def polar_quiver_wind(self, ax,ns='S'):
+    def polar_quiver_wind(self, ax,ns='N'):
         # Wind vector in lat-long coordinates.
         # For different map projections, the arithmetics to calculate xywind
         # are different
@@ -686,11 +686,13 @@ class ChampWind(ChampDensity):
         lon = self.long
         winde = self.winde
         windn = self.windn
-        wind = self.wind
+        wind = abs(self.wind)
         # only right for the npstere and spstere
         xwind = wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
         ywind = wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
-        m.quiver(np.array(lon),np.array(lat),xwind*10,ywind*10,latlon=True)
+        m.quiver(np.array(lon),np.array(lat),xwind*20,ywind*20,latlon=True)
+        m.scatter(np.array(lon),np.array(lat),
+                  s=50, c=self.index.to_julian_date(),linewidths=0, latlon=True)
         return m
 # END
 #--------------------------------------------------------------------------------
@@ -723,7 +725,8 @@ if __name__=='__main__':
     #    ax = plt.subplot()
     #    wind.contourf_date_lat(ax,whichcolumn='wind')
     #    plt.show()
-    wind = get_champ_wind('2005-8-1 0:0:0','2005-8-1 1:30:0')
+    wind = get_champ_wind('2004-9-4 0:0:0','2004-9-4 12:00:0')
+    plt.figure()
     ax = plt.subplot()
     m = wind.polar_quiver_wind(ax)
     plt.show()

@@ -43,9 +43,7 @@ def get_champ_wind(dates):
         champ_wind = champ_wind[
                 (champ_wind.index>=dates.min()) &
                 (champ_wind.index<dates.max()+pd.Timedelta('1D'))]
-        return champ_wind
-
-    return champ_wind_tmp
+    return champ_wind
 
 
 def set_lt_lat(h, pole='N'):
@@ -268,30 +266,30 @@ def get_imf_AE_PC_5m(dates):
 if __name__ == '__main__':
     """champ wind
     """
-    #bdate ='2003-10-4 10:00:00'
-    #edate ='2003-10-4 16:00:00'
-    #betime = time_champ_orbit_updown(bdate, edate, updown='up')
-    #fig = plt.figure(figsize=[8,8.25])
-    #for k, color, orbit in zip([1,2,3,4],
-    #                           ['k',[0.5,0,0.5],'r','b'],
-    #                           ['orbit1','orbit2','orbit3','orbit4']):
-    #    btime = betime.loc[k-1,'btime']
-    #    etime = betime.loc[k-1,'etime']
-    #    h = plt.subplot(2,2,k,polar=True)
-    #    hs,hq = quiver_champ_wind(btime,etime,pole='N',updown='up',color=color)
-    #    h.set_title('NH: {:s}'.format(orbit), va='bottom')
-    #    h.set_rmax(60)
-    #fig = plt.figure(figsize=[8,8.25])
-    #for k, color, orbit in zip([1,2,3,4],
-    #                           ['k',[0.5,0,0.5],'r','b'],
-    #                           ['orbit1','orbit2','orbit3','orbit4']):
-    #    btime = betime.loc[k-1,'btime']
-    #    etime = betime.loc[k-1,'etime']
-    #    h = plt.subplot(2,2,k,polar=True)
-    #    hs,hq = quiver_champ_wind(btime,etime,pole='S',updown='up',color=color)
-    #    h.set_title('SH: {:s}'.format(orbit), va='bottom')
-    #    h.set_rmax(60)
-    #plt.show()
+    bdate ='2003-10-4 10:00:00'
+    edate ='2003-10-4 16:00:00'
+    betime = time_champ_orbit_updown(bdate, edate, updown='up')
+    fig = plt.figure(figsize=[8,8.25])
+    for k, color, orbit in zip([1,2,3,4],
+                               ['k',[0.5,0,0.5],'r','b'],
+                               ['orbit1','orbit2','orbit3','orbit4']):
+        btime = betime.loc[k-1,'btime']
+        etime = betime.loc[k-1,'etime']
+        h = plt.subplot(2,2,k,polar=True)
+        hs,hq = quiver_champ_wind(btime,etime,pole='N',updown='up',color=color)
+        h.set_title('NH: {:s}'.format(orbit), va='bottom')
+        h.set_rmax(60)
+    fig = plt.figure(figsize=[8,8.25])
+    for k, color, orbit in zip([1,2,3,4],
+                               ['k',[0.5,0,0.5],'r','b'],
+                               ['orbit1','orbit2','orbit3','orbit4']):
+        btime = betime.loc[k-1,'btime']
+        etime = betime.loc[k-1,'etime']
+        h = plt.subplot(2,2,k,polar=True)
+        hs,hq = quiver_champ_wind(btime,etime,pole='S',updown='up',color=color)
+        h.set_title('SH: {:s}'.format(orbit), va='bottom')
+        h.set_rmax(60)
+    plt.show()
 
 
     """champ density
@@ -329,35 +327,35 @@ if __name__ == '__main__':
     #plt.show()
 
 
-    """ AE variation
-    """
-    ax = plt.subplot()
-    bdate = pd.to_datetime('2003-10-4 10:00')
-    edate = pd.to_datetime('2003-10-4 16:00')
-    dates = pd.date_range(bdate.date(), edate.date())
-    index = get_imf_AE_PC_5m(dates)
-    index = index[bdate:edate]
+    #    """ AE variation
+    #    """
+    #    ax = plt.subplot()
+    #    bdate = pd.to_datetime('2003-10-4 10:00')
+    #    edate = pd.to_datetime('2003-10-4 16:00')
+    #    dates = pd.date_range(bdate.date(), edate.date())
+    #    index = get_imf_AE_PC_5m(dates)
+    #    index = index[bdate:edate]
 
-    betime = time_champ_orbit_updown(bdate, edate, updown='up')
-    for k, color, orbit in zip([1,2,3,4],
-                               ['k',[0.5,0,0.5],'r','b'],
-                               ['orbit1','orbit2','orbit3','orbit4']):
-        btime = betime.loc[k-1,'btime']
-        etime = betime.loc[k-1,'etime']
-        tmp_index = index[btime:etime]
-        tmp_time = (tmp_index.index.hour +
-                    tmp_index.index.minute/60 +
-                    tmp_index.index.second/3600)
-        tmp_AE = tmp_index.AE
-        plt.plot(tmp_time,tmp_AE,color=color,label=orbit,linewidth=4, alpha=1)
-    ax.legend(frameon=False)
+    #    betime = time_champ_orbit_updown(bdate, edate, updown='up')
+    #    for k, color, orbit in zip([1,2,3,4],
+    #                               ['k',[0.5,0,0.5],'r','b'],
+    #                               ['orbit1','orbit2','orbit3','orbit4']):
+    #        btime = betime.loc[k-1,'btime']
+    #        etime = betime.loc[k-1,'etime']
+    #        tmp_index = index[btime:etime]
+    #        tmp_time = (tmp_index.index.hour +
+    #                    tmp_index.index.minute/60 +
+    #                    tmp_index.index.second/3600)
+    #        tmp_AE = tmp_index.AE
+    #        plt.plot(tmp_time,tmp_AE,color=color,label=orbit,linewidth=4, alpha=1)
+    #    ax.legend(frameon=False)
 
-    tmp_time = index.index.hour+index.index.minute/60+index.index.second/3600
-    tmp_AE = index.AE
-    plt.plot(tmp_time, tmp_AE, 'k--',linewidth=2,zorder=0,dashes=[10,5,10,5])
+    #    tmp_time = index.index.hour+index.index.minute/60+index.index.second/3600
+    #    tmp_AE = index.AE
+    #    plt.plot(tmp_time, tmp_AE, 'k--',linewidth=2,zorder=0,dashes=[10,5,10,5])
 
-    plt.axis([10,16,0,500])
-    plt.xlabel('Hours of 2003-10-4',fontsize=14)
-    plt.ylabel('AE',fontsize=14)
-    plt.grid()
-    plt.show()
+    #    plt.axis([10,16,0,500])
+    #    plt.xlabel('Hours of 2003-10-4',fontsize=14)
+    #    plt.ylabel('AE',fontsize=14)
+    #    plt.grid()
+    #    plt.show()
