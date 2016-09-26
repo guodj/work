@@ -684,13 +684,16 @@ class ChampWind(ChampDensity):
         m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
         lat = self.lat
         lon = self.long
+        # winde and windn are the cross track direction on the right side.
         winde = self.winde
         windn = self.windn
-        wind = abs(self.wind)
+        wind = self.wind
         # only right for the npstere and spstere
         xwind = wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
         ywind = wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
-        m.quiver(np.array(lon),np.array(lat),xwind*20,ywind*20,latlon=True)
+        hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,
+                      scale=100, scale_units='inches',latlon=True)
+        plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
         m.scatter(np.array(lon),np.array(lat),
                   s=50, c=self.index.to_julian_date(),linewidths=0, latlon=True)
         return m
@@ -725,7 +728,7 @@ if __name__=='__main__':
     #    ax = plt.subplot()
     #    wind.contourf_date_lat(ax,whichcolumn='wind')
     #    plt.show()
-    wind = get_champ_wind('2004-9-4 0:0:0','2004-9-4 12:00:0')
+    wind = get_champ_wind('2003-10-28 0:30:0','2003-10-28 2:0:0')
     plt.figure()
     ax = plt.subplot()
     m = wind.polar_quiver_wind(ax)
