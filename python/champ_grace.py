@@ -667,21 +667,28 @@ class ChampWind(ChampDensity):
             return hc#, windt
 
 
-    def polar_quiver_wind(self, ax,ns='N'):
+    def polar_quiver_wind(self, ax, ns='N'):
         # Wind vector in lat-long coordinates.
         # For different map projections, the arithmetics to calculate xywind
         # are different
         from mpl_toolkits.basemap import Basemap
+        from apexpy import Apex
+        lat_grid = np.arange(-90,91,3)
+        lon_grid = np.arange(-180,181,5)
+        lon_grid, lat_grid= np.meshgrid(lon_grid, lat_grid)
+        apx = Apex(date=2005)
+        mlat,mlon = apx.convert(lat_grid,lon_grid,'geo','apex')
         if self.empty:
             return
         projection,fc = ('npstere',1) if ns=='N' else ('spstere',-1)
-        m = Basemap(projection=projection,boundinglat=0,lon_0=0,resolution='l')
+        m = Basemap(projection=projection,boundinglat=fc*40,lon_0=0,resolution='l')
         m.drawcoastlines(color='gray',zorder=1)
         m.fillcontinents(color='lightgray',zorder=0)
+        #m.scatter(0,90,50,'k',latlon=True)
         dt = self.index.min() + (self.index.max()-self.index.min())/2
         m.nightshade(dt)
-        m.drawparallels(np.arange(-80,81,20))
-        m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
+        #m.drawparallels(np.arange(-80,81,20))
+        #m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
         lat = self.lat
         lon = self.long
         # winde and windn are the cross track direction on the right side.
@@ -689,13 +696,16 @@ class ChampWind(ChampDensity):
         windn = self.windn
         wind = self.wind
         # only right for the npstere and spstere
-        xwind = wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
-        ywind = wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
+        xwind = winde/abs(winde)*wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
+        ywind = winde/abs(winde)*wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
+        hc = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),colors='k',zorder=2,
+                       linestyles='dashed',latlon=True)
+        plt.clabel(hc,inline=True,colors='k',fmt='%d')
         hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,
-                      scale=100, scale_units='inches',latlon=True)
+                      scale=100, scale_units='inches',zorder=3, latlon=True)
         plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
-        m.scatter(np.array(lon),np.array(lat),
-                  s=50, c=self.index.to_julian_date(),linewidths=0, latlon=True)
+        #m.scatter(np.array(lon),np.array(lat),
+        #          s=50, c=self.index.to_julian_date(),linewidths=0, zorder=4,latlon=True)
         return m
 # END
 #--------------------------------------------------------------------------------
@@ -728,8 +738,12 @@ if __name__=='__main__':
     #    ax = plt.subplot()
     #    wind.contourf_date_lat(ax,whichcolumn='wind')
     #    plt.show()
-    wind = get_champ_wind('2003-10-28 0:30:0','2003-10-28 2:0:0')
+    wind = get_champ_wind('2003-6-28 3:30:0','2003-6-28 5:0:0')
+    density = get_champ_grace_data(['2003-6-28'],satellite='champ')
+    density = density['2003-6-28 3:30:0':'2003-6-28 5:0:0']
     plt.figure()
     ax = plt.subplot()
-    m = wind.polar_quiver_wind(ax)
+    m = wind.polar_quiver_wind(ax,ns='N')
+    m.scatter(np.array(density.long),np.array(density.lat),100,np.array(density.rho400),
+              zorder=5,linewidths=0,latlon=True)
     plt.show()
