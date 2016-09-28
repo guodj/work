@@ -83,7 +83,7 @@ def get_omni(bdate, edate,variables,res='1h'):
             for fn in fname if os.path.isfile(fn)]
     if omni_data:
         omni_data = pd.concat(omni_data)
-        omni_data = omni_data[bdate:edate+pd.Timedelta('1D')]
+        omni_data = omni_data[bdate:edate]
         return omni_data
     else:
         return pd.DataFrame()

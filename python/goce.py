@@ -37,16 +37,18 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
-def get_goce_data(dates):
+def get_goce_data(bdate,edate):
     """ get goce data during specified dates.
 
     Args:
-        dates: pd.DatetimeIndex or array of strings.
+        bdate, edate: string or pd.Timestamp
     Returns:
         dataframe of goce density indexed with datetime. the columns
         are: alt, long, lat, LT, arglat, rho, cr_wnd_e, cr_wnd_n, cr_wnd_u
     """
-    dates = pd.to_datetime(dates)
+    bdate = pd.Timestamp(bdate)
+    edate = pd.Timestamp(edate)
+    dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
     yearmonth = np.unique(dates.strftime('%Y-%m'))
     yearmonth =pd.to_datetime(yearmonth)
     fname = ['/data/GOCE/data/goce_denswind_v1_3_{:s}-{:s}.txt'.format(
@@ -64,6 +66,7 @@ def get_goce_data(dates):
         fp = np.floor(goce_data.index.to_julian_date()+0.5).isin(
             dates.to_julian_date()+0.5)
         goce_data = goce_data.loc[fp]
+        goce_data = goce_data[bdate:edate]
         return GoceDensity(goce_data)
     else:
         return GoceDensity()
@@ -205,8 +208,7 @@ class GoceDensity(pd.DataFrame):
         return hc
 
 
-    def contourf_date_lat(self, ax, whichcolumn='rho',
-                          updown='up', **kwargs):
+    def contourf_date_lat(self, ax, whichcolumn='rho', **kwargs):
         """ A contourf of multiple-day density versus date and latitude.
 
         Args:
@@ -262,7 +264,7 @@ class GoceDensity(pd.DataFrame):
 #--------------------------------------------------------------------------------
 #TEST
 if __name__ == '__main__':
-    den = get_goce_data(pd.date_range('2010-4-1','2010-4-30'))
+    den = get_goce_data('2010-4-1','2010-4-30')
     den.print_variable_name()
     den.print_dates()
     ax = plt.subplot(polar=True)

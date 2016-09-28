@@ -45,26 +45,26 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
-def get_champ_grace_data(dates,satellite='champ'):
+def get_champ_grace_data(bdate,edate,satellite='champ',
+                         variables=('lat3','lat','long','height','LT',
+                                    'Mlat','Mlong','MLT',
+                                    'rho','rho400','rho410','msis_rho')):
     """ get champ or grace density data during specified dates.
 
     Args:
-        dates: specified dates which can be args of pd.to_datetime(). and if a
-            single date is given , it shoule be in format such as ['2005-1-1'],
-            so pd.to_datetime() can convert it to DatetimeIndex class
+        bdate, edate: string or pd.Timestamp
         satellite: 'champ' or 'grace'
     Returns:
         dataframe of champ or grace density indexed with datetime. the columns
         are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
         msis_rho, ...
-    Note:
-        In other read-data functions, I used 'bdate' and 'edate' in replace of
-        'dates' to be more reasonable.
-        I also include 'variables' argument to be read specific parameters in
-        order to save memory and time.
     """
-    dates = pd.to_datetime(dates)
+    bdate = pd.Timestamp(bdate)
+    edate = pd.Timestamp(edate)
+    dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
     dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+    variables = list(variables)
+    variables.append('date')
     # champ and grace data are in this date range
     if satellite == 'champ':
         fname = ['/data/CHAMP23/csv/{:s}/ascii/'
@@ -80,13 +80,15 @@ def get_champ_grace_data(dates,satellite='champ'):
                      k.strftime('%j')) for k in dates]
     rho = [pd.read_csv(
         fn,
-        parse_dates=[0],
-        index_col=[0]) for fn in fname if os.path.isfile(fn)]
+        usecols = variables,
+        parse_dates=['date'],
+        index_col=['date']) for fn in fname if os.path.isfile(fn)]
     if rho:
         rho = pd.concat(rho)
         # Exclude duplicate points
         # pd.DataFrame.drop_duplicates() has something wrong
         rho = rho.groupby(rho.index).first()
+        rho = rho[bdate:edate]
         return ChampDensity(rho)
     else:
         return ChampDensity()
@@ -712,17 +714,17 @@ class ChampWind(ChampDensity):
 # for test
 if __name__=='__main__':
     #------------------------------------------------------------
-    #    den = get_champ_grace_data(pd.date_range('2005-1-2','2005-1-2'))
-    #    ax = plt.subplot(polar=True)
-    #    hc = den.satellite_position_lt_lat(mag=True)
-    #    #----------------------------------------
-    #    # Set polar(lat, LT) coordinates
-    #    ax.set_rmax(30)
-    #    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-    #    ax.set_theta_zero_location('S')
-    #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-    #    #----------------------------------------
-    #    plt.show()
+    den = get_champ_grace_data('2005-1-2','2005-1-3',variables=['lat','Mlat','LT','MLT','rho400','rho'])
+    ax = plt.subplot(polar=True)
+    hc = den.satellite_position_lt_lat(mag=True)
+    #----------------------------------------
+    # Set polar(lat, LT) coordinates
+    ax.set_rmax(30)
+    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    ax.set_theta_zero_location('S')
+    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #----------------------------------------
+    plt.show()
     #------------------------------------------------------------
     #    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
     #    plt.figure()
@@ -738,12 +740,13 @@ if __name__=='__main__':
     #    ax = plt.subplot()
     #    wind.contourf_date_lat(ax,whichcolumn='wind')
     #    plt.show()
-    wind = get_champ_wind('2003-6-28 3:30:0','2003-6-28 5:0:0')
-    density = get_champ_grace_data(['2003-6-28'],satellite='champ')
-    density = density['2003-6-28 3:30:0':'2003-6-28 5:0:0']
-    plt.figure()
-    ax = plt.subplot()
-    m = wind.polar_quiver_wind(ax,ns='N')
-    m.scatter(np.array(density.long),np.array(density.lat),100,np.array(density.rho400),
-              zorder=5,linewidths=0,latlon=True)
-    plt.show()
+    #------------------------------------------------------------
+    #    wind = get_champ_wind('2003-6-28 3:30:0','2003-6-28 5:0:0')
+    #    density = get_champ_grace_data(['2003-6-28'],satellite='champ')
+    #    density = density['2003-6-28 3:30:0':'2003-6-28 5:0:0']
+    #    plt.figure()
+    #    ax = plt.subplot()
+    #    m = wind.polar_quiver_wind(ax,ns='N')
+    #    m.scatter(np.array(density.long),np.array(density.lat),100,np.array(density.rho400),
+    #              zorder=5,linewidths=0,latlon=True)
+    #    plt.show()

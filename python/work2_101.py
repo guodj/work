@@ -50,7 +50,7 @@ def f1():
             for k1 in sbtmp.index:
                 print(k1,k0)
                 bdate = k1-pd.Timedelta('3D')
-                edate = k1+pd.Timedelta('2D')
+                edate = k1+pd.Timedelta('3D')
                 data_tmp = get_omni(bdate,edate,['Bx','Bym','Bzm','AE'],res='1h')
                 #print(data_tmp)
                 data_tmp['epochday'] = (data_tmp.index - k1)/pd.Timedelta('1D')
@@ -122,7 +122,7 @@ def f2():
             for k1 in sbtmp.index:
                 #for k2 in ['champ','grace']:
                 for k2 in ['grace']:  # only consider the grace
-                    rho = get_champ_grace_data(k1+pd.TimedeltaIndex(range(-3,3),'D'), k2)
+                    rho = get_champ_grace_data(k1-pd.Timedelta('3D'), k1+pd.Timedelta('3D'), k2)
                     if rho.empty:
                         print('no data around',k1)
                         continue

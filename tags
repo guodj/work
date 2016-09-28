@@ -46,6 +46,8 @@ Alts	/home/gdj/work/python/Cailei/test.py	/^        Alts = data[2][0][0]\/1000.0
 Alts	/home/gdj/work/python/Cailei/tst - 副本.py	/^Alts = data[2][0][0] \/ 1000.0$/;"	v
 Alts	/home/gdj/work/python/Cailei/tst.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
 Alts	/home/gdj/work/python/Cailei/tst0.py	/^Alts = data[2][0][0] \/ 1000.0$/;"	v
+Apex	/home/gdj/work/python/champ_grace.py	/^            from apexpy import Apex$/;"	i
+Apex	/home/gdj/work/python/champ_grace.py	/^        from apexpy import Apex$/;"	i
 Apex	/home/gdj/work/python/sth.py	/^    from apexpy import Apex$/;"	i
 Apex	/home/gdj/work/python/work2_100.py	/^from apexpy import Apex$/;"	i
 AutoMinorLocator	/home/gdj/work/python/champ_grace.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
@@ -54,9 +56,11 @@ AutoMinorLocator	/home/gdj/work/python/imf_index_sw.py	/^    from matplotlib.tic
 AutoMinorLocator	/home/gdj/work/python/work2_100.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
 AutoMinorLocator	/home/gdj/work/python/work2_101.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
 AutoMinorLocator	/home/gdj/work/python/work3_100.py	/^    from matplotlib.ticker import AutoMinorLocator$/;"	i
+Basemap	/home/gdj/work/python/champ_grace.py	/^        from mpl_toolkits.basemap import Basemap$/;"	i
 Basemap	/home/gdj/work/python/sth.py	/^    from mpl_toolkits.basemap import Basemap$/;"	i
 Basemap	/home/gdj/work/python/work2_100.py	/^from mpl_toolkits.basemap import Basemap$/;"	i
 ChampDensity	/home/gdj/work/python/champ_grace.py	/^class ChampDensity(pd.DataFrame):$/;"	c
+ChampWind	/home/gdj/work/python/champ_grace.py	/^class ChampWind(ChampDensity):$/;"	c
 GoceDensity	/home/gdj/work/python/goce.py	/^class GoceDensity(pd.DataFrame):$/;"	c
 InitialGuess	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function z = InitialGuess(y,I)$/;"	f
 LT_median	/home/gdj/work/python/champ_grace.py	/^    def LT_median(self):$/;"	m	class:ChampDensity
@@ -148,6 +152,7 @@ __author__	/home/gdj/work/python/work2_100.py	/^__author__ = 'Dongjie Guo'$/;"	v
 __author__	/home/gdj/work/python/work4_100.py	/^__author__ = 'Dongjie Guo'$/;"	v
 a	/home/gdj/work/python/sth.py	/^    a=f7()$/;"	v
 a	/home/gdj/work/python/work2_100.py	/^    a = f24()$/;"	v
+a	/home/gdj/work/python/work3_100.py	/^    a = func2()$/;"	v
 aa	/home/gdj/work/python/Cailei/test.py	/^aa = sys.argv$/;"	v
 add_epoch_sb	/home/gdj/work/python/champ_grace.py	/^    def add_epoch_sb(self, exclude_cir=True):$/;"	m	class:ChampDensity
 add_epochtime	/home/gdj/work/python/champ_grace.py	/^    def add_epochtime(self, epoch0, lday=5, rday=5):$/;"	m	class:ChampDensity
@@ -209,10 +214,9 @@ ax	/home/gdj/work/python/Cailei/test.py	/^    ax = fig.add_subplot(111)$/;"	v
 ax	/home/gdj/work/python/Cailei/tst - 副本.py	/^    ax = fig.add_subplot(111, projection='polar')$/;"	v
 ax	/home/gdj/work/python/Cailei/tst.py	/^    ax = fig.add_subplot(111, projection='polar')$/;"	v
 ax	/home/gdj/work/python/Cailei/tst0.py	/^ax = fig.add_subplot(111, projection='polar')$/;"	v
-ax	/home/gdj/work/python/champ_grace.py	/^    ax = plt.subplot(polar=True)$/;"	v	class:ChampDensity
+ax	/home/gdj/work/python/champ_grace.py	/^    ax = plt.subplot(polar=True)$/;"	v	class:ChampWind
 ax	/home/gdj/work/python/goce.py	/^    ax = plt.subplot()$/;"	v	class:GoceDensity
 ax	/home/gdj/work/python/goce.py	/^    ax = plt.subplot(polar=True)$/;"	v	class:GoceDensity
-ax	/home/gdj/work/python/work4_100.py	/^    ax = plt.subplot()$/;"	v
 ax1	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^    ax1 = fig.add_subplot(411)$/;"	v
 ax1	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^    ax1 = fig.add_subplot(211)$/;"	v
 ax2	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^    ax2 = fig.add_subplot(412)$/;"	v
@@ -226,7 +230,7 @@ basefile	/home/gdj/work/python/Cailei/plot_gitm_pres_3.py	/^basefile = r'F:\\dat
 basefile	/home/gdj/work/python/Cailei/plot_gitm_pres_4.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
 basefile	/home/gdj/work/python/Cailei/plot_gitm_pres_5.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
 basefile	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
-bdate	/home/gdj/work/python/work4_100.py	/^    bdate = pd.to_datetime('2003-10-4 10:00')$/;"	v
+bdate	/home/gdj/work/python/work4_100.py	/^    bdate ='2003-10-4 10:00:00'$/;"	v
 bday	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,/;"	v	program:jdfsk
 bday	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,/;"	v	program:jdfsk
 betime	/home/gdj/work/python/work4_100.py	/^    betime = time_champ_orbit_updown(bdate, edate, updown='up')$/;"	v
@@ -333,7 +337,8 @@ cmap_v	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^cmap_v = cm.get_cmap('
 cmap_v	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^cmap_v = cm.get_cmap('seismic')$/;"	v
 cmap_vi	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^cmap_vi = cm.get_cmap('seismic')$/;"	v
 contourf_date_lat	/home/gdj/work/python/champ_grace.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho400',$/;"	m	class:ChampDensity
-contourf_date_lat	/home/gdj/work/python/goce.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho',$/;"	m	class:GoceDensity
+contourf_date_lat	/home/gdj/work/python/champ_grace.py	/^    def contourf_date_lat(self, ax, whichcolumn='wind', updown='up', **kwargs):$/;"	m	class:ChampWind
+contourf_date_lat	/home/gdj/work/python/goce.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho', **kwargs):$/;"	m	class:GoceDensity
 contourf_lon_lat	/home/gdj/work/python/work2_100.py	/^def contourf_lon_lat(ax, lon, lat, data, whichhemisphere='N', **kwargs):$/;"	f
 contourf_lt_lat	/home/gdj/work/python/work2_100.py	/^def contourf_lt_lat(ax, lt, lat, data, whichhemisphere='N', **kwargs):$/;"	f
 d2d	/home/gdj/work/python/Cailei/get_gitm_data_range.py	/^        d2d = data[iVar][sLon:eLon, sLat:eLat, iAlt]$/;"	v
@@ -408,7 +413,6 @@ dates	/home/gdj/work/python/Cailei/tst - 副本.py	/^import matplotlib.dates as da
 dates	/home/gdj/work/python/Cailei/tst.py	/^import matplotlib.dates as dates$/;"	i
 dates	/home/gdj/work/python/Cailei/tst0.py	/^import matplotlib.dates as dates$/;"	i
 dates	/home/gdj/work/python/gitm_routines.py	/^import matplotlib.dates as dates$/;"	i
-dates	/home/gdj/work/python/work4_100.py	/^    dates = pd.date_range(bdate.date(), edate.date())$/;"	v
 datetime	/home/gdj/work/python/Cailei/gitm_routines.py	/^from datetime import datetime$/;"	i
 datetime	/home/gdj/work/python/Cailei/gitm_routines_new.py	/^from datetime import datetime$/;"	i
 datetime	/home/gdj/work/python/Cailei/test.py	/^from datetime import datetime$/;"	i
@@ -417,8 +421,8 @@ datetime	/home/gdj/work/python/gitm_routines.py	/^from datetime import datetime$
 day	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,/;"	v	program:dfhskhfgks
 day	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day,/;"	v	program:gamdm_test
 dctn	/home/gdj/work/matlab/matlabfunction/smoothn.m	/^function y = dctn(y)$/;"	f
-den	/home/gdj/work/python/champ_grace.py	/^    den = get_champ_grace_data(pd.date_range('2005-1-2','2005-1-2'))$/;"	v	class:ChampDensity
-den	/home/gdj/work/python/goce.py	/^    den = get_goce_data(pd.date_range('2010-4-1','2010-4-30'))$/;"	v	class:GoceDensity
+den	/home/gdj/work/python/champ_grace.py	/^    den = get_champ_grace_data('2005-1-2','2005-1-3',variables=['lat','Mlat','LT','MLT','rho400','rho'])$/;"	v	class:ChampWind
+den	/home/gdj/work/python/goce.py	/^    den = get_goce_data('2010-4-1','2010-4-30')$/;"	v	class:GoceDensity
 dens	/home/gdj/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day, kp, dens(/;"	v	program:gamdm_test
 dens	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=2.2, dens(/;"	v	program:mygamdm
 denskp	/home/gdj/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=2.2, dens(1:3),denskp(/;"	v	program:mygamdm
@@ -444,6 +448,7 @@ dr	/home/gdj/work/python/Cailei/test.py	/^dr = (maxi-mini)\/31$/;"	v
 dr	/home/gdj/work/python/Cailei/tst - 副本.py	/^dr = (maxi-mini)\/31$/;"	v
 dr	/home/gdj/work/python/Cailei/tst.py	/^dr = (maxi-mini)\/31$/;"	v
 draw	/home/gdj/work/python/work3_100.py	/^    from pylab import draw # Use draw()$/;"	i
+dt	/home/gdj/work/python/champ_grace.py	/^            import datetime as dt$/;"	i
 eAlt	/home/gdj/work/python/Cailei/plot_gitm_4_subs.py	/^eAlt = iAlt + 1$/;"	v
 eAlt	/home/gdj/work/python/Cailei/plot_gitm_on_lon.py	/^        eAlt = iAlt + 1$/;"	v
 eAlt	/home/gdj/work/python/Cailei/plot_gitm_pres.py	/^eAlt = iAlt + 1$/;"	v
@@ -479,7 +484,7 @@ eLon	/home/gdj/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^eLon = iLon + 1$/;"	
 eLon	/home/gdj/work/python/Cailei/tst - 副本.py	/^eLon = iLon + 1$/;"	v
 eLon	/home/gdj/work/python/Cailei/tst.py	/^        eLon = iLon + 1$/;"	v
 eLon	/home/gdj/work/python/Cailei/tst0.py	/^eLon = iLon + 1$/;"	v
-edate	/home/gdj/work/python/work4_100.py	/^    edate = pd.to_datetime('2003-10-4 16:00')$/;"	v
+edate	/home/gdj/work/python/work4_100.py	/^    edate ='2003-10-4 16:00:00'$/;"	v
 epoch2lrdates	/home/gdj/work/matlab/work2/epoch2lrdates.m	/^function lrdates=epoch2lrdates(epoch_date, lrdays)$/;"	f
 errorbar_tick	/home/gdj/work/matlab/matlabfunction/errorbar_tick.m	/^function errorbar_tick(h,w,xtype)$/;"	f
 etime	/home/gdj/work/python/work4_100.py	/^        etime = betime.loc[k-1,'etime']$/;"	v
@@ -549,6 +554,7 @@ fig	/home/gdj/work/python/Cailei/test.py	/^    fig = plt.figure()$/;"	v
 fig	/home/gdj/work/python/Cailei/tst - 副本.py	/^fig = plt.figure()$/;"	v
 fig	/home/gdj/work/python/Cailei/tst.py	/^fig = plt.figure()$/;"	v
 fig	/home/gdj/work/python/Cailei/tst0.py	/^fig = plt.figure()$/;"	v
+fig	/home/gdj/work/python/work4_100.py	/^    fig = plt.figure(figsize=[8,8.25])$/;"	v
 file	/home/gdj/work/python/Cailei/tst - 副本.py	/^file = datapath + '3DALL_t000318_220001.bin'$/;"	v
 file	/home/gdj/work/python/Cailei/tst0.py	/^file = datapath + '3DALL_t000321_120001.bin'$/;"	v
 filelist	/home/gdj/work/python/Cailei/get_gitm_data_range.py	/^filelist = glob(filepath+'3DALL*.bin')$/;"	v
@@ -585,6 +591,7 @@ fname2	/home/gdj/work/fortran/work1/char2int_new.f90	/^    character fname1*100,
 fname2	/home/gdj/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,fname2,/;"	v	program:mygamdm
 fname3	/home/gdj/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,fname2,fname3$/;"	v	program:mygamdm
 func1	/home/gdj/work/python/work3_100.py	/^def func1():$/;"	f
+func2	/home/gdj/work/python/work3_100.py	/^def func2():$/;"	f
 gamdm	/home/gdj/work/fortran/work1/gamdm.f90	/^subroutine gamdm(/;"	s
 gamdm	/home/gdj/work/fortran/work1/mygamdm.f90	/^subroutine gamdm(/;"	s
 gamdm_test	/home/gdj/work/fortran/work1/gamdm.f90	/^program gamdm_test$/;"	p
@@ -610,8 +617,9 @@ get_args	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^def get_args(argv)
 get_args	/home/gdj/work/python/Cailei/plot_gitm_vec.py	/^def get_args(argv):$/;"	f
 get_args	/home/gdj/work/python/Cailei/plot_gitm_vup_line.py	/^def get_args(argv):$/;"	f
 get_args	/home/gdj/work/python/Cailei/test.py	/^def get_args(argv):$/;"	f
-get_champ_grace_data	/home/gdj/work/python/champ_grace.py	/^def get_champ_grace_data(dates,satellite='champ'):$/;"	f
+get_champ_grace_data	/home/gdj/work/python/champ_grace.py	/^def get_champ_grace_data(bdate,edate,satellite='champ',$/;"	f
 get_champ_grace_mdays	/home/gdj/work/matlab/work2/get_champ_grace_mdays.m	/^function [uporbit,downorbit]=get_champ_grace_mdays(lrdays,satellite)$/;"	f
+get_champ_wind	/home/gdj/work/python/champ_grace.py	/^def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):$/;"	f
 get_champ_wind	/home/gdj/work/python/work4_100.py	/^def get_champ_wind(dates):$/;"	f
 get_cirlist	/home/gdj/work/python/imf_index_sw.py	/^def get_cirlist():$/;"	f
 get_cirlist_noicme	/home/gdj/work/python/imf_index_sw.py	/^def get_cirlist_noicme():$/;"	f
@@ -630,7 +638,7 @@ get_g	/home/gdj/work/python/Cailei/plot_gitm_pres_ave.py	/^def get_g(h):$/;"	f
 get_g	/home/gdj/work/python/Cailei/plot_gitm_pres_line.py	/^def get_g(h):$/;"	f
 get_g	/home/gdj/work/python/Cailei/plot_gitm_pres_vup.py	/^def get_g(h):$/;"	f
 get_gitm_vars_range	/home/gdj/work/python/Cailei/get_gitm_data_range.py	/^def get_gitm_vars_range(file_to_read, iAlt, vars_to_read=-1):$/;"	f
-get_goce_data	/home/gdj/work/python/goce.py	/^def get_goce_data(dates):$/;"	f
+get_goce_data	/home/gdj/work/python/goce.py	/^def get_goce_data(bdate,edate):$/;"	f
 get_goce_data	/home/gdj/work/python/work2_100.py	/^def get_goce_data(dates):$/;"	f
 get_goce_mdays	/home/gdj/work/matlab/work2/get_goce_mdays.m	/^function [uporbit,downorbit]=get_goce_mdays(lrdays)$/;"	f
 get_imf	/home/gdj/work/python/imf_index_sw.py	/^def get_imf(dates,resolution = '1hour'):$/;"	f
@@ -695,7 +703,8 @@ griddata	/home/gdj/work/python/work2_100.py	/^from scipy.interpolate import grid
 gridxy	/home/gdj/work/matlab/matlabfunction/mygriddata.m	/^function gridx0=gridxy(x0,x)$/;"	f
 h	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,/;"	v	program:dfhskhfgks
 h	/home/gdj/work/python/Cailei/plot_gitm_pres_line.py	/^    h = 200$/;"	v
-hc	/home/gdj/work/python/champ_grace.py	/^    hc = den.satellite_position_lt_lat(mag=True)$/;"	v	class:ChampDensity
+h	/home/gdj/work/python/work4_100.py	/^        h = plt.subplot(2,2,k,polar=True)$/;"	v
+hc	/home/gdj/work/python/champ_grace.py	/^    hc = den.satellite_position_lt_lat(mag=True)$/;"	v	class:ChampWind
 hc	/home/gdj/work/python/goce.py	/^    hc = den.satellite_position_lt_lat(mag=False)$/;"	v	class:GoceDensity
 header	/home/gdj/work/python/Cailei/plot_gitm.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
 header	/home/gdj/work/python/Cailei/plot_gitm_on_alt.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
@@ -861,8 +870,6 @@ ilat_s	/home/gdj/work/python/Cailei/plot_gitm_vec.py	/^        ilat_s = ilat$/;"
 ilon	/home/gdj/work/python/Cailei/plot_gitm_vec.py	/^ilon = 0$/;"	v
 ilon_e	/home/gdj/work/python/Cailei/plot_gitm_vec.py	/^ilon_e = ilon + 1$/;"	v
 ilon_s	/home/gdj/work/python/Cailei/plot_gitm_vec.py	/^        ilon_s = ilon$/;"	v
-index	/home/gdj/work/python/work4_100.py	/^    index = get_imf_AE_PC_5m(dates)$/;"	v
-index	/home/gdj/work/python/work4_100.py	/^    index = index[bdate:edate]$/;"	v
 iost	/home/gdj/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=3,i,j,iost$/;"	v	program:mygamdm
 isDS	/home/gdj/work/matlab/work2/isDS.m	/^function dsdates = isDS( dates )$/;"	f
 isJS	/home/gdj/work/matlab/work2/isJS.m	/^function jsdates = isJS( dates )$/;"	f
@@ -1256,6 +1263,7 @@ plt	/home/gdj/work/python/work2_100.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/work2_101.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/work3_100.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/work4_100.py	/^import matplotlib.pyplot as plt$/;"	i
+polar_quiver_wind	/home/gdj/work/python/champ_grace.py	/^    def polar_quiver_wind(self, ax, ns='N'):$/;"	m	class:ChampWind
 polarity	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
 polarity	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
 print_dates	/home/gdj/work/python/champ_grace.py	/^    def print_dates(self):$/;"	m	class:ChampDensity
@@ -1378,6 +1386,7 @@ sLon	/home/gdj/work/python/Cailei/tst.py	/^                sLon = iLon$/;"	v
 sLon	/home/gdj/work/python/Cailei/tst0.py	/^        sLon = iLon$/;"	v
 sLon	/home/gdj/work/python/Cailei/tst0.py	/^sLon = sLon$/;"	v
 satellite_position_lt_lat	/home/gdj/work/python/champ_grace.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:ChampDensity
+satellite_position_lt_lat	/home/gdj/work/python/champ_grace.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:ChampWind
 satellite_position_lt_lat	/home/gdj/work/python/goce.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:GoceDensity
 set	/home/gdj/work/python/work2_100.py	/^import pdb   # set breakpoint$/;"	i
 set	/home/gdj/work/python/work2_101.py	/^import pdb   # set breakpoint$/;"	i
@@ -1468,11 +1477,6 @@ title	/home/gdj/work/python/Cailei/test.py	/^    title = time.strftime('%b %d, %
 title	/home/gdj/work/python/Cailei/tst - 副本.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
 title	/home/gdj/work/python/Cailei/tst.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
 title	/home/gdj/work/python/Cailei/tst0.py	/^title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
-tmp_AE	/home/gdj/work/python/work4_100.py	/^        tmp_AE = tmp_index.AE$/;"	v
-tmp_AE	/home/gdj/work/python/work4_100.py	/^    tmp_AE = index.AE$/;"	v
-tmp_index	/home/gdj/work/python/work4_100.py	/^        tmp_index = index[btime:etime]$/;"	v
-tmp_time	/home/gdj/work/python/work4_100.py	/^        tmp_time = (tmp_index.index.hour +$/;"	v
-tmp_time	/home/gdj/work/python/work4_100.py	/^    tmp_time = index.index.hour+index.index.minute\/60+index.index.second\/3600$/;"	v
 u1	/home/gdj/work/fortran/work1/bz_ap.f90	/^     integer u1,/;"	v	program:dfhskhfgks
 u1	/home/gdj/work/fortran/work1/char2int.f90	/^    integer u1,/;"	v	program:jdfsk
 u1	/home/gdj/work/fortran/work1/char2int_new.f90	/^    integer u1,/;"	v	program:jdfsk

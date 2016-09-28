@@ -14,7 +14,7 @@ from omni import *
 
 def func1():
     #----------------------------------------
-    # Find interesting cases in 2010
+    # Find interesting cases in 2009 (11,12) and 2010
     # interesting case:
     #     1, IMF By from - to + or the opposite
     #     2, CHAMP, GRACE and GOCE orbits overlap
@@ -45,9 +45,9 @@ def func1():
     ax1[-1].xaxis.set_major_formatter(hoursfmt)
     # For satellites
     if False:
-        denchamp = get_champ_grace_data(pd.date_range('2009-11-1','2010-12-31'),satellite='champ')
-        dengrace = get_champ_grace_data(pd.date_range('2009-11-1','2010-12-31'),satellite='grace')
-        dengoce = get_goce_data(pd.date_range('2009-11-1','2010-12-31'))
+        denchamp = get_champ_grace_data('2009-11-1','2010-12-31',satellite='champ')
+        dengrace = get_champ_grace_data('2009-11-1','2010-12-31',satellite='grace')
+        dengoce = get_goce_data('2009-11-1','2010-12-31')
         pd.to_pickle((denchamp, dengrace, dengoce),'/data/tmp/w3_00.dat')
     denchamp, dengrace, dengoce = pd.read_pickle('/data/tmp/w3_00.dat')
     for date in pd.date_range('2009-11-1','2010-12-31'):
@@ -88,6 +88,46 @@ def func1():
         input()
         plt.close(fig2)
 
+
+def func2():
+    #----------------------------------------
+    # Check one of the interesting cases: 2010-5-29
+    #----------------------------------------
+    bdate = '2009-11-12 21:0:0'
+    edate = '2009-11-13 12:0:0'
+    mdate = '2010-11-13 3:0:0'
+    #bdate = '2010-5-29 6:0:0'
+    #edate = '2010-5-29 18:0:0'
+    #mdate = '2010-5-29 12:0:0'
+    dench = get_champ_grace_data(bdate,edate,satellite='champ')
+    dench.add_updown()
+    dench['arglat'] = dench.lat3
+    dench.loc[dench.isdown,'arglat'] = 180-dench.loc[dench.isdown,'arglat']
+    dench.loc[dench.isup,'arglat'] = (360+dench.loc[dench.isup,'arglat'])%360
+
+    dengr = get_champ_grace_data(bdate,edate,satellite='grace')
+    dengr.add_updown()
+    dengr['arglat'] = dengr.lat3
+    dengr.loc[dengr.isdown,'arglat'] = 180-dengr.loc[dengr.isdown,'arglat']
+    dengr.loc[dengr.isup,'arglat'] = (360+dengr.loc[dengr.isup,'arglat'])%360
+
+    dengo = get_goce_data(bdate,edate)
+
+    den = (dengo,dench,dengr)
+
+    fig,ax = plt.subplots(3,2,sharex=True,sharey='row')
+    yl = ((0,5e-11),(0,5e-11),(0,1e-12))
+    for k00,k0 in enumerate(den):
+        plt.sca(ax[k00,0])
+        plt.scatter(den[k00][:mdate].arglat,den[k00][:mdate].rho,20,linewidths=0,alpha=0.8)
+        plt.sca(ax[k00,1])
+        plt.scatter(den[k00][mdate:].arglat,den[k00][mdate:].rho,20,linewidths=0,alpha=0.8)
+        plt.ylim(yl[k00])
+        plt.xlim(0,360)
+        plt.xticks(np.arange(0,360,90))
+    plt.show()
+    return
 # END
 if __name__ == '__main__':
-    func1()
+    plt.close('all')
+    a = func1()
