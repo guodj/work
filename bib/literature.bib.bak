@@ -129,6 +129,22 @@
   Url                      = {http://dx.doi.org/10.1002/2016JA022432}
 }
 
+@Article{Calabia2016,
+  Title                    = {New modes and mechanisms of thermospheric mass density variations from GRACE accelerometers},
+  Author                   = {Calabia, Andres and Jin, Shuanggen},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2016},
+  Note                     = {2016JA022594},
+  Pages                    = {n/a--n/a},
+  Doi                      = {10.1002/2016JA022594},
+  File                     = {Calabia2016.pdf:Calabia2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Pressure, density, and temperature, Ionosphere/atmosphere interactions, Magnetosphere/ionosphere interactions, Thermospheric dynamics, Thermosphere, Air mass density, Radiational waves, Accelerometers, GRACE},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://dx.doi.org/10.1002/2016JA022594}
+}
+
 @Article{Carlson2007,
   Title                    = {Role of neutral atmospheric dynamics in cusp density and ionospheric
  patch formation},
@@ -240,6 +256,24 @@
   Unique-id                = {{ISI:000312108200003}}
 }
 
+@Article{Cousins2010,
+  Title                    = {A dynamical model of high-latitude convection derived from SuperDARN plasma drift measurements},
+  Author                   = {Cousins, E. D. P. and Shepherd, S. G.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2010},
+  Note                     = {A12329},
+  Number                   = {A12},
+  Pages                    = {n/a--n/a},
+  Volume                   = {115},
+  Doi                      = {10.1029/2010JA016017},
+  File                     = {Cousins2010.pdf:Cousins2010.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Plasma convection, Electric fields, Ionospheric dynamics, Modeling and forecasting, high-latitude convection, statistical model, empirical model, convection electric field},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://dx.doi.org/10.1029/2010JA016017}
+}
+
 @Article{Cowley1991,
   Title                    = {Dependence of convective flows and particle precipitation in the high-latitude dayside ionosphere on the X and Y components of the interplanetary magnetic field},
   Author                   = {Cowley, S. W. H. and Morelli, J. P. and Lockwood, M.},
@@ -308,6 +342,24 @@
   Owner                    = {gdj},
   Timestamp                = {2016.04.28},
   Url                      = {http://dx.doi.org/10.1029/2005JA011518}
+}
+
+@Article{Crowley2006a,
+  Title                    = {Effect of IMF BY on thermospheric composition at high and middle latitudes: 1. Numerical experiments},
+  Author                   = {Crowley, G. and Immel, T. J. and Hackert, C. L. and Craven, J. and Roble, R. G.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2006},
+  Note                     = {A10311},
+  Number                   = {A10},
+  Pages                    = {n/a--n/a},
+  Volume                   = {111},
+  Doi                      = {10.1029/2005JA011371},
+  File                     = {Crowley2006a.pdf:Crowley2006a.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: composition and chemistry, Satellite drag, Forecasting, composition, thermospheric},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://dx.doi.org/10.1029/2005JA011371}
 }
 
 @Article{Crowley2010,
@@ -600,6 +652,23 @@
   Url                      = {http://www.ann-geophys.net/29/181/2011/}
 }
 
+@Article{Foerster2008,
+  Title                    = {IMF dependence of high-latitude thermospheric wind pattern derived from CHAMP cross-track measurements},
+  Author                   = {F\"orster, M. and Rentz, S. and K\"ohler, W. and Liu, H. and Haaland, S. E.},
+  Journal                  = {Annales Geophysicae},
+  Year                     = {2008},
+  Number                   = {6},
+  Pages                    = {1581--1595},
+  Volume                   = {26},
+
+  __markedentry            = {[gdj:]},
+  Doi                      = {10.5194/angeo-26-1581-2008},
+  File                     = {Foerster2008.pdf:Foerster2008.pdf:PDF},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://www.ann-geophys.net/26/1581/2008/}
+}
+
 @Article{Forbes1999,
   Title                    = {Longitudinal structures in lower thermosphere density},
   Author                   = {Forbes, J. M. and Palo, S. E. and Marcos, F. A.},
@@ -867,6 +936,26 @@
   Owner                    = {gdj},
   Timestamp                = {2016.04.26},
   Url                      = {http://www.sciencedirect.com/science/article/pii/S1364682604000525}
+}
+
+@Article{Immel2006,
+  Title                    = {Effect of IMF By on thermospheric composition at high and middle latitudes: 2. Data comparisons},
+  Author                   = {Immel, Thomas J. and Crowley, Geoff and Hackert, Chris L. and Craven, John D. and Roble, Ray G.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2006},
+  Note                     = {A10312},
+  Number                   = {A10},
+  Pages                    = {n/a--n/a},
+  Volume                   = {111},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/2005JA011372},
+  File                     = {Immel2006.pdf:Immel2006.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Airglow and aurora, Magnetic storms, high latitude convection, Joule heating, thermospheric composition},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://dx.doi.org/10.1029/2005JA011372}
 }
 
 @Article{Jiang2016,
@@ -1246,6 +1335,22 @@ and McPherron, Robert L.},
   Owner                    = {gdj},
   Timestamp                = {2016.07.16},
   Url                      = {http://dx.doi.org/10.1029/92GL01993}
+}
+
+@Article{Luan2016,
+  Title                    = {Universal time variations of the auroral hemispheric power and its interhemispheric asymmetry from TIMED/GUVI observations},
+  Author                   = {Luan, Xiaoli and wang, Wenbin and Burns, Alan and Dou, Xiankang},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2016},
+  Note                     = {2016JA022730},
+  Pages                    = {n/a--n/a},
+  Doi                      = {10.1002/2016JA022730},
+  File                     = {Luan2016.pdf:Luan2016.pdf:PDF},
+  ISSN                     = {2169-9402},
+  Keywords                 = {Auroral ionosphere, Particle precipitation, Particle acceleration, Ionosphere/magnetosphere interactions, Auroral Hemispheric Power, UT Variation, Interhemispheric Asymmetry, Particle Precipitation},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://dx.doi.org/10.1002/2016JA022730}
 }
 
 @Article{Luehr2012,
@@ -1745,8 +1850,6 @@ and McPherron, Robert L.},
   Number                   = {22},
   Pages                    = {3675--3678},
   Volume                   = {27},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/1999GL011161},
   File                     = {Ridley2000.pdf:Ridley2000.pdf:PDF},
   ISSN                     = {1944-8007},
@@ -1977,9 +2080,8 @@ and McPherron, Robert L.},
   Number                   = {A9},
   Pages                    = {n/a--n/a},
   Volume                   = {110},
-
-  __markedentry            = {[gdj:6]},
   Doi                      = {10.1029/2004JA010985},
+  File                     = {:/home/gdj/document/literature/Sutton2005.pdf:PDF},
   ISSN                     = {2156-2202},
   Keywords                 = {Magnetic storms, Satellite drag, geomagnetic disturbances, November 2003, CHAMP, thermosphere, density, Wind},
   Owner                    = {gdj},
@@ -1992,6 +2094,7 @@ and McPherron, Robert L.},
   Author                   = {Svalgaard, Leif},
   Institution              = {DTIC Document},
   Year                     = {1976},
+
   File                     = {Svalgaard1976.pdf:Svalgaard1976.pdf:PDF},
   Owner                    = {gdj},
   Timestamp                = {2016.09.10}
@@ -2480,5 +2583,8 @@ mons2008\;Cousins2012\;Crooker1979\;Crowley2010\;Demars2007\;Deng2008\
 ell1989\;Newell1989a\;Rentz2008\;Sadler2012\;Schlegel2005\;Sheng2015\;
 Shepherd2003\;Sutton2011\;Svalgaard1976\;Wilson2006\;Xu2013\;Xu2013a\;
 Yordanova2007\;Zhang2012\;Zhang2015\;Zhou2000\;Zivkovic2015\;;
+1 ExplicitGroup:work3\;0\;Cousins2010\;Cowley1991\;Crowley1996\;Crowle
+y2006a\;Foerster2008\;Foerster2011\;Immel2006\;Kwak2009\;McCormac1985\
+;Tenfjord2015\;Yamazaki2015a\;;
 }
 

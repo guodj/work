@@ -95,7 +95,7 @@ def func2():
     #----------------------------------------
     bdate = '2009-11-12 21:0:0'
     edate = '2009-11-13 12:0:0'
-    mdate = '2010-11-13 3:0:0'
+    mdate = '2009-11-13 3:0:0'
     #bdate = '2010-5-29 6:0:0'
     #edate = '2010-5-29 18:0:0'
     #mdate = '2010-5-29 12:0:0'
@@ -116,7 +116,7 @@ def func2():
     den = (dengo,dench,dengr)
 
     fig,ax = plt.subplots(3,2,sharex=True,sharey='row')
-    yl = ((0,5e-11),(0,5e-11),(0,1e-12))
+    yl = ((0,3e-11),(0,1e-11),(0,2e-13))
     for k00,k0 in enumerate(den):
         plt.sca(ax[k00,0])
         plt.scatter(den[k00][:mdate].arglat,den[k00][:mdate].rho,20,linewidths=0,alpha=0.8)
@@ -130,4 +130,4 @@ def func2():
 # END
 if __name__ == '__main__':
     plt.close('all')
-    a = func1()
+    a = func2()

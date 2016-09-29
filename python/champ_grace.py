@@ -627,7 +627,7 @@ class ChampWind(ChampDensity):
         Return:
             hc: handle of the contourf plot
         ----------------------------------------
-        x axis: days from '2000-1-1'
+        Note: x axis is days from '2000-1-1'
         """
         from matplotlib.ticker import AutoMinorLocator
         if not self.empty:
