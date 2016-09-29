@@ -660,8 +660,6 @@
   Number                   = {6},
   Pages                    = {1581--1595},
   Volume                   = {26},
-
-  __markedentry            = {[gdj:]},
   Doi                      = {10.5194/angeo-26-1581-2008},
   File                     = {Foerster2008.pdf:Foerster2008.pdf:PDF},
   Owner                    = {gdj},
@@ -948,7 +946,7 @@
   Pages                    = {n/a--n/a},
   Volume                   = {111},
 
-  __markedentry            = {[gdj:6]},
+  __markedentry            = {[gdj:]},
   Doi                      = {10.1029/2005JA011372},
   File                     = {Immel2006.pdf:Immel2006.pdf:PDF},
   ISSN                     = {2156-2202},
@@ -1502,6 +1500,26 @@ and McPherron, Robert L.},
   Owner                    = {gdj},
   Timestamp                = {2016.07.11},
   Unique-id                = {{ISI:000254815000008}}
+}
+
+@Article{Newell2011,
+  Title                    = {Evaluation of SuperMAG auroral electrojet indices as indicators of substorms and auroral power},
+  Author                   = {Newell, P. T. and Gjerloev, J. W.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2011},
+  Note                     = {A12211},
+  Number                   = {A12},
+  Pages                    = {n/a--n/a},
+  Volume                   = {116},
+
+  __markedentry            = {[gdj:6]},
+  Doi                      = {10.1029/2011JA016779},
+  File                     = {Newell2011.pdf:Newell2011.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Auroral ionosphere, Magnetic storms and substorms, SME, indices, substorm onset},
+  Owner                    = {gdj},
+  Timestamp                = {2016.09.29},
+  Url                      = {http://dx.doi.org/10.1029/2011JA016779}
 }
 
 @Article{Newell1989,
@@ -2585,6 +2603,6 @@ Shepherd2003\;Sutton2011\;Svalgaard1976\;Wilson2006\;Xu2013\;Xu2013a\;
 Yordanova2007\;Zhang2012\;Zhang2015\;Zhou2000\;Zivkovic2015\;;
 1 ExplicitGroup:work3\;0\;Cousins2010\;Cowley1991\;Crowley1996\;Crowle
 y2006a\;Foerster2008\;Foerster2011\;Immel2006\;Kwak2009\;McCormac1985\
-;Tenfjord2015\;Yamazaki2015a\;;
+;Newell2011\;Tenfjord2015\;Yamazaki2015a\;;
 }
 
