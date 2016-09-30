@@ -314,7 +314,7 @@ class ChampDensity(pd.DataFrame):
             ax.set_xticklabels(pd.date_range(
                     tmp.index[0],
                     tmp.index[-1]+pd.Timedelta('1d')).
-                    strftime('%m-%d'),rotation=45)
+                    strftime('%j'))
             ax.set_ylim(-90,90)
             ax.set_yticks(np.arange(-90,91,30))
             ax.xaxis.set_minor_locator(AutoMinorLocator(4))
@@ -323,7 +323,7 @@ class ChampDensity(pd.DataFrame):
             ax.tick_params(which='major', length=7)
             ax.tick_params(which='minor', length=4)
             ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
-            ax.set_xlabel('Date of Year: {:d}'
+            ax.set_xlabel('Day of {:d}'
                           .format(tmp.index[0].year),fontsize=14)
             ax.set_ylabel('Latitude', fontsize=14)
             return hc#, rho
@@ -654,16 +654,16 @@ class ChampWind(ChampDensity):
                     **kwargs)
             ax.set_xlim(np.floor(btime),np.floor(etime)+1)
             ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
-            ax.set_xticklabels(pd.date_range(
-                    tmp.index[0],
-                    tmp.index[-1]+pd.Timedelta('1d')).
-                    strftime('%m-%d'),rotation=45)
+            ax.set_xticklabels(pd.date_range(tmp.index[0],tmp.index[-1]+pd.Timedelta('1d')).strftime('%j'))
             ax.set_ylim(-90,90)
             ax.set_yticks(np.arange(-90,91,30))
             ax.xaxis.set_minor_locator(AutoMinorLocator(4))
             ax.yaxis.set_minor_locator(AutoMinorLocator(3))
+            ax.tick_params(which='both', width=1.2)
+            ax.tick_params(which='major', length=7)
+            ax.tick_params(which='minor', length=4)
             ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
-            ax.set_xlabel('Date of Year: {:d}'
+            ax.set_xlabel('Day of {:d}'
                           .format(tmp.index[0].year),fontsize=14)
             ax.set_ylabel('Latitude', fontsize=14)
             return hc#, windt
@@ -673,15 +673,15 @@ class ChampWind(ChampDensity):
         # Wind vector in lat-long coordinates.
         # For different map projections, the arithmetics to calculate xywind
         # are different
+        if self.empty:
+            return
         from mpl_toolkits.basemap import Basemap
         from apexpy import Apex
         lat_grid = np.arange(-90,91,3)
         lon_grid = np.arange(-180,181,5)
-        lon_grid, lat_grid= np.meshgrid(lon_grid, lat_grid)
-        apx = Apex(date=2005)
-        mlat,mlon = apx.convert(lat_grid,lon_grid,'geo','apex')
-        if self.empty:
-            return
+        lon_grid, lat_grid = np.meshgrid(lon_grid, lat_grid)
+        gm = Apex(date=2005)
+        mlat,mlon = gm.convert(lat_grid,lon_grid,'geo','apex')
         projection,fc = ('npstere',1) if ns=='N' else ('spstere',-1)
         m = Basemap(projection=projection,boundinglat=fc*40,lon_0=0,resolution='l')
         m.drawcoastlines(color='gray',zorder=1)
@@ -704,7 +704,7 @@ class ChampWind(ChampDensity):
                        linestyles='dashed',latlon=True)
         plt.clabel(hc,inline=True,colors='k',fmt='%d')
         hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,
-                      scale=100, scale_units='inches',zorder=3, latlon=True)
+                      scale=500, scale_units='inches',zorder=3, latlon=True)
         plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
         #m.scatter(np.array(lon),np.array(lat),
         #          s=50, c=self.index.to_julian_date(),linewidths=0, zorder=4,latlon=True)
@@ -714,18 +714,20 @@ class ChampWind(ChampDensity):
 # for test
 if __name__=='__main__':
     #------------------------------------------------------------
-    den = get_champ_grace_data('2005-1-2','2005-1-3',variables=['lat','Mlat','LT','MLT','rho400','rho'])
-    ax = plt.subplot(polar=True)
-    hc = den.satellite_position_lt_lat(mag=True)
-    #----------------------------------------
-    # Set polar(lat, LT) coordinates
-    ax.set_rmax(30)
-    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-    ax.set_theta_zero_location('S')
-    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-    #----------------------------------------
-    plt.show()
+    #    # Test satellite_position_lt_lat.
+    #    den = get_champ_grace_data('2005-1-2','2005-1-3',variables=['lat','Mlat','LT','MLT','rho400','rho'])
+    #    ax = plt.subplot(polar=True)
+    #    hc = den.satellite_position_lt_lat(mag=True)
+    #    #----------------------------------------
+    #    # Set polar(lat, LT) coordinates
+    #    ax.set_rmax(30)
+    #    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    #    ax.set_theta_zero_location('S')
+    #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #    #----------------------------------------
+    #    plt.show()
     #------------------------------------------------------------
+    #    # Check whether satellite_position_lt_lat results from ChampWind and ChampDensity are the same.
     #    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
     #    plt.figure()
     #    ax = plt.subplot(polar=True)
@@ -736,17 +738,16 @@ if __name__=='__main__':
     #    density.satellite_position_lt_lat(mag=True)
     #    plt.show()
     #------------------------------------------------------------
+    #    # Test ChampWind.contourf_date_lat.
     #    wind = get_champ_wind('2005-1-1','2005-1-10')
     #    ax = plt.subplot()
     #    wind.contourf_date_lat(ax,whichcolumn='wind')
     #    plt.show()
     #------------------------------------------------------------
-    #    wind = get_champ_wind('2003-6-28 3:30:0','2003-6-28 5:0:0')
-    #    density = get_champ_grace_data(['2003-6-28'],satellite='champ')
-    #    density = density['2003-6-28 3:30:0':'2003-6-28 5:0:0']
-    #    plt.figure()
-    #    ax = plt.subplot()
-    #    m = wind.polar_quiver_wind(ax,ns='N')
-    #    m.scatter(np.array(density.long),np.array(density.lat),100,np.array(density.rho400),
-    #              zorder=5,linewidths=0,latlon=True)
-    #    plt.show()
+    # Test ChampWind.polar_quiver_wind.
+    #wind = get_champ_wind('2003-4-28 ','2003-4-28 2:0:0')
+    wind = get_champ_wind('2003-10-27 ','2003-11-2')
+    plt.figure()
+    ax = plt.subplot()
+    m = wind.contourf_date_lat(ax,updown='down')
+    plt.show()
