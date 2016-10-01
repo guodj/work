@@ -115,6 +115,26 @@ def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','win
     else:
         ChampWind()
 
+def get_champ_wind_GFZ(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
+    # Get champ winds during 'bdate' and 'edate'
+    # variables is a list(tuple)
+    bdate = pd.Timestamp(bdate)
+    edate = pd.Timestamp(edate)
+    dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
+    fname = ['/data/CHAMP23/Winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
+            format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
+            for k in dates]
+    variables = list(variables)
+    variables.extend(['date'])
+    wind = [pd.read_csv(fn,parse_dates=['date'],index_col=['date'],
+                        usecols=variables,squeeze=True)
+            for fn in fname if os.path.isfile(fn)]
+    if wind:
+        wind = pd.concat(wind)
+        wind = wind[bdate:edate]
+        return ChampWind(wind)
+    else:
+        ChampWind()
 class ChampDensity(pd.DataFrame):
 
     def print_variable_name(self):
@@ -689,8 +709,8 @@ class ChampWind(ChampDensity):
         #m.scatter(0,90,50,'k',latlon=True)
         dt = self.index.min() + (self.index.max()-self.index.min())/2
         m.nightshade(dt)
-        #m.drawparallels(np.arange(-80,81,20))
-        #m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
+        m.drawparallels(np.arange(-80,81,20))
+        m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
         lat = self.lat
         lon = self.long
         # winde and windn are the cross track direction on the right side.
@@ -700,11 +720,11 @@ class ChampWind(ChampDensity):
         # only right for the npstere and spstere
         xwind = winde/abs(winde)*wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
         ywind = winde/abs(winde)*wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
-        hc = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),colors='k',zorder=2,
-                       linestyles='dashed',latlon=True)
-        plt.clabel(hc,inline=True,colors='k',fmt='%d')
+        #hc = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),colors='k',zorder=2,
+        #               linestyles='dashed',latlon=True)
+        #plt.clabel(hc,inline=True,colors='k',fmt='%d')
         hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,
-                      scale=500, scale_units='inches',zorder=3, latlon=True)
+                      scale=300, scale_units='inches',zorder=3, latlon=True)
         plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
         #m.scatter(np.array(lon),np.array(lat),
         #          s=50, c=self.index.to_julian_date(),linewidths=0, zorder=4,latlon=True)
@@ -745,9 +765,9 @@ if __name__=='__main__':
     #    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.polar_quiver_wind.
-    #wind = get_champ_wind('2003-4-28 ','2003-4-28 2:0:0')
-    wind = get_champ_wind('2003-10-27 ','2003-11-2')
+    wind = get_champ_wind('2006-7-27 2:0:0','2006-7-27 3:30:0')
+    #wind = get_champ_wind('2003-10-27 ','2003-10-27 1:30:0')
     plt.figure()
     ax = plt.subplot()
-    m = wind.contourf_date_lat(ax,updown='down')
+    wind.polar_quiver_wind(ax)
     plt.show()
