@@ -765,7 +765,7 @@ if __name__=='__main__':
     #    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.polar_quiver_wind.
-    wind = get_champ_wind('2006-7-27 2:0:0','2006-7-27 3:30:0')
+    wind = get_champ('2006-7-27 2:0:0','2006-7-27 3:30:0')
     #wind = get_champ_wind('2003-10-27 ','2003-10-27 1:30:0')
     plt.figure()
     ax = plt.subplot()
