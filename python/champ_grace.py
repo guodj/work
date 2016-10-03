@@ -67,13 +67,13 @@ def get_champ_grace_data(bdate,edate,satellite='champ',
     variables.append('date')
     # champ and grace data are in this date range
     if satellite == 'champ':
-        fname = ['/data/CHAMP23/csv/{:s}/ascii/'
+        fname = ['~/data/CHAMP/density/csv/{:s}/'
                  'Density_3deg_{:s}_{:s}.ascii'.format(
                      k.strftime('%Y'),
                      k.strftime('%y'),
                      k.strftime('%j')) for k in dates]
     elif satellite == 'grace':
-        fname = ['/data/Grace23/csv/{:s}/ascii/'
+        fname = ['~/data/Grace/csv/{:s}/ascii/'
                  'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
                      k.strftime('%Y'),
                      k.strftime('%y'),
@@ -100,7 +100,7 @@ def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','win
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
-    fname = ['/data/CHAMP23/Winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
+    fname = ['~/data/CHAMP/winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
             format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
             for k in dates]
     variables = list(variables)
@@ -113,28 +113,8 @@ def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','win
         wind = wind[bdate:edate]
         return ChampWind(wind)
     else:
-        ChampWind()
+        return ChampWind()
 
-def get_champ_wind_GFZ(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
-    # Get champ winds during 'bdate' and 'edate'
-    # variables is a list(tuple)
-    bdate = pd.Timestamp(bdate)
-    edate = pd.Timestamp(edate)
-    dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
-    fname = ['/data/CHAMP23/Winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
-            format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
-            for k in dates]
-    variables = list(variables)
-    variables.extend(['date'])
-    wind = [pd.read_csv(fn,parse_dates=['date'],index_col=['date'],
-                        usecols=variables,squeeze=True)
-            for fn in fname if os.path.isfile(fn)]
-    if wind:
-        wind = pd.concat(wind)
-        wind = wind[bdate:edate]
-        return ChampWind(wind)
-    else:
-        ChampWind()
 class ChampDensity(pd.DataFrame):
 
     def print_variable_name(self):
@@ -765,37 +745,10 @@ if __name__=='__main__':
     #    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.polar_quiver_wind.
-    #    wind = get_champ_grace_data('2006-1-1 2:0:0','2007-1-1')
-    #    #wind = get_champ_wind('2003-10-27 ','2003-10-27 1:30:0')
-    #    plt.figure()
-    #    ax = plt.subplot()
-    #    wind.polar_quiver_wind(ax)
-    #    plt.show()
+    wind = get_champ_wind('2006-1-1 2:0:0','2007-1-1')
+    #wind = get_champ_wind('2003-10-27 ','2003-10-27 1:30:0')
+    plt.figure()
+    ax = plt.subplot()
+    wind.polar_quiver_wind(ax)
+    plt.show()
     #------------------------------------------------------------
-    import time
-    fname1 = '/data/CHAMP23/csv/2006/ascii/Density_3deg_06_100.ascii'
-    start = time.time()
-    for k in range(100):
-        rho = pd.read_csv(fname1,  parse_dates=['date'], index_col=['date'])
-    end = time.time()
-    print(end-start)
-    #--------------------
-    fname2 = '/data/CHAMP23/2006/ascii/Density_3deg_06_100.ascii'
-    column_names=['year','doy','second', 'lat3','lat','long','height','LT',
-                  'Mlat','Mlong','MLT', 'rho','rho400','rho410','msis_rho',
-                  'uncertainty','data_points','points_required','drag_coefficient']
-    def parser(year,doy,seconds):
-            seconds = int(float(seconds))
-            hour = str(seconds // 3600)
-            minute = str(seconds % 3600 //60)
-            second = str(seconds % 60)
-            date = year+' '+doy+' '+ hour+' '+minute+' '+second
-            return pd.to_datetime(date,format='%y %j %H %M %S')
-
-    start = time.time()
-    for k in range(100):
-        rho = pd.read_csv(fname2, delim_whitespace=True,header=None,names=column_names,
-                skiprows=2,parse_dates={'date':[0,1,2]}, date_parser=parser,index_col=['date'])
-    end = time.time()
-    print(end-start)
-
