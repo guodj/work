@@ -96,7 +96,8 @@ def get_champ_grace_data(bdate,edate,satellite='champ',
         return ChampDensity()
 
 
-def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
+def get_champ_wind(
+        bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
     # Get champ winds during 'bdate' and 'edate'
     # variables is a list(tuple)
     global DATADIR
@@ -162,7 +163,6 @@ class ChampDensity(pd.DataFrame):
         print('Ascending LT: %4.1f, Descending LT: %4.1f'%(output[0],output[1]))
         return output
 
-
     def add_updown(self, whichlat='lat3'):
         """ Add 'isup' and 'isdown' columns to self
         Note that the function is appropriate for continuous data
@@ -175,6 +175,8 @@ class ChampDensity(pd.DataFrame):
         Note:
             The results may be inappropriate near poles.
             Some bugs may exist at the data gap.
+            -------------------
+            use a = a.add_updown(), not a.add_updown()
         """
         if not self.empty:
             lat = self[whichlat]
@@ -198,6 +200,13 @@ class ChampDensity(pd.DataFrame):
             self = self[(self.isup) | (self.isdown)]
             return ChampDensity(self)
 
+    def add_arglat(self):
+        if not 'isup' in self:
+            self = self.add_updown()
+        self['arglat'] = self.lat3
+        self.loc[self.isup,'arglat'] = (360+self.loc[self.isup,'arglat'])%360
+        self.loc[self.isdown,'arglat'] = 180-self.loc[self.isdown,'arglat']
+        return ChampDensity(self)
 
     def orbit_mean(self,lats=(-85,85),updown='up'):
         """ Get the orbit mean density during specified latitude range and
@@ -657,7 +666,8 @@ class ChampWind(ChampDensity):
                     **kwargs)
             ax.set_xlim(np.floor(btime),np.floor(etime)+1)
             ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
-            ax.set_xticklabels(pd.date_range(tmp.index[0],tmp.index[-1]+pd.Timedelta('1d')).strftime('%j'))
+            ax.set_xticklabels(
+                    pd.date_range(tmp.index[0],tmp.index[-1]+pd.Timedelta('1d')).strftime('%j'))
             ax.set_ylim(-90,90)
             ax.set_yticks(np.arange(-90,91,30))
             ax.xaxis.set_minor_locator(AutoMinorLocator(4))
@@ -680,37 +690,44 @@ class ChampWind(ChampDensity):
             return
         from mpl_toolkits.basemap import Basemap
         from apexpy import Apex
-        lat_grid = np.arange(-90,91,3)
-        lon_grid = np.arange(-180,181,5)
-        lon_grid, lat_grid = np.meshgrid(lon_grid, lat_grid)
-        gm = Apex(date=2005)
-        mlat,mlon = gm.convert(lat_grid,lon_grid,'geo','apex')
+        # Creat polar coordinates
         projection,fc = ('npstere',1) if ns=='N' else ('spstere',-1)
         m = Basemap(projection=projection,boundinglat=fc*40,lon_0=0,resolution='l')
         m.drawcoastlines(color='gray',zorder=1)
         m.fillcontinents(color='lightgray',zorder=0)
-        #m.scatter(0,90,50,'k',latlon=True)
         dt = self.index.min() + (self.index.max()-self.index.min())/2
-        m.nightshade(dt)
-        m.drawparallels(np.arange(-80,81,20))
-        m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
+        m.nightshade(dt,zorder=2)
+        #m.drawparallels(np.arange(-80,81,20))
+        #m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
+
+        # Calculate mlat and mlon
+        lat_grid = np.arange(-90,91,10)
+        lon_grid = np.arange(-180,181,10)
+        lon_grid, lat_grid = np.meshgrid(lon_grid, lat_grid)
+        gm = Apex(date=2005)
+        mlat,mlon = gm.convert(lat_grid,lon_grid,'geo','apex')
+        hc1 = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),
+                        colors='k', zorder=3, linestyles='dashed',
+                        linewidths=1, latlon=True)
+        # hc2 = m.contour(lon_grid,lat_grid,mlon,levels=np.arange(-180,181,45),
+        #                 colors='k', zorder=3, linestyles='dashed', latlon=True)
+        plt.clabel(hc1,inline=True,colors='k',fmt='%d')
+        # plt.clabel(hc2,inline=True,colors='k',fmt='%d')
+
+        # Calculate and plot x and y winds
         lat = self.lat
         lon = self.long
-        # winde and windn are the cross track direction on the right side.
         wind = self.wind
         winde1 = self.winde
-        winde = winde1/winde1.abs()*winde1*wind
+        winde = winde1*wind
         windn1 = self.windn
-        windn = winde1/winde1.abs()*windn1*wind
-        # only right for the npstere and spstere
-        xwind = (fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
-        ywind = (winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
-        hc = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),colors='k',zorder=2,
-                       linestyles='dashed',latlon=True)
-        plt.clabel(hc,inline=True,colors='k',fmt='%d')
-        hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,
+        windn = windn1*wind
+        # only appropriate for the npstere and spstere
+        xwind = fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi)
+        ywind = winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi)
+        hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,color='blue',
                       scale=300, scale_units='inches',zorder=3, latlon=True)
-        plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
+        #plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
         #m.scatter(np.array(lon),np.array(lat),
         #          s=50, c=self.index.to_julian_date(),linewidths=0, zorder=4,latlon=True)
         return m
@@ -720,19 +737,22 @@ class ChampWind(ChampDensity):
 if __name__=='__main__':
     #------------------------------------------------------------
     #    # Test satellite_position_lt_lat.
-    #    den = get_champ_grace_data('2005-1-2','2005-1-3',variables=['lat','Mlat','LT','MLT','rho400','rho'])
+    #    den = get_champ_grace_data(
+    #           '2005-1-2','2005-1-3', variables=['lat','Mlat','LT','MLT','rho400','rho'])
     #    ax = plt.subplot(polar=True)
     #    hc = den.satellite_position_lt_lat(mag=True)
     #    #----------------------------------------
     #    # Set polar(lat, LT) coordinates
     #    ax.set_rmax(30)
-    #    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    #    ax.set_rgrids(
+    #           np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
     #    ax.set_theta_zero_location('S')
     #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
     #    #----------------------------------------
     #    plt.show()
     #------------------------------------------------------------
-    #    # Check whether satellite_position_lt_lat results from ChampWind and ChampDensity are the same.
+    #    # Check whether satellite_position_lt_lat results
+    #    # from ChampWind and ChampDensity are the same.
     #    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
     #    plt.figure()
     #    ax = plt.subplot(polar=True)
@@ -750,10 +770,25 @@ if __name__=='__main__':
     #    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.polar_quiver_wind.
-    wind = get_champ_wind('2006-3-1','2006-3-1 1:30:0')
-    #wind = get_champ_wind('2003-10-27 ','2003-10-27 1:30:0')
-    plt.figure()
-    ax = plt.subplot()
-    wind.polar_quiver_wind(ax,ns='N')
+    wind = get_champ_wind('2005-11-1','2005-11-1 3:0:0')
+    wind = wind.add_arglat()
+    diffarglat = np.insert(np.diff(wind.arglat), 0, 0)
+    wind['orbitn'] = 0
+    wind.loc[diffarglat<0, 'orbitn']=1
+    wind['orbitn'] = wind['orbitn'].cumsum()
+    nm = wind.orbitn.max()+1
+    fig,ax = plt.subplots(nm,2)
+    for k0 in range(nm):
+        plt.sca(ax[k0,0])
+        tmp = ChampWind(wind[wind.orbitn==k0])
+        tmp.polar_quiver_wind(ax,ns='N')
+        plt.sca(ax[k0,1])
+        tmp.polar_quiver_wind(ax,ns='S')
+    plt.tight_layout()
     plt.show()
     #------------------------------------------------------------
+    # Test add_arglat
+    #    wind = get_champ_wind('2005-11-11','2005-12-14')
+    #    wind = wind.add_arglat()
+    #    plt.plot(wind.index,wind.arglat)
+    #    plt.show()

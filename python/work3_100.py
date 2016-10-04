@@ -26,7 +26,7 @@ def func1():
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
     fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # for IMF and AE
-    plot_omni(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'5minute')
+    plot_omni(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'1h')
     for k0 in range(2):
         plt.sca(ax1[k0])
         plt.ylim(-10,10)
@@ -100,19 +100,12 @@ def func2():
     #edate = '2010-5-29 18:0:0'
     #mdate = '2010-5-29 12:0:0'
     dench = get_champ_grace_data(bdate,edate,satellite='champ')
-    dench.add_updown()
-    dench['arglat'] = dench.lat3
-    dench.loc[dench.isdown,'arglat'] = 180-dench.loc[dench.isdown,'arglat']
-    dench.loc[dench.isup,'arglat'] = (360+dench.loc[dench.isup,'arglat'])%360
-
+    dench = dench.add_updown()
+    dench = dench.add_arglat()
     dengr = get_champ_grace_data(bdate,edate,satellite='grace')
-    dengr.add_updown()
-    dengr['arglat'] = dengr.lat3
-    dengr.loc[dengr.isdown,'arglat'] = 180-dengr.loc[dengr.isdown,'arglat']
-    dengr.loc[dengr.isup,'arglat'] = (360+dengr.loc[dengr.isup,'arglat'])%360
-
+    dengr = dengr.add_updown()
+    dengr = dengr.add_arglat()
     dengo = get_goce_data(bdate,edate)
-
     den = (dengo,dench,dengr)
 
     fig,ax = plt.subplots(3,2,sharex=True,sharey='row')
@@ -130,4 +123,4 @@ def func2():
 # END
 if __name__ == '__main__':
     plt.close('all')
-    a = func2()
+    a = func1()

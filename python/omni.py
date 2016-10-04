@@ -14,7 +14,9 @@ import numpy as np
 import os
 import matplotlib.pyplot as plt
 
+OMNIDATADIR = '/home/guod/data/omni/'
 def get_omni(bdate, edate,variables,res='1h'):
+    global OMNIDATADIR
     # Get multiple days omni data.
     # variables should be list or tuple even if only one variable.
     bdate = pd.Timestamp(bdate)
@@ -45,9 +47,9 @@ def get_omni(bdate, edate,variables,res='1h'):
                    'Kp':[99],'R':[999],'DST':[99999],'AE':[9999]}
         if res in ['1day', '1d', '1D']:
             # Use list in order to keep consistency with other resolutions
-            fname = ['/data/omni/low_res_omni/omni_01_av.dat']
+            fname = [OMNIDATADIR+'low_res_omni/omni_01_av.dat']
         if res in ['1hour', '1Hour', '1h', '1H']:
-            fname = ['/data/omni/low_res_omni/omni2_{:4d}.dat'.format(k) for k in years]
+            fname = [OMNIDATADIR+'low_res_omni/omni2_{:4d}.dat'.format(k) for k in years]
         index_clm = ['year','day','hour']
     # high resolution
     if res in ['5minute', '5minutes', '5m','1minute', '1m']:
@@ -67,17 +69,18 @@ def get_omni(bdate, edate,variables,res='1h'):
                    'AE':[99999],'AL':[99999],'AU':[99999],
                    'SYMD':[99999],'SYMH':[99999],'ASYD':[99999],'ASYH':[99999],'PC':[999.99]}
         if res in ['5minute', '5minutes', '5m']:
-            fname =['/data/omni/high_res_omni/omni_5min{:4d}.asc'.format(k) for k in years]
+            fname =[OMNIDATADIR+'high_res_omni/omni_5min{:4d}.asc'.format(k) for k in years]
             column_name.extend(['t24','t25','t26'])
         if res in ['1minute', '1m']:
-            fname =['/data/omni/high_res_omni/omni_min{:4d}.asc'.format(k) for k in years]
+            fname =[OMNIDATADIR+'high_res_omni/omni_min{:4d}.asc'.format(k) for k in years]
         index_clm = ['year','day','hour','minute']
     variables.extend(index_clm)
     parser = parser_low if fp is 'low' else parser_high
     omni_data = [
             pd.read_csv(
                     fn, delim_whitespace=True,
-                    header=None, names=column_name, usecols=variables, index_col='date', squeeze=True,
+                    header=None, names=column_name, usecols=variables,
+                    index_col='date', squeeze=True,
                     parse_dates={'date':index_clm}, date_parser=parser,
                     na_values=na_value)
             for fn in fname if os.path.isfile(fn)]
@@ -89,7 +92,7 @@ def get_omni(bdate, edate,variables,res='1h'):
         return pd.DataFrame()
 
 #----------------------------------------
-def plot_omni(ax, bdate, edate, variables,res='1hour', **kwargs):
+def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):
     # ax should be created with plt.subplots() outside the function
     # variables should be a list or tuple even if only one variable
     # kwargs are parameters for plot

@@ -9,7 +9,7 @@
 # containe:
 #       get_goce_data: Get density from GOCE satellites
 #
-#       class: GoceDensity,
+#       class: GoceData,
 #           print_variable_name: Print the column names
 #
 #           print_dates: Print the data dates
@@ -37,7 +37,9 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
+GOCEDATADIR = '/home/guod/data/GOCE/'
 def get_goce_data(bdate,edate):
+    global GOCEDATADIR
     """ get goce data during specified dates.
 
     Args:
@@ -51,7 +53,7 @@ def get_goce_data(bdate,edate):
     dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
     yearmonth = np.unique(dates.strftime('%Y-%m'))
     yearmonth =pd.to_datetime(yearmonth)
-    fname = ['/data/GOCE/data/goce_denswind_v1_3_{:s}-{:s}.txt'.format(
+    fname = [GOCEDATADIR+'/goce_denswind_v1_3_{:s}-{:s}.txt'.format(
         k.strftime('%Y'),
         k.strftime('%m')) for k in yearmonth]
     goce_data = [pd.read_csv(
@@ -67,12 +69,12 @@ def get_goce_data(bdate,edate):
             dates.to_julian_date()+0.5)
         goce_data = goce_data.loc[fp]
         goce_data = goce_data[bdate:edate]
-        return GoceDensity(goce_data)
+        return GoceData(goce_data)
     else:
-        return GoceDensity()
+        return GoceData()
 
 
-class GoceDensity(pd.DataFrame):
+class GoceData(pd.DataFrame):
 
     def print_variable_name(self):
         # Print column names in self
@@ -135,7 +137,7 @@ class GoceDensity(pd.DataFrame):
             self['isup'] = (dlat > 0)
             self['isdown'] = (dlat < 0)
             self = self[(self.isup) | (self.isdown)]
-            return GoceDensity(self)
+            return GoceData(self)
 
 
     def orbit_mean(self,lats=(-85,85),updown='up'):
@@ -153,7 +155,8 @@ class GoceDensity(pd.DataFrame):
             longitudeand LT may be wrong if lats are high latitudes
         """
         self = self.add_updown()
-        tmp = self[self.isup] if updown =='up' else self[self.isdown]  # ascending or descending orbit?
+        # ascending or descending orbit?
+        tmp = self[self.isup] if updown =='up' else self[self.isdown]
         tmp = tmp[(tmp.lat>=lats[0]) & (tmp.lat<=lats[1])]  #  which latitudes?
         tmp['float_time'] = (
                 tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
@@ -259,25 +262,93 @@ class GoceDensity(pd.DataFrame):
             ax.set_ylabel('Argument of Latitude', fontsize=14)
             return hc
 
+    def polar_quiver_wind(self, ax, ns='N'):
+        # Wind vector in lat-long coordinates.
+        # For different map projections, the arithmetics to calculate xywind
+        # are different
+        if self.empty:
+            return
+        from mpl_toolkits.basemap import Basemap
+        from apexpy import Apex
+        # Creat polar coordinates
+        projection,fc = ('npstere',1) if ns=='N' else ('spstere',-1)
+        m = Basemap(projection=projection,boundinglat=fc*40,lon_0=0,resolution='l')
+        m.drawcoastlines(color='gray',zorder=1)
+        m.fillcontinents(color='lightgray',zorder=0)
+        dt = self.index.min() + (self.index.max()-self.index.min())/2
+        m.nightshade(dt,zorder=2)
+        #m.drawparallels(np.arange(-80,81,20))
+        #m.drawmeridians(np.arange(-180,181,60),labels=[1,1,1,1])
+
+        # Calculate mlat and mlon
+        lat_grid = np.arange(-90,91,10)
+        lon_grid = np.arange(-180,181,10)
+        lon_grid, lat_grid = np.meshgrid(lon_grid, lat_grid)
+        gm = Apex(date=2005)
+        mlat,mlon = gm.convert(lat_grid,lon_grid,'geo','apex')
+        hc1 = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),
+                        colors='k', zorder=3, linestyles='dashed',
+                        linewidths=1, latlon=True)
+        # hc2 = m.contour(lon_grid,lat_grid,mlon,levels=np.arange(-180,181,45),
+        #                 colors='k', zorder=3, linestyles='dashed', latlon=True)
+        plt.clabel(hc1,inline=True,colors='k',fmt='%d')
+        # plt.clabel(hc2,inline=True,colors='k',fmt='%d')
+
+        # Calculate and plot x and y winds
+        lat = self.lat
+        lon = self.long
+        winde = self.cr_wnd_e
+        windn = self.cr_wnd_n
+        # only appropriate for the npstere and spstere
+        xwind = fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi)
+        ywind = winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi)
+        hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,color='blue',
+                      scale=800, scale_units='inches',zorder=3, latlon=True)
+        #plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
+        #m.scatter(np.array(lon),np.array(lat),
+        #          s=50, c=self.index.to_julian_date(),linewidths=0, zorder=4,latlon=True)
+        return m
 
 #END
 #--------------------------------------------------------------------------------
 #TEST
 if __name__ == '__main__':
-    den = get_goce_data('2010-4-1','2010-4-30')
-    den.print_variable_name()
-    den.print_dates()
-    ax = plt.subplot(polar=True)
-    hc = den.satellite_position_lt_lat(mag=False)
-    #--------------------------------------------------------------------------------
-    # Set polar(lat, LT) coordinates
-    ax.set_rmax(30)
-    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-    ax.set_theta_zero_location('S')
-    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-    #--------------------------------------------------------------------------------
-    ax = plt.subplot()
-    den.contourf_date_lat(ax,whichcolumn='cr_wnd_e')
-    plt.tight_layout()
-    plt.show()
-
+    #    # Test get_goce_data, print_dates, print_variable_name, satellite_position_lt_lat
+    #    den = get_goce_data('2010-4-1','2010-4-30')
+    #    den.print_variable_name()
+    #    den.print_dates()
+    #    ax = plt.subplot(polar=True)
+    #    hc = den.satellite_position_lt_lat(mag=False)
+    #    # Set polar(lat, LT) coordinates
+    #    ax.set_rmax(30)
+    #    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    #    ax.set_theta_zero_location('S')
+    #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #    # Test contourf_date_lat
+    #    ax = plt.subplot()
+    #    den.contourf_date_lat(ax,whichcolumn='cr_wnd_n')
+    #    plt.tight_layout()
+    #    plt.show()
+    #    # Test polar_quiver_wind()
+    #    ax = plt.subplot()
+    #    wind = get_goce_data('2010-4-1','2010-4-1 1:30:0')
+    #    wind.polar_quiver_wind(ax, ns='S')
+    #    plt.show()
+    #--------------------------------------------------
+    #    # case study
+    #    wind = get_goce_data('2010-5-29 6:00:00','2010-5-29 18:0:0')
+    #    diffarglat = np.insert(np.diff(wind.arglat), 0, 0)
+    #    wind['orbitn'] = 0
+    #    wind.loc[diffarglat<0, 'orbitn']=1
+    #    wind['orbitn'] = wind['orbitn'].cumsum()
+    #    nm = wind.orbitn.max()+1
+    #    fig,ax = plt.subplots(2,nm)
+    #    for k0 in range(nm):
+    #        plt.sca(ax[0, k0])
+    #        tmp = GoceData(wind[wind.orbitn==k0])
+    #        tmp.polar_quiver_wind(ax,ns='N')
+    #        plt.sca(ax[1, k0])
+    #        tmp.polar_quiver_wind(ax,ns='S')
+    #    plt.tight_layout()
+    #    plt.show()
+    a=10
