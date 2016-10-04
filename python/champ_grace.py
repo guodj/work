@@ -45,6 +45,7 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
+DATADIR = '/home/guod/data/'
 def get_champ_grace_data(bdate,edate,satellite='champ',
                          variables=('lat3','lat','long','height','LT',
                                     'Mlat','Mlong','MLT',
@@ -59,6 +60,7 @@ def get_champ_grace_data(bdate,edate,satellite='champ',
         are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
         msis_rho, ...
     """
+    global DATADIR
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
@@ -67,13 +69,13 @@ def get_champ_grace_data(bdate,edate,satellite='champ',
     variables.append('date')
     # champ and grace data are in this date range
     if satellite == 'champ':
-        fname = ['~/data/CHAMP/density/csv/{:s}/'
+        fname = [DATADIR+'CHAMP/density/csv/{:s}/'
                  'Density_3deg_{:s}_{:s}.ascii'.format(
                      k.strftime('%Y'),
                      k.strftime('%y'),
                      k.strftime('%j')) for k in dates]
     elif satellite == 'grace':
-        fname = ['~/data/Grace/csv/{:s}/ascii/'
+        fname = [DATADIR+'Grace/csv/{:s}/ascii/'
                  'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
                      k.strftime('%Y'),
                      k.strftime('%y'),
@@ -97,10 +99,11 @@ def get_champ_grace_data(bdate,edate,satellite='champ',
 def get_champ_wind(bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
     # Get champ winds during 'bdate' and 'edate'
     # variables is a list(tuple)
+    global DATADIR
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
-    fname = ['~/data/CHAMP/winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
+    fname = [DATADIR+'CHAMP/winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
             format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
             for k in dates]
     variables = list(variables)
@@ -694,15 +697,17 @@ class ChampWind(ChampDensity):
         lat = self.lat
         lon = self.long
         # winde and windn are the cross track direction on the right side.
-        winde = self.winde
-        windn = self.windn
         wind = self.wind
+        winde1 = self.winde
+        winde = winde1/winde1.abs()*winde1*wind
+        windn1 = self.windn
+        windn = winde1/winde1.abs()*windn1*wind
         # only right for the npstere and spstere
-        xwind = winde/abs(winde)*wind*(fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
-        ywind = winde/abs(winde)*wind*(winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
-        #hc = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),colors='k',zorder=2,
-        #               linestyles='dashed',latlon=True)
-        #plt.clabel(hc,inline=True,colors='k',fmt='%d')
+        xwind = (fc*winde*np.cos(lon/180*np.pi)-windn*np.sin(lon/180*np.pi))
+        ywind = (winde*np.sin(lon/180*np.pi)+fc*windn*np.cos(lon/180*np.pi))
+        hc = m.contour(lon_grid,lat_grid,mlat,levels=np.arange(-90,91,10),colors='k',zorder=2,
+                       linestyles='dashed',latlon=True)
+        plt.clabel(hc,inline=True,colors='k',fmt='%d')
         hq = m.quiver(np.array(lon),np.array(lat),xwind,ywind,
                       scale=300, scale_units='inches',zorder=3, latlon=True)
         plt.quiverkey(hq,1.05,1.05,100,'100 m/s',coordinates='axes',labelpos='E')
@@ -745,10 +750,10 @@ if __name__=='__main__':
     #    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.polar_quiver_wind.
-    wind = get_champ_wind('2006-1-1 2:0:0','2007-1-1')
+    wind = get_champ_wind('2006-3-1','2006-3-1 1:30:0')
     #wind = get_champ_wind('2003-10-27 ','2003-10-27 1:30:0')
     plt.figure()
     ax = plt.subplot()
-    wind.polar_quiver_wind(ax)
+    wind.polar_quiver_wind(ax,ns='N')
     plt.show()
     #------------------------------------------------------------
