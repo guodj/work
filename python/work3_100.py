@@ -1,7 +1,7 @@
 #--------------------------------------------------------------------------------
 # For the 3rd project
 #
-# By Dongjie, USTC/UM, on Tue Sep 20 02:39:02 CST 2016
+# By Dongjie, USTC/UM, start on Tue Sep 20 02:39:02 CST 2016
 #--------------------------------------------------------------------------------
 
 #Global imports
@@ -11,7 +11,62 @@ import matplotlib.pyplot as plt
 from champ_grace import *
 from goce import *
 from omni import *
+import myfunctions as mf
 
+DATADIR = '/home/guod/data/'
+def polar_contourf_champ_grace(self, ax, whichcolumn='rho', ns='N', **kwargs):
+    """ A contourf of multiple-day density versus time and latitude.
+
+    Args:
+        ax: axis handle
+        whichcolumn: string, 'rho400', 'rho', 'rho410'.
+        ns: northern or hemisphere
+        **kwargs: for contourf
+    Return:
+        hc: handle of the contourf plot
+    ----------------------------------------
+    x axis: days from '2000-1-1'
+    """
+    from matplotlib.ticker import AutoMinorLocator
+    if not self.empty:
+        self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
+        btime = self['epochday'].min()
+        etime = self['epochday'].max()
+
+        self = self.add_updown()
+        tmp = self[self.isup] if updown is 'up' else self[self.isdown]
+
+        ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
+        lat0 = np.arange(-90,91,3)
+        ut, lat = np.meshgrid(ut0, lat0)
+        rho = griddata((tmp['epochday'], tmp.lat),
+                       tmp[whichcolumn], (ut, lat),
+                       method='linear', rescale=True)
+        for index, k in enumerate(ut0):
+            fp = abs(tmp['epochday']-k)<0.5/24
+            if not fp.any():
+                rho[:,index]=np.nan
+
+        hc = ax.contourf(ut, lat, rho, 10, **kwargs)
+
+        ax.set_xlim(np.floor(btime),np.floor(etime)+1)
+        ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
+        ax.set_xticklabels(pd.date_range(
+                tmp.index[0],
+                tmp.index[-1]+pd.Timedelta('1d')).
+                strftime('%j'))
+        ax.set_ylim(-90,90)
+        ax.set_yticks(np.arange(-90,91,30))
+        ax.xaxis.set_minor_locator(AutoMinorLocator(4))
+        ax.yaxis.set_minor_locator(AutoMinorLocator(3))
+        ax.tick_params(which='both', width=1.2)
+        ax.tick_params(which='major', length=7)
+        ax.tick_params(which='minor', length=4)
+        ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
+        ax.set_xlabel('Day of {:d}'
+                      .format(tmp.index[0].year),fontsize=14)
+        ax.set_ylabel('Latitude', fontsize=14)
+        return hc#, rho
 def func1():
     #----------------------------------------
     # Find interesting cases in 2009 (11,12) and 2010
@@ -26,7 +81,7 @@ def func1():
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
     fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # for IMF and AE
-    plot_omni(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'1h')
+    plot_omni(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'5m')
     for k0 in range(2):
         plt.sca(ax1[k0])
         plt.ylim(-10,10)
@@ -48,8 +103,8 @@ def func1():
         denchamp = get_champ_grace_data('2009-11-1','2010-12-31',satellite='champ')
         dengrace = get_champ_grace_data('2009-11-1','2010-12-31',satellite='grace')
         dengoce = get_goce_data('2009-11-1','2010-12-31')
-        pd.to_pickle((denchamp, dengrace, dengoce),'/data/tmp/w3_00.dat')
-    denchamp, dengrace, dengoce = pd.read_pickle('/data/tmp/w3_00.dat')
+        pd.to_pickle((denchamp, dengrace, dengoce),DATADIR+'tmp/w3_00.dat')
+    denchamp, dengrace, dengoce = pd.read_pickle(DATADIR+'tmp/w3_00.dat')
     for date in pd.date_range('2009-11-1','2010-12-31'):
         ax1[-1].set_xlim(date,date+pd.Timedelta('2D'))
         ax1[-1].set_xlabel('Hours of date: '+
@@ -62,7 +117,7 @@ def func1():
         # for satellites
         denchamptmp = ChampDensity(denchamp[date:date+pd.Timedelta('2D')])
         dengracetmp = ChampDensity(dengrace[date:date+pd.Timedelta('2D')])
-        dengocetmp = GoceDensity(dengoce[date:date+pd.Timedelta('2D')])
+        dengocetmp = GoceData(dengoce[date:date+pd.Timedelta('2D')])
         fig2 = plt.figure(figsize=(7,6.5))
         ax2 = plt.subplot(polar=True)
         hc = denchamptmp.satellite_position_lt_lat(ns='N')
@@ -87,40 +142,49 @@ def func1():
         plt.show()
         input()
         plt.close(fig2)
-
+    return
 
 def func2():
     #----------------------------------------
     # Check one of the interesting cases: 2010-5-29
     #----------------------------------------
-    bdate = '2009-11-12 21:0:0'
-    edate = '2009-11-13 12:0:0'
-    mdate = '2009-11-13 3:0:0'
-    #bdate = '2010-5-29 6:0:0'
-    #edate = '2010-5-29 18:0:0'
-    #mdate = '2010-5-29 12:0:0'
+    bdate = '2010-5-29'
+    edate = '2010-5-29 21:0:0'
+    mdate = '2010-5-29 12:0:0'
     dench = get_champ_grace_data(bdate,edate,satellite='champ')
-    dench = dench.add_updown()
-    dench = dench.add_arglat()
+    dench['marglat'] = mf.lat2arglat(dench.lat)
     dengr = get_champ_grace_data(bdate,edate,satellite='grace')
-    dengr = dengr.add_updown()
-    dengr = dengr.add_arglat()
+    dengr['marglat'] = mf.lat2arglat(dengr.lat)
     dengo = get_goce_data(bdate,edate)
+    dengo['marglat'] = mf.lat2arglat(dengo.lat)
     den = (dengo,dench,dengr)
-
-    fig,ax = plt.subplots(3,2,sharex=True,sharey='row')
-    yl = ((0,3e-11),(0,1e-11),(0,2e-13))
-    for k00,k0 in enumerate(den):
-        plt.sca(ax[k00,0])
-        plt.scatter(den[k00][:mdate].arglat,den[k00][:mdate].rho,20,linewidths=0,alpha=0.8)
-        plt.sca(ax[k00,1])
-        plt.scatter(den[k00][mdate:].arglat,den[k00][mdate:].rho,20,linewidths=0,alpha=0.8)
-        plt.ylim(yl[k00])
-        plt.xlim(0,360)
-        plt.xticks(np.arange(0,360,90))
+    # Calculate orbit number
+    for k0 in range(3):
+        diffarglat = np.insert(np.diff(den[k0].marglat), 0, 0)
+        den[k0]['orbitn'] = 0
+        den[k0].loc[diffarglat<0, 'orbitn']=1
+        den[k0]['orbitn'] = den[k0]['orbitn'].cumsum()
+    fig,ax = plt.subplots(3, 1, sharex=True, figsize=(5.4, 7))
+    yl = ((-1.5e-11, 1.5e-11), (-1e-11, 1e-11), (-3e-13, 3e-13))
+    boundinglat = 50
+    for k0 in range(3):
+        plt.sca(ax[k0])
+        tmp = den[k0]
+        mn = tmp.orbitn.max()
+        for k1 in range(mn+1):
+            tmp1 = tmp[tmp.orbitn == k1]
+            tmp1 = tmp1[tmp1.lat>boundinglat] # Mid and high latitudes.
+            # Below uses tmp1.index.min(), because thermosphere needs
+            # time to respond to forcings.
+            c = 'r' if tmp1.index.min()<pd.Timestamp(mdate) else 'b'
+            plt.plot(tmp1.marglat, tmp1.rho-tmp1.rho.mean(),
+                    linestyle='--', color=c, alpha=0.5)
+        plt.ylim(yl[k0])
+        plt.xlim(boundinglat,180-boundinglat)
     plt.show()
-    return
+    return den
+
 # END
 if __name__ == '__main__':
     plt.close('all')
-    a = func1()
+    a = func2()

@@ -46,10 +46,11 @@ import os
 from scipy.interpolate import griddata
 
 DATADIR = '/home/guod/data/'
-def get_champ_grace_data(bdate,edate,satellite='champ',
-                         variables=('lat3','lat','long','height','LT',
-                                    'Mlat','Mlong','MLT',
-                                    'rho','rho400','rho410','msis_rho')):
+def get_champ_grace_density(
+        bdate,edate,satellite='champ', variables=(
+            'lat3', 'lat', 'long', 'height', 'LT',
+            'Mlat', 'Mlong', 'MLT',
+            'rho', 'rho400', 'rho410', 'msis_rho')):
     """ get champ or grace density data during specified dates.
 
     Args:
@@ -97,7 +98,7 @@ def get_champ_grace_data(bdate,edate,satellite='champ',
 
 
 def get_champ_wind(
-        bdate,edate,variables=('lat3','lat','long','height','LT','wind','winde','windn')):
+        bdate, edate, variables=('lat3','lat','long','height','LT','wind','winde','windn')):
     # Get champ winds during 'bdate' and 'edate'
     # variables is a list(tuple)
     global DATADIR
@@ -175,8 +176,10 @@ class ChampDensity(pd.DataFrame):
         Note:
             The results may be inappropriate near poles.
             Some bugs may exist at the data gap.
-            -------------------
+            --------------------
             use a = a.add_updown(), not a.add_updown()
+            --------------------
+            Use updown() in myfunctions.py, that may be better
         """
         if not self.empty:
             lat = self[whichlat]
@@ -201,9 +204,12 @@ class ChampDensity(pd.DataFrame):
             return ChampDensity(self)
 
     def add_arglat(self):
+        # This algorithm is wrong. But let it be.
+        # Argument of latitude is the angle from the ascending node
+        # to the satellite position along the orbital path.
         if not 'isup' in self:
             self = self.add_updown()
-        self['arglat'] = self.lat3
+        self['arglat'] = self.lat3.copy()
         self.loc[self.isup,'arglat'] = (360+self.loc[self.isup,'arglat'])%360
         self.loc[self.isdown,'arglat'] = 180-self.loc[self.isdown,'arglat']
         return ChampDensity(self)

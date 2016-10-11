@@ -39,7 +39,6 @@ from scipy.interpolate import griddata
 
 GOCEDATADIR = '/home/guod/data/GOCE/'
 def get_goce_data(bdate,edate):
-    global GOCEDATADIR
     """ get goce data during specified dates.
 
     Args:
@@ -48,6 +47,7 @@ def get_goce_data(bdate,edate):
         dataframe of goce density indexed with datetime. the columns
         are: alt, long, lat, LT, arglat, rho, cr_wnd_e, cr_wnd_n, cr_wnd_u
     """
+    global GOCEDATADIR
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
@@ -226,7 +226,7 @@ class GoceData(pd.DataFrame):
         import matplotlib.dates as mdates
         from matplotlib.ticker import AutoMinorLocator
         if not self.empty:
-            self['epochday'] = (self.index-self.index.min())/pd.Timedelta('1D')
+            self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
             btime = self['epochday'].min()
             etime = self['epochday'].max()
 
@@ -248,7 +248,7 @@ class GoceData(pd.DataFrame):
             ax.set_xticklabels(pd.date_range(
                     self.index[0],
                     self.index[-1]+pd.Timedelta('1d')).
-                    strftime('%m-%d'),rotation=45)
+                    strftime('%j'))
             ax.set_ylim(0,360)
             ax.set_yticks(np.arange(0,361,90))
             ax.xaxis.set_minor_locator(AutoMinorLocator(4))
@@ -257,15 +257,14 @@ class GoceData(pd.DataFrame):
             ax.tick_params(which='major', length=7)
             ax.tick_params(which='minor', length=4)
             ax.tick_params(which='both',direction='out')
-            ax.set_xlabel('Date of Year: {:d}'
+            ax.set_xlabel('Day of Year: {:d}'
                           .format(self.index[0].year),fontsize=14)
             ax.set_ylabel('Argument of Latitude', fontsize=14)
             return hc
 
     def polar_quiver_wind(self, ax, ns='N'):
         # Wind vector in lat-long coordinates.
-        # For different map projections, the arithmetics to calculate xywind
-        # are different
+        # For different map projections, xy winds are different
         if self.empty:
             return
         from mpl_toolkits.basemap import Basemap
