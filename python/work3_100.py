@@ -148,41 +148,54 @@ def func2():
     #----------------------------------------
     # Check one of the interesting cases: 2010-5-29
     #----------------------------------------
-    bdate = '2010-5-29'
-    edate = '2010-5-29 21:0:0'
-    mdate = '2010-5-29 12:0:0'
-    dench = get_champ_grace_data(bdate,edate,satellite='champ')
-    dench['marglat'] = mf.lat2arglat(dench.lat)
-    dengr = get_champ_grace_data(bdate,edate,satellite='grace')
-    dengr['marglat'] = mf.lat2arglat(dengr.lat)
+    bdate = '2010-5-29 03:00:00'
+    mdate = '2010-5-29 12:00:00'
+    edate = '2010-5-29 21:00:00'
+    dench = get_champ_grace_density(bdate,edate,satellite='champ')
+    dench['arglat'] = mf.lat2arglat(dench.lat)
+    mdench = dench.groupby([np.floor(dench.arglat/3)*3, dench.index<mdate])['rho'].mean()
+    dengr = get_champ_grace_density(bdate,edate,satellite='grace')
+    dengr['arglat'] = mf.lat2arglat(dengr.lat)
+    mdengr = dengr.groupby([np.floor(dengr.arglat/3)*3, dengr.index<mdate])['rho'].mean()
     dengo = get_goce_data(bdate,edate)
-    dengo['marglat'] = mf.lat2arglat(dengo.lat)
-    den = (dengo,dench,dengr)
-    # Calculate orbit number
+    dengo['arglat'] = mf.lat2arglat(dengo.lat)
+    mdengo = dengo.groupby([np.floor(dengo.arglat/3)*3, dengo.index<mdate])['rho'].mean()
+    den = (dengo, dench, dengr)
+    mden = (mdengo, mdench, mdengr)
+    fig, ax = plt.subplots(3,2,sharex='col', sharey='row', figsize=(7.4,7.9))
+    blat = 60
+    xl = ((blat, 180-blat), (180+blat, 360-blat))
+    yl = ((0, 50), (0, 30), (0, 1))
+    ylb = ('GOCE, $10^{-12} kg/m^{-3}$',
+           'CHAMP, $10^{-12} kg/m^{-3}$',
+           'GRACE, $10^{-12} kg/m^{-3}$')
+    tl = ('North', 'South')
     for k0 in range(3):
-        diffarglat = np.insert(np.diff(den[k0].marglat), 0, 0)
-        den[k0]['orbitn'] = 0
-        den[k0].loc[diffarglat<0, 'orbitn']=1
-        den[k0]['orbitn'] = den[k0]['orbitn'].cumsum()
-    fig,ax = plt.subplots(3, 1, sharex=True, figsize=(5.4, 7))
-    yl = ((-1.5e-11, 1.5e-11), (-1e-11, 1e-11), (-3e-13, 3e-13))
-    boundinglat = 50
-    for k0 in range(3):
-        plt.sca(ax[k0])
-        tmp = den[k0]
-        mn = tmp.orbitn.max()
-        for k1 in range(mn+1):
-            tmp1 = tmp[tmp.orbitn == k1]
-            tmp1 = tmp1[tmp1.lat>boundinglat] # Mid and high latitudes.
-            # Below uses tmp1.index.min(), because thermosphere needs
-            # time to respond to forcings.
-            c = 'r' if tmp1.index.min()<pd.Timestamp(mdate) else 'b'
-            plt.plot(tmp1.marglat, tmp1.rho-tmp1.rho.mean(),
-                    linestyle='--', color=c, alpha=0.5)
-        plt.ylim(yl[k0])
-        plt.xlim(boundinglat,180-boundinglat)
+        for k1 in range(2):
+            plt.sca(ax[k0,k1])
+            tmp1, tmp2 = den[k0], mden[k0]
+            plt.plot(tmp1[bdate:mdate].arglat, tmp1[bdate:mdate].rho/1e-12,
+                     'o', color='lightcoral', alpha=1, markersize=3)
+            plt.plot(tmp1[mdate:edate].arglat, tmp1[mdate:edate].rho/1e-12,
+                     'o', color='lightblue', alpha=1, markersize=3)
+            line1, = plt.plot(tmp2[:,False].index, tmp2[:,False]/1e-12, 'b', label='After')
+            line2, = plt.plot(tmp2[:,True].index, tmp2[:,True]/1e-12, 'r', label='Before')
+            plt.xticks(np.arange(0,361,10))
+            plt.xlim(xl[k1])
+            plt.ylim(yl[k0])
+            plt.gca().set_frame_on(True)
+            if k0 == 0:
+                plt.title(tl[k1])
+            if k1 == 0:
+                plt.ylabel(ylb[k0])
+            if (k0 == 2) & (k1 == 1):
+                plt.legend(handles=(line2, line1))
+            if k0 == 2:
+                plt.xlabel('Argument of Latitude')
+            plt.grid('on')
+    plt.tight_layout()
     plt.show()
-    return den
+    return mdench
 
 # END
 if __name__ == '__main__':

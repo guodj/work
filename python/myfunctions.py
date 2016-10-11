@@ -33,7 +33,7 @@ def updown(lat):
 
 def lat2arglat(lat):
     #------------------------------------------------------------
-    # convert latitude to argument of latitude to make plot easier
+    # convert latitude to argument of latitude
     #
     # 'lat' is satellite continuous latitudes in the form of
     # `pd.Series` with `pd.DatetimeIndex` as index.
@@ -41,13 +41,15 @@ def lat2arglat(lat):
     # Note: only right for polar near circular orbit
     #------------------------------------------------------------
     arglat = np.array(lat.copy()*np.nan)
-    latarr = np.array(lat)
+    latarr = np.array(lat.copy())
     hours = (lat.index - pd.Timestamp('2000-1-1'))/pd.Timedelta('1hour')
     # Find ascending nodes
-    pnlat = np.where(lat>=0,1,-1)
+    pnlat = np.where(latarr>=0,1,-1)
     dpnlat = np.diff(pnlat)
     anode, = np.where(dpnlat == 2)
-    anode = np.append(np.insert(anode, 0, -1), pnlat.size-1)
+    # exclude data gap
+    dt = hours[anode+1] - hours[anode]
+    anode = anode[dt<0.1] #  0.1 hours
     if anode.size < 2:
         return None
     bnode = anode[:-1]+1
@@ -55,9 +57,9 @@ def lat2arglat(lat):
     for kb, ke in zip(bnode, enode):
         if hours[ke] - hours[kb] > 2:
             continue
-        arglat[kb:ke] = (360 + latarr[ke] - latarr[kb]) / \
+        arglat[kb:ke+1] = (360 + latarr[ke] - latarr[kb]) / \
                 (hours[ke]-hours[kb]) * \
-                (hours[kb:ke] - hours[kb]) + latarr[kb]
+                (hours[kb:ke+1] - hours[kb]) + latarr[kb]
     return arglat
 
 def great_circle_distance_earth(lat1,lon1,lat2,lon2):
@@ -82,10 +84,10 @@ if __name__ == '__main__':
     import matplotlib.pyplot as plt
     import champ_grace as cg
     import goce as gc
-    a = gc.get_goce_data('2010-2-11','2010-2-14 3:0:0')
+    # Test arglat
+    a = gc.get_goce_data('2009-6-30','2009-12-10 3:0:0')
     arglat = lat2arglat(a.lat)
-    plt.plot(a.index, a.arglat, 'bo')
-    plt.plot(a.index, arglat, 'ro')
+    plt.plot(a.index, a.arglat-arglat, 'bo')
     #----------------------------------------
     #    arglat = np.arange(0,360,1)
     #    lat = arglat2lat(arglat)

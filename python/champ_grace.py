@@ -56,10 +56,9 @@ def get_champ_grace_density(
     Args:
         bdate, edate: string or pd.Timestamp
         satellite: 'champ' or 'grace'
+        variables: subset of default.
     Returns:
-        dataframe of champ or grace density indexed with datetime. the columns
-        are:lat3, lat, long, height, LT, Mlat, Mlong, MLT, rho, rho400,rho410,
-        msis_rho, ...
+        ChampDensity of champ or grace density indexed with datetime.
     """
     global DATADIR
     bdate = pd.Timestamp(bdate)
