@@ -7,7 +7,7 @@
 # Also include functions to read data from file
 #
 # Contain:
-#       get_champ_grace_data: Get density from CHAMP or GRACE satellites
+#       get_champ_grace_density: Get density from CHAMP or GRACE satellites
 #
 #       class: ChampDensity,
 #           print_variable_name: Print the column names
@@ -45,7 +45,8 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
-DATADIR = '/home/guod/data/'
+#DATADIR = '/home/guod/data/'
+DATADIR = '/data/'
 def get_champ_grace_density(
         bdate,edate,satellite='champ', variables=(
             'lat3', 'lat', 'long', 'height', 'LT',

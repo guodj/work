@@ -13,60 +13,8 @@ from goce import *
 from omni import *
 import myfunctions as mf
 
-DATADIR = '/home/guod/data/'
-def polar_contourf_champ_grace(self, ax, whichcolumn='rho', ns='N', **kwargs):
-    """ A contourf of multiple-day density versus time and latitude.
-
-    Args:
-        ax: axis handle
-        whichcolumn: string, 'rho400', 'rho', 'rho410'.
-        ns: northern or hemisphere
-        **kwargs: for contourf
-    Return:
-        hc: handle of the contourf plot
-    ----------------------------------------
-    x axis: days from '2000-1-1'
-    """
-    from matplotlib.ticker import AutoMinorLocator
-    if not self.empty:
-        self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
-        btime = self['epochday'].min()
-        etime = self['epochday'].max()
-
-        self = self.add_updown()
-        tmp = self[self.isup] if updown is 'up' else self[self.isdown]
-
-        ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
-        lat0 = np.arange(-90,91,3)
-        ut, lat = np.meshgrid(ut0, lat0)
-        rho = griddata((tmp['epochday'], tmp.lat),
-                       tmp[whichcolumn], (ut, lat),
-                       method='linear', rescale=True)
-        for index, k in enumerate(ut0):
-            fp = abs(tmp['epochday']-k)<0.5/24
-            if not fp.any():
-                rho[:,index]=np.nan
-
-        hc = ax.contourf(ut, lat, rho, 10, **kwargs)
-
-        ax.set_xlim(np.floor(btime),np.floor(etime)+1)
-        ax.set_xticks(np.arange(np.floor(btime),np.floor(etime)+2))
-        ax.set_xticklabels(pd.date_range(
-                tmp.index[0],
-                tmp.index[-1]+pd.Timedelta('1d')).
-                strftime('%j'))
-        ax.set_ylim(-90,90)
-        ax.set_yticks(np.arange(-90,91,30))
-        ax.xaxis.set_minor_locator(AutoMinorLocator(4))
-        ax.yaxis.set_minor_locator(AutoMinorLocator(3))
-        ax.tick_params(which='both', width=1.2)
-        ax.tick_params(which='major', length=7)
-        ax.tick_params(which='minor', length=4)
-        ax.set_title('LT: {:.1f}'.format(tmp['LT'].median()))
-        ax.set_xlabel('Day of {:d}'
-                      .format(tmp.index[0].year),fontsize=14)
-        ax.set_ylabel('Latitude', fontsize=14)
-        return hc#, rho
+# DATADIR = '/home/guod/data/'
+DATADIR = '/data/'
 def func1():
     #----------------------------------------
     # Find interesting cases in 2009 (11,12) and 2010
@@ -148,9 +96,38 @@ def func2():
     #----------------------------------------
     # Check one of the interesting cases: 2010-5-29
     #----------------------------------------
-    bdate = '2010-5-29 03:00:00'
-    mdate = '2010-5-29 12:00:00'
-    edate = '2010-5-29 21:00:00'
+    # Case 1
+    #    bdate = '2010-5-29 03:00:00'
+    #    mdate = '2010-5-29 12:00:00'
+    #    edate = '2010-5-29 21:00:00'
+    # Case 2
+    #    bdate = '2009-11-14 06:00:00'
+    #    mdate = '2009-11-14 11:00:00'
+    #    edate = '2009-11-14 18:00:00'
+    # Case 3
+    #    bdate = '2009-12-12 15:00:00'
+    #    mdate = '2009-12-12 20:00:00'
+    #    edate = '2009-12-13 06:00:00'
+    # Case 4
+    #    bdate = '2010-01-02 02:00:00'
+    #    mdate = '2010-01-02 07:00:00'
+    #    edate = '2010-01-02 12:00:00'
+    # Case 5
+    #    bdate = '2010-01-03 03:00:00'
+    #    mdate = '2010-01-03 12:00:00'
+    #    edate = '2010-01-03 16:00:00'
+    # Case 6
+    #    bdate = '2010-01-05 09:00:00'
+    #    mdate = '2010-01-05 18:00:00'
+    #    edate = '2010-01-06 03:00:00'
+    # Case 7
+    #    bdate = '2010-04-12 09:00:00'
+    #    mdate = '2010-04-12 18:00:00'
+    #    edate = '2010-04-13 00:00:00'
+    # Case 8
+    bdate = '2010-05-18 21:00:00'
+    mdate = '2010-05-19 06:00:00'
+    edate = '2010-05-19 23:00:00'
     dench = get_champ_grace_density(bdate,edate,satellite='champ')
     dench['arglat'] = mf.lat2arglat(dench.lat)
     mdench = dench.groupby([np.floor(dench.arglat/3)*3, dench.index<mdate])['rho'].mean()
@@ -165,7 +142,7 @@ def func2():
     fig, ax = plt.subplots(3,2,sharex='col', sharey='row', figsize=(7.4,7.9))
     blat = 60
     xl = ((blat, 180-blat), (180+blat, 360-blat))
-    yl = ((0, 50), (0, 30), (0, 1))
+    yl = ((5, 35), (0, 20), (0, 0.3))
     ylb = ('GOCE, $10^{-12} kg/m^{-3}$',
            'CHAMP, $10^{-12} kg/m^{-3}$',
            'GRACE, $10^{-12} kg/m^{-3}$')

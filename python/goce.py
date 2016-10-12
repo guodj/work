@@ -37,7 +37,8 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
-GOCEDATADIR = '/home/guod/data/GOCE/'
+#GOCEDATADIR = '/home/guod/data/GOCE/'
+GOCEDATADIR = '/data/GOCE/data/'
 def get_goce_data(bdate,edate):
     """ get goce data during specified dates.
 
