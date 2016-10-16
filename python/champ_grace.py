@@ -41,8 +41,8 @@ import matplotlib.pyplot as plt
 import os
 from scipy.interpolate import griddata
 
-#DATADIR = '/home/guod/data/'
-DATADIR = '/data/'
+DATADIR = '/home/guod/data/'
+#DATADIR = '/data/'
 def get_champ_grace_density(
         bdate,edate,satellite='champ', variables=(
             'lat3', 'lat', 'long', 'height', 'LT',

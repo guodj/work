@@ -15,7 +15,7 @@ from champ_grace import *
 from omni import *
 
 
-
+DATADIR = '/home/guod/data/'
 def get_sblist():
     """ Get solar wind sector polarity reversing dates
 
@@ -24,7 +24,8 @@ def get_sblist():
     Returns:
         A dataframe indexed by dates with columns sbtype, lday, rday and season.
     """
-    sb_fname = '/data/SBlist/SBlist.txt'
+    global DATADIR
+    sb_fname = DATADIR + 'SBlist/SBlist.txt'
     sblist = pd.read_csv(
         sb_fname,
         sep='\s+',
@@ -41,24 +42,27 @@ def get_sblist():
 
 def f1():
     # imf and indices variation during epoch days of sblist
+    global DATADIR
     sblist = get_sblist()
     sblist = sblist['2002-1-1':'2010-12-31']
     data = [pd.DataFrame(),pd.DataFrame()]
-    if False:  # data preparation
+    nn = [0, 0]
+    if True:  # data preparation
         for k00, k0 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k0]
             for k1 in sbtmp.index:
-                print(k1,k0)
                 bdate = k1-pd.Timedelta('3D')
                 edate = k1+pd.Timedelta('3D')
                 data_tmp = get_omni(bdate,edate,['Bx','Bym','Bzm','AE'],res='1h')
-                #print(data_tmp)
-                data_tmp['epochday'] = (data_tmp.index - k1)/pd.Timedelta('1D')
-                data[k00] = data[k00].append(data_tmp)
-        pd.to_pickle(data,'/data/tmp/w2_07.dat')
+                if not data_tmp.empty:
+                    nn[k00] = nn[k00]+1
+                    print(nn, k1, k0)
+                    data_tmp['epochday'] = (data_tmp.index - k1)/pd.Timedelta('1D')
+                    data[k00] = data[k00].append(data_tmp)
+        pd.to_pickle(data,DATADIR + 'tmp/w2_07.dat')
     # END of data preperation
 
-    data = pd.read_pickle('/data/tmp/w2_07.dat')
+    data = pd.read_pickle(DATADIR + 'tmp/w2_07.dat')
     datagroup = [
             data[k].groupby([data[k].index.month,np.floor(data[k].epochday*24)])
             for k in [0,1]]
@@ -106,6 +110,7 @@ def f2():
     """Near the geodetic poles, the longitude and LT are not important;
     so it is a good location for the research of UT variation
     """
+    global DATADIR
     def percentile(n):
         def percentile_(x):
             return np.percentile(x,n)
@@ -116,13 +121,13 @@ def f2():
     sblist = sblist['2001-1-1':'2010-12-31']
     density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]] # [[ATN,ATS],[TAN,TAS]]
     sbn = [0,0]
-    if False:
+    if True:
         for k00,k in enumerate(['away-toward','toward-away']):
             sbtmp = sblist[sblist.sbtype==k]
             for k1 in sbtmp.index:
                 #for k2 in ['champ','grace']:
                 for k2 in ['grace']:  # only consider the grace
-                    rho = get_champ_grace_data(k1-pd.Timedelta('3D'), k1+pd.Timedelta('3D'), k2)
+                    rho = get_champ_grace_density(k1-pd.Timedelta('3D'), k1+pd.Timedelta('3D'), k2)
                     if rho.empty:
                         print('no data around',k1)
                         continue
@@ -138,7 +143,7 @@ def f2():
                         continue
                     """
                     #rho1 = rho[rho.lat3>=87]  # north pole
-                    rho1 = rho[rho.lat3==90]  # only consider the grace
+                    rho1 = rho[rho.lat3==90].copy() # only consider the grace
                     #Make sure that there is data in each day
                     if len(np.unique(rho1.index.dayofyear))!=6:
                         print('there is data gap around', k1)
@@ -150,7 +155,7 @@ def f2():
                             rho1[['epochday','MLT','Mlat','rho','rrho','rho400','rrho400']])
 
                     #rho2 = rho[rho.lat3<=-87]  # south pole
-                    rho2 = rho[rho.lat3==-90]  # only consider the grace
+                    rho2 = rho[rho.lat3==-90].copy()  # only consider the grace
                     if len(np.unique(rho2.index.dayofyear))!=6:
                         print('there is data gap around', k1)
                         continue
@@ -161,11 +166,11 @@ def f2():
                             rho2[['epochday','MLT','Mlat','rho','rrho','rho400','rrho400']])
                     sbn[k00] = sbn[k00]+1
                     print(sbn)
-        pd.to_pickle(density, '/data/tmp/w2_13.dat')
+        pd.to_pickle(density, DATADIR + 'tmp/w2_13.dat')
     # END of data preperation
 
     # Pole density variation as a function of epoch time at different seasons and sbtype.
-    density = pd.read_pickle('/data/tmp/w2_13.dat')
+    density = pd.read_pickle(DATADIR + 'tmp/w2_13.dat')
     fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
     fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
           ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
@@ -187,7 +192,7 @@ def f2():
                     fp = (density1.index.month>=5) & (density1.index.month<=7)
                 if k2 is 'ds':
                     fp = (density1.index.month>=11) | (density1.index.month<=1)
-                density2 = density1[fp]
+                density2 = density1[fp].copy()
                 nn[k22, k00*2+k11] = len(np.unique(
                         density2[(density2.epochday>=0) & (density2.epochday<1)].index.date))
                 density2['epochbin'] = density2.epochday*24//1.5*1.5+0.75

@@ -314,4 +314,4 @@ def f7():
 
 if __name__ == '__main__':
     plt.close('all')
-    a=f7()
+    a=f3()
