@@ -121,7 +121,7 @@ def f2():
     sblist = sblist['2001-1-1':'2010-12-31']
     density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]] # [[ATN,ATS],[TAN,TAS]]
     sbn = [0,0]
-    if True:
+    if False:
         for k00,k in enumerate(['away-toward','toward-away']):
             sbtmp = sblist[sblist.sbtype==k]
             for k1 in sbtmp.index:
@@ -174,6 +174,7 @@ def f2():
     fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
     fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
           ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
+    fl = ['(a)', '(b)', '(c)', '(d)']
     # case number in each season catagary
     nn = np.zeros([4,4])*np.nan
     for k00,k in enumerate(['away-toward','toward-away']):
@@ -221,10 +222,11 @@ def f2():
                 if k22==3:
                     plt.xlabel('Epoch Time (day)',fontsize=12)
                 plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
-                #plt.text(0,1.05,fl[k22][k00*2+k11], transform=plt.gca().transAxes)
-    plt.subplots_adjust(left=0.1,wspace=0.04)
-    plt.text(0.21,0.94,'Away - Toward',transform=plt.gcf().transFigure)
-    plt.text(0.61,0.94,'Toward - Away',transform=plt.gcf().transFigure)
+                if k22==0:
+                    plt.text(0,1.07,fl[k00*2+k11], transform=plt.gca().transAxes)
+    plt.subplots_adjust(left=0.11,wspace=0.04, hspace=0.12)
+    plt.text(0.21,0.95,'Away - Toward',transform=plt.gcf().transFigure)
+    plt.text(0.61,0.95,'Toward - Away',transform=plt.gcf().transFigure)
     plt.text(0.91,0.8,'Feb - Apr',transform=plt.gcf().transFigure,fontsize=11)
     plt.text(0.91,0.59,'Aug - Oct',transform=plt.gcf().transFigure,fontsize=11)
     plt.text(0.91,0.38,'May - Jul',transform=plt.gcf().transFigure,fontsize=11)
@@ -235,13 +237,16 @@ def f2():
     fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(6.35,7.02))
     density1 = density[0][1] # for away-toward and south pole
     fl = ['(a)','(b)']
+    nn = [0,0]
     for k00,k0 in enumerate(['Solar maximum','Solar minimum']):
         plt.sca(ax[k00])
         if k0 is 'Solar maximum':
-            density2 = density1['2002-1-1':'2004-12-31']
+            density2 = density1['2002-1-1':'2005-12-31']
         if k0 is 'Solar minimum':
-            density2 = density1['2008-1-1':'2010-12-31']
+            density2 = density1['2006-1-1':'2010-12-31']
         density2 = density2[(density2.index.month>=8) & (density2.index.month<=10)]
+        nn[k00] = len(np.unique(
+                density2[(density2.epochday>=0) & (density2.epochday<1)].index.date))
         density2['epochbin'] = density2.epochday*24//1.5*1.5+0.75
         density2 = density2.groupby('epochbin')['rrho400'].agg(
                 [np.median, percentile(25),percentile(75)])
@@ -263,12 +268,13 @@ def f2():
         if k00==1:
             plt.xlabel('Epoch Time (day)',fontsize=14)
         if k00==0:
-            a = plt.title('Year: 02 - 04')
+            a = plt.title('Year: 02 - 05')
         if k00==1:
-            a = plt.title('Year: 08 - 10')
+            a = plt.title('Year: 06 - 10')
         a.set_position((0.5,1.06))
         plt.text(0.1,0.8,'S',transform=plt.gca().transAxes)
         plt.text(0,1.05,fl[k00], transform=plt.gca().transAxes)
+    print(nn)
     plt.subplots_adjust(left=0.15,wspace=0.04,hspace=0.24,bottom=0.1)
 
     # Magnetic local time changes at two poles as a function of UT
@@ -316,7 +322,7 @@ def f2():
 #--------------------------------------------------------------------------------
 if __name__=='__main__':
     plt.close('all')
-    a = f1()
+    a = f2()
     plt.show()
     import gc
     gc.collect()
