@@ -27,7 +27,7 @@
 #           contourf_date_lat: Contourf of rho, rho400... as a function of date and
 #                   lat
 # Change:
-#        Include wind handling, on Sat Sep 24 02:18:03 CST 2016
+#        Include wind class CHAMP, on Sat Sep 24 02:18:03 CST 2016
 #            1, get_champ_wind, Get Champ wind
 #            2, class ChampWind, Subclass of ChampDensity in order to use its function.
 #
