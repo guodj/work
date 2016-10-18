@@ -15,8 +15,6 @@
 #           LT_median: Calculate the median local time of the ascending and
 #               descending orbits.
 #
-#           add_updown: Add 2 columns that show the ascending and decending orbits
-#
 #           orbit_mean: Calculate the orbit mean longitude, height, local time,
 #                   rho, rho400.
 #
@@ -125,7 +123,7 @@ class ChampDensity(pd.DataFrame):
         if self.empty:
             return output
         isup, isdown = mf.updown(self.lat)
-        fp = (self.lat3>=-30) &(self.lat3<=30)
+        fp = np.array((self.lat3>=-30) &(self.lat3<=30))
         rho, isup, isdown = self[fp].copy(), isup[fp], isdown[fp]
         if rho.empty:
             return output

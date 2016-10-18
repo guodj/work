@@ -2,11 +2,9 @@
 #
 # By Dongjie, USTC, on Mon Sep 19 21:54:35 CST 2016
 #
-# Class for the GOCE densities.
-# Also include a function to read data from file
+# Class for the GOCE densities and winds
 #
 # containe:
-#       get_goce_data: Get density from GOCE satellites
 #
 #       class: GoceData,
 #           print_variable_name: Print the column names
@@ -15,8 +13,6 @@
 #
 #           LT_median: Calculate the median local time of the ascending and
 #               descending orbits.
-#
-#           add_updown: Add 2 columns that show the ascending and decending orbits
 #
 #           orbit_mean: Calculate the orbit mean longitude, altitude, local time,
 #                   density.
@@ -27,54 +23,58 @@
 #           contourf_date_lat: Contourf of rho or winds as a function of
 #                   date and latitude
 #
-#       ..........
 #--------------------------------------------------------------------------------
 # Global imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
 import os
+import myfunctions as mf
 from scipy.interpolate import griddata
 
-#GOCEDATADIR = '/home/guod/data/GOCE/'
-GOCEDATADIR = '/data/GOCE/data/'
-def get_goce_data(bdate,edate):
-    """ get goce data during specified dates.
-
-    Args:
-        bdate, edate: string or pd.Timestamp
-    Returns:
-        dataframe of goce density indexed with datetime. the columns
-        are: alt, long, lat, LT, arglat, rho, cr_wnd_e, cr_wnd_n, cr_wnd_u
-    """
-    global GOCEDATADIR
-    bdate = pd.Timestamp(bdate)
-    edate = pd.Timestamp(edate)
-    dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
-    yearmonth = np.unique(dates.strftime('%Y-%m'))
-    yearmonth =pd.to_datetime(yearmonth)
-    fname = [GOCEDATADIR+'/goce_denswind_v1_3_{:s}-{:s}.txt'.format(
-        k.strftime('%Y'),
-        k.strftime('%m')) for k in yearmonth]
-    goce_data = [pd.read_csv(
-        fn, delim_whitespace=True, header=None, comment='#',
-        names=['date', 'time', 'Time_system',
-               'alt', 'long', 'lat', 'LT', 'arglat', 'rho',
-               'cr_wnd_e', 'cr_wnd_n', 'cr_wnd_u'],
-        parse_dates={'datetime':[0,1]},index_col=0)
-        for fn in fname if os.path.isfile(fn)]
-    if goce_data:
-        goce_data = pd.concat(goce_data)
-        fp = np.floor(goce_data.index.to_julian_date()+0.5).isin(
-            dates.to_julian_date()+0.5)
-        goce_data = goce_data.loc[fp]
-        goce_data = goce_data[bdate:edate]
-        return GoceData(goce_data)
-    else:
-        return GoceData()
-
-
+GOCEDATADIR = '/home/guod/data/GOCE/'
+#GOCEDATADIR = '/data/GOCE/data/'
 class GoceData(pd.DataFrame):
+    """Class to open, manipulate and visualize the GOCE data files
+    """
+
+    def __init__(self, btime, etime, *args, **kwargs):
+        super(GoceData, self).__init__(*args, **kwargs)
+        self._read(btime, etime)
+
+    def _read(self, bdate,edate):
+        """ get goce data during specified dates.
+
+        Args:
+            bdate, edate: string or pd.Timestamp
+        Returns:
+            dataframe of goce density indexed with datetime. the columns
+            are: alt, long, lat, LT, arglat, rho, cr_wnd_e, cr_wnd_n, cr_wnd_u
+        """
+        global GOCEDATADIR
+        bdate = pd.Timestamp(bdate)
+        edate = pd.Timestamp(edate)
+        dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
+        yearmonth = np.unique(dates.strftime('%Y-%m'))
+        yearmonth =pd.to_datetime(yearmonth)
+        fname = [GOCEDATADIR+'/goce_denswind_v1_3_{:s}-{:s}.txt'.format(
+            k.strftime('%Y'),
+            k.strftime('%m')) for k in yearmonth]
+        goce_data = [pd.read_csv(
+            fn, delim_whitespace=True, header=None, comment='#',
+            names=['date', 'time', 'Time_system',
+                   'alt', 'long', 'lat', 'LT', 'arglat', 'rho',
+                   'cr_wnd_e', 'cr_wnd_n', 'cr_wnd_u'],
+            parse_dates={'datetime':[0,1]},index_col=0)
+            for fn in fname if os.path.isfile(fn)]
+        if goce_data:
+            goce_data = pd.concat(goce_data)
+            fp = np.floor(goce_data.index.to_julian_date()+0.5).isin(
+                dates.to_julian_date()+0.5)
+            goce_data = goce_data.loc[fp]
+            goce_data = goce_data[bdate:edate]
+            for k0 in goce_data:
+                self[k0] = goce_data[k0]
 
     def print_variable_name(self):
         # Print column names in self
@@ -103,11 +103,12 @@ class GoceData(pd.DataFrame):
         output = [np.nan,np.nan]
         if self.empty:
             return output
-        rho = self.add_updown()
-        rho = rho[(rho.lat>=-30) &(rho.lat<=30)]
+        isup, isdown = mf.updown(self.lat)
+        fp = np.array((self.lat>=-30) &(self.lat<=30))
+        rho, isup, isdown = self[fp].copy(), isup[fp], isdown[fp]
         if rho.empty:
             return output
-        grouped = rho.groupby(rho.isup)['LT']
+        grouped = rho.groupby(isup)['LT']
         for name, group in grouped:
             k0 = 0 if name is True else 1
             group1 = group
@@ -117,27 +118,6 @@ class GoceData(pd.DataFrame):
             output[k0] = output[k0]%24
         print('Ascending LT: %4.1f, Descending LT: %4.1f'%(output[0],output[1]))
         return output
-
-
-    def add_updown(self):
-        """ Add 'isup' and 'isdown' columns to self
-        Note that the function is appropriate for continuous data
-
-        Returns:
-            self added with columns 'isup' and 'isdown'
-
-        Note:
-            The results may be inappropriate near poles.
-            Some bugs may exist at the data gap.
-        """
-        if not self.empty:
-            lat = self.lat
-            dlat = lat.diff()
-            dlat.iloc[0] = dlat.iloc[1]
-            self['isup'] = (dlat > 0)
-            self['isdown'] = (dlat < 0)
-            self = self[(self.isup) | (self.isdown)]
-            return GoceData(self)
 
 
     def orbit_mean(self,lats=(-85,85),updown='up'):
@@ -154,9 +134,9 @@ class GoceData(pd.DataFrame):
         Note:
             longitudeand LT may be wrong if lats are high latitudes
         """
-        self = self.add_updown()
+        isup, isdown = mf.updown(self.lat)
         # ascending or descending orbit?
-        tmp = self[self.isup] if updown =='up' else self[self.isdown]
+        tmp = self[isup] if updown =='up' else self[isdown]
         tmp = tmp[(tmp.lat>=lats[0]) & (tmp.lat<=lats[1])]  #  which latitudes?
         tmp['float_time'] = (
                 tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
@@ -312,29 +292,34 @@ class GoceData(pd.DataFrame):
 #--------------------------------------------------------------------------------
 #TEST
 if __name__ == '__main__':
-    #    # Test get_goce_data, print_dates, print_variable_name, satellite_position_lt_lat
-    #    den = get_goce_data('2010-4-1','2010-4-30')
-    #    den.print_variable_name()
-    #    den.print_dates()
-    #    ax = plt.subplot(polar=True)
-    #    hc = den.satellite_position_lt_lat(mag=False)
-    #    # Set polar(lat, LT) coordinates
-    #    ax.set_rmax(30)
-    #    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-    #    ax.set_theta_zero_location('S')
-    #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-    #    # Test contourf_date_lat
-    #    ax = plt.subplot()
-    #    den.contourf_date_lat(ax,whichcolumn='cr_wnd_n')
-    #    plt.tight_layout()
-    #    plt.show()
-    #    # Test polar_quiver_wind()
-    #    ax = plt.subplot()
-    #    wind = get_goce_data('2010-4-1','2010-4-1 1:30:0')
-    #    wind.polar_quiver_wind(ax, ns='S')
-    #    plt.show()
+    # Test get_goce_data, print_dates, print_variable_name, satellite_position_lt_lat
+    den = GoceData('2010-4-1','2010-4-3')
+    den.print_variable_name()
+    den.print_dates()
+    print(den.orbit_mean())
+    print(den.LT_median())
+    plt.figure()
+    ax = plt.subplot(polar=True)
+    hc = den.satellite_position_lt_lat(mag=False)
+    # Set polar(lat, LT) coordinates
+    ax.set_rmax(30)
+    ax.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    ax.set_theta_zero_location('S')
+    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    # Test contourf_date_lat
+    plt.figure()
+    ax = plt.subplot()
+    den.contourf_date_lat(ax,whichcolumn='cr_wnd_n')
+    plt.tight_layout()
+    plt.show()
+    # Test polar_quiver_wind()
+    plt.figure()
+    ax = plt.subplot()
+    wind = GoceData('2010-4-1','2010-4-1 1:30:0')
+    wind.polar_quiver_wind(ax, ns='S')
+    plt.show()
     #--------------------------------------------------
-    #    # case study
+    # case study
     #    wind = get_goce_data('2010-5-29 6:00:00','2010-5-29 18:0:0')
     #    diffarglat = np.insert(np.diff(wind.arglat), 0, 0)
     #    wind['orbitn'] = 0
