@@ -9,12 +9,15 @@ import numpy as np
 import pandas as pd
 
 def updown(lat):
-    #------------------------------------------------------------
-    # Find ascending and descending orbits.
-    # 'lat' is satellite continuous latitudes in the form of
-    # `pd.Series` with `pd.DatetimeIndex` as index.
-    # Return np.ndarray with data type bool
-    #------------------------------------------------------------
+    '''
+    Find ascending and descending orbits.
+    'lat' is satellite continuous latitudes in the form of
+    'pd.Series' with 'pd.DatetimeIndex' as index.
+    Return np.ndarray with data type bool
+    ----------------------------------------
+    1, Data gaps are taken into consideration
+    2, Inappropriate near poles, but this matters little.
+    '''
     dlat = np.diff(lat)
     dlat = np.insert(dlat,0,dlat[0])
     # Set dlat at data gap as the next value.
@@ -32,14 +35,14 @@ def updown(lat):
     return (isup, isdown)
 
 def lat2arglat(lat):
-    #------------------------------------------------------------
-    # convert latitude to argument of latitude
-    #
-    # 'lat' is satellite continuous latitudes in the form of
-    # `pd.Series` with `pd.DatetimeIndex` as index.
-    #
-    # Note: only right for polar near circular orbit
-    #------------------------------------------------------------
+    '''
+    convert latitude to argument of latitude
+
+    'lat' is satellite continuous latitudes in the form of
+    'pd.Series' with 'pd.DatetimeIndex' as index.
+
+    Note: only right for polar near circular orbit
+    '''
     arglat = np.array(lat.copy()*np.nan)
     latarr = np.array(lat.copy())
     hours = (lat.index - pd.Timestamp('2000-1-1'))/pd.Timedelta('1hour')
@@ -63,14 +66,14 @@ def lat2arglat(lat):
     return arglat
 
 def great_circle_distance_earth(lat1,lon1,lat2,lon2):
-    #------------------------------------------------------------
-    # Calculate great circle distance: the shortest distance of
-    # two points in the Earth surface.
-    #   lat1: source latitudes
-    #   lon1: source longitudes
-    #   lat2: destination latitudes
-    #   lon2: destination longitudes
-    #------------------------------------------------------------
+    '''
+    Calculate great circle distance: the shortest distance of
+    two points in the Earth surface.
+      lat1: source latitudes
+      lon1: source longitudes
+      lat2: destination latitudes
+      lon2: destination longitudes
+    '''
     EARTHRADIUS = 6371.009 #  Unit: km
     lat1, lon1 = lat1/180*np.pi, lon1/180*np.pi
     lat2, lon2 = lat2/180*np.pi, lon2/180*np.pi

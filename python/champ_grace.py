@@ -6,7 +6,6 @@
 # Also include functions to read data from file
 #
 # Contain:
-#       get_champ_grace_density: Get density from CHAMP or GRACE satellites
 #
 #       class: ChampDensity,
 #           print_variable_name: Print the column names
@@ -27,96 +26,76 @@
 #           contourf_date_lat: Contourf of rho, rho400... as a function of date and
 #                   lat
 # Change:
-#        Include wind class CHAMP, on Sat Sep 24 02:18:03 CST 2016
-#            1, get_champ_wind, Get Champ wind
-#            2, class ChampWind, Subclass of ChampDensity in order to use its function.
+#        Include ChampWind class, on Sat Sep 24 02:18:03 CST 2016
+#        Use __init__, remove get_champ_grace_density, get_champ_wind
 #
-#       ..........
 #--------------------------------------------------------------------------------
 
 # Global imports
 import numpy as np
 import pandas as pd
 import matplotlib.pyplot as plt
+import myfunctions as mf
 import os
-from scipy.interpolate import griddata
 
 DATADIR = '/home/guod/data/'
 #DATADIR = '/data/'
-def get_champ_grace_density(
-        bdate,edate,satellite='champ', variables=(
-            'lat3', 'lat', 'long', 'height', 'LT',
-            'Mlat', 'Mlong', 'MLT',
-            'rho', 'rho400', 'rho410', 'msis_rho')):
-    """ get champ or grace density data during specified dates.
-
-    Args:
-        bdate, edate: string or pd.Timestamp
-        satellite: 'champ' or 'grace'
-        variables: subset of default.
-    Returns:
-        ChampDensity of champ or grace density indexed with datetime.
-    """
-    global DATADIR
-    bdate = pd.Timestamp(bdate)
-    edate = pd.Timestamp(edate)
-    dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
-    dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
-    variables = list(variables)
-    variables.append('date')
-    # champ and grace data are in this date range
-    if satellite == 'champ':
-        fname = [DATADIR+'CHAMP/density/csv/{:s}/'
-                 'Density_3deg_{:s}_{:s}.ascii'.format(
-                     k.strftime('%Y'),
-                     k.strftime('%y'),
-                     k.strftime('%j')) for k in dates]
-    elif satellite == 'grace':
-        fname = [DATADIR+'Grace/csv/{:s}/ascii/'
-                 'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
-                     k.strftime('%Y'),
-                     k.strftime('%y'),
-                     k.strftime('%j')) for k in dates]
-    rho = [pd.read_csv(
-        fn,
-        usecols = variables,
-        parse_dates=['date'],
-        index_col=['date']) for fn in fname if os.path.isfile(fn)]
-    if rho:
-        rho = pd.concat(rho)
-        # Exclude duplicate points
-        # pd.DataFrame.drop_duplicates() has something wrong
-        rho = rho.groupby(rho.index).first()
-        rho = rho[bdate:edate]
-        return ChampDensity(rho)
-    else:
-        return ChampDensity()
-
-
-def get_champ_wind(
-        bdate, edate, variables=('lat3','lat','long','height','LT','wind','winde','windn')):
-    # Get champ winds during 'bdate' and 'edate'
-    # variables is a list(tuple)
-    global DATADIR
-    bdate = pd.Timestamp(bdate)
-    edate = pd.Timestamp(edate)
-    dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
-    fname = [DATADIR+'CHAMP/winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
-            format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
-            for k in dates]
-    variables = list(variables)
-    variables.extend(['date'])
-    wind = [pd.read_csv(fn,parse_dates=['date'],index_col=['date'],
-                        usecols=variables,squeeze=True)
-            for fn in fname if os.path.isfile(fn)]
-    if wind:
-        wind = pd.concat(wind)
-        wind = wind[bdate:edate]
-        return ChampWind(wind)
-    else:
-        return ChampWind()
-
 class ChampDensity(pd.DataFrame):
+    """Class to open, manipulate and visualize the CHAMP or/and GRACE
+    wind files.
+    """
+
+    def __init__(self, btime, etime, satellite='champ', variables=-1, *args, **kwargs):
+        super(ChampDensity, self).__init__(*args, **kwargs)
+        self._read(btime, etime, satellite, variables)
+
+    def _read(self, bdate, edate, satellite, variables):
+        """ get champ or grace density data during specified period.
+
+        Args:
+            bdate, edate: string or pd.Timestamp
+            satellite: 'champ' or 'grace'
+            variables: subset of default.
+        Returns:
+            ChampDensity of champ or grace density indexed with datetime.
+        """
+        global DATADIR
+        bdate = pd.Timestamp(bdate)
+        edate = pd.Timestamp(edate)
+        dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
+        dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+        if variables == -1:
+            variables = ['lat3', 'lat', 'long', 'height', 'LT',
+                         'Mlat', 'Mlong', 'MLT',
+                         'rho', 'rho400', 'rho410', 'msis_rho']
+        variables = list(variables)
+        variables.append('date')
+        # champ and grace data are in this date range
+        if satellite == 'champ':
+            fname = [DATADIR+'CHAMP/density/csv/{:s}/'
+                     'Density_3deg_{:s}_{:s}.ascii'.format(
+                         k.strftime('%Y'),
+                         k.strftime('%y'),
+                         k.strftime('%j')) for k in dates]
+        elif satellite == 'grace':
+            fname = [DATADIR+'Grace/csv/{:s}/ascii/'
+                     'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
+                         k.strftime('%Y'),
+                         k.strftime('%y'),
+                         k.strftime('%j')) for k in dates]
+        rho = [pd.read_csv(
+            fn,
+            usecols = variables,
+            parse_dates=['date'],
+            index_col=['date']) for fn in fname if os.path.isfile(fn)]
+        if rho:
+            rho = pd.concat(rho)
+            # Exclude duplicate points
+            # pd.DataFrame.drop_duplicates() has something wrong
+            rho = rho.groupby(rho.index).first()
+            rho = rho[bdate:edate]
+            for k0 in rho:
+                self[k0] = rho[k0]
 
     def print_variable_name(self):
         # Print column names in self
@@ -145,11 +124,12 @@ class ChampDensity(pd.DataFrame):
         output = [np.nan,np.nan]
         if self.empty:
             return output
-        rho = self.add_updown()
-        rho = rho[(rho.lat3>=-30) &(rho.lat3<=30)]
+        isup, isdown = mf.updown(self.lat)
+        fp = (self.lat3>=-30) &(self.lat3<=30)
+        rho, isup, isdown = self[fp].copy(), isup[fp], isdown[fp]
         if rho.empty:
             return output
-        grouped = rho.groupby(rho.isup)['LT']
+        grouped = rho.groupby(isup)['LT']
         for name, group in grouped:
             k0 = 0 if name is True else 1
             group1 = group
@@ -159,45 +139,6 @@ class ChampDensity(pd.DataFrame):
             output[k0] = output[k0]%24
         print('Ascending LT: %4.1f, Descending LT: %4.1f'%(output[0],output[1]))
         return output
-
-    def add_updown(self, whichlat='lat3'):
-        """ Add 'isup' and 'isdown' columns to self
-        Note that the function is appropriate for continuous data
-
-        Args:
-            whichlat: data column name used to seperate up and down orbits
-        Returns:
-            self added with columns 'isup' and 'isdown'
-
-        Note:
-            The results may be inappropriate near poles.
-            Some bugs may exist at the data gap.
-            --------------------
-            use a = a.add_updown(), not a.add_updown()
-            --------------------
-            Use updown() in myfunctions.py, that may be better
-        """
-        if not self.empty:
-            lat = self[whichlat]
-            dlat = lat.diff()
-            dlat.iloc[0] = dlat.iloc[1]
-            if whichlat=='lat3':
-                fp = (np.abs(dlat)!=3) & (np.abs(dlat)!=0)
-                fpid = np.argwhere(fp).reshape(-1)[:-1]
-                dlat[fpid] = dlat[fpid+1]
-            self['isup'] = (dlat > 0)
-            self['isdown'] = (dlat < 0)
-            if whichlat=='lat3':
-                fp1 = self.lat3>=87
-                fp2 = dlat==0
-                fp = fp1 & fp2
-                self.loc[fp,'isdown'] = True
-                fp1 = self.lat3<=-87
-                fp2 = dlat==0
-                fp = fp1 & fp2
-                self.loc[fp,'isup'] = True
-            self = self[(self.isup) | (self.isdown)]
-            return ChampDensity(self)
 
     def orbit_mean(self,lats=(-85,85),updown='up'):
         """ Get the orbit mean density during specified latitude range and
@@ -213,8 +154,8 @@ class ChampDensity(pd.DataFrame):
         Note:
             longitudeand LT may be wrong if lats are high latitudes
         """
-        self = self.add_updown()
-        tmp = self[self.isup] if updown =='up' else self[~self.isup]  # ascending or descending orbit?
+        isup, isdown = mf.updown(self.lat)
+        tmp = self[isup] if updown =='up' else self[isdown]  # ascending or descending orbit?
         tmp = tmp[(tmp.lat3>=lats[0]) & (tmp.lat3<=lats[1])]  #  which latitudes?
         tmp['float_time'] = (
                 tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
@@ -279,13 +220,14 @@ class ChampDensity(pd.DataFrame):
         x axis: days from '2000-1-1'
         """
         from matplotlib.ticker import AutoMinorLocator
+        from scipy.interpolate import griddata
         if not self.empty:
             self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
             btime = self['epochday'].min()
             etime = self['epochday'].max()
 
-            self = self.add_updown()
-            tmp = self[self.isup] if updown is 'up' else self[self.isdown]
+            isup, isdown = mf.updown(self.lat)
+            tmp = self[isup] if updown is 'up' else self[isdown]
 
             ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.1/24, 0.5/24)
             lat0 = np.arange(-90,91,3)
@@ -321,6 +263,36 @@ class ChampDensity(pd.DataFrame):
 
 
 class ChampWind(ChampDensity):
+    """Class to open, manipulate and visualize the CHAMP
+    wind files.
+    """
+    def __init__(self, btime, etime, variables=-1, *args, **kwargs):
+        super(ChampDensity, self).__init__(*args, **kwargs)
+        self._read(btime, etime, variables)
+
+    def _read(self, bdate, edate, variables):
+        # Get champ winds during 'bdate' and 'edate'
+        # variables is a list(tuple)
+        global DATADIR
+        bdate = pd.Timestamp(bdate)
+        edate = pd.Timestamp(edate)
+        dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
+        fname = [DATADIR+'CHAMP/winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
+                format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
+                for k in dates]
+        if variables==-1:
+            variables = ['lat3','lat','long','height','LT','wind','winde','windn']
+        variables = list(variables)
+        variables.extend(['date'])
+        wind = [pd.read_csv(fn,parse_dates=['date'],index_col=['date'],
+                            usecols=variables,squeeze=True)
+                for fn in fname if os.path.isfile(fn)]
+        if wind:
+            wind = pd.concat(wind)
+            wind = wind[bdate:edate]
+            for k0 in wind:
+                self[k0] = wind[k0]
+
     def satellite_position_lt_lat(self, mag=False, ns='N'):
         """ Show the (M)lt and (M)lat positions of the satellite in a polar
         coordinate.
@@ -367,14 +339,15 @@ class ChampWind(ChampDensity):
         Note: x axis is days from '2000-1-1'
         """
         from matplotlib.ticker import AutoMinorLocator
+        from scipy.interpolate import griddata
         if not self.empty:
             #self['epochday'] = (self.index-self.index.min())/pd.Timedelta('1D')
             self['epochday'] = (self.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
             btime = self['epochday'].min()
             etime = self['epochday'].max()
 
-            self = self.add_updown()
-            tmp = self[self.isup] if updown is 'up' else self[self.isdown]
+            isup, isdown = mf.updown(self.lat)
+            tmp = self[isup] if updown is 'up' else self[isdown]
 
             ut0 = np.arange(np.floor(btime), np.floor(etime)+1+0.5/24, 0.5/24)
             lat0 = np.arange(-90,91,3)
@@ -461,9 +434,9 @@ class ChampWind(ChampDensity):
 # for test
 if __name__=='__main__':
     #------------------------------------------------------------
-    #    # Test satellite_position_lt_lat.
-    #    den = get_champ_grace_data(
-    #           '2005-1-2','2005-1-3', variables=['lat','Mlat','LT','MLT','rho400','rho'])
+    # Test satellite_position_lt_lat.
+    #    den = ChampDensity(
+    #           '2015-1-2','2015-1-10', variables=['lat','Mlat','LT','MLT','rho400','rho'])
     #    ax = plt.subplot(polar=True)
     #    hc = den.satellite_position_lt_lat(mag=True)
     #    #----------------------------------------
@@ -476,44 +449,45 @@ if __name__=='__main__':
     #    #----------------------------------------
     #    plt.show()
     #------------------------------------------------------------
-    #    # Check whether satellite_position_lt_lat results
-    #    # from ChampWind and ChampDensity are the same.
-    #    wind = get_champ_wind('2005-1-1 12:00:00','2005-1-10 13:00:00')
+    # Check whether satellite_position_lt_lat results
+    # from ChampWind and ChampDensity are the same.
+    #    wind = ChampWind('2006-1-1 12:00:00','2006-1-2 13:00:00')
     #    plt.figure()
     #    ax = plt.subplot(polar=True)
     #    wind.satellite_position_lt_lat(mag=True)
-    #    density = get_champ_grace_data(pd.date_range('2005-1-1','2005-1-10'))
+    #    density = ChampDensity('2006-1-1 12:00:00','2006-1-2 13:00:00')
     #    plt.figure()
     #    ax = plt.subplot(polar=True)
     #    density.satellite_position_lt_lat(mag=True)
     #    plt.show()
     #------------------------------------------------------------
-    #    # Test ChampWind.contourf_date_lat.
-    #    wind = get_champ_wind('2005-1-1','2005-1-10')
+    # Test ChampWind.contourf_date_lat.
+    #    wind = ChampWind('2005-1-1','2005-1-10 23:59:59')
     #    ax = plt.subplot()
     #    wind.contourf_date_lat(ax,whichcolumn='wind')
     #    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.polar_quiver_wind.
-    wind = get_champ_wind('2005-11-1','2005-11-1 3:0:0')
-    wind = wind.add_arglat()
-    diffarglat = np.insert(np.diff(wind.arglat), 0, 0)
-    wind['orbitn'] = 0
-    wind.loc[diffarglat<0, 'orbitn']=1
-    wind['orbitn'] = wind['orbitn'].cumsum()
-    nm = wind.orbitn.max()+1
-    fig,ax = plt.subplots(nm,2)
-    for k0 in range(nm):
-        plt.sca(ax[k0,0])
-        tmp = ChampWind(wind[wind.orbitn==k0])
-        tmp.polar_quiver_wind(ax,ns='N')
-        plt.sca(ax[k0,1])
-        tmp.polar_quiver_wind(ax,ns='S')
-    plt.tight_layout()
-    plt.show()
+    #    wind = ChampWind('2005-11-1','2005-11-1 5:0:0')
+    #    wind['arglat'] = mf.lat2arglat(wind.lat)
+    #    diffarglat = np.insert(np.diff(wind.arglat), 0, 0)
+    #    wind['orbitn'] = 0
+    #    wind.loc[diffarglat<0, 'orbitn']=1
+    #    wind['orbitn'] = wind['orbitn'].cumsum()
+    #    nm = wind.orbitn.max()+1
+    #    fig,ax = plt.subplots(nm,2)
+    #    for k0 in range(nm):
+    #        plt.sca(ax[k0,0])
+    #        tmp = wind[wind.orbitn==k0]
+    #        tmp.__class__ = ChampWind
+    #        tmp.polar_quiver_wind(ax,ns='N')
+    #        plt.sca(ax[k0,1])
+    #        tmp.polar_quiver_wind(ax,ns='S')
+    #    plt.tight_layout()
+    #    plt.show()
     #------------------------------------------------------------
     # Test add_arglat
-    #    wind = get_champ_wind('2005-11-11','2005-12-14')
-    #    wind = wind.add_arglat()
-    #    plt.plot(wind.index,wind.arglat)
-    #    plt.show()
+    wind = ChampWind('2005-11-11','2005-11-14')
+    wind['arglat'] = mf.lat2arglat(wind.lat)
+    plt.plot(wind.index,wind.arglat)
+    plt.show()
