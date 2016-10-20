@@ -13,8 +13,8 @@ from goce import *
 from omni import *
 import myfunctions as mf
 
-# DATADIR = '/home/guod/data/'
-DATADIR = '/data/'
+DATADIR = '/home/guod/data/'
+#DATADIR = '/data/'
 def func1():
     #----------------------------------------
     # Find interesting cases in 2009 (11,12) and 2010
@@ -26,75 +26,109 @@ def func1():
     from pylab import draw # Use draw()
     import matplotlib.dates as mdates
     from matplotlib.ticker import AutoMinorLocator
+    if False:
+        omni = get_omni('2009-11-1','2010-12-31', ['Bym', 'Bzm', 'V'], '5m')
+        omni['EF'] = omni.V*(np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
+        pd.to_pickle(omni,DATADIR + 'tmp/w3_01.dat')
+    omni = pd.read_pickle(DATADIR + 'tmp/w3_01.dat')
     hours = mdates.HourLocator(range(0,25,3))
     hoursfmt = mdates.DateFormatter('%H')
-    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # for IMF and AE
-    plot_omni(ax1,'2009-11-1','2010-12-31',['Bym','Bzm','AE'],'5m')
+    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(5,6.7)) # By, Bz, E
+    # Case 1
+    #    bdate = '2010-5-29'
+    #    edate = '2010-5-30 00:00:00'
+    # Case 2
+    #    bdate = '2009-11-14 00:00:00'
+    #    edate = '2009-11-15 00:00:00'
+    # Case 3
+    #    bdate = '2009-12-12 15:00:00'
+    #    edate = '2009-12-13 06:00:00'
+    # Case 4
+    #    bdate = '2010-01-02 00:00:00'
+    #    edate = '2010-01-03 00:00:00'
+    # Case 5
+    #    bdate = '2010-01-03 00:00:00'
+    #    edate = '2010-01-04 00:00:00'
+    # Case 6
+    #    bdate = '2010-01-05 09:00:00'
+    #    edate = '2010-01-06 03:00:00'
+    # Case 7
+    #    bdate = '2010-04-12 09:00:00'
+    #    edate = '2010-04-13 00:00:00'
+    # Case 8
+    bdate = '2010-05-18 21:00:00'
+    edate = '2010-05-20 00:00:00'
+    pv = ['Bym', 'Bzm', 'EF']
+    ylb = ['$B_y$ (nT)', '$B_z$ (nT)', 'Electric Field (mV/m)']
+    yl = [(-15, 15), (-15, 15), (0, 10)]
+    yt = [np.arange(-15, 16, 5), np.arange(-15, 16, 5), np.arange(0, 11, 2)]
+    for k0 in range(3):
+        plt.sca(ax1[k0])
+        tmp = omni[pv[k0]][bdate:edate]
+        plt.plot(tmp.index, tmp)
+        plt.xlim(bdate, edate)
+        plt.ylabel(ylb[k0])
+        plt.ylim(yl[k0])
+        plt.yticks(yt[k0])
+        plt.grid(dashes=(4,1))
+        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
     for k0 in range(2):
         plt.sca(ax1[k0])
-        plt.ylim(-10,10)
-        plt.yticks(np.arange(-10,11,5))
-        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
         plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
-        plt.grid(dashes=(4,1))
         plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
     plt.sca(ax1[2])
-    plt.ylim(0,800)
-    plt.yticks(np.arange(0,801,200))
-    plt.gca().xaxis.set_minor_locator(AutoMinorLocator(3))
     plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
-    plt.grid(dashes=(4,1))
     ax1[-1].xaxis.set_major_locator(hours)
     ax1[-1].xaxis.set_major_formatter(hoursfmt)
-    # For satellites
-    if False:
-        denchamp = get_champ_grace_data('2009-11-1','2010-12-31',satellite='champ')
-        dengrace = get_champ_grace_data('2009-11-1','2010-12-31',satellite='grace')
-        dengoce = get_goce_data('2009-11-1','2010-12-31')
-        pd.to_pickle((denchamp, dengrace, dengoce),DATADIR+'tmp/w3_00.dat')
-    denchamp, dengrace, dengoce = pd.read_pickle(DATADIR+'tmp/w3_00.dat')
-    for date in pd.date_range('2009-11-1','2010-12-31'):
-        ax1[-1].set_xlim(date,date+pd.Timedelta('2D'))
-        ax1[-1].set_xlabel('Hours of date: '+
-                           date.date().strftime('%Y-%m-%d')+
-                           '/'+(date+pd.Timedelta('1D')).date().strftime('%d'))
-        plt.tight_layout()
-        # By default, figures won't change until end of the script
-        # draw() forces a figure redraw
-        draw()
-        # for satellites
-        denchamptmp = ChampDensity(denchamp[date:date+pd.Timedelta('2D')])
-        dengracetmp = ChampDensity(dengrace[date:date+pd.Timedelta('2D')])
-        dengocetmp = GoceData(dengoce[date:date+pd.Timedelta('2D')])
-        fig2 = plt.figure(figsize=(7,6.5))
-        ax2 = plt.subplot(polar=True)
-        hc = denchamptmp.satellite_position_lt_lat(ns='N')
-        hc.set_color('r') if not hc is None else None
-        hc.set_label('CHAMP') if not hc is None else None
-        hc = dengracetmp.satellite_position_lt_lat(ns='N')
-        hc.set_color('b') if not hc is None else None
-        hc.set_label('GRACE') if not hc is None else None
-        hc = dengocetmp.satellite_position_lt_lat(ns='N')
-        hc.set_color('k') if not hc is None else None
-        hc.set_label('GOCE') if not hc is None else None
-        #--------------------------------------------------------------------------------
-        # Set polar(lat, LT) coordinates
-        ax2.set_rmax(30)
-        ax2.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-        ax2.set_theta_zero_location('S')
-        ax2.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-        ax2.set_title('Date: '+date.date().strftime('%Y-%m-%d')+'/'+
-                      (date+pd.Timedelta('1D')).date().strftime('%d'))
-        #--------------------------------------------------------------------------------
-        hl = ax2.legend(loc=(0.85,0.8))
-        plt.show()
-        input()
-        plt.close(fig2)
-    return
+    plt.xlabel('Hours of {:s}'.format(pd.Timestamp(bdate).strftime('%Y-%m-%d')))
+    plt.tight_layout()
+    #    # For satellites
+    #    if False:
+    #        denchamp = get_champ_grace_data('2009-11-1','2010-12-31',satellite='champ')
+    #        dengrace = get_champ_grace_data('2009-11-1','2010-12-31',satellite='grace')
+    #        dengoce = get_goce_data('2009-11-1','2010-12-31')
+    #        pd.to_pickle((denchamp, dengrace, dengoce),DATADIR+'tmp/w3_00.dat')
+    #    denchamp, dengrace, dengoce = pd.read_pickle(DATADIR+'tmp/w3_00.dat')
+    #    for date in pd.date_range('2009-11-1','2010-12-31'):
+    #        ax1[-1].set_xlim(date,date+pd.Timedelta('2D'))
+    #        ax1[-1].set_xlabel('Hours of date: '+
+    #                           date.date().strftime('%Y-%m-%d')+
+    #                           '/'+(date+pd.Timedelta('1D')).date().strftime('%d'))
+    #        plt.tight_layout()
+    #        # By default, figures won't change until end of the script
+    #        # draw() forces a figure redraw
+    #        draw()
+    #        # for satellites
+    #        denchamptmp = ChampDensity(denchamp[date:date+pd.Timedelta('2D')])
+    #        dengracetmp = ChampDensity(dengrace[date:date+pd.Timedelta('2D')])
+    #        dengocetmp = GoceData(dengoce[date:date+pd.Timedelta('2D')])
+    #        fig2 = plt.figure(figsize=(7,6.5))
+    #        ax2 = plt.subplot(polar=True)
+    #        hc = denchamptmp.satellite_position_lt_lat(ns='N')
+    #        hc.set_color('r') if not hc is None else None
+    #        hc.set_label('CHAMP') if not hc is None else None
+    #        hc = dengracetmp.satellite_position_lt_lat(ns='N')
+    #        hc.set_color('b') if not hc is None else None
+    #        hc.set_label('GRACE') if not hc is None else None
+    #        hc = dengocetmp.satellite_position_lt_lat(ns='N')
+    #        hc.set_color('k') if not hc is None else None
+    #        hc.set_label('GOCE') if not hc is None else None
+    #        #--------------------------------------------------------------------------------
+    #        # Set polar(lat, LT) coordinates
+    #        ax2.set_rmax(30)
+    #        ax2.set_rgrids(np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
+    #        ax2.set_theta_zero_location('S')
+    #        ax2.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
+    #        ax2.set_title('Date: '+date.date().strftime('%Y-%m-%d')+'/'+
+    #                      (date+pd.Timedelta('1D')).date().strftime('%d'))
+    #        #--------------------------------------------------------------------------------
+    #        hl = ax2.legend(loc=(0.85,0.8))
+    #        plt.show()
+    #        input()
+    #        plt.close(fig2)
+    #    return
 
 def func2():
-    #----------------------------------------
-    # Check one of the interesting cases: 2010-5-29
     #----------------------------------------
     # Case 1
     #    bdate = '2010-5-29 03:00:00'
@@ -177,4 +211,5 @@ def func2():
 # END
 if __name__ == '__main__':
     plt.close('all')
-    a = func2()
+    a = func1()
+    plt.show()

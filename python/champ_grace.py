@@ -24,8 +24,8 @@
 #           contourf_date_lat: Contourf of rho, rho400... as a function of date and
 #                   lat
 # Change:
-#        Include ChampWind class, on Sat Sep 24 02:18:03 CST 2016
-#        Use __init__, remove get_champ_grace_density, get_champ_wind
+#        1, Include ChampWind class
+#        2, Use __init__, remove get_champ_grace_density, get_champ_wind
 #
 #--------------------------------------------------------------------------------
 
