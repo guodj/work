@@ -1,0 +1,222 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage{CJK}
+\usepackage[T1]{fontenc}
+\usepackage{textcomp}
+\usepackage{lmodern}
+\usepackage{listings}
+\usepackage{geometry}
+\geometry{left=2cm, right=2cm, top=1.0cm, bottom=2.5cm}
+\begin{document}
+\begin{CJK}{UTF8}{gbsn}
+    % title
+    \title{\textbf{Python3 学习总结}}
+    \author{郭冬杰}
+    \maketitle
+    % python 简介
+    \section{Python 简介}
+    全世界有大概600多种编程语言，流行的约有20多种，TIOBE排行榜描述了这些语言的流行程度。
+
+    Python 是著名的“龟叔”Guido van Rossum在1989年圣诞节期间编写的一个编程语言。
+    Python的的哲学是简单优雅，尽量写容易看明白的代码，尽量写少的代码。Python有完善的基础代码库和第三方库。Python的缺点是运行速度比较慢。
+    \subsection{Python 解释器}
+    Python 代码文件是以.py为扩展名的文本文件。若要运行，需要Python解释器。常用的Python解释器是CPython和IPython。若要直接运行py文件，需要在.py文件第一行加上一个特殊的注释：
+    \begin{center}
+        \begin{tabular}{|c|}
+            \hline
+            \#!/bin/bin/python3\\
+            \hline
+        \end{tabular}\\
+    \end{center}
+    \subsection{输入和输出}
+    Python最基本的输入与输出函数是input()和print()。
+    % Python 基础
+    Python以\#开头的语句是注释。每一行是一个语句，当语句以：结尾时，下面缩进的语句是为代码块。按照约定俗称的习惯，应该始终坚持使用4个空格的缩进，因此需要在编辑器中设置Tab自动转换为4个空格。Python对大小写敏感。
+    \subsection{数据类型和变量}
+    \subsubsection{整数}
+    Python可以处理任意大小的整数。用16进制表示整数需要以0x为前缀。
+    \subsubsection{浮点数}
+    浮点数之所以称为浮点数，是因为用科学计数法表示时，一个浮点数的小数点的位置是可变的。注意浮点数运算可能会有四舍五入的误差。
+    \subsubsection{字符串}
+    字符串是以\textquotesingle{} \textquotesingle或\textquotedbl{} \textquotedbl括起来的任意文本。若\textquotesingle本身也是字符串一部分，那就用\textquotedbl{} \textquotedbl括起来，若\textquotedbl也是字符串一部分，那就用转义字符$\backslash$来标识。转义字符可以转义很多字符，比如$\backslash$n表示换行，$\backslash$t表示制表符。注意:Python允许用r`'表示内部的字符串不转义。
+
+    为统一不同语言的编码，unicode应运而生，unicode编码是2个字符，通常用于内存中。在存储和传输中，为了节约空间，通常使用可变长编码的UTF-8编码。
+    Python字符串是用unicode编码的。b\textquotesingle{}ABC\textquotesingle表示str变为以字节为单位的bytes。encode()可将str编码为指定的bytes，例如：\textquotesingle中文\textquotesingle.encode(\textquotesingle{}utf-8\textquotesingle)
+
+    格式化输出字符串：\textquotesingle\%2d-\%02d\textquotesingle{} \% (3,1)。
+    \subsubsection{布尔值}
+    只有True和False两种值，可以进行and、or和not运算。
+    \subsubsection{空值}
+    空值是Python里一个特殊的值，用None表示。
+    \subsubsection{列表}
+    a=['guo', 'dongjie']，a就是一个列表。len()函数获得list元素个数。列表索引从0开始。a[-1]表示列表a的最后一个元素，a[-2]表示a的倒数第二个元素。列表追加元素：a.append('love'); 列表插入元素: a.insert(1,'juan')；列表删除元素：a.pop(i);列表替换元素：直接赋值。list中元素数据类型可以不同。空list：[]。
+    \subsubsection{tuple}
+    tuple和list非常类似，但是tuple一旦初始化就不能改变。但tuple指向的list的内容可以改变。注意定义空tuple用()，定义只有一个元素的tuple则需要使用(1,)，以避免与数学公式中的小括号产生歧义。
+    \subsubsection{字典}
+    dict具有极快的查找速度。d=\{'Michael': 95, 'Bob': 75, 'Tracy': 85\}是一个dict。d['Michael']显示为95。d['Guo']=100。通过in可以判断key是否存在：'Thomas' in d得到False。注意dict内部存放的顺序和key放入的顺序是没有关系的。
+
+    和list比较，dict有以下特点：
+    \begin{enumerate}
+        \item 查找和插入速度极快，不会随着key的增加而增加;
+        \item 需要占用大量内存，内存浪费多。
+    \end{enumerate}
+
+    正确使用dict非常重要，需要牢记dict的key必须是不可变对象，如字符串、整数，不可以是list等可变对象。
+    \subsection{函数}
+    \subsubsection{定义函数}
+    \begin{lstlisting}[language=python]
+        def my_abs(x):
+            if x>=0:
+                return x
+            else:
+                return -x
+    \end{lstlisting}
+
+    导入函数：进入函数文件所在目录并启动Python解释器，用from a import b，其中a为文件名，不带扩展名，b为函数名。
+
+    参数检查：if not isinstance(x,(int,float)):。
+
+    返回多个值：函数中包含（return nx, ny），则实际上是返回一个tuple，而多个变量可以同时接收一个tuple，按位置赋给对应的值。
+
+    \subsubsection{函数的参数}
+    \begin{enumerate}
+        \item默认参数：def power(x,n=2)。当不按顺序提供默认参数时，需要把参数名写上。默认参数必须指向不变对象，[]是一个可变对象，因为他是一个list。
+        \item可变参数：def calc(*numbers)。若已有一个list或tuple，要调用一个可变参数，可以这样调用：calc(*nums)。*nums表示把nums中所有元素作为可变参数传进去。
+        \item关键字参数：def name(name,age,**kw)，**kw是关键字参数，它允许你传入0或多个含参数名的参数，这些关键字参数在函数内部自动组装成为一个dist。若已有一个dict，可将dict转换为关键字参数传到函数内部：person('Jack', 24, **extra)。
+        \item命名关键字参数：def person(name,age,*,city='beijing',job)。命名关键字参数必须传入指定参数名。
+        \item参数定义顺序：比选参数，默认参数，可变参数，命名关键字参数和关键字参数。
+    \end{enumerate}
+    \subsection{高级特性}
+    \subsubsection{切片}
+    切片用于list和tuple，即l(::5),l(:100:2)等。
+    \subsubsection{迭代}
+    迭代即便利。for \ldots in可用于任何可迭代对象。如dict：for key in d; for value in d.values(); for k,v in d.items()。如字符串：for ch in 'ABC'。判断一个对象是否为可迭代对象，可通过collections模块的Iterable类型判断：from collections import Iterable, isinstance('abc', Iterable)。实现下表循环的方法：for i, value in enumerate(['a','b','c'])。
+    \subsubsection{列表生成式}
+    \begin{enumerate}
+        \item{} list(range(10))
+        \item{} [x*x for x in range(1,11)]
+        \item{} [x*x for x in range(1,11) if x \% 2 == 0]
+        \item{} [m+n for m in 'abc' for n in 'xyz']
+        \item{} [k +'='+ v for k,v in d.items()]
+        \item{} [s.lower() for s in l] 将l中所有字符串变成小写。
+    \end{enumerate}
+    \subsubsection{生成器(generator)}
+    生成器指的是不创建完整list，而是创建一个算法，一边循环一边计算：g = (x*x for x in range(10))。当算法比较复杂，可以使用函数创建，如\\
+    \begin{tabular}{|c|}
+        \hline\\
+        \begin{lstlisting}[language=python]
+        def fib(max)
+            n,a,b=0,0,1
+            while n<max:
+                yield b
+                a,b=b,a+b
+                n=n+1
+            return 'done'
+        \end{lstlisting}\\
+        \hline
+    \end{tabular}
+
+    generator的执行流程是在每次调用next的时候执行，遇到yield语句返回，再次执行时从上次返回的yield语句继续执行。
+    \subsubsection{迭代器}
+    可直接用于for循环的对象统称为可迭代对象：Iterable，判断对象是否为Iterable可用：isinstance(x,Iterable)。可被next()函数调用并不断返回下一个值的对象称为迭代器：Iterator。可通过iter()函数获得一个iterator对象。
+    \subsection{模块}
+    在Python中，一个.py文件就称为一个模块(module)。模块化编程可提高代码的可维护性。使用模块可避免函数名和变量名冲突。为避免模块名冲突，Python又引入了按目录来组织模块的方法，称为包。设abc.py的上层目录为mycompany，则abc.py的名字就变成了mycompany.abc。注意，每一个包目录下面都会有一个\_\_init\_\_.py的文件。\_\_init\_\_.py可以是空文件。它本身就是一个模块，而它的模块名就是mycompany。
+    \subsubsection{使用模块}
+    \begin{lstlisting}[language=Python]
+    #!/usr/bin/python3
+    #-*- coding:utf-8 -*-
+    
+    ' a test module '
+
+    __author__='Michael Liao'
+
+    import sys
+
+    def test():
+        args=sys.argv
+        if len(args)==1:
+            print('Hello, world!')
+        elif len(args)==2:
+            print('Hello, %s!' % args[1])
+        else:
+            print('Too many arguments!')
+
+    if __name__=='__main__':
+        test()
+    \end{lstlisting}
+    最后两行代码，当我们在命令行运行hello模块文件时，Python解释器把一个特殊变量\_\_name\_\_置为\_\_main\_\_,而如果在其他地方导入该hello模块时，if判断将失败。这种if测试可以让一个模块通过命令行运行时执行一些额外代码，最常见的就是运行测试。
+    \subsubsection{模块搜索路径}
+    默认情况下，Python解释器会搜索当前目录、所有已安装的内置模块和第三方模块，搜索路径存放在sys模块的path变量中：
+    \begin{lstlisting}[language=python]
+    import sys
+    sys.path
+    \end{lstlisting}
+    若要添加自己的搜索目录，一是直接修改sys.path:
+    sys.path.append('/home/gdj/mypython')
+    这种方法运行时修改，运行结束后失效。
+    第二种方法是设置环境变量PYTHONPATH。
+    \subsection{面向对象编程}
+    面向对象编程将对象作为程序的基本单元，一个对象包含了数据和操作数据的函数。
+
+    在Python中，所有数据类型都可以视为对象，自定义的数据类型就是面向对象中的类的概念。以处理学生成绩为例，当采用面向对象的程序设计思想，我们首选的不是程序的执行流程，而是Student这种数据类型应该被视为一个对象，这个对象拥有name和score两个属性（property）。若要打印一个学生的成绩，必须先创建出这个学生对应的对象，然后，给对象发一个print\_score消息，让对象自己把自己的数据打印出来。
+
+    面向对象最重要的概念就是类和实例，类是抽象的模板，实例是根据类创建出来的一个个具体的"对象"。
+
+    \subsubsection{定义类}
+    \begin{lstlisting}[language=python]
+    class Student(object):
+        pass
+    \end{lstlisting}
+    可以将我们认为必须绑定的属性强制填写进去：
+    \begin{lstlisting}[language=python]
+    class Student(object):
+
+        def __init__(self,name,score):
+            self.name=name
+            self.score=score
+    \end{lstlisting}
+    注意\_\_init\_\_的第一个参数永远是self，表示创建的实例本身。在类中定义的函数，通常成为类的方法，第一个参数永远是实例本身（self）。
+    \subsubsection{访问限制}
+    如果要让内部属性不被外部访问，可以在属性名称前加上\_\_，这样变量成为私有变量（private)，这样外部就不能访问了。如下：
+    \begin{lstlisting}[language=python]
+    class Student(object):
+
+        def __init__(self, name, score):
+            self.__name = name
+            self.__score = score
+
+        def print_score(self):
+            print('%s: %s' % (self.__name, self.__score))
+    \end{lstlisting}
+    注意：变量名以\_\_开头，并以\_\_结尾的，是特殊变量，特殊变量可以直接访问，我们自己的变量一般不要用这种变量名。变量以\_开头的，外部也是可以访问的，但是，按照约定俗成的规定，当你看到这样的变量时，我们应该把它看成私有变量。
+    \subsubsection{继承和多态}
+    定义子类，假设我们已经有一个名为Animal的class：
+    \begin{lstlisting}[language=python]
+    class Animal(object):
+        def run(self):
+            print('Animal is running...')
+    \end{lstlisting}
+    当我们需要编写Dog类时，就可以直接从Animal类\textbf{继承}
+    \begin{lstlisting}[language=python]
+    class Dog(Animal):
+        pass
+    \end{lstlisting}
+    子类可以继承父类全部功能。
+
+    子类与父类若存在相同的方法，子类的方法将覆盖父类的方法。这就是多态的概念。多态的好处在于：
+    \begin{enumerate}
+        \item 对扩展开放：允许新增子类;
+        \item 对修改封闭：不需要修改依赖父类的各个函数。
+    \end{enumerate}
+    \section{Numpy教程}
+    NumPy is the fundamental package for scientific computing in Python. It is a Python library that provides a multidimensional array object, various derived objects (such as masked arrays and matrices), and an assortment of routines for fast operations on arrays, including mathematical, logical, shape manipulation, sorting, selecting, I/O, discrete Fourier transforms, basic linear algebra, basic statistical operations, random simulation and much more.
+
+    The core of the Numpy package is the \textbf{ndarray} object. Difference between Numpy arrays and the standard Python sequences:
+    \begin{enumerate}
+        \item NumPy arrays have fixed size at creation.
+        \item The elements in NumPy array are all required to be of the same data type.
+        \item NumPy arrays facilitate advanced mathematical and other types of operations on large numbers of data. Typically, such operations are executed more efficiently and with less code than is possible using Python’s built-in sequences.
+        \item Many scientific and mathematical packages use NumPy arrays.
+    \end{enumerate}
+
+\end{CJK}
+\end{document}
