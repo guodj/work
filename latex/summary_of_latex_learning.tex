@@ -1,0 +1,326 @@
+\documentclass[11pt,a4paper]{article}
+% pt is a unit to measure font size in typographic system
+\usepackage[dvips]{graphicx}
+\begin{document}
+%\listoftables
+\title{Summary of \LaTeX{} Learning}
+\author{Dongjie Guo}
+\date{\today}
+\maketitle
+\section{Things You Need to Know}
+\subsection{The Name of the Game}
+\TeX{} is a computer program aimed at typesetting text and mathematical formulae, 
+which is created by Donald E. Knuth. \LaTeX{} is a macro package which was originally
+written by Leslie Lamport. It uses the \TeX{} formatter as its typesetting engine.
+\subsection{\LaTeX{} Input Files}
+\subsubsection{Spaces}
+Several consecutive whitespace characters are treated as one ``space''. Whitespace
+at the start of a line is generally ignored, and a single linebreak is treated as 
+``whitespace''. An empty line starts a new paragraph.
+\subsubsection{Special Characters}
+\$ \& \% \# \_ \{ \} \~{} \^{} $\backslash$\\
+$\backslash$$\backslash$ is used for linebreaking.\newline
+$\backslash$newline starts a new line.
+\subsubsection{\LaTeX{} Commands}
+\LaTeX{} commands have two formats:\\
+\begin{itemize}
+    \item$\backslash$$+$ a few letters. Command names are terminated by a space,
+        a number or any other `non-letter'. \LaTeX{} ignores whitespace after the 
+        commands. Put \{\} and a blank after a command if you want to get a space
+        after the command.
+    \item$\backslash$$+$ one special character.\\
+\end{itemize}
+The parameter of commands which has to be given is in the curly braces \{\},
+optional parameters are added in the square brackets [].\\
+\subsubsection{Comments}
+When \LaTeX{} encounters a \% character, 
+it ignores the rest of the present line, the linebreak,
+and all whitespace at the beginning of the next line.
+\subsection{Input File Structure}
+$\backslash$documentclass\{\ldots\}\\
+The area between $\backslash$documentclass and $\backslash$begin\{document\} is called preamble.
+$\backslash$usepackage\{\ldots\}\\
+$\backslash$begin\{document\}\\
+$\backslash$end\{document\}
+\section{The Layout of th Document}
+\subsection{Document Classes}
+$\backslash$documentclass[\textit{options}]\{\textit{class}\}\\
+Here \textit{class} can be article, report, book, and slides. \textit{Options} 
+customises the behaviour of the document class.
+\subsection{Page Style}
+\LaTeX{} supports 3 predefined header/footer combinations.\\
+$\backslash$pagestyle\{\textsl{style}\}, where
+\textsl{style} can be \textsl{plain}, \textsl{headings}, \textsl{empty}.\\
+$\backslash$thispagestyle\{\textsl{style}\} changes the current page style.
+\section{Typesetting Text}
+\subsection{The Structure of Text and Language}
+The most important text unit in \LaTeX{} is the paragraph which should reflect
+one coherent idea.
+
+When you read the sentence aloud, a comma should be inserted where you feel 
+the urge to breathe.
+\subsection{Linebreaking and Pagebreaking}
+\subsubsection{Justified Paragraphs}
+$\backslash$$\backslash$ or $\backslash$newline\\ starts a new line 
+without starting a new paragraph.\\
+$\backslash$$\backslash$* \\additionally prohibits a pagebreak after the forced
+linebreak.\\
+$\backslash$newpage \\starts a new page.\\
+
+What does$\backslash$linebreak[3] mean?\linebreak[3]
+\subsubsection{Hyphenation}
+The command $\backslash$ hyphenation\{word list\} causes the words listed in the
+argument to be hyphenated only at the points marked by "-".
+$\backslash$- inserts a discretionary hyphen into a word. This also becomes the only
+point hyphenation is allowed in this word.\\
+
+Example:
+\begin{quote}
+    $\backslash$hyphenation\{FORTRAN Hy-phen-a-tion\}.
+\end{quote}
+This example above will allow ``hyphenation'' to be hyphenated as well as 
+``Hyphenation'', and it prevents ``FORTRAN'', ``Fortran'', and ``fortran'' from
+being hyphenated at all.
+
+$\backslash$mbox\{text\} keeps several words together on one line.
+\subsection{Ready Made Strings}
+$\backslash$today, $\backslash$Tex, $\backslash$LaTeX, $\backslash$LaTeXe
+\subsection{Special Characters and Symbols}
+\subsubsection{Quotation Marks}
+use two `s for opening quotation marks and two 's for closing quotation marks
+''I am a quotation!''
+\subsubsection{Dashes and Hyphens}
+4 kinds of dashes. 3 of them can be accessed with different numbers of consecutive 
+dashes. The fourth is the mathematical minus sign: daughter-in-law,pages 13--67,
+yes---or no?, $-1$
+\subsubsection{Tilde($\sim$)}
+In the web addresses, use \$$\backslash$sim\$ to stand for $\sim$.
+\subsubsection{Ellipsis($\ldots$)}
+Use $\backslash$ldots for \ldots; Beijing, New York, Tokyo, \ldots
+\subsubsection{Ligatures}
+The so-called ligatures can be prohibited by inserting $\backslash$mbox\{\} between 
+the two letters in question. Not shelfful, but shelf\mbox{}ful
+\subsubsection{Accents and Special Characters}
+See below:\\
+H\^otel, na\"\i ve, \` el\'eve,
+sm\o rrebr\o d, !`Se\~norita!,
+sch\"onbrunner Schlo\ss{} stra\ss e
+\subsection{The Space between Words}
+Default: \LaTeX{} inserts slightly more space at the end of a sentence. If a period 
+follows an uppercase letter, this is not taken as a sentence ending.
+
+Exception has to be specified. A backslash in front of a space which will not be 
+enlarged. A tilde `\~{}' character generates a space which cannot be enlarged and 
+which additionally prohibits a linebreak. The command $\backslash$@ in front of a 
+period specifies that this period terminates a sentence even when it follows an 
+uppercase letter.
+
+$\backslash$frenchspacing tells \LaTeX{} not to insert more space after a period than
+after ordinary charater.
+\subsection{Section}
+Available sectioning commands for the article class:\\
+\begin{quote}
+    $\backslash$section\{\ldots\}\\
+    $\backslash$subsection\{\ldots\}\\
+    $\backslash$subsubsection\{\ldots\}\\
+    $\backslash$paragraph\{\ldots\}\\
+    $\backslash$subparagraph\{\ldots\}\\
+    $\backslash$appendix\\
+\end{quote}
+For the report and book class,
+$\backslash$part\{\ldots\} and $\backslash$chapter\{\ldots\} are available.
+
+$\backslash$tableofcontents expands to a table of contents at the place where it is 
+issued. Sometimes it might be necessary to compile the document a third time to get a 
+correct table of contents. ``Starred'' versions of sectioning commands such as 
+$\backslash$section*\{Help\} do not show up in the table of contents and is 
+not numbered. 
+\subsection{Title}
+The title of the whole document is generated by issuing a\\ 
+$\backslash$maketitle \\
+command,and its contents have to be defined by commands\\
+$\backslash$title\{\ldots\}, $\backslash$author\{\ldots\} and optionally 
+$\backslash$date\{\ldots\} \\
+before calling $\backslash$maketitle. Supply sereral names seperated by 
+$\backslash$and commands.
+\subsection{Cross References}\label{CR}
+\LaTeX{} provides the following commands for cross referencing:\\
+$\backslash$label\{\textsl{marker}\}, $\backslash$ref\{\textsl{marker}\}, 
+$\backslash$ref\{\textsl{marker}\}.\\
+Example: ``see section~\ref{CR} on page~\pageref{CR}.''\\
+In fact, $\backslash$label just saves the last automatically generated number.
+\subsection{Footnotes}
+With the command $\backslash$footnote\{\textit{footnote text}\}, a footnote is 
+printed at the foot of the current page.
+Example: Footnotes\footnote{This is a footnote.} are often used.
+\subsection{Emphasized Words}
+\emph{This is \emph{Emphasized}}. Words are emphasized by typesetting them in an
+\textit{italic} font. You can also specify the emphasized words \textsf{in a 
+\emph{sans-serif} font,} \texttt{ or in \emph{typewriter} style. }
+\subsection{Environments}
+\subsubsection{Itemize,Enumerate, and Description}
+What is the difference between them?
+
+This is $\backslash$itemize:\\
+\begin{itemize}
+    \item This is itemize
+    \item This is itemize    
+\end{itemize}
+This is $\backslash$enumerate:\\
+\begin{enumerate}
+    \item This is enumerate
+    \item This is enumerate
+\end{enumerate}
+This is $\backslash$description:
+\begin{description}
+    \item This is description
+    \item This is description
+\end{description}
+\subsubsection{Flushleft, Flushright, and Center}
+This is $\backslash$flushleft:
+\begin{flushleft}
+    This text is \\left-aligned. \LaTeX{} is not trying to make each line the same
+    length.
+\end{flushleft}
+\subsubsection{Quote, Quotation, and Verse}
+A quote is like this:
+\begin{flushleft}
+    \begin{tabular}{|p{6cm}|}
+        \hline
+        A typographical rule of thumb for the line length is:
+        \begin{quote}
+            No line should contain more than 66~characters.
+
+            This is why \LaTeX{} pages have such large borders by default.
+        \end{quote}
+        That's why multicolumn print is often used in newspapers.\\
+        \hline
+    \end{tabular}\\
+\end{flushleft}
+The quote does not indent paragraphs, while the quotation does.
+
+A verse is like this:
+\begin{flushleft}
+    \begin{tabular}{|p{6cm}|}
+        \hline
+        I know only one English poem by heart. It is about Humpty Dumpty.
+        \begin{verse}
+            Humpty Dumpty sat on a wall:\\
+            Humpty Dumpty had a great fall.\\
+            All the King's horses and all the King's men\\
+            Couldn't put Humpty together again.
+        \end{verse}\\
+        \hline
+    \end{tabular}\\
+\end{flushleft}
+\subsubsection{Tabular}
+The \textit{table spec} argument of the
+\begin{flushleft}
+    \begin{tabular}{|c|}
+        \hline
+        $\backslash$begin\{tabular\}\{\textit{table spec}\}\\
+        \hline
+    \end{tabular}\\
+\end{flushleft}
+command defines the format of the table. Use l for a column of left-aligned text,
+r for right-aligned text, and c for centered test; p\{\textit{width}\} for a
+column containing justified text with linebreaks, and $|$ for a vertical line.
+
+Within a tabular environment, \& jumps to the next column, $\backslash$$\backslash$
+starts a new line and $\backslash$hline inserts a horizontal line.\\
+\begin{center}
+    \begin{tabular}{@{} l @{...} r @{}}
+        \hline
+        gdj & lj \\
+        lj & gdj \\
+        l & i \\
+        \hline
+    \end{tabular}
+\end{center}
+
+Since there is no build-in way to align numeric columns to a decimal point, we
+can ``cheat'' and do it by using two columns: a right-aligned integer and a left-
+aligned fraction. 
+
+A column label can be placed above our numeric ``columns'' by using 
+the $\backslash$multicolumn commands.\\
+\begin{center}
+    \begin{tabular}{|c|c|}
+        \hline
+        \multicolumn{2}{|c|}{\textbf{Ene}}\\
+        \hline
+        Mene & Muh! \\
+        \hline
+    \end{tabular}
+\end{center}
+\subsection{Floating Bodies}
+There are two environments for floating bodies; one for tables and one for figures.
+\begin{table}[!h]
+    \begin{tabular}{c}
+        \hline
+$\backslash$begin\{figure\}[\textit{placement specifier}] or
+$\backslash$begin\{table\}[\textit{placement specifier}]\\
+\hline
+\end{tabular}
+\end{table}\\
+\textit{Placement specifier} can be h, t, b, p, !. See table \ref{t1} for detail.
+\begin{table}[!h]
+    \caption{Float Placing Permissions.}\label{t1}
+    \begin{tabular}{c  p{10cm}}
+        Spec & Permission to place the float\ldots\\
+        \hline
+        h    & \emph{here} at the very place in the text where it occurred. This is
+        useful mainly for small floats.\\
+        t    & at the \emph{top} of a page\\
+        b    & at the \emph{bottom} of a page\\
+        p    & on a special \emph{page} containing only floats.\\
+        !    & without considering most of the internal parameters which could
+        stop this float from being placed.\\
+        \hline
+    \end{tabular}
+\end{table}
+
+The two commands
+\begin{flushleft}
+    $\backslash$listoffigures and $\backslash$listoftables
+\end{flushleft}
+operate analogously to the $\backslash$tableofcontents command, printing a list of 
+figures or tables, respectively.
+\section{Specialities}
+\subsection{Including EPS Graphics}
+The step to include a picture into your document:\\
+\begin{enumerate}
+    \item Load the \textbf{graphicx} package in the preamble with\\
+        $\backslash$usepackage[\textit{driver}]\{graphicx\}\\
+        where \textit{driver} is the name of ``dvi to postscript'' converter program.
+        It helps the \textbf{graphicx} package choose the correct method to insert 
+        information about the graphics into the .dvi file, so that the printer
+        understands it and can correctly include the .eps file.
+    \item Use the command\\
+        $\backslash$includegraphics[\textit{key=value},\ldots]\{\textit{file}\}\\
+        Table \ref{t2} lists the most important keys.\\
+        \begin{table}[!h]
+            \begin{center}
+                \caption{Key Names for \textsf{graphicx} Package}\label{t2}
+                \begin{tabular}{l l}
+                    \hline
+                    width  & scale graphic to the specified width\\
+                    height & scale graphic to the specified height\\
+                    angle  & rotate graphic counterclockwise\\
+                    scale  & scale graphic\\
+                    \hline
+                \end{tabular}
+            \end{center}
+        \end{table}
+\end{enumerate}
+\section{Bibliography}
+The structure of Bibliography:\\
+\begin{description}
+    \item$\backslash$begin\{thebibliography\}\{99\}\\
+    \item$\backslash$bibitem\{pa\} H.~Partl:\\
+    \item$\backslash$emph\{German $\backslash$TeX\},
+        TuGboat Vol.\~{}9, No.\~{}1 ('88)\\
+    \item$\backslash$end\{thebibliography\}\\
+\end{description}
+Then you can cite the paper by: Partl\~{}$\backslash$cite\{pa\} has\ldots
+\end{document}
