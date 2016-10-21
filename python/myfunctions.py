@@ -81,23 +81,38 @@ def great_circle_distance_earth(lat1,lon1,lat2,lon2):
                        np.cos(lat1)*np.cos(lat2)*np.cos(lon2-lon1))
     return EARTHRADIUS*dtheta
 
+def set_lat_lt_polar(ax, ns='N', boundinglat=0,
+                     latgrids=tuple(np.arange(-90,91,10)),
+                     ltgrids=(0,6,12,18)):
+    '''
+    Set polar coordinates (latitude, local time).
+    '''
+    fc =1 if ns is 'N' else -1
+    rgrids = 90 - fc*np.array(latgrids)
+    rgrids = np.sort(rgrids[(rgrids>0) & (rgrids<=90)])
+    thetagrids = np.array(ltgrids)/12*180
+    ax.set_rgrids(rgrids,['${:d}^\circ$'.format(k) for k in fc*(90-rgrids)])
+    ax.set_thetagrids(thetagrids, (thetagrids/180*12).astype(np.int), frac=1.08)
+    ax.set_rmax(90-fc*boundinglat)
+    ax.set_theta_zero_location('S')
+    return
+
 # END
 #--------------------------------------------------------------------------------
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     import champ_grace as cg
     import goce as gc
-    # Test arglat
-    a = gc.get_goce_data('2009-6-30','2009-12-10 3:0:0')
-    arglat = lat2arglat(a.lat)
-    plt.plot(a.index, a.arglat-arglat, 'bo')
-    #----------------------------------------
-    #    arglat = np.arange(0,360,1)
-    #    lat = arglat2lat(arglat)
-    #    plt.plot(arglat,lat)
-    #----------------------------------------
+    # Test lat2arglat
+    #    a = gc.get_goce_data('2009-6-30','2009-12-10 3:0:0')
+    #    arglat = lat2arglat(a.lat)
+    #    plt.plot(a.index, a.arglat-arglat, 'bo')
+    # Test great_circle_distance_earth
     #    lat1, lon1 = 0, 0
     #    lat2 = np.arange(10)
     #    lon2 = np.arange(10)
     #    a = great_circle_distance_earth(lat1, lon1, lat2, lon2)
+    # Test set_lat_lt_polar
+    ax = plt.subplot(projection='polar')
+    set_lat_lt_polar(ax,ns='S',boundinglat=-50)
     plt.show()
