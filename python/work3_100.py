@@ -20,45 +20,18 @@ def func1():
     Find interesting cases in 2009 (11,12) and 2010
     interesting case:
         1, Sharp IMF By reversion
-        2, Small Bz change
-        2, CHAMP, GRACE and/or GOCE orbits overlap
+        2, Small Bz and electric field change
     '''
-    # For IMF and AE
+    # For IMF and Kan-Lee electric field
     from pylab import draw # Use draw()
     import matplotlib.dates as mdates
     from matplotlib.ticker import AutoMinorLocator
     bdate, edate = '2002-1-1', '2002-12-31'
-    if True:
+    if False:
         omni = get_omni(bdate,edate, ['Bym', 'Bzm', 'V'], '5m')
         omni['EF'] = omni.V*(np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
         pd.to_pickle(omni,DATADIR + 'tmp/w3_01_1.dat')
     omni = pd.read_pickle(DATADIR + 'tmp/w3_01_1.dat')
-    #----------------------------------------
-    # Case 1
-    #    bdate = '2010-5-29'
-    #    edate = '2010-5-30 00:00:00'
-    # Case 2
-    #    bdate = '2009-11-14 00:00:00'
-    #    edate = '2009-11-15 00:00:00'
-    # Case 3
-    #    bdate = '2009-12-12 15:00:00'
-    #    edate = '2009-12-13 06:00:00'
-    # Case 4
-    #    bdate = '2010-01-02 00:00:00'
-    #    edate = '2010-01-03 00:00:00'
-    # Case 5
-    #    bdate = '2010-01-03 00:00:00'
-    #    edate = '2010-01-04 00:00:00'
-    # Case 6
-    #    bdate = '2010-01-05 09:00:00'
-    #    edate = '2010-01-06 03:00:00'
-    # Case 7
-    #    bdate = '2010-04-12 09:00:00'
-    #    edate = '2010-04-13 00:00:00'
-    # Case 8
-    #    bdate = '2010-05-18 21:00:00'
-    #    edate = '2010-05-20 00:00:00'
-    #----------------------------------------
     fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # By, Bz, E
     pv = ['Bym', 'Bzm', 'EF']
     ylb = ['$B_y$ (nT)', '$B_z$ (nT)', 'Electric Field (mV/m)']
@@ -83,14 +56,6 @@ def func1():
     plt.sca(ax1[2])
     plt.gca().yaxis.set_minor_locator(AutoMinorLocator(1))
     plt.xlabel('Hours of {:s}'.format(pd.Timestamp(bdate).strftime('%Y-%m-%d')))
-    # For satellites
-    if True:
-        denchamp = ChampDensity(bdate,edate,satellite='champ')
-        dengrace = ChampDensity(bdate,edate,satellite='grace')
-        dengoce = GoceData(bdate,edate)
-        pd.to_pickle((denchamp, dengrace, dengoce),DATADIR+'tmp/w3_01_2.dat')
-    denchamp, dengrace, dengoce = pd.read_pickle(DATADIR+'tmp/w3_01_2.dat')
-    den = [denchamp, dengrace, dengoce]
     for date in pd.date_range(bdate,edate):
         ax1[-1].set_xlim(date,date+pd.Timedelta('2D'))
         ax1[-1].xaxis.set_major_locator(hours)
@@ -101,25 +66,8 @@ def func1():
         # By default, figures won't change until end of the script
         # draw() forces a figure redraw
         draw()
-        # for satellites
-        dentmp = [k[date:date+pd.Timedelta('2D')] for k in den]
-        fig2, ax2 = plt.subplots(2,1,subplot_kw={'projection':'polar'}, figsize=[4.4,7])
-        cl = list('rbk')
-        lb = ['CHAMP', 'GRACE', 'GOCE']
-        cls = [ChampDensity, ChampDensity, GoceData]
-        for k11, k1 in enumerate(['N', 'S']):
-            fc = 1 if k1 is 'N' else -1
-            plt.sca(ax2[k11])
-            for k0 in range(3):
-                dentmp[k0].__class__ = cls[k0]
-                hc = dentmp[k0].satellite_position_lt_lat(ns=k1)
-                hc.set_color(cl[k0]) if not hc is None else None
-                hc.set_label(lb[k0]) if not hc is None else None
-            mf.set_lat_lt_polar(plt.gca(), ns=k1, boundinglat=fc*60)
-        hl = ax2[0].legend(loc=(0.85,0.8),fontsize=12)
         plt.show()
         input()
-        plt.close(fig2)
     return
 
 def func2():
@@ -156,13 +104,14 @@ def func2():
     bdate = '2010-05-18 21:00:00'
     mdate = '2010-05-19 06:00:00'
     edate = '2010-05-19 23:00:00'
-    dench = get_champ_grace_density(bdate,edate,satellite='champ')
+    #----------------------------------------
+    dench = ChampDensity(bdate,edate,satellite='champ')
     dench['arglat'] = mf.lat2arglat(dench.lat)
     mdench = dench.groupby([np.floor(dench.arglat/3)*3, dench.index<mdate])['rho'].mean()
-    dengr = get_champ_grace_density(bdate,edate,satellite='grace')
+    dengr = ChampDensity(bdate,edate,satellite='grace')
     dengr['arglat'] = mf.lat2arglat(dengr.lat)
     mdengr = dengr.groupby([np.floor(dengr.arglat/3)*3, dengr.index<mdate])['rho'].mean()
-    dengo = get_goce_data(bdate,edate)
+    dengo = GoceData(bdate,edate)
     dengo['arglat'] = mf.lat2arglat(dengo.lat)
     mdengo = dengo.groupby([np.floor(dengo.arglat/3)*3, dengo.index<mdate])['rho'].mean()
     den = (dengo, dench, dengr)
@@ -199,11 +148,82 @@ def func2():
                 plt.xlabel('Argument of Latitude')
             plt.grid('on')
     plt.tight_layout()
-    plt.show()
-    return mdench
+    return
+
+def func3():
+    '''
+    Case analysis: time constant of density response to IMF By
+    '''
+    rtime = '2009-07-06 01:40:00'
+    rtime = pd.Timestamp(rtime)
+    btime = rtime - pd.Timedelta('2 h')
+    etime = rtime + pd.Timedelta('2 h')
+    # IMF and Kan-Lee electric field variations
+    from matplotlib.ticker import AutoMinorLocator
+    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # By, Bz, E
+    omni = get_omni(btime,etime, ['Bym', 'Bzm', 'V'], '5m')
+    omni['EF'] = omni.V*(np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
+    pv = ['Bym', 'Bzm', 'EF']
+    ylb = ['$B_y$ (nT)', '$B_z$ (nT)', 'Electric Field (mV/m)']
+    yl = [(-10, 10), (-10, 10), (0, 5)]
+    yt = [np.arange(-10, 11, 5), np.arange(-10, 11, 5), np.arange(0, 6, 1)]
+    for k0 in range(3):
+        plt.sca(ax1[k0])
+        tmp = omni[pv[k0]]
+        plt.plot((tmp.index-rtime)/pd.Timedelta('1m'), tmp)
+        plt.xlim((btime-rtime)/pd.Timedelta('1m'), (etime-rtime)/pd.Timedelta('1m'))
+        plt.ylabel(ylb[k0])
+        plt.yticks(yt[k0])
+        plt.ylim(yl[k0])
+        plt.grid(dashes=(4,1))
+        if k0 != 2:
+            plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
+    # mlat-mlt distribution of satellite orbits
+    fig2, ax2 = plt.subplots(2,1,subplot_kw={'projection':'polar'}, figsize=[4.4,7])
+    dt = pd.Timedelta('5h')
+    denchamp = ChampDensity(btime-dt,etime+dt,satellite='champ')
+    denchamp['arglat'] = mf.lat2arglat(denchamp['lat'])
+    denchamp = denchamp[btime:etime]
+    dengrace = ChampDensity(btime-dt,etime+dt,satellite='grace')
+    dengrace['arglat'] = mf.lat2arglat(dengrace['lat'])
+    dengrace = dengrace[btime:etime]
+    dengoce = GoceData(btime,etime)
+    den = [denchamp, dengrace, dengoce]
+    cl = list('rbk')
+    lb = ['CHAMP', 'GRACE', 'GOCE']
+    cls = [ChampDensity, ChampDensity, GoceData]
+    for k11, k1 in enumerate(['N', 'S']):
+        fc = 1 if k1 is 'N' else -1
+        plt.sca(ax2[k11])
+        for k0 in range(3):
+            dentmp = den[k0]
+            if dentmp.empty:
+                continue
+            dentmp.__class__ = cls[k0]
+            hc = dentmp.satellite_position_lt_lat(mag=True, ns=k1)
+            hc.set_color(cl[k0])
+            hc.set_label(lb[k0])
+        mf.set_lat_lt_polar(plt.gca(), ns=k1, boundinglat=fc*60)
+    hl = ax2[0].legend(loc=(0.85,0.8),fontsize=12)
+    # delta density from reversing time of IMF By
+    from scipy.interpolate import interp1d
+    fig = plt.figure()
+    fden = [None, None, None]
+    for k0 in range(3):
+        dentmp = den[k0]
+        if dentmp.empty:
+            continue
+        arglat0 = dentmp.loc[btime:rtime, 'arglat']
+        rho0 = dentmp.loc[btime:rtime, 'rho400']
+        ff = interp1d( arglat0, rho0, kind='linear', fill_value='extrapolate')
+        arglat1 = dentmp['arglat']
+        rho1 = ff(arglat1)
+        plt.plot((dentmp.index-rtime)/pd.Timedelta('1m'), (dentmp.rho400-rho1)/rho1*100)
+    return
 
 # END
+#------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    a = func1()
-    #plt.show()
+    a = func3()
+    plt.show()

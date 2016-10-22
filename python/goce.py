@@ -48,8 +48,8 @@ class GoceData(pd.DataFrame):
         Args:
             bdate, edate: string or pd.Timestamp
         Returns:
-            dataframe of goce density indexed with datetime. the columns
-            are: alt, long, lat, LT, arglat, rho, cr_wnd_e, cr_wnd_n, cr_wnd_u
+            goce density indexed with datetime. the columns are:
+            alt, long, lat, LT, arglat, rho, cr_wnd_e, cr_wnd_n, cr_wnd_u
         """
         global GOCEDATADIR
         bdate = pd.Timestamp(bdate)
@@ -75,6 +75,7 @@ class GoceData(pd.DataFrame):
             goce_data = goce_data[bdate:edate]
             for k0 in goce_data:
                 self[k0] = goce_data[k0]
+        return
 
     def print_variable_name(self):
         # Print column names in self
@@ -136,7 +137,7 @@ class GoceData(pd.DataFrame):
         """
         isup, isdown = mf.updown(self.lat)
         # ascending or descending orbit?
-        tmp = self[isup] if updown =='up' else self[isdown]
+        tmp = self[isup].copy() if updown =='up' else self[isdown].copy()
         tmp = tmp[(tmp.lat>=lats[0]) & (tmp.lat<=lats[1])]  #  which latitudes?
         tmp['float_time'] = (
                 tmp.index-pd.Timestamp('2000-1-1'))/pd.Timedelta('1D')
@@ -172,8 +173,7 @@ class GoceData(pd.DataFrame):
         coordinate.
 
         Input:
-            mag: if True, for MLT and Mlat position, Note that
-                False is not supported now
+            mag: if True, for MLT and Mlat position
             ns: N or S for North and South hemispheres, respectively
 
         Output:
@@ -182,11 +182,17 @@ class GoceData(pd.DataFrame):
         """
         if self.empty:
             return
-        lt='MLT' if mag else 'LT'
-        lat='Mlat' if mag else 'lat'
-        ct = self[lat]>0 if ns is 'N' else self[lat]<0
-        theta = self.loc[ct,lt]/12*np.pi
-        r = 90 - abs(self.loc[ct,lat])
+        lt = self['LT']
+        lat = self['lat']
+        if mag:
+            from apexpy import Apex
+            gm = Apex()
+            mlat,mlt = gm.convert(
+                    self['lat'], self['long'], 'geo', 'mlt', datetime=self.index)
+            lt, lat = mlt, mlat
+        ct = lat>0 if ns is 'N' else lat<0
+        theta = lt[ct]/12*np.pi
+        r = 90 - abs(lat[ct])
         hc = plt.scatter(theta, r, linewidths=0)
         return hc
 
