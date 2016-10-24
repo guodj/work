@@ -28,7 +28,7 @@ def func1():
     from matplotlib.ticker import AutoMinorLocator
     bdate, edate = '2002-1-1', '2002-12-31'
     if False:
-        omni = get_omni(bdate,edate, ['Bym', 'Bzm', 'V'], '5m')
+        omni = get_omni(bdate,edate, ['Bym', 'Bzm', 'V'], '1m')
         omni['EF'] = omni.V*(np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
         pd.to_pickle(omni,DATADIR + 'tmp/w3_01_1.dat')
     omni = pd.read_pickle(DATADIR + 'tmp/w3_01_1.dat')
@@ -154,19 +154,19 @@ def func3():
     '''
     Case analysis: time constant of density response to IMF By
     '''
-    rtime = '2009-07-06 01:40:00'
+    rtime = '2009-07-05 20:50:00'
     rtime = pd.Timestamp(rtime)
-    btime = rtime - pd.Timedelta('2 h')
-    etime = rtime + pd.Timedelta('2 h')
+    btime = rtime - pd.Timedelta('1.5 h')
+    etime = rtime + pd.Timedelta('3 h')
     # IMF and Kan-Lee electric field variations
     from matplotlib.ticker import AutoMinorLocator
-    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # By, Bz, E
-    omni = get_omni(btime,etime, ['Bym', 'Bzm', 'V'], '5m')
+    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7)) # By, Bz, Kan-Lee electric field
+    omni = get_omni(btime,etime, ['Bym', 'Bzm', 'V'], '1m')
     omni['EF'] = omni.V*(np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
     pv = ['Bym', 'Bzm', 'EF']
     ylb = ['$B_y$ (nT)', '$B_z$ (nT)', 'Electric Field (mV/m)']
-    yl = [(-10, 10), (-10, 10), (0, 5)]
-    yt = [np.arange(-10, 11, 5), np.arange(-10, 11, 5), np.arange(0, 6, 1)]
+    yl = [(-20, 20), (-20, 20), (0, 10)]
+    yt = [np.arange(-100, 101, 5), np.arange(-100, 101, 5), np.arange(0, 100, 1)]
     for k0 in range(3):
         plt.sca(ax1[k0])
         tmp = omni[pv[k0]]
@@ -182,13 +182,15 @@ def func3():
     fig2, ax2 = plt.subplots(2,1,subplot_kw={'projection':'polar'}, figsize=[4.4,7])
     dt = pd.Timedelta('5h')
     denchamp = ChampDensity(btime-dt,etime+dt,satellite='champ')
-    denchamp['arglat'] = mf.lat2arglat(denchamp['lat'])
-    denchamp = denchamp[btime:etime]
     dengrace = ChampDensity(btime-dt,etime+dt,satellite='grace')
-    dengrace['arglat'] = mf.lat2arglat(dengrace['lat'])
-    dengrace = dengrace[btime:etime]
     dengoce = GoceData(btime,etime)
     den = [denchamp, dengrace, dengoce]
+    for k0 in range(3):
+        if den[k0].empty:
+            continue
+        den[k0]['arglat'] = mf.lat2arglat(den[k0]['lat'])
+        den[k0]['epoch'] = (den[k0].index - rtime)/pd.Timedelta('1m')
+        den[k0] = den[k0][btime:etime]
     cl = list('rbk')
     lb = ['CHAMP', 'GRACE', 'GOCE']
     cls = [ChampDensity, ChampDensity, GoceData]
@@ -210,15 +212,18 @@ def func3():
     fig = plt.figure()
     fden = [None, None, None]
     for k0 in range(3):
-        dentmp = den[k0]
+        dentmp = den[k0].copy()
         if dentmp.empty:
             continue
         arglat0 = dentmp.loc[btime:rtime, 'arglat']
         rho0 = dentmp.loc[btime:rtime, 'rho400']
         ff = interp1d( arglat0, rho0, kind='linear', fill_value='extrapolate')
         arglat1 = dentmp['arglat']
-        rho1 = ff(arglat1)
-        plt.plot((dentmp.index-rtime)/pd.Timedelta('1m'), (dentmp.rho400-rho1)/rho1*100)
+        dentmp['rhoitp'] = ff(arglat1)
+        dentmp = dentmp[dentmp.lat<-60]
+        plt.plot(dentmp['epoch'], 100*(dentmp.rho400-dentmp.rhoitp)/dentmp.rhoitp, label=lb[k0])
+        plt.xlim(dentmp['epoch'].min(), dentmp['epoch'].max())
+    plt.legend()
     return
 
 # END
