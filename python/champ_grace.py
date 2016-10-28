@@ -43,9 +43,13 @@ class ChampDensity(pd.DataFrame):
     wind files.
     """
 
-    def __init__(self, btime, etime, satellite='champ', variables=-1, *args, **kwargs):
+    def __init__(self, btime, etime, satellite='champ', variables=-1,
+                 *args, **kwargs):
         super(ChampDensity, self).__init__(*args, **kwargs)
         self._read(btime, etime, satellite, variables)
+        self.variables = tuple(self.columns)
+        self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
+                          self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
 
     def _read(self, bdate, edate, satellite, variables):
         """ get champ or grace density data during specified period.
@@ -94,21 +98,6 @@ class ChampDensity(pd.DataFrame):
             rho = rho[bdate:edate]
             for k0 in rho:
                 self[k0] = rho[k0]
-
-    def print_variable_name(self):
-        # Print column names in self
-        if self.empty:
-            return
-        for k00,k0 in enumerate(self.columns):
-            print(k00,': ',k0)
-
-
-    def print_dates(self):
-        # Print dates of the data
-        if self.empty:
-            return
-        print(pd.DatetimeIndex(np.unique(self.index.date)))
-
 
     def LT_median(self):
         """ Get the local time of the ascending and descending satellite orbit.
@@ -267,6 +256,9 @@ class ChampWind(ChampDensity):
     def __init__(self, btime, etime, variables=-1, *args, **kwargs):
         super(ChampDensity, self).__init__(*args, **kwargs)
         self._read(btime, etime, variables)
+        self.variables = tuple(self.columns)
+        self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
+                          self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
 
     def _read(self, bdate, edate, variables):
         # Get champ winds during 'bdate' and 'edate'
@@ -485,7 +477,11 @@ if __name__=='__main__':
     #    plt.show()
     #------------------------------------------------------------
     # Test add_arglat
-    wind = ChampWind('2005-11-11','2005-11-14')
-    wind['arglat'] = mf.lat2arglat(wind.lat)
-    plt.plot(wind.index,wind.arglat)
-    plt.show()
+    #    wind = ChampWind('2005-11-11','2005-11-14')
+    #    wind['arglat'] = mf.lat2arglat(wind.lat)
+    #    plt.plot(wind.index,wind.arglat)
+    #    plt.show()
+    # Test attributes variables and daterange
+    a = ChampDensity('2005-1-1', '2005-1-2')
+    print(a.variables)
+    print(a.daterange)
