@@ -69,11 +69,13 @@ def great_circle_distance_earth(lat1,lon1,lat2,lon2):
     '''
     Calculate great circle distance: the shortest distance of
     two points in the Earth surface.
-      lat1: source latitudes
-      lon1: source longitudes
-      lat2: destination latitudes
-      lon2: destination longitudes
+      lat1: source latitudes (degree)
+      lon1: source longitudes (degree)
+      lat2: destination latitudes (degree)
+      lon2: destination longitudes (degree)
     '''
+    lat1, lon1, lat2, lon2 = (
+            np.array(lat1), np.array(lon1), np.array(lat2), np.array(lon2))
     EARTHRADIUS = 6371.009 #  Unit: km
     lat1, lon1 = lat1/180*np.pi, lon1/180*np.pi
     lat2, lon2 = lat2/180*np.pi, lon2/180*np.pi
