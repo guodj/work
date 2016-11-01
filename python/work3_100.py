@@ -161,10 +161,10 @@ def func3():
     '''
     Case analysis: time constant of density response to IMF By
     '''
-    rtime = '2009-03-12 12:00:00'
+    rtime = '2009-05-12 12:00:00'
     rtime = pd.Timestamp(rtime)
-    btime = rtime - pd.Timedelta('4 h')
-    etime = rtime + pd.Timedelta('4 h')
+    btime = rtime - pd.Timedelta('12 h')
+    etime = rtime + pd.Timedelta('12 h')
     # IMF and Kan-Lee electric field variations
     from matplotlib.ticker import AutoMinorLocator
     # By, Bz, K-L electric field
@@ -180,17 +180,17 @@ def func3():
     for k0 in range(3):
         plt.sca(ax1[k0])
         tmp = omni[pv[k0]]
-        plt.plot((tmp.index-rtime)/pd.Timedelta('1m'), tmp, 'k')
-        plt.xticks(np.arange(-900,901,30))
-        plt.xlim((btime-rtime)/pd.Timedelta('1m'),
-                 (etime-rtime)/pd.Timedelta('1m'))
+        plt.plot((tmp.index-rtime)/pd.Timedelta('1h'), tmp, 'k')
+        plt.xticks(np.arange(-30, 31, 3))
+        plt.xlim((btime-rtime)/pd.Timedelta('1h'),
+                 (etime-rtime)/pd.Timedelta('1h'))
         plt.ylabel(ylb[k0])
         plt.yticks(yt[k0])
         plt.ylim(yl[k0])
         plt.grid(dashes=(4,1))
         if k0 != 2:
             plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
-    ax1[2].set_xlabel('Minutes from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    ax1[2].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
 
     # Read satellite data
     from scipy.interpolate import NearestNDInterpolator
@@ -202,13 +202,14 @@ def func3():
     dengoce = GoceData(btime-dt, etime+dt)
     den = [denchamp, dengrace, dengoce]
     fig2, ax2 = plt.subplots(2, 1, sharex=True)  # Test arglat and orbitn
+    fig6, ax6 = plt.subplots(2, 1, sharex=True)  # Test arglat and orbitn
     title = ('CHAMP', 'GRACE')
     for k0 in range(3): # 0: Champ, 1: Grace, 2: Goce
         dentmp = den[k0]
         if dentmp.empty:
             continue
         dentmp['arglat'] = mf.lat2arglat(dentmp['lat'])
-        dentmp['epoch'] = (dentmp.index - rtime)/pd.Timedelta('1m')
+        dentmp['epoch'] = (dentmp.index - rtime)/pd.Timedelta('1h')
         # Calculate orbit number. It's better if no data gaps exist.
         orbitn = np.where(dentmp['arglat'].diff()<0, 1, 0)
         orbitn = orbitn.cumsum()
@@ -220,11 +221,19 @@ def func3():
         ax21 = ax2[k0].twinx()
         ax21.plot(dentmp.epoch, dentmp.arglat, 'go')
         ax21.plot(dentmp.epoch, dentmp.lat, 'yo', alpha=0.3)
-        ax21.set_xticks(np.arange(-900,901,30))
-        ax21.set_xlim((btime-rtime)/pd.Timedelta('1m'),
-                      (etime-rtime)/pd.Timedelta('1m'))
-        ax21.set_ylabel('Arglat(g), Lat(y)')
+        ax21.set_xticks(np.arange(-30, 31, 3))
+        ax21.set_xlim((btime-rtime)/pd.Timedelta('1h'),
+                      (etime-rtime)/pd.Timedelta('1h'))
+        ax21.set_ylabel('Arglat (g), Lat(y)')
         ax2[k0].set_title(title[k0])
+
+        # Test altitude
+        ax6[k0].plot(dentmp.epoch, dentmp.height, 'k')
+        ax6[k0].set_ylabel('Height (km)')
+        ax6[k0].set_xticks(np.arange(-30, 31, 3))
+        ax6[k0].set_xlim((btime-rtime)/pd.Timedelta('1h'),
+                      (etime-rtime)/pd.Timedelta('1h'))
+        ax6[k0].set_title(title[k0])
 
         # Calculate delta density: rho(pass_n)-rho(pass_n-1)
         dentmp['drho'] = np.nan
@@ -232,10 +241,10 @@ def func3():
         for k1 in range(1,dentmp['orbitn'].max()+1):
             fpp = (dentmp['orbitn'] == k1-1)
             fpc = (dentmp['orbitn'] == k1)
-            x0lat = dentmp.loc[fpp, 'lat'].copy()
-            x0lon = dentmp.loc[fpp, 'LT'].copy()/12*180
-            x1lat = dentmp.loc[fpc, 'lat'].copy()
-            x1lon = dentmp.loc[fpc, 'LT'].copy()/12*180
+            x0lat = dentmp.loc[fpp, 'Mlat'].copy()
+            x0lon = dentmp.loc[fpp, 'MLT'].copy()/12*180
+            x1lat = dentmp.loc[fpc, 'Mlat'].copy()
+            x1lon = dentmp.loc[fpc, 'MLT'].copy()/12*180
             print(k0, x0lat.shape, x1lat.shape)
             dd = np.ones([x1lat.shape[0], x0lat.shape[0]])*np.nan
             for k2 in range(x1lat.shape[0]):
@@ -250,7 +259,8 @@ def func3():
             crho = np.array(dentmp.loc[fpc, 'rho400'])
             dentmp.loc[fpc, 'drho400'] = 100*(crho-prho)/prho
         den[k0] = den[k0][btime:etime]
-    ax2[1].set_xlabel('Minutes from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    ax2[-1].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    ax6[-1].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
 
     # mlat-mlt distribution of satellite orbits
     fig3, ax3 = plt.subplots(
@@ -280,17 +290,17 @@ def func3():
         if dentmp.empty:
             continue
         ax4[k0].plot(dentmp['epoch'], dentmp.ddmin, label=lb[k0], color=cl[k0])
-        ax4[k0].set_xticks(np.arange(-900,901,30))
-        ax4[k0].set_xlim((btime-rtime)/pd.Timedelta('1m'),
-                         (etime-rtime)/pd.Timedelta('1m'))
+        ax4[k0].set_xticks(np.arange(-30, 31, 3))
+        ax4[k0].set_xlim((btime-rtime)/pd.Timedelta('1h'),
+                         (etime-rtime)/pd.Timedelta('1h'))
         ax4[k0].set_title(lb[k0])
         ax4[k0].set_ylabel('$\Delta$r (km)')
-    ax4[1].set_xlabel('Minutes from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    ax4[1].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
 
     # delta density (rho400 and msis_rho) from reversing time of IMF By
     fig5, ax5 = plt.subplots(4,2,sharex=True, sharey='row', figsize=(8,9))
     title = ('CHAMP', 'GRACE')
-    yl = (r'$\rho (kg/m^{-3})$', r'$\Delta\rho$ (%)',
+    yl = (r'$\rho$ 400 km $(kg/m^{-3})$', r'$\Delta\rho$ (%)',
           r'Msis $\rho (kg/m^{-3})$', r'Msis $\Delta\rho$ (%)')
     col = ('rho400', 'drho400', 'msis_rho', 'dmsis_rho')
     for k0 in range(2):
@@ -303,15 +313,15 @@ def func3():
             dentmptmp = dentmp[dentmp.Mlat>0]
             ax5[k1, k0].plot(
                     dentmptmp.epoch, dentmptmp[col[k1]], 'ko', markersize=3)
-            ax5[k1, k0].set_xticks(np.arange(-900,901,30))
-            ax5[k1, k0].set_xlim((btime-rtime)/pd.Timedelta('1m'),
-                             (etime-rtime)/pd.Timedelta('1m'))
+            ax5[k1, k0].set_xticks(np.arange(-30, 31, 3))
+            ax5[k1, k0].set_xlim((btime-rtime)/pd.Timedelta('1h'),
+                             (etime-rtime)/pd.Timedelta('1h'))
             ax5[0, k0].set_title(title[k0])
             ax5[k1, 0].set_ylabel(yl[k1])
             if k1%2 ==1:
                 ax5[k1, k0].axhline(color='gray', zorder=-1)
             ax5[-1,k0].set_xlabel(
-                    'Minutes from '+rtime.strftime('%y-%m-%d %H%M UT'))
+                    'Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
     plt.tight_layout()
     return
 # END

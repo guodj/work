@@ -7,10 +7,6 @@
 # containe:
 #
 #       class: GoceData,
-#           print_variable_name: Print the column names
-#
-#           print_dates: Print the data dates
-#
 #           LT_median: Calculate the median local time of the ascending and
 #               descending orbits.
 #
@@ -41,6 +37,10 @@ class GoceData(pd.DataFrame):
     def __init__(self, btime, etime, *args, **kwargs):
         super(GoceData, self).__init__(*args, **kwargs)
         self._read(btime, etime)
+        if not self.empty:
+            self.variables = tuple(self.columns)
+            self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
+                              self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
 
     def _read(self, bdate,edate):
         """ get goce data during specified dates.
@@ -76,21 +76,6 @@ class GoceData(pd.DataFrame):
             for k0 in goce_data:
                 self[k0] = goce_data[k0]
         return
-
-    def print_variable_name(self):
-        # Print column names in self
-        if self.empty:
-            return
-        for k00,k0 in enumerate(self.columns):
-            print(k00,': ',k0)
-
-
-    def print_dates(self):
-        # Print dates of the data
-        if self.empty:
-            return
-        print(pd.DatetimeIndex(np.unique(self.index.date)))
-
 
     def LT_median(self):
         """ Get the local time of the ascending and descending satellite orbit.
@@ -298,12 +283,12 @@ class GoceData(pd.DataFrame):
 #--------------------------------------------------------------------------------
 #TEST
 if __name__ == '__main__':
-    # Test get_goce_data, print_dates, print_variable_name, satellite_position_lt_lat
+    # Test get_goce_data, satellite_position_lt_lat
     den = GoceData('2010-4-1','2010-4-3')
-    den.print_variable_name()
-    den.print_dates()
+    print(den.variables)
+    print(den.daterange)
     print(den.orbit_mean())
-    print(den.LT_median())
+    den.LT_median()
     plt.figure()
     ax = plt.subplot(polar=True)
     hc = den.satellite_position_lt_lat(mag=False)
@@ -341,4 +326,3 @@ if __name__ == '__main__':
     #        tmp.polar_quiver_wind(ax,ns='S')
     #    plt.tight_layout()
     #    plt.show()
-    a=10

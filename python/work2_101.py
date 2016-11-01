@@ -47,7 +47,7 @@ def f1():
     sblist = sblist['2002-1-1':'2010-12-31']
     data = [pd.DataFrame(),pd.DataFrame()]
     nn = [0, 0]
-    if True:  # data preparation
+    if False:  # data preparation
         for k00, k0 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k0]
             for k1 in sbtmp.index:
@@ -73,7 +73,7 @@ def f1():
     fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(7.76,8))
     for k in range(2):
         for k11,k1 in enumerate(['Bx','Bym','Bzm','AE']):
-            tl = ['Bx (nT)','By (nT)','Bz (nT)','AE']
+            tl = ['$B_x$ (nT)','$B_y$ (nT)','$B_z$ (nT)','AE']
             levels = np.linspace(0,400,11) if k1 is 'AE' else np.linspace(-4,4,11)
             ticks = np.arange(0,401,100) if k1 is 'AE' else np.arange(-4,5,2)
             plt.sca(ax[k11,k])
@@ -241,9 +241,9 @@ def f2():
     for k00,k0 in enumerate(['Solar maximum','Solar minimum']):
         plt.sca(ax[k00])
         if k0 is 'Solar maximum':
-            density2 = density1['2002-1-1':'2005-12-31']
+            density2 = density1['2002-1-1':'2004-12-31']
         if k0 is 'Solar minimum':
-            density2 = density1['2006-1-1':'2010-12-31']
+            density2 = density1['2005-1-1':'2010-12-31']
         density2 = density2[(density2.index.month>=8) & (density2.index.month<=10)]
         nn[k00] = len(np.unique(
                 density2[(density2.epochday>=0) & (density2.epochday<1)].index.date))
@@ -268,9 +268,9 @@ def f2():
         if k00==1:
             plt.xlabel('Epoch Time (day)',fontsize=14)
         if k00==0:
-            a = plt.title('Year: 02 - 05')
+            a = plt.title('Year: 02 - 04')
         if k00==1:
-            a = plt.title('Year: 06 - 10')
+            a = plt.title('Year: 05 - 10')
         a.set_position((0.5,1.06))
         plt.text(0.1,0.8,'S',transform=plt.gca().transAxes)
         plt.text(0,1.05,fl[k00], transform=plt.gca().transAxes)

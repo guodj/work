@@ -8,10 +8,6 @@
 # Contain:
 #
 #       class: ChampDensity,
-#           print_variable_name: Print the column names
-#
-#           print_dates: Print the data dates
-#
 #           LT_median: Calculate the median local time of the ascending and
 #               descending orbits.
 #
@@ -26,6 +22,8 @@
 # Change:
 #        1, Include ChampWind class
 #        2, Use __init__, remove get_champ_grace_density, get_champ_wind
+#        3, Add attributes variables and daterange, remove methods
+#           print_variable_name and print_dates
 #
 #--------------------------------------------------------------------------------
 
@@ -47,9 +45,10 @@ class ChampDensity(pd.DataFrame):
                  *args, **kwargs):
         super(ChampDensity, self).__init__(*args, **kwargs)
         self._read(btime, etime, satellite, variables)
-        self.variables = tuple(self.columns)
-        self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
-                          self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
+        if not self.empty:
+            self.variables = tuple(self.columns)
+            self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
+                              self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
 
     def _read(self, bdate, edate, satellite, variables):
         """ get champ or grace density data during specified period.
