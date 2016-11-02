@@ -26,7 +26,7 @@ def func1():
     from pylab import draw # Use draw()
     import matplotlib.dates as mdates
     from matplotlib.ticker import AutoMinorLocator
-    bdate, edate = '2009-1-1', '2010-1-1'
+    bdate, edate = '2010-1-1', '2010-12-31'
     if True:
         omni = get_omni(bdate,edate, ['Bym', 'Bzm', 'V'], '1m')
         omni['EF'] = omni.V*(
@@ -161,7 +161,7 @@ def func3():
     '''
     Case analysis: time constant of density response to IMF By
     '''
-    rtime = '2009-05-12 12:00:00'
+    rtime = '2010-03-22 12:00:00'
     rtime = pd.Timestamp(rtime)
     btime = rtime - pd.Timedelta('12 h')
     etime = rtime + pd.Timedelta('12 h')
@@ -200,10 +200,16 @@ def func3():
     denchamp = ChampDensity(btime-dt, etime+dt, satellite='champ')
     dengrace = ChampDensity(btime-dt, etime+dt, satellite='grace')
     dengoce = GoceData(btime-dt, etime+dt)
+    if not dengoce.empty:
+        from apexpy import Apex as apex
+        mc = apex()
+        dengoce['Mlat'], dengoce['MLT'] = mc.convert(
+                dengoce['lat'], dengoce['long'], source='geo',
+                dest='mlt', datetime=dengoce.index)
     den = [denchamp, dengrace, dengoce]
-    fig2, ax2 = plt.subplots(2, 1, sharex=True)  # Test arglat and orbitn
-    fig6, ax6 = plt.subplots(2, 1, sharex=True)  # Test arglat and orbitn
-    title = ('CHAMP', 'GRACE')
+    fig2, ax2 = plt.subplots(3, 1, sharex=True)  # Test arglat and orbitn
+    fig6, ax6 = plt.subplots(3, 1, sharex=True)
+    title = ('CHAMP', 'GRACE', 'GOCE')
     for k0 in range(3): # 0: Champ, 1: Grace, 2: Goce
         dentmp = den[k0]
         if dentmp.empty:
@@ -228,7 +234,8 @@ def func3():
         ax2[k0].set_title(title[k0])
 
         # Test altitude
-        ax6[k0].plot(dentmp.epoch, dentmp.height, 'k')
+        height = 'height' if k0<2 else 'alt'
+        ax6[k0].plot(dentmp.epoch, dentmp[height], 'k')
         ax6[k0].set_ylabel('Height (km)')
         ax6[k0].set_xticks(np.arange(-30, 31, 3))
         ax6[k0].set_xlim((btime-rtime)/pd.Timedelta('1h'),
@@ -264,7 +271,7 @@ def func3():
 
     # mlat-mlt distribution of satellite orbits
     fig3, ax3 = plt.subplots(
-            2,1,subplot_kw={'projection':'polar'}, figsize=[4.4,7])
+            3,1,subplot_kw={'projection':'polar'}, figsize=[4.4,7])
     cl = list('rbk')
     lb = ['CHAMP', 'GRACE', 'GOCE']
     cls = [ChampDensity, ChampDensity, GoceData]

@@ -1,4 +1,4 @@
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #
 # By Dongjie, USTC, on Mon Sep 19 21:54:35 CST 2016
 #
@@ -8,18 +8,15 @@
 #
 #       class: GoceData,
 #           LT_median: Calculate the median local time of the ascending and
-#               descending orbits.
-#
-#           orbit_mean: Calculate the orbit mean longitude, altitude, local time,
-#                   density.
-#
+#                   descending orbits.
+#           orbit_mean: Calculate the orbit mean longitude, altitude, local
+#                   time, density.
 #           satellite_position_lt_lat: show the satellite location in LT-LAT
 #                   or MLT-MLAT coordinates
-#
 #           contourf_date_lat: Contourf of rho or winds as a function of
 #                   date and latitude
-#
-#--------------------------------------------------------------------------------
+#           polar_quiver_wind: wind vectors in the polar lat-lon coordinates.
+#-------------------------------------------------------------------------------
 # Global imports
 import numpy as np
 import pandas as pd
@@ -234,8 +231,10 @@ class GoceData(pd.DataFrame):
             return hc
 
     def polar_quiver_wind(self, ax, ns='N'):
-        # Wind vector in lat-long coordinates.
-        # For different map projections, xy winds are different
+        '''
+        Wind vector in lat-lon coordinates.
+        For different map projections, xy winds should be different?
+        '''
         if self.empty:
             return
         from mpl_toolkits.basemap import Basemap
