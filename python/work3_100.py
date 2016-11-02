@@ -208,9 +208,9 @@ def func3():
                 dest='mlt', datetime=dengoce.index)
     den = [denchamp, dengrace, dengoce]
     fig2, ax2 = plt.subplots(3, 1, sharex=True)  # Test arglat and orbitn
-    fig6, ax6 = plt.subplots(3, 1, sharex=True)
+    fig6, ax6 = plt.subplots(3, 1, sharex=True)  # Test altitude
     title = ('CHAMP', 'GRACE', 'GOCE')
-    for k0 in range(3): # 0: Champ, 1: Grace, 2: Goce
+    for k0 in range(2): # 0: Champ, 1: Grace, 2: Goce
         dentmp = den[k0]
         if dentmp.empty:
             continue
@@ -292,7 +292,7 @@ def func3():
 
     # Test ddmin
     fig4, ax4 = plt.subplots(2,1,sharex=True)
-    for k0 in range(3):
+    for k0 in range(2):
         dentmp = den[k0].copy()
         if dentmp.empty:
             continue
