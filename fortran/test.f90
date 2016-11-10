@@ -1,5 +1,5 @@
 program test
-    implicit none ! this means variables must be declared
+    implicit none ! this forces variables to be declared
     ! variables declaration
     integer :: i, a(10), b(10)  ! learn to use array
     character(10) :: c  ! learn to use string

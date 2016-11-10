@@ -1,9 +1,7 @@
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # For the second project
-#
 # By Dongjie, USTC, Sat Sep 17 09:32:19 CST 2016
-#
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 #Global imports
 import numpy as np
@@ -41,7 +39,8 @@ def get_sblist():
 
 
 def f1():
-    # imf and indices variation during epoch days of sblist
+    '''imf and indices variation during epoch days of sblist
+    '''
     global DATADIR
     sblist = get_sblist()
     sblist = sblist['2002-1-1':'2010-12-31']
@@ -53,14 +52,16 @@ def f1():
             for k1 in sbtmp.index:
                 bdate = k1-pd.Timedelta('3D')
                 edate = k1+pd.Timedelta('3D')
-                data_tmp = get_omni(bdate,edate,['Bx','Bym','Bzm','AE'],res='1h')
+                data_tmp = get_omni(
+                        bdate,edate,['Bx','Bym','Bzm','AE'],res='1h')
                 if not data_tmp.empty:
                     nn[k00] = nn[k00]+1
                     print(nn, k1, k0)
-                    data_tmp['epochday'] = (data_tmp.index - k1)/pd.Timedelta('1D')
+                    data_tmp['epochday'] = (
+                            data_tmp.index - k1)/pd.Timedelta('1D')
                     data[k00] = data[k00].append(data_tmp)
         pd.to_pickle(data,DATADIR + 'tmp/w2_07.dat')
-    # END of data preperation
+# END of data preperation
 
     data = pd.read_pickle(DATADIR + 'tmp/w2_07.dat')
     datagroup = [
@@ -69,17 +70,19 @@ def f1():
     datagroup = [datagroup[k].median() for k in [0,1]]
     for k in [0,1]:
         datagroup[k].index.names = ('month', 'epochhour')
-        datagroup[k] = datagroup[k].reset_index().pivot(index='epochhour', columns='month')
+        datagroup[k] = datagroup[k].reset_index().pivot(
+                index='epochhour', columns='month')
     fig,ax = plt.subplots(4,2,sharex=True,sharey=True,figsize=(7.76,8))
     for k in range(2):
         for k11,k1 in enumerate(['Bx','Bym','Bzm','AE']):
             tl = ['$B_x$ (nT)','$B_y$ (nT)','$B_z$ (nT)','AE']
-            levels = np.linspace(0,400,11) if k1 is 'AE' else np.linspace(-4,4,11)
+            levels = np.linspace(
+                    0,400,11) if k1 is 'AE' else np.linspace(-4,4,11)
             ticks = np.arange(0,401,100) if k1 is 'AE' else np.arange(-4,5,2)
             plt.sca(ax[k11,k])
             data1 = datagroup[k][k1]
-            hc2 = plt.contourf(data1.columns, data1.index/24, data1.values,levels=levels,
-                    cmap='bwr')
+            hc2 = plt.contourf(data1.columns, data1.index/24, data1.values,
+                    levels=levels, cmap='bwr')
             plt.xlim([1,12])
             plt.xticks(np.arange(1,13))
             plt.ylim([-3,3])
@@ -88,7 +91,8 @@ def f1():
             plt.tick_params(axis='both',which='minor',direction='out',length=3)
             if k is 1:
                 axpo = np.array(plt.gca().get_position())
-                cax = plt.gcf().add_axes((axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
+                cax = plt.gcf().add_axes(
+                        (axpo[1,0]+0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
                 cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=ticks)
                 cbar.set_label(tl[k11])
                 plt.tick_params('both',length=4)
@@ -108,7 +112,7 @@ def f1():
 
 def f2():
     """Near the geodetic poles, the longitude and LT are not important;
-    so it is a good location for the research of UT variation
+    so it is a good for research of UT variation
     """
     global DATADIR
     def percentile(n):
@@ -119,7 +123,8 @@ def f2():
 
     sblist = get_sblist()
     sblist = sblist['2001-1-1':'2010-12-31']
-    density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]] # [[ATN,ATS],[TAN,TAS]]
+# [[ATN,ATS],[TAN,TAS]]
+    density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]]
     sbn = [0,0]
     if False:
         for k00,k in enumerate(['away-toward','toward-away']):
@@ -127,12 +132,13 @@ def f2():
             for k1 in sbtmp.index:
                 #for k2 in ['champ','grace']:
                 for k2 in ['grace']:  # only consider the grace
-                    rho = get_champ_grace_density(k1-pd.Timedelta('3D'), k1+pd.Timedelta('3D'), k2)
+                    rho = ChampDensity(
+                            k1-pd.Timedelta('3D'), k1+pd.Timedelta('3D'), k2)
                     if rho.empty:
                         print('no data around',k1)
                         continue
-                    # The geomagnetic activity is not considered, because cusp density
-                    # enhancement occurs in both geomagnetic quiet and active conditions
+# The geomagnetic activity is not considered, because cusp density enhancement
+# occurs in both geomagnetic quiet and active conditions
                     """
                     rho = rho.add_index()
                     l1 = len(rho)
@@ -144,15 +150,23 @@ def f2():
                     """
                     #rho1 = rho[rho.lat3>=87]  # north pole
                     rho1 = rho[rho.lat3==90].copy() # only consider the grace
-                    #Make sure that there is data in each day
+# Make sure that there is data in each day
                     if len(np.unique(rho1.index.dayofyear))!=6:
                         print('there is data gap around', k1)
                         continue
                     rho1['epochday'] = (rho1.index-k1)/pd.Timedelta('1D')
-                    rho1['rrho400'] = 100*(rho1.rho400-rho1['rho400'].mean())/rho1['rho400'].mean()
-                    rho1['rrho'] = 100*(rho1.rho-rho1['rho'].mean())/rho1['rho'].mean()
+                    rho1['rrho400'] = 100*(
+                            rho1.rho400-rho1['rho400'].mean()
+                            )/rho1['rho400'].mean()
+                    rho1['rrho'] = 100*(
+                            rho1.rho-rho1['rho'].mean())/rho1['rho'].mean()
+                    rho1['rmsis'] = 100*(
+                            rho1.msis_rho-rho1['msis_rho'].mean()
+                            )/rho1['msis_rho'].mean()
                     density[k00][0] = density[k00][0].append(
-                            rho1[['epochday','MLT','Mlat','rho','rrho','rho400','rrho400']])
+                            rho1[['epochday', 'MLT', 'Mlat',
+                                  'rho', 'rrho', 'rho400', 'rrho400',
+                                  'msis_rho', 'rmsis']])
 
                     #rho2 = rho[rho.lat3<=-87]  # south pole
                     rho2 = rho[rho.lat3==-90].copy()  # only consider the grace
@@ -160,27 +174,36 @@ def f2():
                         print('there is data gap around', k1)
                         continue
                     rho2['epochday'] = (rho2.index-k1)/pd.Timedelta('1D')
-                    rho2['rrho400'] = 100*(rho2.rho400-rho2['rho400'].mean())/rho2['rho400'].mean()
-                    rho2['rrho'] = 100*(rho2.rho-rho2['rho'].mean())/rho2['rho'].mean()
+                    rho2['rrho400'] = 100*(
+                            rho2.rho400-rho2['rho400'].mean()
+                            )/rho2['rho400'].mean()
+                    rho2['rrho'] = 100*(
+                            rho2.rho-rho2['rho'].mean())/rho2['rho'].mean()
+                    rho2['rmsis'] = 100*(
+                            rho2.msis_rho-rho2['msis_rho'].mean()
+                            )/rho2['msis_rho'].mean()
                     density[k00][1] = density[k00][1].append(
-                            rho2[['epochday','MLT','Mlat','rho','rrho','rho400','rrho400']])
+                            rho2[['epochday', 'MLT', 'Mlat',
+                                  'rho', 'rrho', 'rho400', 'rrho400',
+                                  'msis_rho', 'rmsis']])
                     sbn[k00] = sbn[k00]+1
                     print(sbn)
         pd.to_pickle(density, DATADIR + 'tmp/w2_13.dat')
-    # END of data preperation
+# END of data preperation
 
-    # Pole density variation as a function of epoch time at different seasons and sbtype.
+# Pole density variation as a function of epoch time at different seasons
+# and sbtype.
     density = pd.read_pickle(DATADIR + 'tmp/w2_13.dat')
     fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
     fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
           ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
     fl = ['(a)', '(b)', '(c)', '(d)']
-    # case number in each season catagary
+# case number in each season catagary
     nn = np.zeros([4,4])*np.nan
     for k00,k in enumerate(['away-toward','toward-away']):
         for k11, k1 in enumerate(['N','S']):
             density1 = density[k00][k11]
-            #density1 = density1['2002-1-1':'2004-12-31']
+            # density1 = density1['2002-1-1':'2004-12-31']
             if density1.empty:
                 continue
             for k22, k2 in enumerate(['me','se','js','ds']):
@@ -195,7 +218,8 @@ def f2():
                     fp = (density1.index.month>=11) | (density1.index.month<=1)
                 density2 = density1[fp].copy()
                 nn[k22, k00*2+k11] = len(np.unique(
-                        density2[(density2.epochday>=0) & (density2.epochday<1)].index.date))
+                        density2[(density2.epochday>=0) &
+                        (density2.epochday<1)].index.date))
                 density2['epochbin'] = density2.epochday*24//1.5*1.5+0.75
                 density2 = density2.groupby('epochbin')['rrho400'].agg(
                         [np.median, percentile(25),percentile(75)])
@@ -208,22 +232,26 @@ def f2():
                 plt.xticks(np.arange(-3,4,1),('',-2,-1,0,1,2,''))
                 #plt.gca().xaxis.set_minor_locator(AutoMinorLocator(4))
                 if k1 is 'S':
-                    plt.vlines(np.arange(-3,3)+15.5/24,-30,60,linestyle='--',linewidth=1,color='r')
+                    plt.vlines(np.arange(-3, 3)+15.5/24, -30, 60,
+                            linestyle='--', linewidth=1, color='r')
                 if k1 is 'N':
-                    plt.vlines(np.arange(-3,3)+5.5/24,-30,60,linestyle='--',linewidth=1,color='r')
+                    plt.vlines(np.arange(-3, 3)+5.5/24, -30, 60,
+                            linestyle='--', linewidth=1,color='r')
                 plt.ylim(-30,60)
                 plt.yticks(np.arange(-30,61,30))
                 #plt.grid(which='minor',dashes=(4,1))
                 #plt.grid(which='major',axis='y',dashes=(4,1))
                 plt.grid(axis='y',dashes=(4,1))
-                plt.tick_params(axis='both',which='major',direction='out',length=5)
+                plt.tick_params(
+                        axis='both',which='major',direction='out',length=5)
                 if k00*2+k11==0:
                     plt.ylabel(r'$\Delta\rho$ (%)')
                 if k22==3:
                     plt.xlabel('Epoch Time (day)',fontsize=12)
                 plt.text(0.1,0.8,k1,transform=plt.gca().transAxes)
                 if k22==0:
-                    plt.text(0,1.07,fl[k00*2+k11], transform=plt.gca().transAxes)
+                    plt.text(
+                            0,1.07,fl[k00*2+k11], transform=plt.gca().transAxes)
     plt.subplots_adjust(left=0.11,wspace=0.04, hspace=0.12)
     plt.text(0.21,0.95,'Away - Toward',transform=plt.gcf().transFigure)
     plt.text(0.61,0.95,'Toward - Away',transform=plt.gcf().transFigure)
@@ -233,7 +261,7 @@ def f2():
     plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
     print(nn)
 
-    # Density variations at solar maximum and minimum.
+# Density variations at solar maximum and minimum.
     fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(6.35,7.02))
     density1 = density[0][1] # for away-toward and south pole
     fl = ['(a)','(b)']
@@ -244,9 +272,11 @@ def f2():
             density2 = density1['2002-1-1':'2004-12-31']
         if k0 is 'Solar minimum':
             density2 = density1['2005-1-1':'2010-12-31']
-        density2 = density2[(density2.index.month>=8) & (density2.index.month<=10)]
+        density2 = density2[
+                (density2.index.month>=8) & (density2.index.month<=10)]
         nn[k00] = len(np.unique(
-                density2[(density2.epochday>=0) & (density2.epochday<1)].index.date))
+                density2[(density2.epochday>=0) &
+                         (density2.epochday<1)].index.date))
         density2['epochbin'] = density2.epochday*24//1.5*1.5+0.75
         density2 = density2.groupby('epochbin')['rrho400'].agg(
                 [np.median, percentile(25),percentile(75)])
@@ -257,7 +287,8 @@ def f2():
         plt.plot(density2.index/24, density2['median'],'b',linewidth=2)
         plt.xlim(-3,3)
         plt.xticks(np.arange(-3,4,1))
-        plt.vlines(np.arange(-3,3)+15.5/24,-30,61,linestyle='--',linewidth=1,color='r')
+        plt.vlines(np.arange(-3,3)+15.5/24,-30,61,
+                   linestyle='--',linewidth=1,color='r')
         plt.ylim(-30,60)
         plt.yticks(np.arange(-30,61,30))
         plt.tick_params(axis='both',which='major',direction='out',length=5)
@@ -277,7 +308,7 @@ def f2():
     print(nn)
     plt.subplots_adjust(left=0.15,wspace=0.04,hspace=0.24,bottom=0.1)
 
-    # Magnetic local time changes at two poles as a function of UT
+# Magnetic local time changes at two poles as a function of UT
     fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
     density1 = [pd.concat((density[0][0],density[1][0])),
                 pd.concat((density[0][1],density[1][1]))]
@@ -319,7 +350,7 @@ def f2():
     plt.subplots_adjust(bottom=0.1)
     return
 # END
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 if __name__=='__main__':
     plt.close('all')
     a = f2()

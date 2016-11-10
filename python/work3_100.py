@@ -75,15 +75,16 @@ def func3():
     '''
     Case analysis: time constant of density response to IMF By
     '''
-    rtime = '2010-03-22 12:00:00'
+    # rtime = '2010-03-22 12:00:00'
+    rtime = '2010-01-01 06:00:00'
     rtime = pd.Timestamp(rtime)
-    btime = rtime - pd.Timedelta('1.5 h')
-    etime = rtime + pd.Timedelta('1.5 h')
+    btime = rtime - pd.Timedelta('5 h')
+    etime = rtime + pd.Timedelta('5 h')
     # IMF and Kan-Lee electric field variations
     from matplotlib.ticker import AutoMinorLocator
     # By, Bz, K-L electric field
     fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7))
-    omni = get_omni(btime,etime, ['Bym', 'Bzm', 'V'], '1m')
+    omni = get_omni(btime, etime, ['Bym', 'Bzm', 'V'], '1m')
     omni['EF'] = omni.V*(
             np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
     pv = ['Bym', 'Bzm', 'EF']
