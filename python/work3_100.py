@@ -26,7 +26,7 @@ def func1():
     from pylab import draw # Use draw()
     import matplotlib.dates as mdates
     from matplotlib.ticker import AutoMinorLocator
-    bdate, edate = '2010-1-1', '2010-12-31'
+    bdate, edate = '2001-1-1', '2001-12-31'
     if True:
         omni = get_omni(bdate,edate, ['Bym', 'Bzm', 'V'], '1m')
         omni['EF'] = omni.V*(
@@ -76,7 +76,7 @@ def func3():
     Case analysis: time constant of density response to IMF By
     '''
     # rtime = '2010-03-22 12:00:00'
-    rtime = '2010-01-01 06:00:00'
+    rtime = '2010-10-17 06:00:00'
     rtime = pd.Timestamp(rtime)
     btime = rtime - pd.Timedelta('5 h')
     etime = rtime + pd.Timedelta('5 h')
@@ -304,14 +304,14 @@ def func3():
             ax8[-1,k0].set_xlabel(
                     'Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
     plt.tight_layout()
-    fig1.savefig('/home/guod/Documents/work/fig/w03_func03_02a')
-    fig2.savefig('/home/guod/Documents/work/fig/w03_func03_02b')
-    fig3.savefig('/home/guod/Documents/work/fig/w03_func03_02c')
-    fig4.savefig('/home/guod/Documents/work/fig/w03_func03_02d')
-    fig5.savefig('/home/guod/Documents/work/fig/w03_func03_02e')
-    fig6.savefig('/home/guod/Documents/work/fig/w03_func03_02f')
-    fig7.savefig('/home/guod/Documents/work/fig/w03_func03_02g')
-    fig8.savefig('/home/guod/Documents/work/fig/w03_func03_02h')
+    #    fig1.savefig('/home/guod/Documents/work/fig/w03_func03_02a')
+    #    fig2.savefig('/home/guod/Documents/work/fig/w03_func03_02b')
+    #    fig3.savefig('/home/guod/Documents/work/fig/w03_func03_02c')
+    #    fig4.savefig('/home/guod/Documents/work/fig/w03_func03_02d')
+    #    fig5.savefig('/home/guod/Documents/work/fig/w03_func03_02e')
+    #    fig6.savefig('/home/guod/Documents/work/fig/w03_func03_02f')
+    #    fig7.savefig('/home/guod/Documents/work/fig/w03_func03_02g')
+    #    fig8.savefig('/home/guod/Documents/work/fig/w03_func03_02h')
     return
 # END
 #------------------------------------------------------------

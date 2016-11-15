@@ -4,45 +4,123 @@
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
 !_TAG_PROGRAM_VERSION	5.8	//
+1	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    1 CONTINUE$/;"	l	subroutine:GTD7	file:
+1	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    1 CONTINUE$/;"	l	subroutine:SPLINI	file:
+1	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    1 CONTINUE$/;"	l	subroutine:SPLINT	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10   CCOR2=R$/;"	l	function:CCOR2	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10   CCOR=R$/;"	l	function:CCOR	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	function:DNET	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	function:GLOB7S	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	function:GLOBE7	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	function:VTST7	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	subroutine:GHP7	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	subroutine:GTD7	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 CONTINUE$/;"	l	subroutine:GTS7	file:
+10	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   10 IF(XM.EQ.0.) GO TO 50$/;"	l	function:DENSU	file:
 10	/home/guod/work/fortran/work1/bz_ap.f90	/^10   end program$/;"	l	program:dfhskhfgks	file:
 10	/home/guod/work/fortran/work1/char2int.f90	/^10  close(u1);close(u2)$/;"	l	program:jdfsk	file:
 10	/home/guod/work/fortran/work1/char2int_new.f90	/^10  close(u1);close(u2)$/;"	l	program:jdfsk	file:
+100	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  100 FORMAT(1X,1P8E9.2\/4X,1PE9.2,2E10.3\/4X,8E9.2\/4X,8E9.2\/)$/;"	l	file:
+100	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  100 CONTINUE$/;"	l	subroutine:TSELEC	file:
+100	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  100 FORMAT(1X,'MASS', I5, '  NOT VALID')$/;"	l	subroutine:GTS7	file:
+100	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  100 FORMAT(1X,29HGHP7 NOT CONVERGING FOR PRESS, 1PE12.2,E12.2)$/;"	l	subroutine:GHP7	file:
 100	/home/guod/work/fortran/work1/mygamdm.f90	/^100 format(i7,i7,3E12.4)$/;"	l	program:mygamdm	file:
-AllData2D	/home/guod/work/python/Cailei/test.py	/^AllData2D = []$/;"	v
-AllData2D	/home/guod/work/python/Cailei/test.py	/^AllData2D = np.array(AllData2D)$/;"	v
-AllData2D	/home/guod/work/python/Cailei/tst.py	/^AllData2D = []$/;"	v
-AllData2D	/home/guod/work/python/Cailei/tst.py	/^AllData2D = np.array(AllData2D)$/;"	v
-AllTimes	/home/guod/work/python/Cailei/test.py	/^AllTimes = []$/;"	v
-AllTimes	/home/guod/work/python/Cailei/tst.py	/^AllTimes = []$/;"	v
-Alt	/home/guod/work/python/Cailei/plot_gitm.py	/^        Alt = Alts[iAlt]$/;"	v
-Alt	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        Alt = Alts[iAlt]$/;"	v
-Alt	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    Alt = Alts[iAlt]$/;"	v
-Alt	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        Alt = Alts[iAlt]$/;"	v
-Alt	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^Alt = alts_all[ialt]$/;"	v
-Alt	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^Alt = Alts[iAlt]$/;"	v
-Alt	/home/guod/work/python/Cailei/tst.py	/^        Alt = Alts[iAlt]$/;"	v
-Alt	/home/guod/work/python/Cailei/tst0.py	/^Alt = Alts[iAlt]$/;"	v
-Alts	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^Alts = data[2][0, 0, :] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/test.py	/^        Alts = data[2][0][0]\/1000.0;$/;"	v
-Alts	/home/guod/work/python/Cailei/tst.py	/^        Alts = data[2][0][0] \/ 1000.0$/;"	v
-Alts	/home/guod/work/python/Cailei/tst0.py	/^Alts = data[2][0][0] \/ 1000.0$/;"	v
+11	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   11 CONTINUE$/;"	l	subroutine:SPLINE	file:
+12	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   12 CONTINUE$/;"	l	subroutine:SPLINE	file:
+15	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   15 CONTINUE$/;"	l	function:GLOBE7	file:
+15	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   15 CONTINUE$/;"	l	function:VTST7	file:
+15	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   15 IF(Z.GT.ALTL(6).AND.MASS.NE.28.AND.MASS.NE.48) GO TO 17$/;"	l	subroutine:GTS7	file:
+16	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   16 CONTINUE$/;"	l	function:GLOBE7	file:
+16	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   16 CONTINUE$/;"	l	function:VTST7	file:
+17	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   17 CONTINUE$/;"	l	subroutine:GTS7	file:
+2	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    2 CONTINUE$/;"	l	subroutine:GTD7	file:
+2	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    2 CONTINUE$/;"	l	subroutine:GTS7	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20   CCOR2=0.$/;"	l	function:CCOR2	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20   CCOR=0.$/;"	l	function:CCOR	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20 CONTINUE$/;"	l	function:DENSM	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20 CONTINUE$/;"	l	function:DENSU	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20 CONTINUE$/;"	l	function:DNET	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20 CONTINUE$/;"	l	function:VTST7	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20 CONTINUE$/;"	l	subroutine:GHP7	file:
+20	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   20 CONTINUE$/;"	l	subroutine:GTS7	file:
+200	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  200 FORMAT(\/\/' DAY  ',5I12)$/;"	l	file:
+200	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  200 CONTINUE$/;"	l	function:GLOB7S	file:
+200	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  200 CONTINUE$/;"	l	function:GLOBE7	file:
+200	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  200 CONTINUE$/;"	l	subroutine:TSELEC	file:
+201	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  201 FORMAT(' UT   ',5F12.0)$/;"	l	file:
+202	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  202 FORMAT(' ALT  ',5F12.0)$/;"	l	file:
+203	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  203 FORMAT(' LAT  ',5F12.0)$/;"	l	file:
+204	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  204 FORMAT(' LONG ',5F12.0)$/;"	l	file:
+204	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  204   CONTINUE$/;"	l	subroutine:GTD7	file:
+205	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  205 FORMAT(' LST  ',5F12.0)$/;"	l	file:
+206	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  206 FORMAT(' F107A',5F12.0)$/;"	l	file:
+207	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  207 FORMAT(' F107 ',5F12.0)$/;"	l	file:
+208	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  208 FORMAT(' AP   ',5F12.0)$/;"	l	file:
+210	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  210 FORMAT(\/' TINF ',5F12.2)$/;"	l	file:
+210	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  210 CONTINUE$/;"	l	function:DENSM	file:
+210	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  210 CONTINUE$/;"	l	function:GLOB7S	file:
+210	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  210 CONTINUE$/;"	l	function:GLOBE7	file:
+211	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  211 FORMAT(' TG   ',5F12.2)$/;"	l	file:
+212	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  212 FORMAT(' HE   ',1P5E12.3)$/;"	l	file:
+213	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  213 FORMAT(' O    ',1P5E12.3)$/;"	l	file:
+214	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  214 FORMAT(' N2   ',1P5E12.3)$/;"	l	file:
+215	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  215 FORMAT(' O2   ',1P5E12.3)$/;"	l	file:
+216	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  216 FORMAT(' AR   ',1P5E12.3)$/;"	l	file:
+216	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  216   CONTINUE$/;"	l	subroutine:GTD7	file:
+217	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  217 FORMAT(' H    ',1P5E12.3)$/;"	l	file:
+218	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  218 FORMAT(' RHO  ',1P5E12.3)$/;"	l	file:
+219	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  219 FORMAT(' N    ',1P5E12.3)$/;"	l	file:
+220	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  220 FORMAT(' ANM O',1P5E12.3)$/;"	l	file:
+220	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  220 CONTINUE$/;"	l	function:DENSM	file:
+220	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  220 CONTINUE$/;"	l	function:GLOB7S	file:
+220	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  220 CONTINUE$/;"	l	function:GLOBE7	file:
+230	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  230 CONTINUE$/;"	l	function:GLOBE7	file:
+232	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  232   CONTINUE$/;"	l	subroutine:GTD7	file:
+24	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   24 CONTINUE$/;"	l	subroutine:GTS7	file:
+240	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  240   CONTINUE$/;"	l	subroutine:GTD7	file:
+240	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  240 CONTINUE$/;"	l	function:GLOBE7	file:
+25	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   25 CONTINUE$/;"	l	subroutine:GTS7	file:
+30	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   30 CONTINUE$/;"	l	function:DENSM	file:
+30	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   30 CONTINUE$/;"	l	function:GLOBE7	file:
+300	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	/^  300 FORMAT(1X,2A4,2X,3A4,2X,2A4)$/;"	l	file:
+34	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   34 CONTINUE$/;"	l	subroutine:GTS7	file:
+35	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   35 CONTINUE$/;"	l	subroutine:GTS7	file:
+38	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   38 CONTINUE$/;"	l	subroutine:GTS7	file:
+39	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   39 CONTINUE$/;"	l	subroutine:GTS7	file:
+40	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   40 CONTINUE$/;"	l	function:GLOB7S	file:
+40	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   40 CONTINUE$/;"	l	subroutine:GTS7	file:
+40	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  40  CONTINUE$/;"	l	function:GLOBE7	file:
+44	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   44 CONTINUE$/;"	l	subroutine:GTS7	file:
+45	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   45 CONTINUE$/;"	l	function:GLOBE7	file:
+45	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   45 CONTINUE$/;"	l	subroutine:GTS7	file:
+46	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   46 CONTINUE$/;"	l	subroutine:GTS7	file:
+47	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   47 CONTINUE$/;"	l	subroutine:GTS7	file:
+48	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   48 CONTINUE$/;"	l	function:GLOBE7	file:
+48	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   48 CONTINUE$/;"	l	subroutine:GTS7	file:
+49	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   49 CONTINUE$/;"	l	function:GLOB7S	file:
+49	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   49 CONTINUE$/;"	l	function:GLOBE7	file:
+49	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   49 CONTINUE$/;"	l	subroutine:GTS7	file:
+5	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    5   CONTINUE$/;"	l	subroutine:GTD7	file:
+5	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    5 CONTINUE$/;"	l	function:DNET	file:
+5	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    5 CONTINUE$/;"	l	function:VTST7	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	function:CCOR	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	function:CCOR2	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	function:DENSM	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	function:DENSU	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	function:DNET	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	subroutine:GTD7	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 CONTINUE$/;"	l	subroutine:GTS7	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 TINF = TINF + ABS(SW(I))*T(I)$/;"	l	function:GLOBE7	file:
+50	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   50 TT=TT+ABS(SW(I))*T(I)$/;"	l	function:GLOB7S	file:
+6	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    6   CONTINUE$/;"	l	subroutine:GTD7	file:
+7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^    7 CONTINUE$/;"	l	function:VTST7	file:
+90	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   90 CONTINUE$/;"	l	subroutine:GTD7	file:
+90	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   90 CONTINUE$/;"	l	subroutine:GTS7	file:
+900	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^  900   FORMAT(1X,'WRONG PARAMETER SET FOR GLOB7S',3F10.1)$/;"	l	function:GLOB7S	file:
+95	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^   95   CONTINUE$/;"	l	subroutine:GTS7	file:
 Apex	/home/guod/work/python/champ_grace.py	/^            from apexpy import Apex$/;"	i
 Apex	/home/guod/work/python/champ_grace.py	/^        from apexpy import Apex$/;"	i
+Apex	/home/guod/work/python/goce.py	/^            from apexpy import Apex$/;"	i
 Apex	/home/guod/work/python/goce.py	/^        from apexpy import Apex$/;"	i
 Apex	/home/guod/work/python/sth.py	/^    from apexpy import Apex$/;"	i
 AutoMinorLocator	/home/guod/work/python/champ_grace.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
@@ -52,100 +130,93 @@ AutoMinorLocator	/home/guod/work/python/work3_100.py	/^    from matplotlib.ticke
 Basemap	/home/guod/work/python/champ_grace.py	/^        from mpl_toolkits.basemap import Basemap$/;"	i
 Basemap	/home/guod/work/python/goce.py	/^        from mpl_toolkits.basemap import Basemap$/;"	i
 Basemap	/home/guod/work/python/sth.py	/^    from mpl_toolkits.basemap import Basemap$/;"	i
+CCOR	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION  CCOR(/;"	f
+CCOR2	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION  CCOR2(/;"	f
+CSW	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1195;"	c	subroutine:TSELEC
+CSW	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1219;"	c	function:GLOB7S
+CSW	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	145;"	c	subroutine:GTD7
+CSW	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	468;"	c	function:VTST7
+CSW	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	581;"	c	subroutine:GTS7
+CSW	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	968;"	c	function:GLOBE7
 ChampDensity	/home/guod/work/python/champ_grace.py	/^class ChampDensity(pd.DataFrame):$/;"	c
 ChampWind	/home/guod/work/python/champ_grace.py	/^class ChampWind(ChampDensity):$/;"	c
 DATADIR	/home/guod/work/python/champ_grace.py	/^DATADIR = '\/home\/guod\/data\/'$/;"	v
 DATADIR	/home/guod/work/python/work2_101.py	/^DATADIR = '\/home\/guod\/data\/'$/;"	v
 DATADIR	/home/guod/work/python/work3_100.py	/^DATADIR = '\/home\/guod\/data\/'$/;"	v
+DATIM7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	143;"	c	subroutine:GTD7
+DATIM7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1668;"	c	block data:GTD7BK
+DATIME	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	6;"	c
+DATIME	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	144;"	c	subroutine:GTD7
+DENSM	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION DENSM(/;"	f
+DENSU	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION DENSU(/;"	f
+DMIX	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	147;"	c	subroutine:GTD7
+DMIX	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	583;"	c	subroutine:GTS7
+DNET	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION DNET(/;"	f
+FIT	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1394;"	c	function:DENSM
+GHP7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GHP7(/;"	s
+GLATF	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GLATF(/;"	s
+GLOB7S	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION GLOB7S(/;"	f
+GLOBE7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION GLOBE7(/;"	f
 GOCEDATADIR	/home/guod/work/python/goce.py	/^GOCEDATADIR = '\/home\/guod\/data\/GOCE\/'$/;"	v
+GTD7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GTD7(/;"	s
+GTD7BK	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      BLOCK DATA GTD7BK$/;"	b
+GTD7D	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GTD7D(/;"	s
+GTS3C	/home/guod/work/fortran/nrlmsis/nrlmsise00_driver.for	5;"	c
+GTS3C	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	137;"	c	subroutine:GTD7
+GTS3C	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	574;"	c	subroutine:GTS7
+GTS7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GTS7(/;"	s
 GitmBin	/home/guod/work/python/gitm.py	/^class GitmBin(PbData):$/;"	c
 GoceData	/home/guod/work/python/goce.py	/^class GoceData(pd.DataFrame):$/;"	c
+ISDATE	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      CHARACTER(4) NAME, ISDATE,/;"	v	block data:GTD7BK
+ISTIME	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      CHARACTER(4) NAME, ISDATE, ISTIME$/;"	v	block data:GTD7BK
 InitialGuess	/home/guod/work/matlab/matlabfunction/smoothn.m	/^function z = InitialGuess(y,I)$/;"	f
+LOWER7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	140;"	c	subroutine:GTD7
+LOWER7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1666;"	c	block data:GTD7BK
+LOWER7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	578;"	c	subroutine:GTS7
+LPOLY	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1217;"	c	function:GLOB7S
+LPOLY	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	969;"	c	function:GLOBE7
+LSQV	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1313;"	c	function:DENSU
+LSQV	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1395;"	c	function:DENSM
 LT_median	/home/guod/work/python/champ_grace.py	/^    def LT_median(self):$/;"	m	class:ChampDensity
 LT_median	/home/guod/work/python/goce.py	/^    def LT_median(self):$/;"	m	class:GoceData
 LagWtdAve	/home/guod/work/matlab/matlabfunction/LagWtdAve.m	/^function y = LagWtdAve( x,n,deltat,tau )$/;"	f
-Lat	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^Lat = Lats[iLat]$/;"	v
-Lats	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm.py	/^        Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/test.py	/^        Lats = data[1][0,:,0]*rtod;$/;"	v
-Lats	/home/guod/work/python/Cailei/tst.py	/^        Lats = data[1][0, :, 0] * rtod$/;"	v
-Lats	/home/guod/work/python/Cailei/tst0.py	/^Lats = data[1][0, :, 0] * rtod$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^Lon = Lons[iLon]$/;"	v
-Lon	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^Lon = Lons[iLon]$/;"	v
-Lon0	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^Lon0 = Lons[iLon0]$/;"	v
-Lon0	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^Lon0 = Lons[iLon0]$/;"	v
-Lons	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        Lons = data[0][:, 0, 0]$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm.py	/^        Lons = data[0][:, 0, 0]$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        Lons = data[0][:, 0, 0]$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^Lons = data[0][:, 0, 0]$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^Lons = data[0][:, 0, 0] * rtod$/;"	v
-Lons	/home/guod/work/python/Cailei/test.py	/^        Lons = data[0][:,0,0]*rtod;$/;"	v
-Lons	/home/guod/work/python/Cailei/tst.py	/^        Lons = data[0][:, 0, 0]$/;"	v
-Lons	/home/guod/work/python/Cailei/tst0.py	/^Lons = data[0][:, 0, 0]$/;"	v
+MAVG7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	146;"	c	subroutine:GTD7
+MAVG7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1667;"	c	block data:GTD7BK
+MESO7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	139;"	c	subroutine:GTD7
+MESO7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	576;"	c	subroutine:GTS7
+METERS	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE METERS(/;"	s
+METSEL	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	149;"	c	subroutine:GTD7
+METSEL	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1669;"	c	block data:GTD7BK
+METSEL	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	347;"	c	subroutine:GTD7D
+METSEL	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	397;"	c	subroutine:GHP7
+METSEL	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	584;"	c	subroutine:GTS7
+METSEL	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	946;"	c	subroutine:METERS
+NAME	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      CHARACTER(4) NAME,/;"	v	block data:GTD7BK
+NearestNDInterpolator	/home/guod/work/python/work3_100.py	/^    from scipy.interpolate import NearestNDInterpolator$/;"	i
 OMNIDATADIR	/home/guod/work/python/omni.py	/^OMNIDATADIR = '\/home\/guod\/data\/omni\/'$/;"	v
+PARM7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	141;"	c	subroutine:GTD7
+PARM7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1655;"	c	block data:GTD7BK
+PARM7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	579;"	c	subroutine:GTS7
+PARMB	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1312;"	c	function:DENSU
+PARMB	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	1393;"	c	function:DENSM
+PARMB	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	148;"	c	subroutine:GTD7
+PARMB	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	396;"	c	subroutine:GHP7
+PARMB	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	954;"	c	function:SCALH
 PbData	/home/guod/work/python/gitm.py	/^from spacepy.pybats import PbData$/;"	i
 RobustWeights	/home/guod/work/matlab/matlabfunction/smoothn.m	/^function W = RobustWeights(y,z,I,h,wstr)$/;"	f
+SCALH	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION SCALH(/;"	f
+SPLINE	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE SPLINE(/;"	s
+SPLINI	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE SPLINI(/;"	s
+SPLINT	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE SPLINT(/;"	s
+TRETRV	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      ENTRY TRETRV(/;"	e	subroutine:TSELEC
+TSELEC	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE TSELEC(/;"	s
+TTEST	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	582;"	c	subroutine:GTS7
+TTEST	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	967;"	c	function:GLOBE7
 Use	/home/guod/work/python/work3_100.py	/^    from pylab import draw # Use draw()$/;"	i
-Var	/home/guod/work/python/Cailei/plot_gitm.py	/^    Var = 'Vn(Up)'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm.py	/^Var = header['vars'][var].decode().replace(' ','')$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^Var = 'gradP÷rg-base&Vup'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    Var = 'Vn(Up)'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^Var = header['vars'][var].decode().replace(' ','')$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    Var = 'Vn(Up)'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^Var = header['vars'][var].decode().replace(' ', '')$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    Var = 'Vn(Up)'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^Var = header['vars'][var].decode().replace(' ', '')$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    Var = 'Vn(Up)'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^Var = header['vars'][var].decode().replace(' ', '')$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^Var = 'gradP-rg'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^Var = 'gradP÷rho-g'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^Var = 'gradP÷rho-g-base'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^Var = 'gradP÷rg-base'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^Var = 'gradP÷rg-base'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^Var = 'gradP-rg'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^Var = 'gradP-rg_div_rg'$/;"	v
-Var	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^Var = 'gradP÷rg-base&Vup'$/;"	v
-Var	/home/guod/work/python/Cailei/test.py	/^Var = header["vars"][args["var"]].decode().replace(" ","")$/;"	v
-Var	/home/guod/work/python/Cailei/tst.py	/^Var = 'Vn(Up)'$/;"	v
-Var	/home/guod/work/python/Cailei/tst0.py	/^Var = 'Rho'$/;"	v
+VTST7	/home/guod/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION VTST7(/;"	f
 __author__	/home/guod/work/python/sth.py	/^__author__ = 'Guo Dongjie'$/;"	v
 __author__	/home/guod/work/python/work4_100.py	/^__author__ = 'Dongjie Guo'$/;"	v
-__init__	/home/guod/work/python/champ_grace.py	/^    def __init__(self, btime, etime, satellite='champ', variables=-1, *args, **kwargs):$/;"	m	class:ChampDensity
+__init__	/home/guod/work/python/champ_grace.py	/^    def __init__(self, btime, etime, satellite='champ', variables=-1,$/;"	m	class:ChampDensity
 __init__	/home/guod/work/python/champ_grace.py	/^    def __init__(self, btime, etime, variables=-1, *args, **kwargs):$/;"	m	class:ChampWind
 __init__	/home/guod/work/python/gitm.py	/^    def __init__(self, filename, *args, **kwargs):$/;"	m	class:GitmBin
 __init__	/home/guod/work/python/goce.py	/^    def __init__(self, btime, etime, *args, **kwargs):$/;"	m	class:GoceData
@@ -154,262 +225,51 @@ _read	/home/guod/work/python/champ_grace.py	/^    def _read(self, bdate, edate, 
 _read	/home/guod/work/python/champ_grace.py	/^    def _read(self, bdate, edate, variables):$/;"	m	class:ChampWind
 _read	/home/guod/work/python/gitm.py	/^    def _read(self, varlist, newfile=True):$/;"	m	class:GitmBin
 _read	/home/guod/work/python/goce.py	/^    def _read(self, bdate,edate):$/;"	m	class:GoceData
+a	/home/guod/work/fortran/test.f90	/^    integer :: i, a(/;"	v	program:test
+a	/home/guod/work/python/champ_grace.py	/^    a = ChampDensity('2005-1-1', '2005-1-2')$/;"	v	class:ChampWind
 a	/home/guod/work/python/gitm.py	/^    a = GitmBin('\/home\/guod\/tmp\/3DALL_t100924_143000.bin')$/;"	v	class:GitmBin
-a	/home/guod/work/python/goce.py	/^    a=10$/;"	v	class:GoceData
 a	/home/guod/work/python/sth.py	/^    a=f3()$/;"	v
-a	/home/guod/work/python/work3_100.py	/^    a = func2()$/;"	v
-aa	/home/guod/work/python/Cailei/test.py	/^aa = sys.argv$/;"	v
+a	/home/guod/work/python/work3_100.py	/^    a = func1()$/;"	v
 addgrid	/home/guod/work/matlab/matlabfunction/addgrid.m	/^function  addgrid( h,color,linestyle )$/;"	f
-alt	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^alt = 400;$/;"	v
-alt	/home/guod/work/python/Cailei/plot_gitm.py	/^alt = args['alt']$/;"	v
-alt	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^alt = args['alt']$/;"	v
-alt	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^alt = args['alt']$/;"	v
-alt	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^alt = args['alt']$/;"	v
-alt	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^alt = args['alt']$/;"	v
-alt	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^alt = args['alt']$/;"	v
-alt	/home/guod/work/python/Cailei/tst.py	/^alt = 400$/;"	v
-alt	/home/guod/work/python/Cailei/tst0.py	/^alt = 400$/;"	v
 altlon	/home/guod/work/matlab/matlabfunction/altlon.m	/^function [alt,lon] = altlon( x,y,z )$/;"	f
-altrange	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    altrange = [250, 400]$/;"	v
-altrange	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    altrange = [alt]$/;"	v
-alts_all	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^alts_all = data[2][0, 0, :] \/ 1000.0$/;"	v
 ap	/home/guod/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,/;"	v	program:dfhskhfgks
+apex	/home/guod/work/python/work3_100.py	/^        from apexpy import Apex as apex$/;"	i
 append_data	/home/guod/work/python/gitm.py	/^    def append_data(self, varlist):$/;"	m	class:GitmBin
 append_units	/home/guod/work/python/gitm.py	/^    def append_units(self):$/;"	m	class:GitmBin
 apt	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,l,apt$/;"	v	program:dfhskhfgks
 argrelextrema	/home/guod/work/python/gitm.py	/^        from scipy.signal import argrelextrema$/;"	i
-args	/home/guod/work/python/Cailei/plot_gitm.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^args = get_args(sys.argv)$/;"	v
-args	/home/guod/work/python/Cailei/test.py	/^args = get_args(sys.argv)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm.py	/^    ax = fig.add_subplot(111, projection='polar')$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    ax = fig.add_subplot(111, projection='polar')$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        ax = fig.add_subplot(331+i, projection='polar')$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    ax = fig.add_subplot(111, projection='polar')$/;"	v
-ax	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/test.py	/^    ax = fig.add_subplot(111)$/;"	v
-ax	/home/guod/work/python/Cailei/tst.py	/^    ax = fig.add_subplot(111, projection='polar')$/;"	v
-ax	/home/guod/work/python/Cailei/tst0.py	/^ax = fig.add_subplot(111, projection='polar')$/;"	v
 ax	/home/guod/work/python/goce.py	/^    ax = plt.subplot()$/;"	v	class:GoceData
 ax	/home/guod/work/python/goce.py	/^    ax = plt.subplot(polar=True)$/;"	v	class:GoceData
 ax	/home/guod/work/python/myfunctions.py	/^    ax = plt.subplot(projection='polar')$/;"	v
-ax1	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    ax1 = fig.add_subplot(411)$/;"	v
-ax1	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    ax1 = fig.add_subplot(211)$/;"	v
-ax2	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    ax2 = fig.add_subplot(412)$/;"	v
-ax2	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    ax2 = fig.add_subplot(212)$/;"	v
-ax3	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    ax3 = fig.add_subplot(413)$/;"	v
-ax4	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    ax4 = fig.add_subplot(414)$/;"	v
+b	/home/guod/work/fortran/test.f90	/^    integer :: i, a(10), b(/;"	v	program:test
 bart	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,/;"	v	program:jdfsk
 bart	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,/;"	v	program:jdfsk
-basefile	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
-basefile	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
-basefile	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
-basefile	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
-basefile	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^basefile = r'F:\\data\\Gitm\\substorm\\bin\\3DALL_t000321_100001.bin'$/;"	v
 bdate	/home/guod/work/python/work4_100.py	/^    bdate ='2003-10-4 10:00:00'$/;"	v
 bday	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,/;"	v	program:jdfsk
 bday	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,/;"	v	program:jdfsk
+begintime	/home/guod/work/python/omni.py	/^    begintime = time.time()$/;"	v
 betime	/home/guod/work/python/work4_100.py	/^    betime = time_champ_orbit_updown(bdate, edate, updown='up')$/;"	v
 bisquare	/home/guod/work/matlab/matlabfunction/smoothn.m	/^function W = bisquare(r,h)$/;"	f
-bplot	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            bplot = 0$/;"	v
-bplot	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            bplot = 1$/;"	v
-bplot	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    bplot = 0$/;"	v
 breakpoint	/home/guod/work/python/work2_101.py	/^import pdb   # set breakpoint$/;"	i
 btime	/home/guod/work/python/work4_100.py	/^        btime = betime.loc[k-1,'btime']$/;"	v
 bze	/home/guod/work/fortran/work1/bz_ap.f90	/^     real bze,/;"	v	program:dfhskhfgks
 bzet	/home/guod/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,bzet,/;"	v	program:dfhskhfgks
 bzm	/home/guod/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,/;"	v	program:dfhskhfgks
 bzmt	/home/guod/work/fortran/work1/bz_ap.f90	/^     real bze,bzm,ap,bzet,bzmt$/;"	v	program:dfhskhfgks
+c	/home/guod/work/fortran/test.f90	/^    ch/;"	v	program:test
 calc_2dion	/home/guod/work/python/gitm.py	/^    def calc_2dion(self):$/;"	m	class:GitmBin
 calc_deg	/home/guod/work/python/gitm.py	/^    def calc_deg(self):$/;"	m	class:GitmBin
 calc_lt	/home/guod/work/python/gitm.py	/^    def calc_lt(self):$/;"	m	class:GitmBin
 calc_magdi	/home/guod/work/python/gitm.py	/^    def calc_magdi(self):$/;"	m	class:GitmBin
 calc_magvel	/home/guod/work/python/gitm.py	/^    def calc_magvel(self):$/;"	m	class:GitmBin
 calc_tec	/home/guod/work/python/gitm.py	/^    def calc_tec(self):$/;"	m	class:GitmBin
-cax	/home/guod/work/python/Cailei/plot_gitm.py	/^    cax = ax.pcolormesh(Lons[sLon:eLon], rmap(Lats[sLat:eLat]), np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    cax = ax.pcolormesh(Lons[sLon:eLon], rmap(Lats[sLat:eLat]), np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        cax = ax.pcolormesh(Lons[sLon:eLon], rmap(Lats[sLat:eLat]), np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    cax = ax.contour(Lats[sLat:eLat], Alts[sAlt:eAlt], np.transpose(d2d), norm=norm, cmap=cmap, levels=levels)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    cax = ax.plot(Lats[sLat:eLat], np.transpose(d2d))$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    cax = ax.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    cax = ax.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    cax = ax.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    cax = ax.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    cax = ax.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    cax = ax.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax	/home/guod/work/python/Cailei/test.py	/^    cax = ax.pcolor(Lons, Lats, np.transpose(d2d), vmin=mini, vmax=maxi)$/;"	v
-cax	/home/guod/work/python/Cailei/tst.py	/^    cax = ax.pcolor(Lons[sLon:eLon], rmap(Lats[sLat:eLat]), np.transpose(d2d), vmin=mini, vmax=maxi)$/;"	v
-cax	/home/guod/work/python/Cailei/tst0.py	/^cax = ax.pcolormesh(Lons[sLon:eLon], rmap(Lats[sLat:eLat]), np.transpose(d2d), norm=norm, cmap=cmap)$/;"	v
-cax1	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cax1 = ax1.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d_p), norm=norm_p, cmap=cmap_p)$/;"	v
-cax1	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    cax1 = ax1.pcolormesh(Lats[sLat:eLat], hs, np.transpose(d2d_p), norm=norm_p, cmap=cmap_p)$/;"	v
-cax2	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cax2 = ax2.pcolormesh(Lats[sLat:eLat], Alts[sAlt:eAlt], np.transpose(d2d_v), norm=norm_v, cmap=cmap_v)$/;"	v
-cax2	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    cax2 = ax2.pcolormesh(Lats[sLat:eLat], Alts[sAlt:eAlt], np.transpose(d2d_v), norm=norm_v, cmap=cmap_v)$/;"	v
-cax3	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cax3 = ax3.pcolormesh(Lats[sLat:eLat], Alts[sAlt:eAlt], np.transpose(d2d_e), norm=norm_e, cmap=cmap_e)$/;"	v
-cax4	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cax4 = ax4.contour(Lats[sLat:eLat], Alts[sAlt:eAlt], np.transpose(d2d_vi), norm=norm_vi, cmap=cmap_vi,$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/test.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/tst.py	/^    cbar = fig.colorbar(cax)$/;"	v
-cbar	/home/guod/work/python/Cailei/tst0.py	/^cbar = fig.colorbar(cax)$/;"	v
-cbar1	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cbar1 = fig.colorbar(cax1)$/;"	v
-cbar1	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    cbar1 = fig.colorbar(cax1)$/;"	v
-cbar2	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cbar2 = fig.colorbar(cax2)$/;"	v
-cbar2	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    cbar2 = fig.colorbar(cax2)$/;"	v
-cbar3	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cbar3 = fig.colorbar(cax3)$/;"	v
-cbar4	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    cbar4 = fig.colorbar(cax4)$/;"	v
 cg	/home/guod/work/python/myfunctions.py	/^    import champ_grace as cg$/;"	i
 chacheng	/home/guod/work/matlab/matlabfunction/chacheng.m	/^function y=chacheng(x1,x2)$/;"	f
-cm	/home/guod/work/python/Cailei/gitm_routines.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/test.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/tst.py	/^from pylab import cm$/;"	i
-cm	/home/guod/work/python/Cailei/tst0.py	/^from pylab import cm$/;"	i
-cmap	/home/guod/work/python/Cailei/plot_gitm.py	/^    cmap = cm.get_cmap('Blues')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm.py	/^    cmap = cm.get_cmap('YlOrRd')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm.py	/^    cmap = cm.get_cmap('jet')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm.py	/^    cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    cmap = cm.get_cmap('Blues')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    cmap = cm.get_cmap('YlOrRd')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    cmap = cm.get_cmap('jet')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    cmap = cm.get_cmap('Blues')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    cmap = cm.get_cmap('YlOrRd')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    cmap = cm.get_cmap('jet')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    cmap = cm.get_cmap('Blues')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    cmap = cm.get_cmap('YlOrRd')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    cmap = cm.get_cmap('jet')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^cmap = cm.get_cmap('jet')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^cmap = cm.get_cmap('seismic')$/;"	v
-cmap	/home/guod/work/python/Cailei/test.py	/^    cmap = cm.rainbow$/;"	v
-cmap	/home/guod/work/python/Cailei/tst0.py	/^cmap = cm.get_cmap('Blues')$/;"	v
-cmap_e	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^cmap_e = cm.get_cmap('Blues')$/;"	v
-cmap_p	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^cmap_p = cm.get_cmap('seismic')$/;"	v
-cmap_p	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^cmap_p = cm.get_cmap('seismic')$/;"	v
-cmap_v	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^cmap_v = cm.get_cmap('seismic')$/;"	v
-cmap_v	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^cmap_v = cm.get_cmap('seismic')$/;"	v
-cmap_vi	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^cmap_vi = cm.get_cmap('seismic')$/;"	v
 contourf_date_lat	/home/guod/work/python/champ_grace.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho400',$/;"	m	class:ChampDensity
 contourf_date_lat	/home/guod/work/python/champ_grace.py	/^    def contourf_date_lat(self, ax, whichcolumn='wind', updown='up', **kwargs):$/;"	m	class:ChampWind
 contourf_date_lat	/home/guod/work/python/goce.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho', **kwargs):$/;"	m	class:GoceData
-d2d	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        d2d = data[iVar][sLon:eLon, sLat:eLat, iAlt]$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm.py	/^    d2d = np.array(data[var][sLon:eLon, sLat:eLat, iAlt])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    d2d = np.array(data[var][sLon:eLon, sLat:eLat, iAlt])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        d2d = np.array(data[var][sLon:eLon, sLat:eLat, iAlt])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    d2d = np.array(data[var][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    d2d = np.array(data[var][iLon, sLat:eLat, iAlt])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    d2d = -dp \/ rg - 1$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    d2d = np.array([])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    d2d = np.array([])$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    d2d = -gp \/ rg - d2db$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    d2d = -gp \/ rg - d2db$/;"	v
-d2d	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    d2d = -dp \/ rg  # - 1$/;"	v
-d2d	/home/guod/work/python/Cailei/test.py	/^    d2d = AllData2D[i]$/;"	v
-d2d	/home/guod/work/python/Cailei/tst.py	/^    d2d = AllData2D[i]$/;"	v
-d2d	/home/guod/work/python/Cailei/tst0.py	/^d2d = np.array(data[var][sLon:eLon, sLat:eLat, iAlt])$/;"	v
-d2d_e	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    d2d_e = np.array(data[33][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-d2d_p	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    d2d_p = -gp \/ rg - d2db$/;"	v
-d2d_p	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    d2d_p = -gp \/ rg - d2db$/;"	v
-d2d_v	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    d2d_v = np.array(data[18][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-d2d_v	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    d2d_v = np.array(data[18][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-d2d_vi	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    d2d_vi = np.array(data[36][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-d2db	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^d2db = -gp \/ rg$/;"	v
-d2db	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^d2db = np.array([])$/;"	v
-d2db	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^d2db = -gp \/ rg$/;"	v
-d2db	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^d2db = -gp \/ rg$/;"	v
-d2db	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^d2db = -gp \/ rg$/;"	v
-data	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^data = read_gitm_one_file(basefile, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        data = read_gitm_one_file(file, [var])$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^data = read_gitm_one_file(filelist[0], vars)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^data = read_gitm_one_file(filelist[0], [0, 1, 2])$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^data = read_gitm_one_file(filelist[0], [0, 1, 2])$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^data = read_gitm_one_file(basefile, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^data = read_gitm_one_file(basefile, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^data = read_gitm_one_file(basefile, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^data = read_gitm_one_file(filelist[0], [0, 1, 2])$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^data = read_gitm_one_file(filelist[0], [0, 1, 2])$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    data = read_gitm_one_file(file, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^data = read_gitm_one_file(basefile, var)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    data = read_gitm_one_file(file, vars_to_read)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^data = read_gitm_one_file(filelist[0], vars_to_read)$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    data = read_gitm_one_file(file, [var])$/;"	v
-data	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^data = read_gitm_one_file(filelist[0], vars)$/;"	v
-data	/home/guod/work/python/Cailei/t.py	/^data = get_gitm_vars_range('F:\\\\data\\\\gitm\\\\3DALL_t000318_000000.bin', vars)$/;"	v
-data	/home/guod/work/python/Cailei/test.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/tst.py	/^    data = read_gitm_one_file(file, vars)$/;"	v
-data	/home/guod/work/python/Cailei/tst0.py	/^data = read_gitm_one_file(file, vars)$/;"	v
-datapath	/home/guod/work/python/Cailei/tst0.py	/^datapath = 'F:\\\\data\\\\gitm\\\\substorm\\\\bin\\\\'$/;"	v
 date2doy	/home/guod/work/matlab/matlabfunction/date2doy.m	/^function y = date2doy( varargin )$/;"	f
 date2doy	/home/guod/work/matlab/work1/sea_SB_diff/date2doy.m	/^function y = date2doy( varargin )$/;"	f
-dates	/home/guod/work/python/Cailei/gitm_routines.py	/^import matplotlib.dates as dates$/;"	i
-dates	/home/guod/work/python/Cailei/test.py	/^import matplotlib.dates as dates$/;"	i
-dates	/home/guod/work/python/Cailei/tst.py	/^import matplotlib.dates as dates$/;"	i
-dates	/home/guod/work/python/Cailei/tst0.py	/^import matplotlib.dates as dates$/;"	i
-datetime	/home/guod/work/python/Cailei/gitm_routines.py	/^from datetime import datetime$/;"	i
-datetime	/home/guod/work/python/Cailei/gitm_routines_new.py	/^from datetime import datetime$/;"	i
-datetime	/home/guod/work/python/Cailei/test.py	/^from datetime import datetime$/;"	i
-datetime	/home/guod/work/python/Cailei/time_lon_conv.py	/^from datetime import datetime$/;"	i
 day	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,/;"	v	program:dfhskhfgks
 day	/home/guod/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day,/;"	v	program:gamdm_test
 dctn	/home/guod/work/matlab/matlabfunction/smoothn.m	/^function y = dctn(y)$/;"	f
@@ -419,62 +279,15 @@ dens	/home/guod/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107
 denskp	/home/guod/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=2.2, dens(1:3),denskp(/;"	v	program:mygamdm
 df107	/home/guod/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day, kp, dens(1:3), df107$/;"	v	program:gamdm_test
 dfhskhfgks	/home/guod/work/fortran/work1/bz_ap.f90	/^    program dfhskhfgks$/;"	p
-dh	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^dh = []$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^dh = []  # delta altitude$/;"	v
-dh	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^dh = []$/;"	v
-dln	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^dln = {}$/;"	v
 dmarray	/home/guod/work/python/gitm.py	/^from spacepy.datamodel import dmarray$/;"	i
-dn	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    dn = np.array([])$/;"	v
-dn	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    dn = np.array([])$/;"	v
 doy	/home/guod/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,/;"	v	program:mygamdm
 doy2date	/home/guod/work/matlab/matlabfunction/doy2date.m	/^function [mm,dd] = doy2date( varargin )$/;"	f
-dp	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    dp = np.array([])$/;"	v
-dp	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    dp = np.array([])$/;"	v
-dr	/home/guod/work/python/Cailei/test.py	/^dr = (maxi-mini)\/31$/;"	v
-dr	/home/guod/work/python/Cailei/tst.py	/^dr = (maxi-mini)\/31$/;"	v
 draw	/home/guod/work/python/work3_100.py	/^    from pylab import draw # Use draw()$/;"	i
 dt	/home/guod/work/python/champ_grace.py	/^            import datetime as dt$/;"	i
 dt	/home/guod/work/python/gitm.py	/^import datetime as dt$/;"	i
-eAlt	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^eAlt = iAlt + 1$/;"	v
-eAlt	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^eAlt = iAlt + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm.py	/^        eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/tst.py	/^        eLat = iLat + 1$/;"	v
-eLat	/home/guod/work/python/Cailei/tst0.py	/^eLat = iLat + 1$/;"	v
-eLon	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        eLon = iLon + 1$/;"	v
-eLon	/home/guod/work/python/Cailei/plot_gitm.py	/^        eLon = iLon + 1$/;"	v
-eLon	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        eLon = iLon + 1$/;"	v
-eLon	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^eLon = iLon + 1$/;"	v
-eLon	/home/guod/work/python/Cailei/tst.py	/^        eLon = iLon + 1$/;"	v
-eLon	/home/guod/work/python/Cailei/tst0.py	/^eLon = iLon + 1$/;"	v
+dt	/home/guod/work/python/omni.py	/^    import datetime as dt$/;"	i
 edate	/home/guod/work/python/work4_100.py	/^    edate ='2003-10-4 16:00:00'$/;"	v
+endtime	/home/guod/work/python/omni.py	/^    endtime = time.time()$/;"	v
 epoch2lrdates	/home/guod/work/matlab/work2/epoch2lrdates.m	/^function lrdates=epoch2lrdates(epoch_date, lrdays)$/;"	f
 errorbar_tick	/home/guod/work/matlab/matlabfunction/errorbar_tick.m	/^function errorbar_tick(h,w,xtype)$/;"	f
 etime	/home/guod/work/python/work4_100.py	/^        etime = betime.loc[k-1,'etime']$/;"	v
@@ -494,49 +307,7 @@ f4	/home/guod/work/python/sth.py	/^def f4():$/;"	f
 f5	/home/guod/work/python/sth.py	/^def f5(x=1000,r=0.1):$/;"	f
 f6	/home/guod/work/python/sth.py	/^def f6():$/;"	f
 f7	/home/guod/work/python/sth.py	/^def f7():$/;"	f
-fig	/home/guod/work/python/Cailei/plot_gitm.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/test.py	/^    fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/tst.py	/^fig = plt.figure()$/;"	v
-fig	/home/guod/work/python/Cailei/tst0.py	/^fig = plt.figure()$/;"	v
 fig	/home/guod/work/python/work4_100.py	/^    fig = plt.figure(figsize=[8,8.25])$/;"	v
-file	/home/guod/work/python/Cailei/tst0.py	/^file = datapath + '3DALL_t000321_120001.bin'$/;"	v
-filelist	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^filelist = glob(filepath+'3DALL*.bin')$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^filelist = args['filelist']$/;"	v
-filelist	/home/guod/work/python/Cailei/test.py	/^filelist = args["filelist"]$/;"	v
-filelist	/home/guod/work/python/Cailei/tst.py	/^filelist = glob(filepath+'3DALL*.bin')$/;"	v
-filepath	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^filepath = 'F:\\\\data\\\\gitm\\\\'$/;"	v
-filepath	/home/guod/work/python/Cailei/tst.py	/^filepath = 'F:\\\\data\\\\gitm\\\\'$/;"	v
 findSBseason	/home/guod/work/matlab/work1/data_SBlist/findSBseason.m	/^function y = findSBseason( x,t )$/;"	f
 findSBseason	/home/guod/work/matlab/work1/data_processing/findSBseason.m	/^function y = findSBseason( x,t )$/;"	f
 fix_dottedline	/home/guod/work/matlab/matlabfunction/fix_dottedline.m	/^function fix_dottedline(filename)$/;"	f
@@ -550,7 +321,6 @@ fname2	/home/guod/work/fortran/work1/char2int_new.f90	/^    character fname1*100
 fname2	/home/guod/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,fname2,/;"	v	program:mygamdm
 fname3	/home/guod/work/fortran/work1/mygamdm.f90	/^  character *100 fname1,fname2,fname3$/;"	v	program:mygamdm
 func1	/home/guod/work/python/work3_100.py	/^def func1():$/;"	f
-func2	/home/guod/work/python/work3_100.py	/^def func2():$/;"	f
 func3	/home/guod/work/python/work3_100.py	/^def func3():$/;"	f
 gamdm	/home/guod/work/fortran/work1/gamdm.f90	/^subroutine gamdm(/;"	s
 gamdm	/home/guod/work/fortran/work1/mygamdm.f90	/^subroutine gamdm(/;"	s
@@ -558,39 +328,12 @@ gamdm_test	/home/guod/work/fortran/work1/gamdm.f90	/^program gamdm_test$/;"	p
 gc	/home/guod/work/python/myfunctions.py	/^    import goce as gc$/;"	i
 gc	/home/guod/work/python/work2_101.py	/^    import gc$/;"	i
 gcv	/home/guod/work/matlab/matlabfunction/smoothn.m	/^function GCVscore = gcv(p)$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^def get_args(argv):$/;"	f
-get_args	/home/guod/work/python/Cailei/test.py	/^def get_args(argv):$/;"	f
 get_champ_grace_mdays	/home/guod/work/matlab/work2/get_champ_grace_mdays.m	/^function [uporbit,downorbit]=get_champ_grace_mdays(lrdays,satellite)$/;"	f
 get_champ_wind	/home/guod/work/python/work4_100.py	/^def get_champ_wind(dates):$/;"	f
 get_contourf_rho_mdays	/home/guod/work/matlab/work2/get_contourf_rho_mdays.m	/^function h=get_contourf_rho_mdays(lrdays,satellite,updown)$/;"	f
 get_dates_satellite	/home/guod/work/matlab/work2/get_dates_satellite.m	/^function dates=get_dates_satellite(dates_list,satellite)$/;"	f
 get_density_dates	/home/guod/work/python/work4_100.py	/^def get_density_dates(dates,satellite='champ'):$/;"	f
 get_fig_1234	/home/guod/work/matlab/work2/get_fig_1234.m	/^function [ha,h1,h2,h3,h4,h5,h6]=get_fig_1234(epoch,lrdays,satellite,updown)$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^def get_g(h):$/;"	f
-get_g	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^def get_g(h):$/;"	f
-get_gitm_vars_range	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^def get_gitm_vars_range(file_to_read, iAlt, vars_to_read=-1):$/;"	f
 get_goce_mdays	/home/guod/work/matlab/work2/get_goce_mdays.m	/^function [uporbit,downorbit]=get_goce_mdays(lrdays)$/;"	f
 get_imf_AE_PC_5m	/home/guod/work/python/work4_100.py	/^def get_imf_AE_PC_5m(dates):$/;"	f
 get_imf_ace_1h_mdays	/home/guod/work/matlab/work2/get_imf_ace_1h_mdays.m	/^function imf_ace=get_imf_ace_1h_mdays(lrdates)$/;"	f
@@ -598,16 +341,7 @@ get_imf_epoch	/home/guod/work/matlab/work2/get_imf_epoch.m	/^function imf_epoch=
 get_imf_epoch_median	/home/guod/work/matlab/work2/get_imf_epoch_median.m	/^function imf_epoch_median=get_imf_epoch_median(imf_epoch)$/;"	f
 get_imf_mdays	/home/guod/work/matlab/work2/get_imf_mdays.m	/^function imf=get_imf_mdays(lrdates)$/;"	f
 get_index	/home/guod/work/python/work4_100.py	/^def get_index(dates):$/;"	f
-get_omni	/home/guod/work/python/omni.py	/^def get_omni(bdate, edate,variables,res='1h'):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^def get_p(n, t):$/;"	f
-get_p	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^def get_p(n, t):$/;"	f
+get_omni	/home/guod/work/python/omni.py	/^def get_omni(bdate, edate,variables,res='1m'):$/;"	f
 get_plot_imf_mdays	/home/guod/work/matlab/work2/get_plot_imf_mdays.m	/^function h=get_plot_imf_mdays(lrdays,str_imf)$/;"	f
 get_rltrho	/home/guod/work/matlab/work2/get_satellite_epoch.m	/^function rtlrho=get_rltrho(rho_mdays)$/;"	f
 get_satellite_epoch	/home/guod/work/matlab/work2/get_satellite_epoch.m	/^function [satellite_epoch,varargout]=get_satellite_epoch(epoch_date,lrdays,satellite)$/;"	f
@@ -615,29 +349,6 @@ get_sblist	/home/guod/work/python/work2_101.py	/^def get_sblist():$/;"	f
 get_sblist_select	/home/guod/work/matlab/work2/get_sblist_select.m	/^function sblist_select=get_sblist_select(sblist,sbtype,season,yncir)$/;"	f
 get_solar_wind_parameters_epoch	/home/guod/work/matlab/work2/get_solar_wind_parameters_epoch.m	/^function solar_wind_parameters_epoch=get_solar_wind_parameters_epoch(epoch_date,lrdays)$/;"	f
 get_solar_wind_parameters_mdays	/home/guod/work/matlab/work2/get_solar_wind_parameters_mdays.m	/^function solar_wind_parameters=get_solar_wind_parameters_mdays(lrdates)$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm.py	/^def get_var_minmax(var):$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^def get_var_minmax(var):$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^def get_var_minmax(var, alt):$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^def get_var_minmax(var):$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^def get_var_minmax(var):$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^def get_var_minmax(var):$/;"	f
-get_var_minmax	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^def get_var_minmax(var):$/;"	f
-glob	/home/guod/work/python/Cailei/gitm_routines.py	/^from glob import glob$/;"	i
-glob	/home/guod/work/python/Cailei/gitm_routines_new.py	/^from glob import glob$/;"	i
-glob	/home/guod/work/python/Cailei/test.py	/^from glob import glob$/;"	i
-gp	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            gp = (get_p(nn[:, ih + 2], temp[:, ih + 2]) - get_p(nn[:, ih], temp[:, ih])) \/ (dh[ih] * 1000)$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    gp = np.array([])  # gradient pressure$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    gp = np.array([])$/;"	v
-gp	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^gp = np.array([])$/;"	v
 gpr	/home/guod/work/python/gitm.py	/^        import gitm_plot_rout as gpr$/;"	i
 great_circle_distance_earth	/home/guod/work/python/myfunctions.py	/^def great_circle_distance_earth(lat1,lon1,lat2,lon2):$/;"	f
 griddata	/home/guod/work/python/champ_grace.py	/^        from scipy.interpolate import griddata$/;"	i
@@ -645,145 +356,12 @@ griddata	/home/guod/work/python/goce.py	/^        from scipy.interpolate import 
 griddata	/home/guod/work/python/goce.py	/^from scipy.interpolate import griddata$/;"	i
 gridxy	/home/guod/work/matlab/matlabfunction/mygriddata.m	/^function gridx0=gridxy(x0,x)$/;"	f
 h	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,/;"	v	program:dfhskhfgks
-h	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    h = 200$/;"	v
 h	/home/guod/work/python/work4_100.py	/^        h = plt.subplot(2,2,k,polar=True)$/;"	v
 hc	/home/guod/work/python/goce.py	/^    hc = den.satellite_position_lt_lat(mag=False)$/;"	v	class:GoceData
-header	/home/guod/work/python/Cailei/plot_gitm.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^header = read_gitm_file_header(filelist[0])$/;"	v
-header	/home/guod/work/python/Cailei/t.py	/^header = read_gitm_file_header('F:\\\\data\\\\gitm\\\\3DALL_t000318_000000.bin')$/;"	v
-header	/home/guod/work/python/Cailei/test.py	/^header = read_gitm_header()$/;"	v
-header	/home/guod/work/python/Cailei/tst0.py	/^header = read_gitm_file_header(file)$/;"	v
 hourvalue_change_around_polarity_change	/home/guod/work/matlab/work1/data_processing/hourvalue_change_around_polarity_change.m	/^function y=hourvalue_change_around_polarity_change(x1,x2)$/;"	f
-hs	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^hs = []$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^hs = []  # altitude of gradient pressure$/;"	v
-hs	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^hs = []$/;"	v
+i	/home/guod/work/fortran/test.f90	/^    in/;"	v	program:test
 i	/home/guod/work/fortran/work1/bz_ap.f90	/^     in/;"	v	program:dfhskhfgks
 i	/home/guod/work/fortran/work1/mygamdm.f90	/^  in/;"	v	program:mygamdm
-i	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/t.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/test.py	/^    i=i+1$/;"	v
-i	/home/guod/work/python/Cailei/test.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/tst.py	/^    i = i + 1$/;"	v
-i	/home/guod/work/python/Cailei/tst.py	/^    i=i+1$/;"	v
-i	/home/guod/work/python/Cailei/tst.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/tst0.py	/^i = 0$/;"	v
-i	/home/guod/work/python/Cailei/tst0.py	/^i=i+1$/;"	v
-iAlt	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^                    iAlt = iAlt + 1$/;"	v
-iAlt	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^                iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^                iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^            iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm.py	/^                iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm.py	/^                iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm.py	/^            iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^                iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^                iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^            iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^            iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^            iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^                iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^                iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^            iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^iAlt = 0$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^        iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^        iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/test.py	/^                    iAlt=iAlt+1$/;"	v
-iAlt	/home/guod/work/python/Cailei/test.py	/^                iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/test.py	/^                iAlt = nAlts-3$/;"	v
-iAlt	/home/guod/work/python/Cailei/test.py	/^            iAlt = args["alt"]$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst.py	/^                    iAlt = iAlt + 1$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst.py	/^                iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst.py	/^                iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst.py	/^            iAlt = alt$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst0.py	/^        iAlt = 2$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst0.py	/^        iAlt = nAlts - 3$/;"	v
-iAlt	/home/guod/work/python/Cailei/tst0.py	/^    iAlt = alt$/;"	v
-iLat	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^            iLat = iLat + 1$/;"	v
-iLat	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm.py	/^        iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/tst.py	/^            iLat = iLat + 1$/;"	v
-iLat	/home/guod/work/python/Cailei/tst.py	/^        iLat = 0$/;"	v
-iLat	/home/guod/work/python/Cailei/tst0.py	/^iLat = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^            iLon = iLon + 1$/;"	v
-iLon	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm.py	/^        iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^        iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^        iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/tst.py	/^            iLon = iLon + 1$/;"	v
-iLon	/home/guod/work/python/Cailei/tst.py	/^        iLon = 0$/;"	v
-iLon	/home/guod/work/python/Cailei/tst0.py	/^iLon = 0$/;"	v
-iLon0	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^iLon0 = 0$/;"	v
-iLon0	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^iLon0 = 0$/;"	v
-ialt	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^        ialt = 2$/;"	v
-ialt	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^        ialt = nalts - 3$/;"	v
-ialt	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    ialt = alt$/;"	v
 iday	/home/guod/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a, iday,/;"	v	program:gamdm_test
 idctn	/home/guod/work/matlab/matlabfunction/smoothn.m	/^function y = idctn(y)$/;"	f
 idf107	/home/guod/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a, iday, ikp, idf107$/;"	v	program:gamdm_test
@@ -791,14 +369,6 @@ if107	/home/guod/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107,/;"	v	pr
 if107a	/home/guod/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a,/;"	v	program:gamdm_test
 ikp	/home/guod/work/fortran/work1/gamdm.f90	/^  integer(4)   :: if107, if107a, iday, ikp,/;"	v	program:gamdm_test
 ikp	/home/guod/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, f107a,kp, ikp=/;"	v	program:mygamdm
-il	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    il = 0$/;"	v
-il	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^il = 0$/;"	v
-ilat	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^ilat = 0$/;"	v
-ilat_e	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^ilat_e = ilat + 1$/;"	v
-ilat_s	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^        ilat_s = ilat$/;"	v
-ilon	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^ilon = 0$/;"	v
-ilon_e	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^ilon_e = ilon + 1$/;"	v
-ilon_s	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^        ilon_s = ilon$/;"	v
 integ	/home/guod/work/python/gitm.py	/^        import scipy.integrate as integ$/;"	i
 interp1d	/home/guod/work/python/gitm.py	/^        from scipy.interpolate import interp1d$/;"	i
 iost	/home/guod/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=3,i,j,iost$/;"	v	program:mygamdm
@@ -814,8 +384,6 @@ isme	/home/guod/work/matlab/work1/sea_SB_diff/isme.m	/^function y = isme( doy )$
 isse	/home/guod/work/matlab/work1/sea_SB_diff/isse.m	/^function y = isse( doy )$/;"	f
 j	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,/;"	v	program:dfhskhfgks
 j	/home/guod/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=3,i,j,/;"	v	program:mygamdm
-j	/home/guod/work/python/Cailei/test.py	/^    j=j+1$/;"	v
-j	/home/guod/work/python/Cailei/test.py	/^j = 0$/;"	v
 jdfsk	/home/guod/work/fortran/work1/char2int.f90	/^ program jdfsk$/;"	p
 jdfsk	/home/guod/work/fortran/work1/char2int_new.f90	/^ program jdfsk$/;"	p
 kp	/home/guod/work/fortran/work1/gamdm.f90	/^  real(4)      :: f107, f107a, day, kp,/;"	v	program:gamdm_test
@@ -823,66 +391,15 @@ kp	/home/guod/work/fortran/work1/mygamdm.f90	/^  real(4)      :: year,doy,f107, 
 l	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,day,h,l,/;"	v	program:dfhskhfgks
 l	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,l,/;"	v	program:jdfsk
 l	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,l,/;"	v	program:jdfsk
-lat	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^lat = args['lat']$/;"	v
 lat2arglat	/home/guod/work/python/myfunctions.py	/^def lat2arglat(lat):$/;"	f
-lats_all	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^lats_all = data[1][0, :, 0]$/;"	v
-levels	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^                       levels=levels)$/;"	v
-levels	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    levels = [-800, -700, -600, -500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500, 600, 700, 800]$/;"	v
-levels	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    levels = [-800, -700, -600, -500, -400, -300, -200, -100, 0, 100, 200, 300, 400, 500, 600, 700, 800]$/;"	v
-levels	/home/guod/work/python/Cailei/test.py	/^levels = np.arange(mini, maxi, dr)$/;"	v
-levels	/home/guod/work/python/Cailei/tst.py	/^levels = np.arange(mini, maxi, dr)$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^lon = args['lon']$/;"	v
-lon	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^lon = args['lon']$/;"	v
 lon_lt_ticks	/home/guod/work/python/gitm.py	/^    def lon_lt_ticks(self, x, pos):$/;"	m	class:GitmBin
-lons	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^lons = Lons[::2]$/;"	v
-lons_all	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^lons_all = data[0][:, 0, 0]$/;"	v
 lt2ang	/home/guod/work/matlab/matlabfunction/lt2ang.m	/^function ang = lt2ang( lt )$/;"	f
-lt_to_lon	/home/guod/work/python/Cailei/time_lon_conv.py	/^def lt_to_lon(ut, lt):$/;"	f
-m	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^    m = {}$/;"	v
-math	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^import math$/;"	i
 math	/home/guod/work/python/gitm.py	/^        import math$/;"	i
-matplotlib	/home/guod/work/python/Cailei/gitm_routines.py	/^import matplotlib.dates as dates$/;"	i
-matplotlib	/home/guod/work/python/Cailei/gitm_routines.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/t.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/test.py	/^import matplotlib.dates as dates$/;"	i
-matplotlib	/home/guod/work/python/Cailei/test.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/tst.py	/^import matplotlib.dates as dates$/;"	i
-matplotlib	/home/guod/work/python/Cailei/tst.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/tst.py	/^import matplotlib.transforms as tf$/;"	i
-matplotlib	/home/guod/work/python/Cailei/tst0.py	/^import matplotlib.dates as dates$/;"	i
-matplotlib	/home/guod/work/python/Cailei/tst0.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/Cailei/tst0.py	/^import matplotlib.transforms as tf$/;"	i
 matplotlib	/home/guod/work/python/champ_grace.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/guod/work/python/goce.py	/^        import matplotlib.dates as mdates$/;"	i
 matplotlib	/home/guod/work/python/goce.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/guod/work/python/myfunctions.py	/^    import matplotlib.pyplot as plt$/;"	i
-matplotlib	/home/guod/work/python/omni.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	/home/guod/work/python/omni.py	/^    import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/guod/work/python/sth.py	/^    import matplotlib$/;"	i
 matplotlib	/home/guod/work/python/sth.py	/^    import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/guod/work/python/sth.py	/^import matplotlib$/;"	i
@@ -891,89 +408,11 @@ matplotlib	/home/guod/work/python/work2_101.py	/^import matplotlib.pyplot as plt
 matplotlib	/home/guod/work/python/work3_100.py	/^    import matplotlib.dates as mdates$/;"	i
 matplotlib	/home/guod/work/python/work3_100.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/guod/work/python/work4_100.py	/^import matplotlib.pyplot as plt$/;"	i
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^maxAlt = 500$/;"	v
-maxAlt	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^maxAlt = 500$/;"	v
-maxLat	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^maxLat = 90\/rtod$/;"	v
-maxLat	/home/guod/work/python/Cailei/tst.py	/^maxLat = 90$/;"	v
-maxLat	/home/guod/work/python/Cailei/tst0.py	/^maxLat = 90$/;"	v
-maxLon	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^maxLon = 360\/rtod$/;"	v
-maxLon	/home/guod/work/python/Cailei/plot_gitm.py	/^maxLon = 360\/rtod$/;"	v
-maxLon	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^maxLon = 360\/rtod$/;"	v
-maxLon	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^maxLon = 360\/rtod$/;"	v
-maxLon	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^maxLon = 360\/rtod$/;"	v
-maxLon	/home/guod/work/python/Cailei/tst.py	/^maxLon = 360\/rtod$/;"	v
-maxLon	/home/guod/work/python/Cailei/tst0.py	/^maxLon = 360\/rtod$/;"	v
-maxi	/home/guod/work/python/Cailei/test.py	/^maxi  = np.max(AllData2D)*1.05$/;"	v
-maxi	/home/guod/work/python/Cailei/tst.py	/^maxi = np.max(AllData2D)*1.05$/;"	v
-maxi	/home/guod/work/python/Cailei/tst0.py	/^maxi = 2.e-13  # np.max(AllData2D)*1.05$/;"	v
 mdates	/home/guod/work/python/goce.py	/^        import matplotlib.dates as mdates$/;"	i
 mdates	/home/guod/work/python/work3_100.py	/^    import matplotlib.dates as mdates$/;"	i
 mf	/home/guod/work/python/champ_grace.py	/^import myfunctions as mf$/;"	i
 mf	/home/guod/work/python/goce.py	/^import myfunctions as mf$/;"	i
 mf	/home/guod/work/python/work3_100.py	/^import myfunctions as mf$/;"	i
-minAlt	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^minAlt = 100$/;"	v
-minAlt	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^minAlt = 100$/;"	v
-minLat	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^minLat = 50\/rtod$/;"	v
-minLat	/home/guod/work/python/Cailei/tst.py	/^minLat = 50$/;"	v
-minLat	/home/guod/work/python/Cailei/tst0.py	/^minLat = 50$/;"	v
-minLon	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^minLon = 0$/;"	v
-minLon	/home/guod/work/python/Cailei/plot_gitm.py	/^minLon = 0$/;"	v
-minLon	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^minLon = 0$/;"	v
-minLon	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^minLon = 0$/;"	v
-minLon	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^minLon = 0$/;"	v
-minLon	/home/guod/work/python/Cailei/tst.py	/^minLon = 0$/;"	v
-minLon	/home/guod/work/python/Cailei/tst0.py	/^minLon = 0$/;"	v
-mini	/home/guod/work/python/Cailei/test.py	/^mini  = np.min(AllData2D)*0.95$/;"	v
-mini	/home/guod/work/python/Cailei/tst.py	/^mini = np.min(AllData2D)*0.95$/;"	v
-mini	/home/guod/work/python/Cailei/tst0.py	/^mini = 9.e-15  # np.min(AllData2D)*0.95$/;"	v
-minmax	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^        minmax = m;$/;"	v
-minmax	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^minmax = {}$/;"	v
 minorxy	/home/guod/work/matlab/matlabfunction/minorxy.m	/^function minorxy(num,lengthf)$/;"	f
 mygamdm	/home/guod/work/fortran/work1/mygamdm.f90	/^program mygamdm$/;"	p
 mygriddata	/home/guod/work/matlab/matlabfunction/mygriddata.m	/^function z=mygriddata(x0,y0,z0,x,y)$/;"	f
@@ -986,66 +425,6 @@ mytext	/home/guod/work/matlab/matlabfunction/mytext.m	/^function htext = mytext(
 mytitle	/home/guod/work/matlab/matlabfunction/mytitle.m	/^function tit = mytitle( varargin)$/;"	f
 mytitle_3c	/home/guod/work/matlab/work1/mytitle_3c.m	/^function tit = mytitle_3c( hand,text1,text2,text3,c1,c2,ypos_rat,font_si)$/;"	f
 myxgrid	/home/guod/work/matlab/matlabfunction/myxgrid.m	/^function varargout = myxgrid(varargin )$/;"	f
-nAlts	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^nAlts = eAlt - sAlt$/;"	v
-nAlts	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^nAlts = eAlt - sAlt$/;"	v
-nFiles	/home/guod/work/python/Cailei/test.py	/^nFiles = len(filelist)$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^nLats = eLat - sLat$/;"	v
-nLats	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^nLats = eLat - sLat$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    nn = np.array([])  # N$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    nn = np.array([])$/;"	v
-nn	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^nn = np.array([])$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm.py	/^    norm = cm.colors.LogNorm(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm.py	/^    norm = cm.colors.Normalize(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    norm = cm.colors.LogNorm(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    norm = cm.colors.Normalize(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        norm = cm.colors.LogNorm(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        norm = cm.colors.Normalize(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    norm = cm.colors.LogNorm(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    norm = cm.colors.Normalize(vmax=vmax, vmin=vmin)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^norm = cm.colors.Normalize(vmax=0.075, vmin=-0.03)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^norm = cm.colors.Normalize(vmax=0.65, vmin=-0.65)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^norm = cm.colors.Normalize(vmax=0.45, vmin=-0.45)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^norm = cm.colors.Normalize(vmax=0.055, vmin=-0.055)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^norm = cm.colors.Normalize(vmax=0.055, vmin=-0.055)$/;"	v
-norm	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^norm = cm.colors.Normalize(vmax=1, vmin=-1)$/;"	v
-norm	/home/guod/work/python/Cailei/test.py	/^    norm = cm.colors.Normalize(vmax=np.max(AllData2D), vmin=np.min(AllData2D))$/;"	v
-norm	/home/guod/work/python/Cailei/tst.py	/^    norm = cm.colors.Normalize(vmax=np.max(AllData2D), vmin=np.min(AllData2D))$/;"	v
-norm	/home/guod/work/python/Cailei/tst0.py	/^norm = cm.colors.LogNorm(vmax=maxi, vmin=mini)$/;"	v
-norm_e	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^norm_e = cm.colors.Normalize(vmax=5e11, vmin=0)$/;"	v
-norm_p	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^norm_p = cm.colors.Normalize(vmax=0.055, vmin=-0.055)$/;"	v
-norm_p	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^norm_p = cm.colors.Normalize(vmax=0.055, vmin=-0.055)$/;"	v
-norm_v	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^norm_v = cm.colors.Normalize(vmax=52, vmin=-52)$/;"	v
-norm_v	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^norm_v = cm.colors.Normalize(vmax=52, vmin=-52)$/;"	v
-norm_vi	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^norm_vi = cm.colors.Normalize(vmax=800, vmin=-800)$/;"	v
-np	/home/guod/work/python/Cailei/gitm_routines.py	/^import numpy as np$/;"	i
-np	/home/guod/work/python/Cailei/gitm_routines_new.py	/^import numpy as np$/;"	i
-np	/home/guod/work/python/Cailei/t.py	/^import numpy as np$/;"	i
-np	/home/guod/work/python/Cailei/test.py	/^import numpy as np$/;"	i
-np	/home/guod/work/python/Cailei/tst.py	/^import numpy as np$/;"	i
-np	/home/guod/work/python/Cailei/tst0.py	/^import numpy as np$/;"	i
 np	/home/guod/work/python/champ_grace.py	/^import numpy as np$/;"	i
 np	/home/guod/work/python/gitm.py	/^import numpy as np$/;"	i
 np	/home/guod/work/python/goce.py	/^import numpy as np$/;"	i
@@ -1057,53 +436,16 @@ np	/home/guod/work/python/work2_101.py	/^import numpy as np$/;"	i
 np	/home/guod/work/python/work3_100.py	/^import numpy as np$/;"	i
 np	/home/guod/work/python/work4_100.py	/^import numpy as np$/;"	i
 numdate	/home/guod/work/matlab/matlabfunction/numdate.m	/^function yeardoy=numdate(matday)$/;"	f
-oneplot	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^oneplot = args['IsOnePlot']$/;"	v
+omni1	/home/guod/work/python/omni.py	/^    omni1 = get_omni_backup('2010-1-1', '2010-12-31', ['Bx'], res='1m')$/;"	v
+omni2	/home/guod/work/python/omni.py	/^    omni2 = get_omni('2010-1-1', '2010-12-31', ['Bx'], res='1m')$/;"	v
 orbit_mean	/home/guod/work/python/champ_grace.py	/^    def orbit_mean(self,lats=(-85,85),updown='up'):$/;"	m	class:ChampDensity
 orbit_mean	/home/guod/work/python/goce.py	/^    def orbit_mean(self,lats=(-85,85),updown='up'):$/;"	m	class:GoceData
 os	/home/guod/work/python/champ_grace.py	/^import os$/;"	i
 os	/home/guod/work/python/goce.py	/^import os$/;"	i
 os	/home/guod/work/python/omni.py	/^import os$/;"	i
 os	/home/guod/work/python/work4_100.py	/^import os$/;"	i
-outfile	/home/guod/work/python/Cailei/plot_gitm.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_')+'Alt_'+"%.0f" % Alt + '.png'$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            outfile = outpath + Var + "_%d" % round(hs[ih]) + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    outfile = outpath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    outfile = outpath + time.strftime('Vi_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    outfile = outpath + 'Vn(up)' + 'Lon_' + '%d' % round(l)$/;"	v
-outfile	/home/guod/work/python/Cailei/test.py	/^    outfile = time.strftime('test_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/tst.py	/^    outfile = filepath + Var + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outfile	/home/guod/work/python/Cailei/tst0.py	/^outfile = 'test' + time.strftime('_%y%m%d_%H%M%S.png')$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^outpath = args['out']$/;"	v
-outpath	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^outpath = args['out']$/;"	v
 p	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,/;"	v	program:jdfsk
 p	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,/;"	v	program:jdfsk
-parser_high	/home/guod/work/python/omni.py	/^    def parser_high(date):$/;"	f	function:get_omni
-parser_low	/home/guod/work/python/omni.py	/^    def parser_low(date):$/;"	f	function:get_omni
 pd	/home/guod/work/python/champ_grace.py	/^import pandas as pd$/;"	i
 pd	/home/guod/work/python/goce.py	/^import pandas as pd$/;"	i
 pd	/home/guod/work/python/myfunctions.py	/^import pandas as pd$/;"	i
@@ -1116,52 +458,15 @@ pd	/home/guod/work/python/work4_100.py	/^import pandas as pd$/;"	i
 pdb	/home/guod/work/python/work2_101.py	/^import pdb   # set breakpoint$/;"	i
 percentile	/home/guod/work/python/work2_101.py	/^    def percentile(n):$/;"	f	function:f2
 percentile_	/home/guod/work/python/work2_101.py	/^        def percentile_(x):$/;"	f	function:f2.percentile
-pi	/home/guod/work/python/Cailei/plot_gitm.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^from math import pi$/;"	i
-pi	/home/guod/work/python/Cailei/tst0.py	/^from math import pi$/;"	i
 pi	/home/guod/work/python/gitm.py	/^        from numpy import pi$/;"	i
 plot_median	/home/guod/work/matlab/work1/data_processing/plot_median.m	/^function pic = plot_median(y1,y2,yr)$/;"	f
 plot_omni	/home/guod/work/python/omni.py	/^def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):$/;"	f
 plot_text	/home/guod/work/matlab/matlabfunction/plot_text.m	/^function htext = plot_text(xxtext,yytext,text_str,font_size)$/;"	f
 plot_text_3c	/home/guod/work/matlab/work1/plot_text_3c.m	/^function htext = plot_text_3c(xxtext,yytext,c1,c2,text1,text2,text3,font_size)$/;"	f
-plt	/home/guod/work/python/Cailei/gitm_routines.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/t.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/test.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/tst.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/Cailei/tst0.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/guod/work/python/champ_grace.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/guod/work/python/goce.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/guod/work/python/myfunctions.py	/^    import matplotlib.pyplot as plt$/;"	i
-plt	/home/guod/work/python/omni.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	/home/guod/work/python/omni.py	/^    import matplotlib.pyplot as plt$/;"	i
 plt	/home/guod/work/python/sth.py	/^    import matplotlib.pyplot as plt$/;"	i
 plt	/home/guod/work/python/sth.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/guod/work/python/work2_101.py	/^import matplotlib.pyplot as plt$/;"	i
@@ -1171,112 +476,9 @@ polar_quiver_wind	/home/guod/work/python/champ_grace.py	/^    def polar_quiver_w
 polar_quiver_wind	/home/guod/work/python/goce.py	/^    def polar_quiver_wind(self, ax, ns='N'):$/;"	m	class:GoceData
 polarity	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
 polarity	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,year,bday,bart,p,l,polarity(/;"	v	program:jdfsk
-print_dates	/home/guod/work/python/champ_grace.py	/^    def print_dates(self):$/;"	m	class:ChampDensity
-print_dates	/home/guod/work/python/goce.py	/^    def print_dates(self):$/;"	m	class:GoceData
-print_variable_name	/home/guod/work/python/champ_grace.py	/^    def print_variable_name(self):$/;"	m	class:ChampDensity
-print_variable_name	/home/guod/work/python/goce.py	/^    def print_variable_name(self):$/;"	m	class:GoceData
-q	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    q = ax.quiver(lons2d, rmap_rad(lats2d), ve2d, vn2d)$/;"	v
 quiver_champ_wind	/home/guod/work/python/work4_100.py	/^def quiver_champ_wind(bdate, edate, pole='N', updown='both', color='b'):$/;"	f
-r_earth	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^r_earth = 5.e2  # 6371e3$/;"	v
-re	/home/guod/work/python/Cailei/plot_gitm.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^import re$/;"	i
-re	/home/guod/work/python/Cailei/test.py	/^import re$/;"	i
-read_gitm_file_header	/home/guod/work/python/Cailei/gitm_routines_new.py	/^def read_gitm_file_header(file_to_read):$/;"	f
-read_gitm_header	/home/guod/work/python/Cailei/gitm_routines.py	/^def read_gitm_header(filepath = '.\/'):$/;"	f
-read_gitm_header	/home/guod/work/python/Cailei/gitm_routines_new.py	/^def read_gitm_header(filepath = '.\\\\'):$/;"	f
-read_gitm_one_file	/home/guod/work/python/Cailei/gitm_routines.py	/^def read_gitm_one_file(file_to_read, vars_to_read=-1):$/;"	f
-read_gitm_one_file	/home/guod/work/python/Cailei/gitm_routines_new.py	/^def read_gitm_one_file(file_to_read, vars_to_read=-1):$/;"	f
 resp2SB	/home/guod/work/matlab/work1/data_processing/resp2SB.m	/^function [y1,y2]=resp2SB(x1,x2,x3)$/;"	f
 resp2SB	/home/guod/work/matlab/work1/resp2SB.m	/^function y=resp2SB(x1,x2,x3)$/;"	f
-rg	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt+1:eAlt-1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^rg = np.array(data[3][iLon0, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt+1:eAlt-1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt+1:eAlt-1])  # Rho*g$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rg	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^rg = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rho	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    rho = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rho	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    rho = np.array(data[3][iLon, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rho	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^rho = np.array(data[3][iLon0, sLat:eLat, sAlt + 1:eAlt - 1])$/;"	v
-rmap	/home/guod/work/python/Cailei/plot_gitm.py	/^def rmap(r):$/;"	f
-rmap	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^def rmap(r):$/;"	f
-rmap	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^def rmap(r):$/;"	f
-rmap	/home/guod/work/python/Cailei/tst.py	/^def rmap(r):$/;"	f
-rmap	/home/guod/work/python/Cailei/tst0.py	/^def rmap(r):$/;"	f
-rmap_rad	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^def rmap_rad(r):$/;"	f
-rtod	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^rtod = 180.0\/3.141592$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^rtod = 180.0\/math.pi$/;"	v
-rtod	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^rtod = 180.0\/pi$/;"	v
-rtod	/home/guod/work/python/Cailei/test.py	/^rtod = 180.0\/3.141592$/;"	v
-rtod	/home/guod/work/python/Cailei/tst.py	/^rtod = 180.0\/3.141592$/;"	v
-rtod	/home/guod/work/python/Cailei/tst0.py	/^rtod = 180.0\/pi$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^                sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^        sAlt = iAlt$/;"	v
-sAlt	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^        sAlt = iAlt$/;"	v
-sLat	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^                sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm.py	/^                sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^                sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^                sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^                sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/tst.py	/^                sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/tst0.py	/^        sLat = iLat$/;"	v
-sLat	/home/guod/work/python/Cailei/tst0.py	/^sLat = sLat$/;"	v
-sLon	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^                sLon = iLon$/;"	v
-sLon	/home/guod/work/python/Cailei/plot_gitm.py	/^                sLon = iLon$/;"	v
-sLon	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^                sLon = iLon$/;"	v
-sLon	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        sLon = iLon$/;"	v
-sLon	/home/guod/work/python/Cailei/tst.py	/^                sLon = iLon$/;"	v
-sLon	/home/guod/work/python/Cailei/tst0.py	/^        sLon = iLon$/;"	v
-sLon	/home/guod/work/python/Cailei/tst0.py	/^sLon = sLon$/;"	v
 satellite_position_lt_lat	/home/guod/work/python/champ_grace.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:ChampDensity
 satellite_position_lt_lat	/home/guod/work/python/champ_grace.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:ChampWind
 satellite_position_lt_lat	/home/guod/work/python/goce.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:GoceData
@@ -1290,83 +492,10 @@ str	/home/guod/work/fortran/work1/char2int_new.f90	/^    character fname1*100,fn
 string	/home/guod/work/python/gitm.py	/^        import string$/;"	i
 sub	/home/guod/work/python/gitm.py	/^        from re import sub$/;"	i
 sub_creat_axes	/home/guod/work/matlab/matlabfunction/sub_creat_axes.m	/^function h_axes=sub_creat_axes(nrow,nclm,margin,gap)$/;"	f
-sys	/home/guod/work/python/Cailei/plot_gitm.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^import sys$/;"	i
-sys	/home/guod/work/python/Cailei/test.py	/^import sys$/;"	i
 sys	/home/guod/work/python/gitm.py	/^        import sys$/;"	i
-temp	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^temp = np.array(data[15][iLon0, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^temp = np.array(data[15][iLon0, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-temp	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^temp = np.array(data[15][iLon, sLat:eLat, sAlt:eAlt])$/;"	v
-tf	/home/guod/work/python/Cailei/tst.py	/^import matplotlib.transforms as tf$/;"	i
-tf	/home/guod/work/python/Cailei/tst0.py	/^import matplotlib.transforms as tf$/;"	i
-time	/home/guod/work/python/Cailei/plot_gitm.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    time = data["time"]$/;"	v
-time	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^time = []$/;"	v
-time	/home/guod/work/python/Cailei/time_lon_conv.py	/^from datetime import time$/;"	i
-time	/home/guod/work/python/Cailei/tst0.py	/^time = data["time"]$/;"	v
+test	/home/guod/work/fortran/test.f90	/^program test$/;"	p
+time	/home/guod/work/python/omni.py	/^    from timeit import time$/;"	i
 time_champ_orbit_updown	/home/guod/work/python/work4_100.py	/^def time_champ_orbit_updown(bdate, edate, updown='up'):$/;"	f
-time_to_lon	/home/guod/work/python/Cailei/time_lon_conv.py	/^def time_to_lon(t):$/;"	f
-timedelta	/home/guod/work/python/Cailei/gitm_routines.py	/^from datetime import timedelta$/;"	i
-timedelta	/home/guod/work/python/Cailei/test.py	/^from datetime import timedelta$/;"	i
-timedelta	/home/guod/work/python/Cailei/time_lon_conv.py	/^from datetime import timedelta$/;"	i
-title	/home/guod/work/python/Cailei/plot_gitm.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^        title = time.strftime('%H:%M')$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^        title = time.strftime('%b %d, %Y %H:%M:%S') + '; Lon : ' + "%d" % round(Lon) + '; Alt: %dkm' % Alt$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S') + '; Lon : ' + "%d" % round(Lon) + '; Alt: %dkm' % Alt$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^            title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)+'; Alt : '+"%d" % round(hs[ih])$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Lon : '+"%d" % round(Lon)$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
-title	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^    title = '; Lat : ' + "%d" % Lat + '; Lon : ' + "%d" % round(l) + '; Alt: %dkm' % Alt$/;"	v
-title	/home/guod/work/python/Cailei/test.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
-title	/home/guod/work/python/Cailei/tst.py	/^    title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
-title	/home/guod/work/python/Cailei/tst0.py	/^title = time.strftime('%b %d, %Y %H:%M:%S')+'; Alt : '+"%.2f" % Alt + ' km'$/;"	v
 u1	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,/;"	v	program:dfhskhfgks
 u1	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,/;"	v	program:jdfsk
 u1	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,/;"	v	program:jdfsk
@@ -1376,49 +505,9 @@ u2	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,/;"	v	program:
 u2	/home/guod/work/fortran/work1/char2int_new.f90	/^    integer u1,u2,/;"	v	program:jdfsk
 u2	/home/guod/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=/;"	v	program:mygamdm
 u3	/home/guod/work/fortran/work1/mygamdm.f90	/^  integer(4)   :: u1=1,u2=2,u3=/;"	v	program:mygamdm
-unpack	/home/guod/work/python/Cailei/gitm_routines.py	/^from struct import unpack$/;"	i
-unpack	/home/guod/work/python/Cailei/gitm_routines_new.py	/^from struct import unpack$/;"	i
-unpack	/home/guod/work/python/Cailei/test.py	/^from struct import unpack$/;"	i
 unpack	/home/guod/work/python/gitm.py	/^        from struct import unpack$/;"	i
 updown	/home/guod/work/python/myfunctions.py	/^def updown(lat):$/;"	f
-var	/home/guod/work/python/Cailei/plot_gitm.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_4_subs.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_2.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_3.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_4.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_5.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_ave.py	/^var = list(range(0, 16))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_line.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_pres_vup.py	/^var = list(range(0, 8))$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^var = args['var']$/;"	v
-var	/home/guod/work/python/Cailei/tst.py	/^var = 18$/;"	v
-var	/home/guod/work/python/Cailei/tst0.py	/^var = 3$/;"	v
-vars	/home/guod/work/python/Cailei/get_gitm_data_range.py	/^vars = [0,1,2,3,15,18]$/;"	v
-vars	/home/guod/work/python/Cailei/plot_gitm.py	/^vars = [0, 1, 2]$/;"	v
-vars	/home/guod/work/python/Cailei/plot_gitm_on_alt.py	/^vars = [0, 1, 2]$/;"	v
-vars	/home/guod/work/python/Cailei/plot_gitm_on_alt_3x3.py	/^vars = [0, 1, 2]$/;"	v
-vars	/home/guod/work/python/Cailei/plot_gitm_on_lon.py	/^vars = [0, 1, 2]$/;"	v
-vars	/home/guod/work/python/Cailei/plot_gitm_on_lon_line.py	/^vars = [0, 1, 2]$/;"	v
-vars	/home/guod/work/python/Cailei/plot_gitm_vup_line.py	/^vars = [0, 1, 2]$/;"	v
-vars	/home/guod/work/python/Cailei/t.py	/^vars = [0,1,2,3,15,18]$/;"	v
-vars	/home/guod/work/python/Cailei/test.py	/^vars = [0,1,2]$/;"	v
-vars	/home/guod/work/python/Cailei/tst.py	/^vars = [0,1,2]$/;"	v
-vars	/home/guod/work/python/Cailei/tst0.py	/^vars = [0,1,2]$/;"	v
-vars_to_read	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    vars_to_read = [16, 17]$/;"	v
-vars_to_read	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    vars_to_read = [36, 37]$/;"	v
-vars_to_read	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^vars_to_read = [0, 1, 2]$/;"	v
-ve2d	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    ve2d = np.array(data[vars_to_read[0]][ilon_s:ilon_e:4, ilat_s:ilat_e-8:8, ialt])$/;"	v
-ve_to_lon	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^def ve_to_lon(v, lat):$/;"	f
 vline	/home/guod/work/matlab/matlabfunction/vline.m	/^function hvl=vline(x0)$/;"	f
-vn2d	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^    vn2d = np.array(data[vars_to_read[1]][ilon_s:ilon_e:4, ilat_s:ilat_e-8:8, ialt])$/;"	v
-vn_to_lat	/home/guod/work/python/Cailei/plot_gitm_vec.py	/^def vn_to_lat(v):$/;"	f
-wind	/home/guod/work/python/champ_grace.py	/^    wind = ChampWind('2005-11-11','2005-11-14')$/;"	v	class:ChampWind
 wind	/home/guod/work/python/goce.py	/^    wind = GoceData('2010-4-1','2010-4-1 1:30:0')$/;"	v	class:GoceData
 year	/home/guod/work/fortran/work1/bz_ap.f90	/^     integer u1,u2,i,j,year,/;"	v	program:dfhskhfgks
 year	/home/guod/work/fortran/work1/char2int.f90	/^    integer u1,u2,year,/;"	v	program:jdfsk
