@@ -1,6 +1,5 @@
 #-------------------------------------------------------------------------------
 # For the 3rd project
-#
 # By Dongjie, USTC/UM, start on Tue Sep 20 02:39:02 CST 2016
 #-------------------------------------------------------------------------------
 
@@ -75,37 +74,40 @@ def func3():
     '''
     Case analysis: time constant of density response to IMF By
     '''
-    # rtime = '2010-03-22 12:00:00'
-    rtime = '2010-10-17 06:00:00'
+    #rtime = '2010-03-22 12:00:00' # quiet condition
+    rtime = '2009-05-12 12:00:00' # quiet condition
+    #rtime = '2010-10-17 06:00:00'
     rtime = pd.Timestamp(rtime)
-    btime = rtime - pd.Timedelta('5 h')
-    etime = rtime + pd.Timedelta('5 h')
+    btime = rtime - pd.Timedelta('3 h')
+    etime = rtime + pd.Timedelta('3 h')
     # IMF and Kan-Lee electric field variations
-    from matplotlib.ticker import AutoMinorLocator
-    # By, Bz, K-L electric field
-    fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7))
-    omni = get_omni(btime, etime, ['Bym', 'Bzm', 'V'], '1m')
-    omni['EF'] = omni.V*(
-            np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
-    pv = ['Bym', 'Bzm', 'EF']
-    ylb = ['$B_y$ (nT)', '$B_z$ (nT)', 'Electric Field (mV/m)']
-    yl = [(-20, 20), (-20, 20), (0, 20)]
-    yt = [np.arange(-100, 101, 5),
-          np.arange(-100, 101, 5), np.arange(0, 100, 2)]
-    for k0 in range(3):
-        plt.sca(ax1[k0])
-        tmp = omni[pv[k0]]
-        plt.plot((tmp.index-rtime)/pd.Timedelta('1h'), tmp, 'k')
-        plt.xticks(np.arange(-30, 31, 1))
-        plt.xlim((btime-rtime)/pd.Timedelta('1h'),
-                 (etime-rtime)/pd.Timedelta('1h'))
-        plt.ylabel(ylb[k0])
-        plt.yticks(yt[k0])
-        plt.ylim(yl[k0])
-        plt.grid(dashes=(4,1))
-        if k0 != 2:
-            plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
-    ax1[2].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    def imf_ae():
+        from matplotlib.ticker import AutoMinorLocator
+        # By, Bz, K-L electric field
+        fig1,ax1 = plt.subplots(3,1,sharex=True,figsize=(7,7))
+        omni = get_omni(btime, etime, ['Bym', 'Bzm', 'V'], '1m')
+        omni['EF'] = omni.V*(
+                np.sqrt(omni.Bym*omni.Bym + omni.Bzm*omni.Bzm)-omni.Bzm)/2/1000
+        pv = ['Bym', 'Bzm', 'EF']
+        ylb = ['$B_y$ (nT)', '$B_z$ (nT)', 'Electric Field (mV/m)']
+        yl = [(-20, 20), (-20, 20), (0, 20)]
+        yt = [np.arange(-100, 101, 5),
+              np.arange(-100, 101, 5), np.arange(0, 100, 2)]
+        for k0 in range(3):
+            plt.sca(ax1[k0])
+            tmp = omni[pv[k0]]
+            plt.plot((tmp.index-rtime)/pd.Timedelta('1h'), tmp, 'k')
+            plt.xticks(np.arange(-30, 31, 1))
+            plt.xlim((btime-rtime)/pd.Timedelta('1h'),
+                     (etime-rtime)/pd.Timedelta('1h'))
+            plt.ylabel(ylb[k0])
+            plt.yticks(yt[k0])
+            plt.ylim(yl[k0])
+            plt.grid(dashes=(4,1))
+            if k0 != 2:
+                plt.axhline(0,color='r',linestyle='--',dashes=[4,1])
+        ax1[2].set_xlabel('Hours from '+rtime.strftime('%Y-%m-%d %H%M UT'))
+    imf_ae()
 
     # Read satellite data
     from scipy.interpolate import NearestNDInterpolator
@@ -124,7 +126,7 @@ def func3():
     den = [denchamp, dengrace, dengoce]
     fig2, ax2 = plt.subplots(2, 1, sharex=True)  # Test arglat and orbitn
     fig6, ax6 = plt.subplots(2, 1, sharex=True)  # Test altitude
-    title = ('CHAMP', 'GRACE', 'GOCE')
+    title = ('CHAMP', 'GRACE')#, 'GOCE')
     for k0 in range(2): # 0: Champ, 1: Grace, 2: Goce
         dent = den[k0]
         if dent.empty:
@@ -163,10 +165,10 @@ def func3():
         for k1 in range(1,dent['orbitn'].max()+1):
             fpp = (dent['orbitn'] == k1-1)
             fpc = (dent['orbitn'] == k1)
-            x0lat = dent.loc[fpp, 'Mlat'].copy()
-            x0lon = dent.loc[fpp, 'MLT'].copy()/12*180
-            x1lat = dent.loc[fpc, 'Mlat'].copy()
-            x1lon = dent.loc[fpc, 'MLT'].copy()/12*180
+            x0lat = dent.loc[fpp, 'lat'].copy()
+            x0lon = dent.loc[fpp, 'LT'].copy()/12*180
+            x1lat = dent.loc[fpc, 'lat'].copy()
+            x1lon = dent.loc[fpc, 'LT'].copy()/12*180
             print(k0, x0lat.shape, x1lat.shape)
             dd = np.ones([x1lat.shape[0], x0lat.shape[0]])*np.nan
             for k2 in range(x1lat.shape[0]):
@@ -188,8 +190,8 @@ def func3():
         dent['prho'] = prho
         dent['drho'] = 100*(crho-prho)/prho
         #den[k0] = den[k0][btime:etime]
-    ax2[-1].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
-    ax6[-1].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    ax2[-1].set_xlabel('Hours from '+rtime.strftime('%Y-%m-%d %H%M UT'))
+    ax6[-1].set_xlabel('Hours from '+rtime.strftime('%Y-%m-%d %H%M UT'))
 
     # mlat-mlt distribution of satellite orbits
     fig3, ax3 = plt.subplots(
@@ -200,8 +202,8 @@ def func3():
     for k11, k1 in enumerate(['N', 'S']):
         fc = 1 if k1 is 'N' else -1
         plt.sca(ax3[k11])
-        for k0 in range(3):
-            dent = den[k0]
+        for k0 in range(2): # Only CHAMP and GRACE
+            dent = den[k0][btime:etime]
             if dent.empty:
                 continue
             dent.__class__ = cls[k0]
@@ -224,7 +226,7 @@ def func3():
                          (etime-rtime)/pd.Timedelta('1h'))
         ax4[k0].set_title(lb[k0])
         ax4[k0].set_ylabel('$\Delta$r (km)')
-    ax4[1].set_xlabel('Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
+    ax4[1].set_xlabel('Hours from '+rtime.strftime('%Y-%m-%d %H%M UT'))
 
     #  Density difference from orbit to orbit
     fig5, ax5 = plt.subplots(4,2,sharex=True, figsize=(8,9))
@@ -250,7 +252,7 @@ def func3():
             if k1%2 ==1:
                 ax5[k1, k0].axhline(color='gray', zorder=-1)
             ax5[-1,k0].set_xlabel(
-                    'Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
+                    'Hours from '+rtime.strftime('%Y-%m-%d %H%M UT'))
     plt.tight_layout()
 
     # Density change as a function of argument of latitude
@@ -302,7 +304,7 @@ def func3():
             ax8[0, k0].set_title(title[k0])
             ax8[k1, 0].set_ylabel(yl[k1])
             ax8[-1,k0].set_xlabel(
-                    'Hours from '+rtime.strftime('%y-%m-%d %H%M UT'))
+                    'Hours from '+rtime.strftime('%Y-%m-%d %H%M UT'))
     plt.tight_layout()
     #    fig1.savefig('/home/guod/Documents/work/fig/w03_func03_02a')
     #    fig2.savefig('/home/guod/Documents/work/fig/w03_func03_02b')
