@@ -1,4 +1,4 @@
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 #
 # By Dongjie, USTC/UM, on Fri Sep 16 23:23:39 CST 2016
 #
@@ -17,15 +17,15 @@
 #           satellite_position_lt_lat: show the satellite location in LT-LAT
 #                   coordinates
 #
-#           contourf_date_lat: Contourf of rho, rho400... as a function of date and
-#                   lat
+#           contourf_date_lat: Contourf of rho, rho400... as a function of date
+#                   and lat
 # Change:
 #        1, Include ChampWind class
 #        2, Use __init__, remove get_champ_grace_density, get_champ_wind
 #        3, Add attributes variables and daterange, remove methods
 #           print_variable_name and print_dates
 #
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 
 # Global imports
 import numpy as np
@@ -64,31 +64,48 @@ class ChampDensity(pd.DataFrame):
         bdate = pd.Timestamp(bdate)
         edate = pd.Timestamp(edate)
         dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
+        # champ and grace data are in this date range
         dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+        column_names=[
+                'year','doy','second',
+                'lat3','lat','long','height','LT','Mlat','Mlong','MLT',
+                'rho','rho400','rho410','msis_rho',
+                'uncertainty','data_points','points_required',
+                'drag_coefficient']
         if variables == -1:
             variables = ['lat3', 'lat', 'long', 'height', 'LT',
                          'Mlat', 'Mlong', 'MLT',
                          'rho', 'rho400', 'rho410', 'msis_rho']
         variables = list(variables)
-        variables.append('date')
-        # champ and grace data are in this date range
-        if satellite == 'champ':
-            fname = [DATADIR+'CHAMP/density/csv/{:s}/'
-                     'Density_3deg_{:s}_{:s}.ascii'.format(
-                         k.strftime('%Y'),
-                         k.strftime('%y'),
-                         k.strftime('%j')) for k in dates]
-        elif satellite == 'grace':
-            fname = [DATADIR+'Grace/csv/{:s}/ascii/'
-                     'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
-                         k.strftime('%Y'),
-                         k.strftime('%y'),
-                         k.strftime('%j')) for k in dates]
-        rho = [pd.read_csv(
-            fn,
-            usecols = variables,
-            parse_dates=['date'],
-            index_col=['date']) for fn in fname if os.path.isfile(fn)]
+        variables.append('second')
+        rho = []  # List to store data
+        for k0 in dates:
+            ayear, adoy = k0.year, k0.dayofyear
+            if satellite == 'champ':
+                fname = (DATADIR + 'CHAMP/density/{:s}/ascii/'
+                        'Density_3deg_{:s}_{:s}.ascii'.format(
+                                k0.strftime('%Y'),
+                                k0.strftime('%y'),
+                                k0.strftime('%j')))
+            if satellite == 'grace':
+                fname = (DATADIR + 'Grace/{:s}/ascii/'
+                        'Density_graceA_3deg_{:s}_{:s}.ascii'.format(
+                                k0.strftime('%Y'),
+                                k0.strftime('%y'),
+                                k0.strftime('%j')))
+            if os.path.isfile(fname):
+                tmp = pd.read_csv(
+                        fname,
+                        delim_whitespace=True,
+                        skiprows=2,
+                        header=None,
+                        usecols=variables,
+                        names=column_names)
+                if not tmp.empty:
+                    tmp['date'] = k0 + pd.TimedeltaIndex(tmp.second, 's')
+                    tmp.set_index('date', drop=True, append=False, inplace=True)
+                    tmp.drop('second', axis=1, inplace=True)
+                    rho.append(tmp)
         if rho:
             rho = pd.concat(rho)
             # Exclude duplicate points
@@ -97,6 +114,7 @@ class ChampDensity(pd.DataFrame):
             rho = rho[bdate:edate]
             for k0 in rho:
                 self[k0] = rho[k0]
+        return
 
     def LT_median(self):
         """ Get the local time of the ascending and descending satellite orbit.
