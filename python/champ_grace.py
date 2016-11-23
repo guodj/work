@@ -34,8 +34,8 @@ import matplotlib.pyplot as plt
 import myfunctions as mf
 import os
 
-DATADIR = '/home/guod/data/'
-#DATADIR = '/data/'
+#DATADIR = '/home/guod/data/'
+DATADIR = '/data/'
 class ChampDensity(pd.DataFrame):
     """Class to open, manipulate and visualize the CHAMP or/and GRACE
     wind files.

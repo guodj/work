@@ -13,7 +13,8 @@ import pandas as pd
 import numpy as np
 import os
 
-OMNIDATADIR = '/home/guod/data/omni/'
+#OMNIDATADIR = '/home/guod/data/omni/'
+OMNIDATADIR = '/data/omni/'
 def get_omni(bdate, edate,variables,res='1m'):
     # Get multiple days omni data.
     # variables should be list or tuple even if only one variable.
