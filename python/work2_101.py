@@ -173,7 +173,7 @@ def f2():
 
     sblist = get_sblist()
     sblist = sblist['2001-1-1':'2010-12-31']
-# [[ATN,ATS],[TAN,TAS]]
+    # [[ATN,ATS],[TAN,TAS]]
     density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]]
     sbn = [0,0]
     if False:
@@ -187,8 +187,9 @@ def f2():
                     if rho.empty:
                         print('no data around',k1)
                         continue
-# The geomagnetic activity is not considered, because cusp density enhancement
-# occurs in both geomagnetic quiet and active conditions
+                    # The geomagnetic activity is not considered, because cusp
+                    # density enhancement occurs in both geomagnetic quiet and
+                    # active conditions
                     """
                     rho = rho.add_index()
                     l1 = len(rho)
@@ -200,7 +201,7 @@ def f2():
                     """
                     #rho1 = rho[rho.lat3>=87]  # north pole
                     rho1 = rho[rho.lat3==90].copy() # only consider the grace
-# Make sure that there is data in each day
+                    # Make sure that there is data in each day
                     if len(np.unique(rho1.index.dayofyear))!=6:
                         print('there is data gap around', k1)
                         continue

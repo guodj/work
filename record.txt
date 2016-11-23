@@ -1,0 +1,5 @@
+Record of work:
+
+2016-11-23:
+1, Use the original CHAMP and GRACE files rather than the csv files. The scv 
+files are removed.

@@ -34,8 +34,8 @@ import matplotlib.pyplot as plt
 import myfunctions as mf
 import os
 
-#DATADIR = '/home/guod/data/'
-DATADIR = '/data/'
+DATADIR = '/home/guod/data/'
+#DATADIR = '/data/'
 class ChampDensity(pd.DataFrame):
     """Class to open, manipulate and visualize the CHAMP or/and GRACE
     wind files.
@@ -47,8 +47,6 @@ class ChampDensity(pd.DataFrame):
         self._read(btime, etime, satellite, variables)
         if not self.empty:
             self.variables = tuple(self.columns)
-            self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
-                              self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
 
     def _read(self, bdate, edate, satellite, variables):
         """ get champ or grace density data during specified period.
@@ -63,7 +61,7 @@ class ChampDensity(pd.DataFrame):
         global DATADIR
         bdate = pd.Timestamp(bdate)
         edate = pd.Timestamp(edate)
-        dates = pd.date_range(bdate.date(),edate.date()+pd.Timedelta('1D'))
+        dates = pd.date_range(bdate.date(), edate.date(), freq='1D')
         # champ and grace data are in this date range
         dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
         column_names=[
@@ -80,7 +78,6 @@ class ChampDensity(pd.DataFrame):
         variables.append('second')
         rho = []  # List to store data
         for k0 in dates:
-            ayear, adoy = k0.year, k0.dayofyear
             if satellite == 'champ':
                 fname = (DATADIR + 'CHAMP/density/{:s}/ascii/'
                         'Density_3deg_{:s}_{:s}.ascii'.format(
@@ -111,6 +108,7 @@ class ChampDensity(pd.DataFrame):
             # Exclude duplicate points
             # pd.DataFrame.drop_duplicates() has something wrong
             rho = rho.groupby(rho.index).first()
+            #rho.drop_duplicates(inplace=True)
             rho = rho[bdate:edate]
             for k0 in rho:
                 self[k0] = rho[k0]
@@ -274,8 +272,6 @@ class ChampWind(ChampDensity):
         super(ChampDensity, self).__init__(*args, **kwargs)
         self._read(btime, etime, variables)
         self.variables = tuple(self.columns)
-        self.daterange = (self.index[0].strftime('%Y-%m-%d %H:%M:%S'),
-                          self.index[-1].strftime('%Y-%m-%d %H:%M:%S'))
 
     def _read(self, bdate, edate, variables):
         # Get champ winds during 'bdate' and 'edate'
@@ -284,21 +280,46 @@ class ChampWind(ChampDensity):
         bdate = pd.Timestamp(bdate)
         edate = pd.Timestamp(edate)
         dates = pd.date_range(bdate.date(),edate.date(),freq='1D')
-        fname = [DATADIR+'CHAMP/winds/csv/{:s}/Wind_3deg_{:s}_{:s}.ascii'.
-                format(k.strftime('%Y'), k.strftime('%y'), k.strftime('%j'))
-                for k in dates]
-        if variables==-1:
-            variables = ['lat3','lat','long','height','LT','wind','winde','windn']
+        # champ and grace data are in this date range
+        dates = dates[(dates>'2001-1-1') & (dates<'2011-1-1')]
+        column_names=[
+                'year','doy','second',
+                'lat3','lat','long','height','LT',
+                'wind', 'winde', 'windn','t1','t2','t3']
+        if variables == -1:
+            variables = ['lat3', 'lat', 'long', 'height', 'LT',
+                         'wind', 'winde', 'windn']
         variables = list(variables)
-        variables.extend(['date'])
-        wind = [pd.read_csv(fn,parse_dates=['date'],index_col=['date'],
-                            usecols=variables,squeeze=True)
-                for fn in fname if os.path.isfile(fn)]
+        variables.append('second')
+        wind = []  # List to store data
+        for k0 in dates:
+            fname = (DATADIR + 'CHAMP/winds/{:s}/'
+                    'Wind_3deg_{:s}_{:s}.ascii'.format(
+                            k0.strftime('%Y'),
+                            k0.strftime('%y'),
+                            k0.strftime('%j')))
+            if os.path.isfile(fname):
+                tmp = pd.read_csv(
+                        fname,
+                        delim_whitespace=True,
+                        skiprows=2,
+                        header=None,
+                        usecols=variables,
+                        names=column_names)
+                if not tmp.empty:
+                    tmp['date'] = k0 + pd.TimedeltaIndex(tmp.second, 's')
+                    tmp.set_index('date', drop=True, append=False, inplace=True)
+                    tmp.drop('second', axis=1, inplace=True)
+                    wind.append(tmp)
         if wind:
             wind = pd.concat(wind)
+            # Exclude duplicate points
+            # pd.DataFrame.drop_duplicates() has something wrong
+            wind = wind.groupby(wind.index).first()
             wind = wind[bdate:edate]
             for k0 in wind:
                 self[k0] = wind[k0]
+        return
 
     def satellite_position_lt_lat(self, mag=False, ns='N'):
         """ Show the (M)lt and (M)lat positions of the satellite in a polar
@@ -330,7 +351,6 @@ class ChampWind(ChampDensity):
         r = 90 - abs(tmp.loc[ct,latp])
         hc = plt.scatter(theta, r, linewidths=0)
         return hc
-
 
     def contourf_date_lat(self, ax, whichcolumn='wind', updown='up', **kwargs):
         """ A contourf of multiple-day wind versus date and latitude.
@@ -386,7 +406,6 @@ class ChampWind(ChampDensity):
             ax.set_ylabel('Latitude', fontsize=14)
             return hc#, windt
 
-
     def polar_quiver_wind(self, ax, ns='N'):
         # Wind vector in lat-long coordinates.
         # For different map projections, the arithmetics to calculate xywind
@@ -436,6 +455,8 @@ class ChampWind(ChampDensity):
         #m.scatter(np.array(lon),np.array(lat),
         #          s=50, c=self.index.to_julian_date(),linewidths=0, zorder=4,latlon=True)
         return m
+
+
 # END
 #--------------------------------------------------------------------------------
 # for test
