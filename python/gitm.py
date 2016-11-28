@@ -1,3 +1,4 @@
+#!/home/guod/anaconda3/bin/python3
 #!/usr/bin/env python
 #-----------------------------------------------------------------------------
 # $Id: gitm.py,v 1.16 2014/04/09 10:44:28 agburr Exp $
@@ -36,7 +37,7 @@
 #------------------------------------------------------------------------------
 
 '''
-PyBats submodule for handling input/output for the Global 
+PyBats submodule for handling input/output for the Global
 Ionosphere-Thermosphere Model (GITM), one of the choices for the UA module
 in the SWMF.
 '''
@@ -68,12 +69,12 @@ class GitmBin(PbData):
         # Remove any known kwargs, as we don't want them to be included in
         # the GITM data keys!
 
-        if not kwargs.has_key('varlist'):
+        if not 'varlist' in kwargs:
             varlist = list()
         else:
             varlist = kwargs.pop('varlist')
 
-        if not kwargs.has_key('magfile'):
+        if not 'magfile' in kwargs:
             magfile = None
         else:
             magfile = kwargs.pop('magfile')
@@ -104,7 +105,7 @@ class GitmBin(PbData):
         from re import sub
         from struct import unpack
         import sys
-        
+
         # Read data and header info
         f=open(self.attrs['file'], 'rb')
 
@@ -114,7 +115,7 @@ class GitmBin(PbData):
         endChar='>'
         rawRecLen=f.read(4)
         if len(rawRecLen) < 4:
-            print "GitmBin ERROR: empty file [", self.attrs['file'], "]"
+            print("GitmBin ERROR: empty file [", self.attrs['file'], "]")
             sys.exit(1)
         recLen=(unpack(endChar+'l',rawRecLen))[0]
         if (recLen>10000)or(recLen<0):
@@ -142,14 +143,15 @@ class GitmBin(PbData):
             var.append(unpack(endChar+'%is'%(recLen),f.read(recLen))[0])
             (oldLen, recLen)=unpack(endChar+'2l',f.read(8))
 
-        # Extract time. 
+        # Extract time.
         (yy,mm,dd,hh,mn,ss,ms)=unpack(endChar+'lllllll',f.read(recLen))
-        self['time']=dt.datetime(yy,mm,dd,hh,mn,ss,ms/1000)
+        self['time']=dt.datetime(yy,mm,dd,hh,mn,ss,ms)
         (oldLen)=unpack(endChar+'l',f.read(4))
 
 
         # Read the rest of the data.
         nTotal=self.attrs['nLon']*self.attrs['nLat']*self.attrs['nAlt']
+        var = [k.decode('utf-8') for k in var]
         for val in var:
             # Trim variable names.
             v=sub('\[|\]', '', val).strip()
@@ -168,10 +170,10 @@ class GitmBin(PbData):
             if gvar:
                 self[v]=dmarray(np.array(temp))
                 # Reshape arrays, note that ordering in file is Fortran-like.
-                self[v]=self[v].reshape( 
+                self[v]=self[v].reshape(
                     (self.attrs['nLon'],self.attrs['nLat'],self.attrs['nAlt']),
                     order='fortran')
-                
+
             f.read(4)
 
 
@@ -185,10 +187,10 @@ class GitmBin(PbData):
         from numpy import pi
         import string
 
-        self['dLat'] = dmarray(self['Latitude']*180.0/pi, 
+        self['dLat'] = dmarray(self['Latitude']*180.0/pi,
                                attrs={'units':'degrees', 'scale':'linear',
                                       'name':'Latitude'})
-        self['dLon'] = dmarray(self['Longitude']*180.0/pi, 
+        self['dLon'] = dmarray(self['Longitude']*180.0/pi,
                                attrs={'units':'degrees', 'scale':'linear',
                                       'name':'Longitude'})
 
@@ -239,11 +241,11 @@ class GitmBin(PbData):
            or self.attrs['file'].find("MAG") > 0):
             mag = self
         else:
-            if not self.attrs.has_key('magfile'):
-                print "No 3D MAG/ION file associated with this GITM Binary"
+            if not 'magfile' in self.attrs:
+                print("No 3D MAG/ION file associated with this GITM Binary")
             elif(self.attrs['magfile'].find("ION") <= 0 and
                  self.attrs['magfile'].find("MAG") <= 0):
-                print "No 3D MAG/ION file associated with this GITM Binary"
+                print("No 3D MAG/ION file associated with this GITM Binary")
             else:
                 mag = GitmBin(self.attrs['magfile'])
 
@@ -271,12 +273,12 @@ class GitmBin(PbData):
                                          "units":"degrees"}
             del dec_frac, inc_sign, inc_pmag
 
-            if not self.has_key('B.F. East'):
+            if not 'B.F. East' in self:
                 self['B.F. East'] = dmarray.copy(mag['B.F. East'])
                 self['B.F. North'] = dmarray.copy(mag['B.F. North'])
                 self['B.F. Vertical'] = dmarray.copy(mag['B.F. Vertical'])
                 self['B.F. Magnitude'] = dmarray.copy(mag['B.F. Magnitude'])
-            if not self.has_key('Magnetic Latitude'):
+            if not 'Magnetic Latitude' in self:
                 self['Magnetic Latitude']=dmarray.copy(mag['Magnetic Latitude'])
                 self['Magnetic Longitude']=dmarray.copy(mag['Magnetic Longitude'])
 
@@ -300,11 +302,11 @@ class GitmBin(PbData):
         if self.attrs['file'].find("ION") > 0:
             ion = self
         else:
-            if not self.attrs.has_key('magfile'):
-                print "No 3D MAG/ION file associated with this GITM Binary"
+            if not 'magfile' in self.attrs:
+                print("No 3D MAG/ION file associated with this GITM Binary")
             elif(self.attrs['magfile'].find("ION") <= 0 and
                  self.attrs['magfile'].find("MAG") <= 0):
-                print "No 3D MAG/ION file associated with this GITM Binary"
+                print("No 3D MAG/ION file associated with this GITM Binary")
             else:
                 ion = GitmBin(self.attrs['magfile'])
 
@@ -343,7 +345,7 @@ class GitmBin(PbData):
                     units = self[item].attrs['units']
                     scale = self[item].attrs['scale']
                     # extract the non-directional part of the name
-                    if not self.has_key(sp[0]):
+                    if not sp[0] in self:
                         east = string.join([sp[0], "(east)"], " ")
                         north = string.join([sp[0], "(north)"], " ")
                         up = string.join([sp[0], "(up)"], " ")
@@ -371,13 +373,13 @@ class GitmBin(PbData):
                     self[zon].attrs = {'units':'%s{\mathdefault{,\,positive\,east}}'%(units), 'scale':scale, 'name':name.replace("east", "zon")}
                     self[mer] = dmarray.copy(vm)
                     self[mer].attrs = {'units':'%s{\mathdefault{,\,positive\,up}}'%(units), 'scale':scale, 'name':name.replace("east", "mer")}
-        
-            if not self.has_key('B.F. East'):
+
+            if not 'B.F. East' in self:
                 self['B.F. East'] = dmarray.copy(ion['B.F. East'])
                 self['B.F. North'] = dmarray.copy(ion['B.F. North'])
                 self['B.F. Vertical'] = dmarray.copy(ion['B.F. Vertical'])
                 self['B.F. Magnitude'] = dmarray.copy(ion['B.F. Magnitude'])
-            if not self.has_key('Magnetic Latitude'):
+            if not 'Magnetic Latitude' in self:
                 self['Magnetic Latitude'] = dmarray.copy(ion['Magnetic Latitude'])
                 self['Magnetic Longitude'] = dmarray.copy(ion['Magnetic Longitude'])
 
@@ -576,19 +578,19 @@ class GitmBin(PbData):
                     nk = "EuvHeating"
 
                 # Different versions of GITM differ in header capitalization
-                if not name_dict.has_key(nk):
-                    print nk
+                if not nk in name_dict:
+                    print(nk)
                     # Try to capitalize or lowercase the key
                     if nk == nk.capitalize():
                         nk = k.lower()
                     else:
                         nk = k.capitalize()
 
-                if not self[k].attrs.has_key('units'):
+                if not 'units' in self[k].attrs:
                     self[k].attrs['units'] = unit_dict[nk]
-                if not self[k].attrs.has_key('scale'):
+                if not 'scale' in self[k].attrs:
                     self[k].attrs['scale'] = scale_dict[nk]
-                if not self[k].attrs.has_key('name'):
+                if not 'name' in self[k].attrs:
                     self[k].attrs['name'] = name_dict[nk]
 
     def append_data(self, varlist):
@@ -601,7 +603,7 @@ class GitmBin(PbData):
         temp = GitmBin(self.attrs['file'], varlist, False)
 
         for nkey in temp.keys():
-            if not self.has_key(nkey):
+            if not nkey in self:
                 self[nkey] = dmarray.copy(temp[nkey])
 
     def calc_tec(self):
@@ -613,7 +615,7 @@ class GitmBin(PbData):
         import scipy.integrate as integ
         from scipy.interpolate import interp1d
 
-        if self.has_key('e-'):
+        if 'e-' in self:
             self['VTEC'] = dmarray(self['e-'] * 1.0e-16,
                                    attrs={'units':'TECU', 'scale':'linear',
                                           'name':'Vertical TEC'})
@@ -637,8 +639,8 @@ class GitmBin(PbData):
         from scipy.signal import argrelextrema
 
         calc_tec = False
-        if self.has_key('e-'):
-            if self.has_key('VTEC') is False:
+        if 'e-' in self:
+            if 'VTEC' in self is False:
                 calc_tec = True
                 self['VTEC'] = dmarray(self['e-'] * 1.0e-16,
                                        attrs={'units':'TECU', 'scale':'linear',

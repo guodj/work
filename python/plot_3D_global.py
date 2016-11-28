@@ -45,7 +45,7 @@ GITM/data comparisons with networks of ground-based observations
 
 # Import modules
 from mpl_toolkits.basemap import Basemap
-import string 
+import string
 import math
 import numpy as np
 import matplotlib.pyplot as plt
@@ -101,9 +101,9 @@ def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,
                            with the UT for this map. (default=False)
            extra_line    = Plot a specified line in (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
-                           
+
     Output: f = figure handle
             m = map handle
     '''
@@ -121,7 +121,7 @@ def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,
 
     if zmax == zmin:
         # Exit gracefully
-        print "plot_single_3D_image ERROR: z variable at a constant value", zmax
+        print("plot_single_3D_image ERROR: z variable at a constant value", zmax)
         return
 
     # Initialize the color scheme, if desired
@@ -140,13 +140,13 @@ def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,
     gf = True
     pf = False
 
-    if(string.lower(plot_type)=="polar" and not earth):
+    if(plot_type.lower()=="polar" and not earth):
         pf = True
 
     f = plt.figure()
     ax = f.add_subplot(111, polar=pf)
 
-    if(string.lower(plot_type)=="rectangular"):
+    if(plot_type.lower()=="rectangular"):
         (con, m) = plot_rectangular_3D_global(ax, lat_data, lon_data, z_data,
                                               zname, zscale, zunits, zmin, zmax,
                                               zcolor, nlat=nlat, slat=slat,
@@ -155,7 +155,7 @@ def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,
                                               earth=earth, m=m, faspect=faspect,
                                               data_type=data_type,
                                               term_datetime=term_datetime)
-    elif(string.lower(plot_type)=="polar"):
+    elif(plot_type.lower()=="polar"):
         (con, m) = plot_polar_3D_global(ax, 1, lat_data, lon_data, z_data,
                                         zname, zscale, zunits, zmin, zmax,
                                         zcolor, center_lat=nlat, edge_lat=slat,
@@ -165,7 +165,7 @@ def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,
                                         term_datetime=term_datetime,
                                         extra_line=extra_line)
     else:
-        print "ERROR: unknown input type [", plot_type, "]\n"
+        print("ERROR: unknown input type [", plot_type, "]\n")
         return
 
     if draw:
@@ -173,7 +173,7 @@ def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,
         if plt.isinteractive():
             plt.draw() #In interactive mode, you just "draw".
         else:
-            # W/o interactive mode, "show" stops the user from typing more 
+            # W/o interactive mode, "show" stops the user from typing more
             # at the terminal until plots are drawn.
             plt.show()
 
@@ -192,7 +192,7 @@ def plot_single_nsglobal_3D_image(lat_data, lon_data, z_data, zname, zscale,
                                   term_datetime=False, extra_line_n=False,
                                   extra_line_s=False, *args, **kwargs):
     '''
-    Creates a figure with two polar map projections for the northern and 
+    Creates a figure with two polar map projections for the northern and
     southern ends of a specified latitude range.
     Input: lat_data      = numpy array containing the latitudes (in degrees
                            North) This can be 1D or 2D for scatter plots and
@@ -228,11 +228,11 @@ def plot_single_nsglobal_3D_image(lat_data, lon_data, z_data, zname, zscale,
                            with the UT for this map. (defualt=False)
            extra_line_n  = Plot a specified line in north (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
            extra_line_s  = Plot a specified line in south (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
 
     Output: f         = figure handle
@@ -264,7 +264,7 @@ def plot_single_nsglobal_3D_image(lat_data, lon_data, z_data, zname, zscale,
             if plt.isinteractive():
                 plt.draw() #In interactive mode, you just "draw".
             else:
-                # W/o interactive mode, "show" stops the user from typing more 
+                # W/o interactive mode, "show" stops the user from typing more
                 # at the terminal until plots are drawn.
                 plt.show()
 
@@ -288,7 +288,7 @@ def plot_global_3D_snapshot(lat_data, lon_data, z_data, zname, zscale, zunits,
     Creates a map projection plot for the entire globe, seperating the polar
     and central latitude regions.
     Input: lat_data      = numpy array containing the latitudes (in degrees
-                           North). This can be 1D or 2D for scatter plots and 
+                           North). This can be 1D or 2D for scatter plots and
                            must be 2D for contours.  This should be 1D for
                            scatter plots and 2D for contours
            lon_data      = numpy array contaiing the longitudes (in degrees
@@ -352,7 +352,7 @@ def plot_global_3D_snapshot(lat_data, lon_data, z_data, zname, zscale, zunits,
             if plt.isinteractive():
                 plt.draw() #In interactive mode, you just "draw".
             else:
-                # W/o interactive mode, "show" stops the user from typing more 
+                # W/o interactive mode, "show" stops the user from typing more
                 # at the terminal until plots are drawn.
                 plt.show()
 
@@ -417,7 +417,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
                            with the UT for this map.  (default=False)
            extra_line    = Plot a specified line in (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
     '''
 
@@ -436,7 +436,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
 
     if zmax == zmin:
         # Exit gracefully
-        print "plot_mult_3D_slices ERROR: z variable at a constant value", zmax
+        print("plot_mult_3D_slices ERROR: z variable at a constant value", zmax)
         return
 
     # Initialize the color scheme, if desired
@@ -456,10 +456,10 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
     sn = len(subindex)
 
     if(sn < 1):
-        print "plot_mult_3D_slices ERROR: no altitude slices specified"
+        print("plot_mult_3D_slices ERROR: no altitude slices specified")
         return
 
-    if(string.lower(plot_type)=="polar" and not earth):
+    if(plot_type.lower()=="polar" and not earth):
         pf = True
 
     f  = plt.figure()
@@ -475,7 +475,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
         fheight = f.get_figheight()
         f.set_figheight(fheight * 0.5 * sn)
 
-    if(sn > 1 and string.lower(plot_type) == "polar"):
+    if(sn > 1 and plot_type.lower() == "polar"):
         fwidth = f.get_figwidth()
         f.set_figwidth(fwidth / 1.5)
 
@@ -509,10 +509,10 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
             londat = np.array(lon_data[:,:,si])
             zdat = np.array(z_data[:,:,si])
         else:
-            print "plot_mult_3D_slices ERROR: subplot index out of range"
+            print("plot_mult_3D_slices ERROR: subplot index out of range")
             return
 
-        if(string.lower(plot_type)=="rectangular"):
+        if(plot_type.lower()=="rectangular"):
             (con, m) = plot_rectangular_3D_global(ax, latdat, londat, zdat,
                                                   zname, zscale, zunits, zmin,
                                                   zmax, zcolor=zcolor,
@@ -524,7 +524,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
                                                   data_type=data_type,
                                                   faspect=faspect,
                                                   term_datetime=term_datetime)
-        elif(string.lower(plot_type)=="polar"):
+        elif(plot_type.lower()=="polar"):
             # Because the polar plots take up half the width as the rectangular
             # plots, decrease the level of latitude incriments by half
             # and adjust the y label output pad
@@ -539,7 +539,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
                                             term_datetime=term_datetime,
                                             extra_line=extra_line)
         else:
-            print "ERROR: unknown input type [", plot_type, "]\n"
+            print("ERROR: unknown input type [", plot_type, "]\n")
             return
 
         if data_type.find("scatter") >= 0:
@@ -574,7 +574,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
         if plt.isinteractive():
             plt.draw() #In interactive mode, you just "draw".
         else:
-            # W/o interactive mode, "show" stops the user from typing more 
+            # W/o interactive mode, "show" stops the user from typing more
             # at the terminal until plots are drawn.
             plt.show()
 
@@ -593,7 +593,7 @@ def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
                             term_datetime=False, extra_line_n=False,
                             extra_line_s=False, *args, **kwargs):
     '''
-    Creates a figure with two polar map projections for the northern and 
+    Creates a figure with two polar map projections for the northern and
     southern ends of a specified latitude range.
     Input: f             = figure handle
            nsub          = number of subplots to include
@@ -632,11 +632,11 @@ def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
                            with the UT for this map.  (default=False)
            extra_line_n  = Plot a specified line in north (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
            extra_line_s  = Plot a specified line in south (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
     '''
     # Initialize the z variable limits
@@ -652,7 +652,7 @@ def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
 
     if zmax == zmin:
         # Exit gracefully
-        print "plot_nsglobal_subfigure ERROR: z variable at a const value", zmax
+        print("plot_nsglobal_subfigure ERROR: z variable at a const value", zmax)
         return
 
     # Initialize the color scheme, if desired
@@ -733,7 +733,7 @@ def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
         pss[0] = pss[0] + 0.05
 
     axs.set_position(pss)
-    axn.set_position(psn)    
+    axn.set_position(psn)
 
     return(axn, mn, axs, ms)
 # End plot_nsglobal_subfigure
@@ -741,7 +741,7 @@ def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
 def plot_snapshot_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
                             zscale, zunits, zmax=None, zmin=None, zcolor=None,
                             cb=True, tlon=90, polar_blat=45, rect_blat=45,
-                            title=True, xl=True, yl=True, xt=True, yt=True, 
+                            title=True, xl=True, yl=True, xt=True, yt=True,
                             bcolor="#D7DBE0", meq=False, earth=False, ml=None,
                             mn=None, ms=None, data_type="scatter",
                             term_datetime=False, *args, **kwargs):
@@ -794,7 +794,7 @@ def plot_snapshot_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
                    mn  = Map handle for northern latitudes
                    axs = Plot handle for southern latitudes
                    ms  = Map handle for southern latitudes
-           
+
     '''
 
     # Initialize the z variable limits
@@ -810,7 +810,7 @@ def plot_snapshot_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
 
     if zmax == zmin:
         # Exit gracefully
-        print "plot_snapshot_subfigure ERROR: z variable at a const value", zmax
+        print("plot_snapshot_subfigure ERROR: z variable at a const value", zmax)
         return
 
     # Initialize the color scheme, if desired
@@ -891,7 +891,7 @@ def plot_snapshot_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,
         bp[0] = .82
         bp[1] = psl[1] - 0.02
         bp[3] = pss[3] + .85
-        bp[2] = bp[2] / 1.8 
+        bp[2] = bp[2] / 1.8
 
         if earth is True:
             pss[0] = pss[0] - .08
@@ -949,7 +949,7 @@ def plot_rectangular_3D_global(ax, lat_data, lon_data, z_data, zname, zscale,
            zmin      = minimum value for z variable
            zmax      = maximum value for z variable
            zcolor    = Color map for the z variable.  If not specified, will be
-                       determined by the z range. (default=None) 
+                       determined by the z range. (default=None)
            zinc      = number of tick incriments for z variable (default 6)
            nlat      = northern latitude limit (degrees North, default 90)
            slat      = southern latitude limit (degrees North, defalut 90)
@@ -982,11 +982,11 @@ def plot_rectangular_3D_global(ax, lat_data, lon_data, z_data, zname, zscale,
     rout_name = "plot_rectangular_3D_global"
 
     if(nlat == slat):
-        print rout_name, "ERROR: no latitude range"
+        print(rout_name, "ERROR: no latitude range")
         return
 
     if zmax == zmin:
-        print rout_name, "ERROR: z variable at a constant value", zmax
+        print(rout_name, "ERROR: z variable at a constant value", zmax)
         return
 
     # Initialize the color scheme, if desired
@@ -1049,7 +1049,7 @@ def plot_rectangular_3D_global(ax, lat_data, lon_data, z_data, zname, zscale,
             gpr.add_solar_terminator(term_datetime, ax=ax)
             gpr.add_subsolar_point(term_datetime, ax=ax, style="*")
         except:
-            print "Unable to add solar terminator without PySolar"
+            print("Unable to add solar terminator without PySolar")
 
 
     # Configure axis
@@ -1092,7 +1092,7 @@ def plot_rectangular_3D_global(ax, lat_data, lon_data, z_data, zname, zscale,
 
         if(tloc == "b"):
             yloc = -.1
-            
+
         if title:
             ax.set_title(title, size='medium', rotation=rot, y=yloc, x=xloc)
 
@@ -1165,7 +1165,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
            linc       = number of tick incriments in latitude (default 6)
            top_lon    = longitude to place on top (degrees E, default 90)
            cb         = Add a colorbar (default is True)
-           cloc       = Colorbar location (t=top, r=right, l=left, b=bottom, 
+           cloc       = Colorbar location (t=top, r=right, l=left, b=bottom,
                         default is right)
            title      = plot title (default is none)
            tloc       = title location (t=top, r=right, l=left, b=bottom,
@@ -1182,18 +1182,18 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
                            with the UT for this map.  (default=False)
            extra_line    = Plot a specified line (default=False) eg:
                            [x np.array, y np.array, style string (eg 'k-')]
-                           where x is in degrees longitude and y is in 
+                           where x is in degrees longitude and y is in
                            degrees latitude
 
     Output: con = Contour plot handle
             m   = Earth map handle (or None if earth=False and not specified)
-    
+
     '''
 
     rout_name = "plot_polar_3D_global"
 
     if zmax == zmin:
-        print rout_name, "ERROR: z variable at a constant value", zmax
+        print(rout_name, "ERROR: z variable at a constant value", zmax)
         return
 
     # Initialize the color scheme, if desired
@@ -1250,7 +1250,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
             try:
                 m.nightshade(term_datetime, alpha=.2)
             except AttributeError:
-                print rout_name, "AttributeError in Terminator shading"
+                print(rout_name, "AttributeError in Terminator shading")
 
         # Determine whether the z scale is linear or exponential
         if zscale.find("exp") >= 0:
@@ -1276,11 +1276,11 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
 
         for i, label in enumerate(lats):
             ax.text(x[i], y[i], "%.0f$^\circ$" % (label))
- 
+
         # Add magnetic equator, if desired
         if meq is True:
             meq_lon, meq_lat = gpr.add_geomagnetic_equator()
-            m.plot(meq_lon, meq_lat, "-k", latlon=True) 
+            m.plot(meq_lon, meq_lat, "-k", latlon=True)
 
         # Add a specified line, if desired
         if type(extra_line) is list:
@@ -1291,7 +1291,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
 
                 m.plot(extra_line[0], extra_line[1], stylestring, latlon=True)
             else:
-                print "Unable to plot extra line, missing data"
+                print("Unable to plot extra line, missing data")
 
 
     else:
@@ -1362,7 +1362,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
         else:
             rtics = range(-edge_lat, -center_lat, -rwidth)
             ax.set_rgrids(rtics, labels=rlabels, angle=lon)
-            
+
         # Add magnetic equator, if desired
         if meq is True:
             meq_lon, meq_lat = gpr.add_geomagnetic_equator()
@@ -1370,7 +1370,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
             meq_r = np.array([l * csign for l in meq_lat])
             meq_r = np.array(gpr.center_polar_cap(abs(center_lat),
                                                   abs(edge_lat), meq_r))
-            ax.plot(meq_theta, meq_r, "-k") 
+            ax.plot(meq_theta, meq_r, "-k")
 
         # Add solar terminator, if desired
         if type(term_datetime) is dt.datetime:
@@ -1391,7 +1391,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
                 ax.plot([sslon], [sslat], marker="*", ms=5,
                         markerfacecolor='none', markeredgecolor='k')
             except:
-                print "Unable to add solar terminator without PySolar"
+                print("Unable to add solar terminator without PySolar")
 
         if type(extra_line) is list:
             if len(extra_line) >= 2:
@@ -1405,7 +1405,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
 
                 ax.plot(x, y, stylestring)
             else:
-                print "Unable to plot extra line, missing data"
+                print("Unable to plot extra line, missing data")
 
         ax.set_rmax(max(rtics))
         ax.set_rmin(min(rtics))
@@ -1451,7 +1451,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
 
             if tloc == "r":
                 xloc = 1.1
-                
+
                 if earth:
                     xloc = 1.2
 
@@ -1471,7 +1471,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
                                 zscale, zname, zunits)
         bp = list(cbar.ax.get_position().bounds)
         cbp = list(cax.get_position().bounds)
-        
+
         if(cloc == 't'):
             cp[1] = bp[1]
             cp[3] = cbp[3]

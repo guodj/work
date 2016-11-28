@@ -46,7 +46,7 @@
 #                                        the geographic and geomagnetic equators
 #           add_dipole_fieldline       - Calculate and add dipole field lines
 #                                        with a specified apex height to a plot
-#           
+#
 #----------------------------------------------------------------------------
 
 '''
@@ -337,7 +337,7 @@ def find_data_limits_irange(gDataList, xkey, min_ilat=-1, max_ilat = -1,
     return xmin, xmax
 
 def find_data_limits_ivalues(gDataList, xkey, lat_indices, lon_indices,
-                             alt_indices, lat_range=False, lon_range=False, 
+                             alt_indices, lat_range=False, lon_range=False,
                              alt_range=False, inc=6, rvals=True, *args,
                              **kwargs):
     '''
@@ -422,7 +422,7 @@ def find_data_limits_ivalues(gDataList, xkey, lat_indices, lon_indices,
 
         if((not lat_range and ilat == -1) or (not lon_range and ilon == -1)
            or (not alt_range and ialt == -1)):
-            print "INPUT ERROR in find_data_limit_ivalues"
+            print("INPUT ERROR in find_data_limit_ivalues")
             sys.exit(1)
 
         # Cycle over the GITM data structures
@@ -459,7 +459,7 @@ def find_data_limits_ivalues(gDataList, xkey, lat_indices, lon_indices,
                     else:
                         # This is silly to do, but sometimes people are silly
                         flat = gData[xkey][ilon,ilat,ialt].reshape(-1)
-        
+
             # Maintain the maximum and mimimum values for this data selection
             hold_min.append(min(flat))
             hold_max.append(max(flat))
@@ -553,7 +553,7 @@ def find_lon_lat_index(gData, glon, glat, units="degrees"):
     import string
 
     # Set the keys to look for the location in the appropriate units
-    if string.lower(units) == "degrees":
+    if units.lower() == "degrees":
         latkey = "dLat"
         lonkey = "dLon"
     else:
@@ -569,7 +569,7 @@ def find_lon_lat_index(gData, glon, glat, units="degrees"):
             if (clon - glon) > (glon - gData[lonkey][lonindex-1,0,0]):
                 lonindex = lonindex - 1
             break
-        
+
     # Next identify the appropriate Latitude at the specified longitude
 
     for (latindex,clat) in enumerate(gData[latkey][lonindex,:,0]):
@@ -630,11 +630,11 @@ def retrieve_key_from_web_name(name):
                 "Magnetic Longitude":"Magnetic Longitude",
                 "dLon":"Longitude (deg)", "LT":"Solar Local Time"}
 
-    if key_dict.has_key(name):
+    if name in key_dict:
         return key_dict[name]
     else:
-        print "ERROR: unknown data type [", name, "], known names are: "
-        print key_dict.keys()
+        print("ERROR: unknown data type [", name, "], known names are: ")
+        print(key_dict.keys())
 
 def find_alt_index(gData, ilon, ilat, alt, units="km"):
     '''
@@ -643,7 +643,7 @@ def find_alt_index(gData, ilon, ilat, alt, units="km"):
     '''
     import string
 
-    if string.lower(units) == "km":
+    if units.lower() == "km":
         alt *= 1000.0
 
     # The GITM arrays are sorted, so we can use searchsorted to find
@@ -659,11 +659,11 @@ def find_alt_index(gData, ilon, ilat, alt, units="km"):
     if(ialt >= gData.attrs['nAlt'] or
        (ialt> 0 and abs(alt - gData['Altitude'][ilon,ilat,ialt]) >
         abs(alt + gData['Altitude'][ilon,ilat,ialt-1]))):
-        # If this location is above the maximum height, return maximum index 
+        # If this location is above the maximum height, return maximum index
         # by reducing the count by one, or if this location is closer to the
         # previous altitude than the one at this index, reduce the count by one
         ialt -= 1
-        
+
     return(ialt)
 #End find_alt_index
 
@@ -689,21 +689,21 @@ def match_cindi_key(in_key, out_type="CINDI"):
         else:
             return(key_dict.keys())
     else:
-        if out_type == "CINDI" and key_dict.has_key(in_key):
+        if out_type == "CINDI" and in_key in key_dict:
             return key_dict[in_key]
         elif out_type == "GITM":
-            out_list = [k for k, v in key_dict.iteritems() if v == 'Alt.']
+            out_list = [k for k, v in key_dict.items() if v == 'Alt.']
             if len(out_list) == 1:
                 return(out_list[0])
             else:
-                print "WARNING: unknown CINDI data type [",in_key,"]"
+                print("WARNING: unknown CINDI data type [",in_key,"]")
                 return None
         elif out_type == "CINDI":
-            print "WARNING: unknown GITM data type [",in_key,"], known names are:"
-            print key_dict.keys()
+            print("WARNING: unknown GITM data type [",in_key,"], known names are:")
+            print(key_dict.keys())
             return None
         else:
-            print "WARNING: unknown data source [", out_type, "]"
+            print("WARNING: unknown data source [", out_type, "]")
             return None
 # END match_cindi_key
 
@@ -786,7 +786,7 @@ try:
     def add_solar_terminator(ut, alt=0.0, ax=None, color='k', style="-",
                              width=1):
         '''
-        A routine to calculate and add a line marking the solar terminator to 
+        A routine to calculate and add a line marking the solar terminator to
         a plot. Line color, style, and width can be specified using matplotlib
         symbols.  Lists containing the coordinates of this line can be returned
         without adding the marker to a plot by setting ax=None.
@@ -834,7 +834,7 @@ try:
         return(tlon, tlat)
 # END add_solar_terminator
 except:
-    print "solar_rout.py unavailable: can't load add_solar_terminator, add_subsolar_point"
+    print("solar_rout.py unavailable: can't load add_solar_terminator, add_subsolar_point")
 
 try:
     import solar
@@ -929,7 +929,7 @@ try:
 
         return(sza, bad_time)
 except:
-    print "PySolar not installed, cannot load find_sunside_twilight_sza"
+    print("PySolar not installed, cannot load find_sunside_twilight_sza")
 
 # Create a contour input 2D numpy array at a specified geo/mag lat/lon/alt
 
@@ -938,9 +938,9 @@ def create_contour_input_array(hold_key, hold_value, xkey, ykey, zkeys, gdata,
                                latmax=None, altmin=0, altmax=None,
                                *argv, **kwargs):
     '''
-    create_contour_input_array: A routine to create contour input at a 
-                                specific location.  For example, plotting 
-                                Te at a specific latitude or longitude 
+    create_contour_input_array: A routine to create contour input at a
+                                specific location.  For example, plotting
+                                Te at a specific latitude or longitude
                                 between two grid points.
     Input: hold_key   = key of coordinate in which desired location is specified
            hold_value = value of desired, specific coordinate location
@@ -1058,7 +1058,7 @@ def create_contour_input_array(hold_key, hold_value, xkey, ykey, zkeys, gdata,
         for zk in zkeys:
             values = np.ndarray(shape=N, dtype=float, buffer=np.array(gdata[zk][lonmin:lonmax,latmin:latmax,altmin:altmax].flatten()))
             v = interpolate.griddata(points, values, xi, method="linear")
-            if out.has_key(zk):
+            if zk in out:
                 out[zk] = np.append(out[zk], v)
             else:
                 out[zk] = np.array(v)
@@ -1073,9 +1073,9 @@ def create_linear_input_array(hold_key, hold_value, xkey, ykeys, gdata, xarray,
                               lonmin=0, lonmax=1, latmin=0, latmax=1, altmin=0,
                               altmax=1, *argv, **kwargs):
     '''
-    create_linear_input_array: A routine to create linear input at a 
-                                specific location.  For example, plotting 
-                                VTEC at a specific latitude or longitude 
+    create_linear_input_array: A routine to create linear input at a
+                                specific location.  For example, plotting
+                                VTEC at a specific latitude or longitude
                                 between two grid points.
     Input: hold_key   = key of coordinate in which desired location is specified
            hold_value = value of desired, specific coordinate location
@@ -1122,7 +1122,7 @@ def create_linear_input_array(hold_key, hold_value, xkey, ykeys, gdata, xarray,
     for yk in ykeys:
         values = np.ndarray(shape=N, dtype=float, buffer=np.array(gdata[yk][lonmin:lonmax,latmin:latmax,altmin:altmax].flatten()))
         v = interpolate.griddata(points, values, xi, method="linear")
-        if out.has_key(yk):
+        if yk in out:
             out[yk] = np.append(out[yk], v)
         else:
             out[yk] = np.array(v)
@@ -1165,7 +1165,7 @@ def add_dipole_fieldline(ax, apex_alt, lat_array, alt_units="km",
         ldeg = 180.0 / np.pi
         lrad = 1.0
 
-    if lat_type.find("geog") >= 0: 
+    if lat_type.find("geog") >= 0:
         # Determine the latitude of the geomagnetic equator
         if lon_units.find("rad") >= 0:
             longitude = math.degrees(longitude)
@@ -1182,7 +1182,7 @@ def add_dipole_fieldline(ax, apex_alt, lat_array, alt_units="km",
         Re *= 1000.0
     elif apex_alt == "L":
         Re = 1.0
-    
+
     hsum = (apex_alt + Re)
 
     # Calculate the dipole field line heights at the desired locations
@@ -1195,7 +1195,7 @@ def add_dipole_fieldline(ax, apex_alt, lat_array, alt_units="km",
         elif lat_type.find("inc") >= 0:
             angle = math.atan(0.5 * math.tan(lat * lrad))
         else:
-            print func_name, "ERROR: unknown latitude type"
+            print(func_name, "ERROR: unknown latitude type")
             return
 
         dipole_alt.append(hsum * math.pow(math.cos(angle), 2.0) - Re)
@@ -1221,7 +1221,7 @@ def get_meq_offset(longitude):
     the equator was determined using IGRF-10.
 
     Input: longitude = single or multiple longitudes in degrees
-    Output: offset = numpy.ndarray containing the geographic latitude in 
+    Output: offset = numpy.ndarray containing the geographic latitude in
                      degrees at the geomagnetic equator
     '''
     from scipy import interpolate
