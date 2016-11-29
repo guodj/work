@@ -25,8 +25,7 @@ import os
 import myfunctions as mf
 from scipy.interpolate import griddata
 
-GOCEDATADIR = '/home/guod/data/GOCE/'
-#GOCEDATADIR = '/data/GOCE/data/'
+GOCEDATADIR = os.environ.get('DATAPATH') + 'GOCE/'
 class GoceData(pd.DataFrame):
     """Class to open, manipulate and visualize the GOCE data files
     """

@@ -479,7 +479,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
         fwidth = f.get_figwidth()
         f.set_figwidth(fwidth / 1.5)
 
-    for snum in reversed(range(0, sn)):
+    for snum in reversed(list(range(0, sn))):
         cl = False
         xl = False
         yl = False
@@ -531,7 +531,7 @@ def plot_mult_3D_slices(plot_type, isub, subindex, lat_data, lon_data, z_data,
             (con, m) = plot_polar_3D_global(ax, 2, latdat, londat, zdat, zname,
                                             zscale, zunits, zmin, zmax, zcolor,
                                             center_lat=nlat, edge_lat=slat,
-                                            linc=(linc/2), top_lon=tlon,
+                                            linc=int(linc/2), top_lon=tlon,
                                             cb=False, cloc="t", title=tl,
                                             tloc="l", tl=xl, rl=yl,
                                             bcolor=bcolor, earth=earth, m=m,
@@ -1331,6 +1331,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
             cax = con.axes
 
         # get minimum value of r for tics
+        ax.set_rmin(0)  # How can rmin not be 0?
         rmin = ax.get_rmin()
 
         ax.set_theta_offset(toff)
@@ -1341,8 +1342,8 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
             ledge = center_lat
 
         rtics = [rmin + rwidth * (x) for x in range(linc+1)]
-        rlabels = map(str, (map(int, [ledge + rwidth * (x)
-                                      for x in range(linc+1)])))
+        rlabels = list(map(str, (list(map(int, [ledge + rwidth * (x)
+                                      for x in range(linc+1)])))))
 
         if(center_lat > edge_lat):
             rlabels.reverse()
@@ -1360,7 +1361,7 @@ def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,
         if(min(rtics) > 0.0):
             ax.set_rgrids(rtics, labels=rlabels, angle=lon)
         else:
-            rtics = range(-edge_lat, -center_lat, -rwidth)
+            rtics = list(np.arange(-edge_lat, -center_lat, -rwidth))
             ax.set_rgrids(rtics, labels=rlabels, angle=lon)
 
         # Add magnetic equator, if desired
