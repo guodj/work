@@ -122,7 +122,7 @@ def gitm_lat_lt_nspolar():
         z1 = griddata((x0, y0), rho0, (x1, y1), method='linear')
         return x1, y1, z1
 
-    ff = '/home/gdj/tmp/3DALL_t1002'
+    ff = '/home/guod/tmp/3DALL_t1002'
     fname = ['26_210000.bin', '26_223000.bin', '27_000000.bin',
              '27_013000.bin', '27_030000.bin']
     gitm0 = gitm.GitmBin(ff+'27_000000.bin',

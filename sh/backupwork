@@ -1,8 +1,6 @@
 #!/bin/bash
 workdir=~/work/
-PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH
-export LANG=C
 cd $workdir
 git add --all
-git commit -m 'daily update'
+git commit -m $1
 git push origin master
