@@ -99,8 +99,55 @@ def set_lat_lt_polar(ax, ns='N', boundinglat=0,
     ax.set_theta_zero_location('S')
     return
 
+
+def add_polar_coordinate(ax, centerlat=90, boundinglat=0, dlat=30, dlon=90,
+                         latlabel='lat', lonlabel='LT', rtl=0.08, rxl=0.16):
+    """
+    Add polar coordinates frame to axis
+
+    input:
+        centerlat: 90 or -90, stand for northern or southern hemisphere
+        boundinglat: latitude at the edge
+        dlat: delta latitude(+)
+        dlon: delta longitude(+)
+        rtl: tick label distance from out boundary
+        rxl: xlabel distance from out boundary
+    """
+    csign = np.sign(centerlat)
+    lat0 = np.arange(boundinglat, centerlat, csign*dlat)
+    lon0 = np.arange(0, 360, dlon)
+    r0 = 90-csign*lat0
+    theta0 = lon0
+    theta = np.arange(0, 2*np.pi, 0.01)
+    for k0 in r0:
+        ax.plot(k0*np.cos(theta), k0*np.sin(theta), '--', color='gray',
+                linewidth=1, zorder=100)
+    edger = 90 - csign*boundinglat
+    ax.plot(edger*np.cos(theta), edger*np.sin(theta), 'k', zorder=100)
+
+    r = np.arange(0, 90-csign*boundinglat, 0.01)
+    for k0 in theta0:
+        ax.plot(r*np.cos(k0/180*np.pi), r*np.sin(k0/180*np.pi), '--',
+                 color='gray', linewidth=1, zorder=100)
+    if 'LT' in lonlabel:
+        for k0 in lon0:
+            lradius = 90-csign*boundinglat + rtl*(abs(centerlat-boundinglat))
+            ltheta = k0/180*np.pi
+            pos = [lradius*np.cos(ltheta), lradius*np.sin(ltheta)]
+            llabel = (k0/15+6)%24
+            ax.text(pos[0], pos[1], '{:02.0f}'.format(llabel),
+                    horizontalalignment='center', verticalalignment='center',
+                    fontsize=12)
+        xlr = 90-csign*boundinglat + rxl*(abs(centerlat-boundinglat))
+        xltheta = -0.5*np.pi
+        pos = [xlr*np.cos(xltheta), xlr*np.sin(xltheta)]
+        ax.text(pos[0], pos[1], lonlabel,
+                horizontalalignment='center', verticalalignment='center',
+                fontsize=14)
+    return ax
+
 # END
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 if __name__ == '__main__':
     import matplotlib.pyplot as plt
     import champ_grace as cg
@@ -115,6 +162,10 @@ if __name__ == '__main__':
     #    lon2 = np.arange(10)
     #    a = great_circle_distance_earth(lat1, lon1, lat2, lon2)
     # Test set_lat_lt_polar
-    ax = plt.subplot(projection='polar')
-    set_lat_lt_polar(ax,ns='S',boundinglat=-50)
+    #    ax = plt.subplot(projection='polar')
+    #    set_lat_lt_polar(ax,ns='S',boundinglat=-50)
+    #    plt.show()
+    # Test add_polar_coordinate
+    ax = plt.subplot()
+    add_polar_coordinate(ax, centerlat=-90)
     plt.show()

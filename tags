@@ -123,6 +123,7 @@ Apex	/home/gdj/work/python/champ_grace.py	/^        from apexpy import Apex$/;"	
 Apex	/home/gdj/work/python/goce.py	/^            from apexpy import Apex$/;"	i
 Apex	/home/gdj/work/python/goce.py	/^        from apexpy import Apex$/;"	i
 Apex	/home/gdj/work/python/sth.py	/^    from apexpy import Apex$/;"	i
+Apex	/home/gdj/work/python/test.py	/^    from apexpy import Apex as Apex$/;"	i
 AutoMinorLocator	/home/gdj/work/python/champ_grace.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
 AutoMinorLocator	/home/gdj/work/python/goce.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
 AutoMinorLocator	/home/gdj/work/python/work2_101.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
@@ -142,7 +143,7 @@ CSW	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	581;"	c	subroutine:GTS7
 CSW	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	968;"	c	function:GLOBE7
 ChampDensity	/home/gdj/work/python/champ_grace.py	/^class ChampDensity(pd.DataFrame):$/;"	c
 ChampWind	/home/gdj/work/python/champ_grace.py	/^class ChampWind(ChampDensity):$/;"	c
-DATADIR	/home/gdj/work/python/champ_grace.py	/^DATADIR = '\/home\/guod\/data\/'$/;"	v
+DATADIR	/home/gdj/work/python/champ_grace.py	/^DATADIR = os.environ.get('DATAPATH')$/;"	v
 DATADIR	/home/gdj/work/python/work2_101.py	/^DATADIR = '\/home\/guod\/data\/'$/;"	v
 DATADIR	/home/gdj/work/python/work3_100.py	/^DATADIR = '\/data\/'$/;"	v
 DATIM7	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	143;"	c	subroutine:GTD7
@@ -173,7 +174,7 @@ GITM	/home/gdj/work/python/gitm_comparison_plots.py	/^import gitm # Temporary un
 GLATF	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GLATF(/;"	s
 GLOB7S	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION GLOB7S(/;"	f
 GLOBE7	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      FUNCTION GLOBE7(/;"	f
-GOCEDATADIR	/home/gdj/work/python/goce.py	/^GOCEDATADIR = '\/home\/guod\/data\/GOCE\/'$/;"	v
+GOCEDATADIR	/home/gdj/work/python/goce.py	/^GOCEDATADIR = os.environ.get('DATAPATH') + 'GOCE\/'$/;"	v
 GTD7	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GTD7(/;"	s
 GTD7BK	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      BLOCK DATA GTD7BK$/;"	b
 GTD7D	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      SUBROUTINE GTD7D(/;"	s
@@ -216,7 +217,7 @@ MultipleLocator	/home/gdj/work/python/plot_alt_profiles.py	/^from matplotlib.tic
 MultipleLocator	/home/gdj/work/python/plot_stats.py	/^from matplotlib.ticker import FormatStrFormatter, MultipleLocator$/;"	i
 NAME	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	/^      CHARACTER(4) NAME,/;"	v	block data:GTD7BK
 NearestNDInterpolator	/home/gdj/work/python/work3_100.py	/^        from scipy.interpolate import NearestNDInterpolator$/;"	i
-OMNIDATADIR	/home/gdj/work/python/omni.py	/^OMNIDATADIR = '\/home\/guod\/data\/omni\/'$/;"	v
+OMNIDATADIR	/home/gdj/work/python/omni.py	/^OMNIDATADIR = os.environ.get('DATAPATH') + 'omni\/'$/;"	v
 OS	/home/gdj/work/python/gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
 PARM7	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	141;"	c	subroutine:GTD7
 PARM7	/home/gdj/work/fortran/nrlmsis/nrlmsise00_sub.for	1655;"	c	block data:GTD7BK
@@ -319,6 +320,7 @@ cb	/home/gdj/work/python/gitm_3d_test.py	/^cb=plt.colorbar(cnt)$/;"	v
 cdf	/home/gdj/work/python/read_files.py	/^    import netCDF4 as cdf$/;"	i
 center_polar_cap	/home/gdj/work/python/gitm_plot_rout.py	/^def center_polar_cap(rcenter, redge, r):$/;"	f
 cg	/home/gdj/work/python/myfunctions.py	/^    import champ_grace as cg$/;"	i
+cg	/home/gdj/work/python/test.py	/^    import champ_grace as cg$/;"	i
 chacheng	/home/gdj/work/matlab/matlabfunction/chacheng.m	/^function y=chacheng(x1,x2)$/;"	f
 choose_contour_map	/home/gdj/work/python/gitm_plot_rout.py	/^def choose_contour_map(color, center):$/;"	f
 cindi_list	/home/gdj/work/python/example_gitm_cindi_plot_script.py	/^    cindi_list = f.readlines()$/;"	v
@@ -436,6 +438,7 @@ func1	/home/gdj/work/python/work3_100.py	/^def func1():$/;"	f
 func2	/home/gdj/work/python/test.py	/^def func2():$/;"	f
 func3	/home/gdj/work/python/test.py	/^def func3():$/;"	f
 func3	/home/gdj/work/python/work3_100.py	/^def func3():$/;"	f
+func4	/home/gdj/work/python/test.py	/^def func4():$/;"	f
 gamdm	/home/gdj/work/fortran/work1/gamdm.f90	/^subroutine gamdm(/;"	s
 gamdm	/home/gdj/work/fortran/work1/mygamdm.f90	/^subroutine gamdm(/;"	s
 gamdm_test	/home/gdj/work/fortran/work1/gamdm.f90	/^program gamdm_test$/;"	p
@@ -649,6 +652,7 @@ matplotlib	/home/gdj/work/python/sth.py	/^    import matplotlib$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^    import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^import matplotlib$/;"	i
 matplotlib	/home/gdj/work/python/sth.py	/^import matplotlib.pyplot as plt$/;"	i
+matplotlib	/home/gdj/work/python/test.py	/^    import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/test.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/work2_101.py	/^import matplotlib.pyplot as plt$/;"	i
 matplotlib	/home/gdj/work/python/work3_100.py	/^    import matplotlib.dates as mdates$/;"	i
@@ -810,6 +814,7 @@ plt	/home/gdj/work/python/plot_alt_profiles.py	/^import matplotlib.pyplot as plt
 plt	/home/gdj/work/python/plot_stats.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/sth.py	/^    import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/sth.py	/^import matplotlib.pyplot as plt$/;"	i
+plt	/home/gdj/work/python/test.py	/^    import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/test.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/work2_101.py	/^import matplotlib.pyplot as plt$/;"	i
 plt	/home/gdj/work/python/work3_100.py	/^import matplotlib.pyplot as plt$/;"	i
