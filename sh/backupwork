@@ -1,5 +1,5 @@
 #!/bin/bash
-workdir=~/work/
+workdir=$HOME/work/
 cd $workdir
 git add --all
 git commit -m $1

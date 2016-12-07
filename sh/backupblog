@@ -1,8 +1,8 @@
 #!/bin/bash
-blogdir=~/blog/
+blogdir=$HOME/blog/
 PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH
 export LANG=C
 cd $blogdir
 git add --all
-git commit -m 'daily update'
+git commit -m $1
 git push origin gh-pages
