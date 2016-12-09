@@ -187,22 +187,36 @@ class ChampDensity(pd.DataFrame):
         return result
 
 
-    def satellite_position_lt_lat(self, mag=False, ns='N'):
+    def satellite_position_lt_lat(self, ax, nlat=90, slat=0,
+                                  mag=False, plot_type='polar',
+                                  *args, **kwargs):
         """ Show the (M)lt and (M)lat positions of the satellite in a polar
-        coordinate.
+        or rectangular coordinate axis.
 
         Input:
+            ax: which axis to draw orbit on
+            nlat: northward latitude limit (default 90)
+            slat: southward latitude limit (default 0)
             mag: if True, for MLT and Mlat position
-            ns: N or S for North and South hemispheres, respectively
+        Return:
+            hc: handle of the scatter
         """
         if self.empty:
             return
         lt='MLT' if mag else 'LT'
         lat='Mlat' if mag else 'lat'
-        ct = self[lat]>0 if ns is 'N' else self[lat]<0
-        theta = self.loc[ct,lt]/12*np.pi
-        r = 90 - abs(self.loc[ct,lat])
-        hc = plt.scatter(theta, r, linewidths=0)
+        ct = (self[lat]>slat) & (self[lat]<nlat)
+        if 'pol' in plot_type.lower():
+            if nlat*slat<0:
+                print('Error: For polar plot, nlat and slat'
+                      ' should have the same signs')
+            csign = 1 if nlat>0 else -1
+            theta = self.loc[ct,lt]/12*np.pi
+            r = 90-csign*self.loc[ct,lat]
+            hc = ax.scatter(theta, r, linewidths=0, *args, **kwargs)
+        if 'rec' in plot_type.lower():
+            hc = ax.scatter(self.loc[ct, lt], self.loc[ct, lat], linewidths=0,
+                            *args, **kwargs)
         return hc
 
 
@@ -320,13 +334,19 @@ class ChampWind(ChampDensity):
                 self[k0] = wind[k0]
         return
 
-    def satellite_position_lt_lat(self, mag=False, ns='N'):
+    def satellite_position_lt_lat(self, ax, nlat=90, slat=0,
+                                  mag=False, plot_type='polar',
+                                  *args, **kwargs):
         """ Show the (M)lt and (M)lat positions of the satellite in a polar
-        coordinate.
+        or rectangular coordinate axis.
 
         Input:
+            ax: which axis to draw orbit on
+            nlat: northward latitude limit (default 90)
+            slat: southward latitude limit (default 0)
             mag: if True, for MLT and Mlat position
-            ns: N or S for North and South hemispheres, respectively
+        Return:
+            hc: handle of the scatter
         """
         if self.empty:
             return
@@ -335,20 +355,24 @@ class ChampWind(ChampDensity):
             from apexpy import Apex
             import datetime as dt
             a = Apex(date=2005)
-            mlat,mlt = a.convert(tmp.lat, tmp.long, 'geo','mlt', datetime=tmp.index)
+            mlat, mlt = a.convert(tmp.lat, tmp.long, 'geo','mlt',
+                                  height=tmp.height, datetime=tmp.index)
             tmp['MLT'] = mlt
             tmp['Mlat'] = mlat
-            #for k00,k0 in enumerate(tmp.index):
-            #    mlat,mlt = a.convert(tmp.ix[k00,'lat'], tmp.ix[k00,'long'],
-            #                         'geo','mlt', datetime=k0)
-            #    tmp.ix[k00,'Mlat'] = mlat
-            #    tmp.ix[k00,'MLT'] = mlt
         ltp='MLT' if mag else 'LT'
         latp='Mlat' if mag else 'lat'
-        ct = tmp[latp]>0 if ns is 'N' else tmp[latp]<0
-        theta = tmp.loc[ct,ltp]/12*np.pi
-        r = 90 - abs(tmp.loc[ct,latp])
-        hc = plt.scatter(theta, r, linewidths=0)
+        ct = (self[latp]>slat) & (self[latp]<nlat)
+        if 'pol' in plot_type.lower():
+            if nlat*slat<0:
+                print('Error: For polar plot, nlat and slat'
+                      ' should have the same signs')
+            csign = 1 if nlat>0 else -1
+            theta = tmp.loc[ct,ltp]/12*np.pi
+            r = 90-csign*tmp.loc[ct,latp]
+            hc = ax.scatter(theta, r, linewidths=0, *args, **kwargs)
+        if 'rec' in plot_type.lower():
+            hc = ax.scatter(tmp.loc[ct, ltp], tmp.loc[ct, latp], linewidths=0,
+                            *args, **kwargs)
         return hc
 
     def contourf_date_lat(self, ax, whichcolumn='wind', updown='up', **kwargs):
@@ -457,36 +481,20 @@ class ChampWind(ChampDensity):
 
 
 # END
-#--------------------------------------------------------------------------------
+#-------------------------------------------------------------------------------
 # for test
 if __name__=='__main__':
     #------------------------------------------------------------
-    # Test satellite_position_lt_lat.
-    #    den = ChampDensity(
-    #           '2015-1-2','2015-1-10', variables=['lat','Mlat','LT','MLT','rho400','rho'])
-    #    ax = plt.subplot(polar=True)
-    #    hc = den.satellite_position_lt_lat(mag=True)
-    #    #----------------------------------------
-    #    # Set polar(lat, LT) coordinates
-    #    ax.set_rmax(30)
-    #    ax.set_rgrids(
-    #           np.arange(10,31,10),['$80^\circ$','$70^\circ$','$60^\circ$'],fontsize=14)
-    #    ax.set_theta_zero_location('S')
-    #    ax.set_thetagrids(np.arange(0,361,90),[0,6,12,18],fontsize=14,frac=1.05)
-    #    #----------------------------------------
-    #    plt.show()
-    #------------------------------------------------------------
     # Check whether satellite_position_lt_lat results
     # from ChampWind and ChampDensity are the same.
-    #    wind = ChampWind('2006-1-1 12:00:00','2006-1-2 13:00:00')
-    #    plt.figure()
-    #    ax = plt.subplot(polar=True)
-    #    wind.satellite_position_lt_lat(mag=True)
-    #    density = ChampDensity('2006-1-1 12:00:00','2006-1-2 13:00:00')
-    #    plt.figure()
-    #    ax = plt.subplot(polar=True)
-    #    density.satellite_position_lt_lat(mag=True)
-    #    plt.show()
+    wind = ChampWind('2006-1-1 12:00:00','2006-1-1 13:30:00')
+    ax = plt.subplot()
+    wind.satellite_position_lt_lat(
+            ax, mag=True, nlat=90, slat=-90, plot_type='rec', color='b')
+    density = ChampDensity('2006-1-1 12:00:00','2006-1-1 13:30:00')
+    density.satellite_position_lt_lat(
+            ax, mag=True, nlat=90, slat=-90, plot_type='rec', color='r')
+    plt.show()
     #------------------------------------------------------------
     # Test ChampWind.contourf_date_lat.
     #    wind = ChampWind('2005-1-1','2005-1-10 23:59:59')
@@ -519,6 +527,12 @@ if __name__=='__main__':
     #    plt.plot(wind.index,wind.arglat)
     #    plt.show()
     # Test attributes variables and daterange
-    a = ChampDensity('2005-1-1', '2005-1-2')
-    print(a.variables)
-    print(a.daterange)
+    #    a = ChampDensity('2005-1-1', '2005-1-2')
+    #    print(a.variables)
+    #    print(a.daterange)
+    # Test satellite_position_lt_lat
+    #    a = ChampDensity('2005-1-1', '2005-1-2')
+    #    ax = plt.subplot()
+    #    a.satellite_position_lt_lat(ax, nlat=90, slat=-90, plot_type='rec')
+    #    plt.show()
+

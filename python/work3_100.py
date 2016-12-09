@@ -12,8 +12,7 @@ from goce import *
 from omni import *
 import myfunctions as mf
 
-#DATADIR = '/home/guod/data/'
-DATADIR = '/data/'
+DATADIR = os.environ.get('DATAPATH')
 def func1():
     '''
     Find interesting cases in 2009 (11,12) and 2010
@@ -325,9 +324,65 @@ def func3():
         plt.tight_layout()
         fig8.savefig(figdir + 'w03_func03_03h')
     return
+
+
+def func4():
+    import gitm
+    import pandas as pd
+    import gitm_3D_lat_lt as gll
+    from apexpy import Apex
+    fig, ax = plt.subplots(4, 2, figsize=[6, 13],
+                           subplot_kw=dict(projection='polar'))
+    champ = ChampDensity('2010-02-26', '2010-02-27')
+    nlat, slat = -30, -90
+    plot_type='polar'
+    alt = 400 # km
+    zkey = 'Rho'
+    for k in range(3, 25, 3):
+        plt.sca(ax[int((k/3-1)//2), int(k/3%2-1)])
+        tt0 = pd.Timestamp('2010-02-26')+pd.Timedelta(k-3, 'h')
+        tt1 = pd.Timestamp('2010-02-26')+pd.Timedelta(k, 'h')
+        # add champ orbit
+        champt = champ[tt0:tt1]
+        champt.__class__ = ChampDensity
+        champt.satellite_position_lt_lat(
+                plt.gca(), nlat=nlat, slat=slat, plot_type=plot_type,
+                zorder=100, color='gray', alpha=0.5)
+        # add msis difference density
+        ttstr0 = tt0.strftime('%y%m%d_%H%M%S')
+        ttstr1 = tt1.strftime('%y%m%d_%H%M%S')
+        a0 = gitm.GitmBin(
+                '/home/guod/tmp/3DALL_msis/3DALL_t'+ttstr0+'.bin',
+                varlist=[zkey])
+        a1 = gitm.GitmBin(
+                '/home/guod/tmp/3DALL_msis/3DALL_t'+ttstr1+'.bin',
+                varlist=[zkey])
+        axt, hcont = gll.gitm_3D_lat_lt_diff(
+                plt.gca(), zkey, plot_type, a0, a1, alt=alt,
+                diff_type='relative', title=False, figname=None, draw=True,
+                nlat=nlat, slat=slat, dlat=30, dlt=6, lt00='S', zmax=15,
+                zmin=-15, zcolor=None, data_type="contour")
+        plt.title(tt1.strftime('%H')+'-'+tt0.strftime('%H'))
+        # add magnetic pole
+        csign =1 if nlat>0 else -1
+        pp = csign*90
+        mplat, mplon = Apex().convert(pp, 0, source='qd', dest='geo')
+        mput = tt1.hour+tt1.minute/60+tt1.second/3600
+        mplt = mput+mplon/15
+        mpr, mptheta = 90-csign*mplat, mplt/12*np.pi
+        plt.plot(mptheta, mpr, 'ko')
+        # It is strange that the minimum radius is not 0
+        axt.set_rmin(0)
+    [ax[-1, k].set_xlabel('LT') for k in range(2)]
+    plt.subplots_adjust(top=0.95, bottom=0.07)
+    cax = plt.axes([0.3, 0.025, 0.4, 0.01])
+    plt.colorbar(hcont, cax=cax, ticks=np.arange(-15, 16, 5),
+                 orientation='horizontal')
+    plt.show()
+
 # END
 #------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    a = func3()
+    a = func4()
     plt.show()
