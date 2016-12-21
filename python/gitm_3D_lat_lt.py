@@ -79,9 +79,75 @@ def gitm_3D_lat_lt_data(zkey, gdata, alt=400, nlat=90, slat=-90):
     return lat0, lt0, zdata0
 
 
-def gitm_3D_lat_lt_plot(ax, plot_type, lat0, lt0, zdata0, title=False,
-                        figname=None, draw=True, nlat=90, slat=-90, dlat=30,
-                        dlt=6, lt00='S', zmax=None, zmin=None, zcolor=None,
+def gitm_3D_mlat_mlt_data(zkey, gdata, alt=400, nlat=90, slat=-90):
+    '''
+    Get magnetic Latitude, Local Time and z data for scatter or contour plot
+    Input: zkey        = key for z variable (ie 'Vertical TEC')
+           gdata       = gitm bin structure
+           alt         = altitude (default 400 km)
+           nlat        = northern magnetic latitude limit
+                         (degrees North, default 90)
+           slat        = southern magneticlatitude limit
+                         (degrees North, defalut -90)
+
+    Output: mLat, mLT, zdata
+    '''
+    from apexpy import Apex
+    from scipy.spatial import cKDTree
+    # Find altitude index
+    altitude = gdata['Altitude'][0, 0, :]
+    ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
+    # Confine latitudes and longitudes
+    latitude = gdata['Latitude'][0, :, 0]
+    ilat = np.argwhere((latitude >= -np.pi/2) &
+                       (latitude <= np.pi/2))
+    ilatmin, ilatmax = ilat.min(), ilat.max()
+    longitude = gdata['Longitude'][:, 0, 0]
+    ilon = np.argwhere((longitude>0) & (longitude<2*np.pi))
+    ilonmin, ilonmax = ilon.min(), ilon.max()
+    lat0 = gdata['Latitude'][ilonmin:ilonmax+1, ilatmin:ilatmax+1, ialt]
+    lat0 = lat0*180/np.pi
+    lon0 = gdata['Longitude'][ilonmin:ilonmax+1, ilatmin:ilatmax+1, ialt]
+    lon0 = lon0*180/np.pi
+    lt0 = gdata['LT'][ilonmin:ilonmax+1, ilatmin:ilatmax+1, ialt]
+    zdata0 = gdata[zkey][ilonmin:ilonmax+1, ilatmin:ilatmax+1, ialt]
+    # Convert lat, lt to mlat, mlt
+    yearf = gdata['time'].year+gdata['time'].month/12
+    apx = Apex(date=yearf)
+    mlat0, mlt0 = apx.convert(
+            lat0, lon0, source='geo', dest='mlt',
+            height=gdata['Altitude'][0, 0, ialt]/1000,
+            datetime=gdata['time'])
+    mlat0, mlt0 = mlat0.reshape(-1, 1), mlt0.reshape(-1, 1)
+    zdata0 = zdata0.reshape(-1, 1)
+    # Convert spherical coordinate to cartesion coordinate
+    x0 = np.cos(mlat0*np.pi/180)*np.sin(mlt0*np.pi/12)
+    y0 = np.cos(mlat0*np.pi/180)*np.cos(mlt0*np.pi/12)
+    z0 = np.sin(mlat0*np.pi/180)
+    # Create cKDtree
+    tree = cKDTree(np.concatenate([x0, y0, z0], axis=1))
+    # Create magnetic coordinate grids
+    mlat1 = np.meshgrid(np.arange(slat, nlat+1, 1))
+    mlt1 = np.meshgrid(np.arange(0, 24.000001, 3/60))
+    mlat1, mlt1 = np.meshgrid(mlat1, mlt1)
+    # Convert spherical coordinate to cartesion coordinate
+    x1 = np.cos(mlat1*np.pi/180)*np.sin(mlt1*np.pi/12)
+    y1 = np.cos(mlat1*np.pi/180)*np.cos(mlt1*np.pi/12)
+    z1 = np.sin(mlat1*np.pi/180)
+    # Get results
+    x1, y1, z1 = x1.reshape(-1, 1), y1.reshape(-1, 1), z1.reshape(-1, 1)
+    d, izdata1 = tree.query(np.concatenate([x1, y1, z1], axis=1), k=1)
+    #w = 1.0/d**2
+    #zdata1 = np.sum(
+    #        w*(zdata0[izdata1].reshape(w.shape)), axis=1)/np.sum(w, axis=1)
+    #zdata1 = zdata1.reshape(mlat1.shape)
+    zdata1 = zdata0[izdata1].reshape(mlat1.shape)
+    return  mlat1, mlt1, zdata1
+
+
+def gitm_3D_lat_lt_plot(ax, plot_type, lat0, lt0, zdata0,
+                        nlat=90, slat=-90, dlat=10, dlt=6, lt00='S',
+                        zmax=None, zmin=None, zcolor=None,
                         data_type="contour", *args, **kwargs):
     '''
     Creates a rectangular or polar map projection plot for a specified latitude
@@ -91,12 +157,9 @@ def gitm_3D_lat_lt_plot(ax, plot_type, lat0, lt0, zdata0, title=False,
            lat0       = 2D latitude data
            lt0        = 2D local time data
            zdata0     = 2D data to be drawn
-           title      = whether to use default title (default False)
-           figname    = file name to save figure as (default is none)
-           draw       = draw to screen? (default is True)
            nlat       = northern latitude limit (degrees North, default 90)
            slat       = southern latitude limit (degrees North, defalut -90)
-           dlat       = increment of latitude ticks (default 30)
+           dlat       = increment of latitude ticks (default 10)
            dlt        = increment of local time ticks (default 6)
            lt00       = 00 local direction (default 'S')
            zmax       = Maximum z range (default None)
@@ -131,9 +194,15 @@ def gitm_3D_lat_lt_plot(ax, plot_type, lat0, lt0, zdata0, title=False,
         # Convert lat and lt to r and theta
         r0 = 90-csign*lat0
         theta0 = lt0/12*np.pi
-        hcont = ax.contourf(np.array(theta0), np.array(r0), np.array(zdata0),
-                            levels=np.linspace(zmin, zmax, 50),
-                            cmap=zcolor, extend='both', *args, **kwargs)
+        if 'cont' in data_type.lower(): # contour
+            hcont = ax.contourf(np.array(theta0), np.array(r0),
+                                np.array(zdata0),
+                                levels=np.linspace(zmin, zmax, 21),
+                                cmap=zcolor, extend='both', *args, **kwargs)
+        if 'sca' in data_type.lower(): # scatter
+            hcont = ax.scatter(np.array(theta0), np.array(r0),
+                               c=np.array(zdata0), vmin=zmin, vmax=zmax,
+                               cmap=zcolor, lw=0, *args, **kwargs)
         # Set polar coordinates
         rticks = np.arange(dlat, r0.max()+dlat/2, dlat)
         rlabels = ['{:02.0f}$^\circ$'.format(k) for k in csign*(90-rticks)]
@@ -142,11 +211,17 @@ def gitm_3D_lat_lt_plot(ax, plot_type, lat0, lt0, zdata0, title=False,
         ax.set_rgrids(rticks, rlabels)
         ax.set_thetagrids(thetaticks, thetalabels)
         ax.set_theta_zero_location(lt00)
+        ax.set_rlim(0, min(90-slat, 90+nlat))
         return ax, hcont
     if 'rec' in plot_type.lower(): # rectangular
-        hcont = ax.contourf(np.array(lt0), np.array(lat0), np.array(zdata0),
-                            levels=np.linspace(zmin, zmax, 50),
-                            cmap=zcolor, extend='both', *args, **kwargs)
+        if 'cont' in data_type.lower(): # contour
+            hcont = ax.contourf(np.array(lt0), np.array(lat0), np.array(zdata0),
+                                levels=np.linspace(zmin, zmax, 21),
+                                cmap=zcolor, extend='both', *args, **kwargs)
+        if 'sca' in data_type.lower(): # scatter
+            hcont = ax.scatter(np.array(lt0), np.array(lat0),
+                               c=np.array(zdata0), vmin=zmin, vmax=zmax,
+                               cmap=zcolor, lw=0, *args, **kwargs)
         xticks = np.arange(0, 24+dlt/2, dlt)
         xticklabels = ['{:02.0f}'.format(k) for k in xticks]
         yticks = np.arange(slat, nlat+0.00001, dlat)
@@ -161,8 +236,8 @@ def gitm_3D_lat_lt_plot(ax, plot_type, lat0, lt0, zdata0, title=False,
 
 
 def gitm_3D_lat_lt_single(ax, zkey, plot_type, gdata, alt=400, title=False,
-                          figname=None, draw=True, nlat=90, slat=-90, dlat=30,
-                          dlt=6, lt00='S', zmax=None, zmin=None, zcolor=None,
+                          nlat=90, slat=-90, dlat=10, dlt=6, mag=False,
+                          lt00='S', zmax=None, zmin=None, zcolor=None,
                           data_type="contour", *args, **kwargs):
     '''
     Creates a rectangular or polar map projection plot for a specified latitude
@@ -173,12 +248,11 @@ def gitm_3D_lat_lt_single(ax, zkey, plot_type, gdata, alt=400, title=False,
            gdata      = gitm bin structure
            alt        = altitude (km, default 400 km)
            title      = whether to use default title (default False)
-           figname    = file name to save figure as (default is none)
-           draw       = draw to screen? (default is True)
            nlat       = northern latitude limit (degrees North, default 90)
            slat       = southern latitude limit (degrees North, defalut -90)
-           dlat       = increment of latitude ticks (default 30)
+           dlat       = increment of latitude ticks (default 10)
            dlt        = increment of local time ticks (default 6)
+           mag        = whether use magnetic coordinates (default False)
            lt00       = 00 local direction (default 'S')
            zmax       = Maximum z range (default None)
            zmin       = Minimum z range (default None)
@@ -189,20 +263,32 @@ def gitm_3D_lat_lt_single(ax, zkey, plot_type, gdata, alt=400, title=False,
     Output: ax = handle of the axis
             h  = handle of contourf or scatter plot
     '''
-    lat0, lt0, zdata0 = gitm_3D_lat_lt_data(
-            zkey, gdata, alt=alt, nlat=nlat, slat=slat)
+    from apexpy import Apex
+    if not mag:
+        lat0, lt0, zdata0 = gitm_3D_lat_lt_data(
+                zkey, gdata, alt=alt, nlat=nlat, slat=slat)
+    if mag:
+        lat0, lt0, zdata0 = gitm_3D_mlat_mlt_data(
+                zkey, gdata, alt=alt, nlat=nlat, slat=slat)
     ax, hc = gitm_3D_lat_lt_plot(
-             ax, plot_type, lat0, lt0, zdata0, title=title,
-             figname=figname, draw=draw, nlat=nlat, slat=slat, dlat=dlat,
+             ax, plot_type, lat0, lt0, zdata0,
+             nlat=nlat, slat=slat, dlat=dlat,
              dlt=dlt, lt00=lt00, zmax=zmax, zmin=zmin, zcolor=zcolor,
              data_type=data_type, *args, **kwargs)
+    if title:
+        # Find altitude index
+        altitude = gdata['Altitude'][0, 0, :]
+        ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
+        altalt = altitude[ialt]
+        ax.set_title(gdata['time'].strftime('%y-%m-%d %H:%M:%S')+
+                     ' @ '+'%5.1f'%(altalt/1000)+' km')
     return ax, hc
 
 
 def gitm_3D_lat_lt_diff(
         ax, zkey, plot_type, gdata1, gdata2, alt=400, diff_type='relative',
-        title=False, figname=None, draw=True, nlat=90, slat=-90, dlat=30,
-        dlt=6, lt00='S', zmax=None, zmin=None, zcolor=None, data_type="contour",
+        title=False,  nlat=90, slat=-90, dlat=10, dlt=6, mag=False,
+        lt00='S', zmax=None, zmin=None, zcolor=None, data_type="contour",
         *args, **kwargs):
     '''
     Creates a rectangular or polar map projection plot for a specified latitude
@@ -216,12 +302,11 @@ def gitm_3D_lat_lt_diff(
            diff_type  = relative or absolute density difference
                         (default relative)
            title      = whether to use default title (default False)
-           figname    = file name to save figure as (default is none)
-           draw       = draw to screen? (default is True)
            nlat       = northern latitude limit (degrees North, default 90)
            slat       = southern latitude limit (degrees North, defalut -90)
-           dlat       = increment of latitude ticks (default 30)
+           dlat       = increment of latitude ticks (default 10)
            dlt        = increment of local time ticks (default 6)
+           mag        = whether use magnetic coordinates (default False)
            lt00       = 00 local direction (default 'S')
            zmax       = Maximum z range (default None)
            zmin       = Minimum z range (default None)
@@ -232,19 +317,33 @@ def gitm_3D_lat_lt_diff(
     Output: ax = handle of the axis
             h  = handle of contourf or scatter plot
     '''
-    lat1, lt1, zdata1 = gitm_3D_lat_lt_data(
-            zkey, gdata1, alt=alt, nlat=nlat, slat=slat)
-    lat2, lt2, zdata2 = gitm_3D_lat_lt_data(
-            zkey, gdata2, alt=alt, nlat=nlat, slat=slat)
+    if not mag:
+        lat1, lt1, zdata1 = gitm_3D_lat_lt_data(
+                zkey, gdata1, alt=alt, nlat=nlat, slat=slat)
+        lat2, lt2, zdata2 = gitm_3D_lat_lt_data(
+                zkey, gdata2, alt=alt, nlat=nlat, slat=slat)
+    if mag:
+        lat1, lt1, zdata1 = gitm_3D_mlat_mlt_data(
+                zkey, gdata1, alt=alt, nlat=nlat, slat=slat)
+        lat2, lt2, zdata2 = gitm_3D_mlat_mlt_data(
+                zkey, gdata2, alt=alt, nlat=nlat, slat=slat)
     if 'rel' in diff_type.lower():
         zdata = 100*(zdata2-zdata1)/zdata1
     if 'abs' in diff_type.lower():
         zdata = zdata2-zdata1
     ax, hc =gitm_3D_lat_lt_plot(
-            ax, plot_type, lat1, lt1, zdata, title=title,
-            figname=figname, draw=draw, nlat=nlat, slat=slat, dlat=dlat,
+            ax, plot_type, lat1, lt1, zdata,
+            nlat=nlat, slat=slat, dlat=dlat,
             dlt=dlt, lt00=lt00, zmax=zmax, zmin=zmin, zcolor=zcolor,
             data_type=data_type, *args, **kwargs)
+    if title:
+        # Find altitude index
+        altitude = gdata1['Altitude'][0, 0, :]
+        ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
+        altalt = altitude[ialt]
+        ax.set_title(gdata2['time'].strftime('%m-%d %H:%M')+' - '+
+                     gdata1['time'].strftime('%m-%d %H:%M')+' @ '+
+                     '%5.1f'%(altalt/1000)+' km')
     return ax, hc
 
 
@@ -252,21 +351,16 @@ if __name__ == '__main__':
     # Test gitm_3D_lat_lt_single and gitm_3D_lat_lt_diff
     import gitm
     import pandas as pd
+    path = '/home/guod/WD2T/run_imfby/'
     g1 = gitm.GitmBin(
-            '/home/guod/tmp/3DALL_msis/3DALL_t100226_000000.bin',
-            varlist=['Rho'])
+            path+'run1/data/3DALL_t100323_010000.bin', varlist=['Rho'])
     g2 = gitm.GitmBin(
-            '/home/guod/tmp/3DALL_msis/3DALL_t100226_030000.bin',
-            varlist=['Rho'])
-    ax = plt.subplot(211, polar=True)
-    gitm_3D_lat_lt_single(
-            ax, 'Rho', 'polar', g1, alt=400, title=False, figname=None,
-            draw=True, nlat=90, slat=0, dlat=30, dlt=6, lt00='S', zmax=None,
-            zmin=None, zcolor=None, data_type="contour")
-    ax = plt.subplot(212, polar=True)
-    gitm_3D_lat_lt_diff(
-            ax, 'Rho', 'polar', g1, g2, alt=400, diff_type='relative',
-            title=False, figname=None, draw=True, nlat=90, slat=0, dlat=30,
-            dlt=6, lt00='S', zmax=None, zmin=None, zcolor=None,
+            path+'run2/data/3DALL_t100323_010000.bin', varlist=['Rho'])
+    ax = plt.subplot(polar=True)
+    ax, hc = gitm_3D_lat_lt_diff(
+            ax, 'Rho', 'pol', g1, g2, alt=400, diff_type='relative',
+            title=True, nlat=90, slat=40, dlat=10,
+            dlt=6, lt00='S', zmax=20, zmin=-20, zcolor=None, mag=False,
             data_type="contour")
+    plt.colorbar(hc)
     plt.show()

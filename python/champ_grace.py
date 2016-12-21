@@ -354,7 +354,7 @@ class ChampWind(ChampDensity):
         if mag:
             from apexpy import Apex
             import datetime as dt
-            a = Apex(date=2005)
+            a = Apex(date=self.index.year.mean())
             mlat, mlt = a.convert(tmp.lat, tmp.long, 'geo','mlt',
                                   height=tmp.height, datetime=tmp.index)
             tmp['MLT'] = mlt

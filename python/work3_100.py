@@ -380,9 +380,144 @@ def func4():
                  orientation='horizontal')
     plt.show()
 
+
+def func5():
+    # Analyze gitm output from run_imfby
+    import os
+    import gitm
+    import gitm_3D_lat_lt as g3ll
+    import matplotlib.animation as animation
+    from apexpy import Apex
+
+    # Find file names (100322_230000 -> 100323_060000)
+    bdir = '/home/guod/WD2T/run_imfby/run1/data/'
+    tname = os.listdir(bdir)
+    tname = [i for i in tname if '.bin' in os.path.splitext(i)]
+    tname = np.sort(tname)
+    #inds, = np.where(tname=='3DALL_t100322_230000.bin')[0]
+    inds, = np.where(tname=='3DALL_t100322_000000.bin')[0]
+    basename = tname[inds:]
+
+    pdir = '/home/guod/WD2T/run_imfby/run2/data/'
+    tname = os.listdir('/home/guod/WD2T/run_imfby/run2/data')
+    tname = [i for i in tname if '.bin' in os.path.splitext(i)]
+    tname = np.sort(tname)
+    inds, = np.where(tname=='3DALL_t100322_230000.bin')[0]
+    pertname = tname[inds:]
+
+    # Density change in run1 and run2
+    zlim = [[1.5e-10, 3e-10], [1.8e-11, 4e-11],
+            [0.4e-11, 1e-11], [1.1e-12, 2.7e-12]]
+    #for kk in ['Run1', 'Run2']:
+    for kk in ['Run1']:#, 'Run2']:
+        if kk is 'Run1':
+            bpname, bpdir = basename, bdir
+        else:
+            bpname, bpdir = pertname, pdir
+        for k0 in bpname:
+            gg = gitm.GitmBin(bpdir+k0, varlist=['Rho'])
+            for k22, k2 in enumerate([200, 300, 400, 500]):
+                alt = gg['Altitude'][0, 0, :]
+                ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
+                altx = alt[ialt]/1000
+                # geomagnetic poles
+                mm = Apex(date=2010.3)
+                mnplat, mnplon = mm.convert(90, 0, source='qd', dest='geo',
+                                            height=altx)
+                mnplt = (gg['time'].hour+
+                         gg['time'].minute/60+
+                         gg['time'].second/3600)+mnplon/15
+                msplat, msplon = mm.convert(-90, 0, source='qd', dest='geo',
+                                            height=altx)
+                msplt = (gg['time'].hour+
+                         gg['time'].minute/60+
+                         gg['time'].second/3600)+msplon/15
+                for k33, k3 in enumerate(['North', 'South']):
+                    fig = plt.figure()
+                    ax = plt.subplot(polar=True)
+                    print('Figure info: {:s}, {:s}'
+                          ' at {:5.1f} km'.format(kk, k3, altx))
+                    nlat = 90 if k3 is 'North' else -40
+                    slat = -90 if k3 is 'South' else 40
+                    rp = 90-mnplat if k3 is 'North' else 90+msplat
+                    thetap = mnplt*np.pi/12 if k3 is 'North' else msplt*np.pi/12
+                    ax, hc = g3ll.gitm_3D_lat_lt_single(
+                            ax, 'Rho', 'pol', gg, alt=k2,
+                            title=False, nlat=nlat, slat=slat, dlat=10,
+                            dlt=6, lt00='S', zmax=zlim[k22][1],
+                            zmin=zlim[k22][0], zcolor=None,
+                            mag=False, data_type="contour")
+                    ax.scatter(thetap, rp, s=20, c='k')
+                    # Time
+                    tt = gg['time']
+                    ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                    ht.set_position(
+                            [ht.get_position()[0], ht.get_position()[1]+0.01])
+                    # north or south
+                    plt.annotate('{:s}, {:5.1f} km'.format(k3, altx),
+                                 [0, 1.09], xycoords='axes fraction',
+                                 horizontalalignment='center',
+                                 verticalalignment='center')
+                    # colorbar
+                    hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
+                    plt.tight_layout()
+                    fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
+                            '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+'.png')
+                    plt.close(fig)
+
+    # Density difference between run2 and run1
+    #    for k0, k1 in zip(basename, pertname):
+    #        g1 = gitm.GitmBin(bdir+k0, varlist=['Rho'])
+    #        g2 = gitm.GitmBin(pdir+k1, varlist=['Rho'])
+    #        for k22, k2 in enumerate([200, 300, 400, 500]):
+    #            alt = g1['Altitude'][0, 0, :]
+    #            ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
+    #            altx = alt[ialt]/1000
+    #            # geomagnetic poles
+    #            mm = Apex(date=2010.3)
+    #            mnplat, mnplon = mm.convert(90, 0, source='qd', dest='geo',
+    #                                        height=altx)
+    #            mnplt = (g1['time'].hour+
+    #                     g1['time'].minute/60+
+    #                     g1['time'].second/3600)+mnplon/15
+    #            msplat, msplon = mm.convert(-90, 0, source='qd', dest='geo',
+    #                                        height=altx)
+    #            msplt = (g1['time'].hour+
+    #                     g1['time'].minute/60+
+    #                     g1['time'].second/3600)+msplon/15
+    #            for k33, k3 in enumerate(['North', 'South']):
+    #                fig = plt.figure()
+    #                ax = plt.subplot(polar=True)
+    #                print('Figure info: {:s} at {:5.1f} km'.format(k3, altx))
+    #                nlat = 90 if k3 is 'North' else -40
+    #                slat = -90 if k3 is 'South' else 40
+    #                rp = 90-mnplat if k3 is 'North' else 90+msplat
+    #                thetap = mnplt*np.pi/12 if k3 is 'North' else msplt*np.pi/12
+    #                ax, hc = g3ll.gitm_3D_lat_lt_diff(
+    #                        ax, 'Rho', 'pol', g1, g2, alt=k2, diff_type='relative',
+    #                        title=False, nlat=nlat, slat=slat, dlat=10,
+    #                        dlt=6, lt00='S', zmax=50, zmin=-50, zcolor=None,
+    #                        mag=False, data_type="contour")
+    #                ax.scatter(thetap, rp, s=20, c='k')
+    #                # Time
+    #                tt = g2['time']
+    #                ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+    #                ht.set_position(
+    #                        [ht.get_position()[0], ht.get_position()[1]+0.01])
+    #                # north or south
+    #                plt.annotate('{:s}, {:5.1f} km'.format(k3, altx),
+    #                             [0, 1.09], xycoords='axes fraction',
+    #                             horizontalalignment='center',
+    #                             verticalalignment='center')
+    #                # colorbar
+    #                hcb = plt.colorbar(hc, ticks=np.arange(-50, 51, 10))
+    #                plt.tight_layout()
+    #                fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
+    #                            '{:s}_{:d}_'.format(k3, k2)+k1+'.png')
+    #                plt.close(fig)
+
 # END
 #------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    a = func4()
-    plt.show()
+    func5()

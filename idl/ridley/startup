@@ -1,0 +1,11 @@
+!PATH=!PATH+':'+Expand_Path('+~/work/idl/ridley/')+':'+Expand_Path('+~/work/idl/amie/')+':'+Expand_Path('+~/work/idl/gtoth')
+device, decomposed=0, true=24
+device,retain=2
+.r geopack
+.r defaults
+ck_ = 1.3807e-23
+ce_ = 1.6022e-19
+cme_ = 9.1094e-31
+cmp_ = 1.6726e-27
+cre_ = 6372000.0
+cq_ = ce_
