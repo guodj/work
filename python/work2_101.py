@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 import pdb   # set breakpoint
 import champ_grace as cg
-import omni as omni
+import omni
 import os
 
 
@@ -35,6 +35,38 @@ def get_sblist():
     sblist.ix[(doy>125) & (doy<221),'season'] = 'js'
     sblist.ix[(doy>311) | (doy<35),'season'] = 'ds'
     return sblist
+
+
+def get_date_polarity():
+    """ Get solar wind sector polarities and their dates.
+
+    Args:
+        no input
+    Returns:
+        date_polarity: pd.DataFrame with columns 'polarity', 'season'.
+            The index is dates
+    """
+
+    sblist = get_sblist()
+    sblist.replace(['away-toward','toward-away'], ['+,-','-,+'], inplace=True)
+    date_polarity = pd.DataFrame()
+    alist = []
+    for row in sblist.itertuples():
+        # row = ('1926-01-29', 'away-toward', 21, 5)
+        index = (row[0] + pd.TimedeltaIndex(range(-row[2], row[3]), 'd'))
+        value = list(row[2]*row[1][0]+row[3]*row[1][2])
+        df = pd.DataFrame(value, index=index, columns=['polarity'])
+        alist.append(df)
+    date_polarity = pd.concat(alist)
+    date_polarity = date_polarity.groupby(level=0).first()
+    date_polarity.replace(['+','-'],['away','toward'],inplace=True)
+    doy = date_polarity.index.dayofyear
+    date_polarity.ix[(doy>=35)  & (doy<=125),'season'] = 'me'
+    date_polarity.ix[(doy>=221) & (doy<=311),'season'] = 'se'
+    date_polarity.ix[(doy>125) & (doy<221),'season'] = 'js'
+    date_polarity.ix[(doy>311) | (doy<35),'season'] = 'ds'
+    date_polarity.sort_index(axis=0, level=0, inplace=True)
+    return date_polarity
 
 
 def f1():
@@ -613,21 +645,188 @@ def f3():
 
 
 def f4():
+    # month and UT: insert data before and after ....
+    # Test all the programmes
     def percentile(n):
         def percentile_(x):
             return np.percentile(x,n)
         percentile_.__name__ = 'percentile_%s' % n
         return percentile_
-    # Get sector boundary list
-    sblist = get_sblist()
-    sblist = sblist['2002-1-1':'2010-12-31']
-    # boundary list to [date polarity]
-    poltlist
+    date_polarity = get_date_polarity() # date_polarity is sorted
+    date_polarity = date_polarity['2002-1-1':'2010-12-31']
+
+    # IMF Bx, By, Bz and AE
+    if False:
+        print('Reading IMF data from 2002 to 2010...')
+        baea = omni.get_omni(
+                '2002-1-1', '2011-1-1',
+                variables=['Bx', 'Bym', 'Bzm', 'AE'], res='5m')
+        print('Reading finished')
+        bae = [pd.DataFrame(), pd.DataFrame()]
+        for k00, k0 in enumerate(['away', 'toward']):
+            sbt = date_polarity[(date_polarity.polarity==k0)]
+            for k11, k1 in enumerate(sbt.index):
+                baet = baea[k1:(k1+pd.Timedelta('1D')-pd.Timedelta('1s'))]
+                if baet.empty:
+                    print('No IMF and AE data on ', k1)
+                    continue
+                bae[k00] = bae[k00].append(baet)
+        pd.to_pickle(bae, os.environ.get('DATAPATH') + 'tmp/w2_f4_02.dat')
+    # end of IMF data preparation
+
+    bae = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_f4_02.dat')
+    fig, ax = plt.subplots(4, 2)
+    for k00, k0 in enumerate(['away', 'toward']):
+        baet = bae[k00]
+        baet['month'] = baet.index.month
+        baet['uthour'] = baet.index.hour+0.5
+        baett = baet.groupby(['month', 'uthour']).agg(np.median)
+        baett = baett.reset_index()
+        for k11, k1 in enumerate(['Bx', 'Bym', 'Bzm', 'AE']):
+            ll = np.linspace(-3, 3, 21)
+            if k1=='AE':
+                ll = np.linspace(0, 300, 21)
+            plt.sca(ax[k11, k00])
+            baettt = baett.pivot('month', 'uthour', k1)
+            x = baettt.columns
+            y = baettt.index
+            plt.contourf(x, y, baettt, levels=ll)
+    return
+
+    print(bae)
+    # Find density data.
+    if False:
+        nsbu = np.zeros([2, 4])
+        rho = [[pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()],
+               [pd.DataFrame(), pd.DataFrame(), pd.DataFrame(), pd.DataFrame()]]
+        for k00, k0 in enumerate(['away', 'toward']):
+            for k11, k1 in enumerate(['me', 'se', 'js', 'ds']):
+                sbt = date_polarity[
+                        (date_polarity.polarity==k0) &
+                        (date_polarity.season==k1)]
+                for k2 in sbt.index:
+                    rhot = cg.ChampDensity(
+                            k2, k2+pd.Timedelta('1D')-pd.Timedelta('1s'),
+                            satellite='grace', variables=['rho400', 'lat3'])
+                    if rhot.empty:
+                        print('No GRACE data on ',k2)
+                        continue
+                    rhott = rhot[rhot.lat3==-90].copy() # Only south pole
+                    if rhott.shape[0]<20:
+                        print('There is only {:d} '
+                              'data points on '.format(rhott.shape[0]), k2)
+                        continue
+                    rhott['rrho400'] = 100*(
+                            rhott['rho400']-rhott['rho400'].mean()
+                            )/rhott['rho400'].mean()
+                    nsbu[k00, k11] +=1
+                    rho[k00][k11] = rho[k00][k11].append(rhott)
+        pd.to_pickle(
+                (rho, nsbu), os.environ.get('DATAPATH') + 'tmp/w2_f4_01.dat')
+    # End of data preparation
+
+    # Density change
+    rho, nsbu = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_f4_01.dat')
+    fig, ax = plt.subplots(4, 2, sharex=True, sharey=True, figsize=(6.1, 8.8))
+    print('Case numbers are: \n', nsbu)
+    fl = np.array(list('abcdefgh')).reshape(4, 2)
+    for k00, k0 in enumerate(['Away', 'Toward']):
+        for k11, k1 in enumerate(['me', 'se', 'js', 'ds']):
+            cax = plt.sca(ax[k11, k00])
+            rhot = rho[k00][k11].copy()
+            rhot['uthour'] = (
+                    rhot.index.hour +
+                    rhot.index.minute/60 +
+                    rhot.index.second/3600)
+            rhot['uthour'] = np.floor(rhot['uthour'])+0.5
+            rhott = rhot.groupby('uthour')['rrho400'].agg(
+                    [np.median, percentile(25),percentile(75)])
+            rhott.columns = ['median', 'p25', 'p75']
+            plt.plot(rhott.index, rhott['p25'],'blue',
+                     rhott.index, rhott['p75'],'blue',
+                     linestyle='--',dashes=(2,2),linewidth=1)
+            plt.plot(rhott.index, rhott['median'],'b',linewidth=2)
+            plt.axvline((15+37/60), 0, 1,
+                    linestyle='--', linewidth=1, color='r')
+            plt.xlim(0,24)
+            plt.xticks(np.arange(0, 25, 6))
+            plt.ylim(-30,30)
+            plt.yticks(np.arange(-30, 31, 10))
+            plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
+            plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
+            plt.tick_params(
+                    axis='both', which='major', length=6)
+            plt.tick_params(
+                    axis='both', which='minor', length=3)
+            plt.grid()
+            if k11==0:
+                plt.title(k0)
+            if k11==3:
+                plt.xlabel('UT (hour)',fontsize=12)
+            if k00==0:
+                plt.ylabel(r'$\rho_r$ (%)')
+            plt.text(0.05, 0.85,
+                     '('+fl[k11, k00]+')', transform=plt.gca().transAxes)
+    plt.subplots_adjust(
+            left=0.13, right=0.95, top=0.93, bottom=0.07,
+            wspace=0.11, hspace=0.12)
+
+    # solar activity dependence
+    fig, ax = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(7, 3.7))
+    fl = ['(a)', '(b)']
+    nn = [0 ,0]
+    for k00, k0 in enumerate(['Solar Maximum', 'Solar Minimum']):
+        cax = plt.sca(ax[k00])
+        rhot = rho[0][3].copy() # away, ds
+        if 'max' in k0.lower():
+            rhott = rhot['2002-1-1':'2005-12-31'].copy()
+            print('{:d} days of solar maximum'.format(
+                    len(np.unique(rhott.index.date))))
+            tit = 'Year: 2002-2005'
+        else:
+            rhott = rhot['2006-1-1':'2010-12-31'].copy()
+            print('{:d} days of solar minimum'.format(
+                    len(np.unique(rhott.index.date))))
+            tit = 'Year: 2006-2010'
+        rhott['uthour'] = (
+                rhott.index.hour +
+                rhott.index.minute/60 +
+                rhott.index.second/3600)
+        rhott['uthour'] = np.floor(rhott['uthour'])+0.5
+        rhottt = rhott.groupby('uthour')['rrho400'].agg(
+                [np.median, percentile(25),percentile(75)])
+        rhottt.columns = ['median', 'p25', 'p75']
+        plt.plot(rhottt.index, rhottt['p25'],'blue',
+                 rhottt.index, rhottt['p75'],'blue',
+                 linestyle='--',dashes=(2,2),linewidth=1)
+        plt.plot(rhottt.index, rhottt['median'],'b',linewidth=2)
+        plt.axvline((15+37/60), 0, 1,
+                linestyle='--', linewidth=1, color='r')
+        plt.xlim(0,24)
+        plt.xticks(np.arange(0, 25, 6))
+        plt.ylim(-30,30)
+        plt.yticks(np.arange(-30, 31, 10))
+        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
+        plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
+        plt.tick_params(
+                axis='both', which='major', length=6)
+        plt.tick_params(
+                axis='both', which='minor', length=3)
+        plt.grid()
+        plt.title(tit)
+        plt.xlabel('UT (hour)',fontsize=12)
+        if k00==0:
+            plt.ylabel(r'$\rho_r$ (%)')
+        plt.text(0.05, 0.85, fl[k00], transform=plt.gca().transAxes)
+    plt.subplots_adjust(
+            left=0.13, right=0.95, top=0.88, bottom=0.13,
+            wspace=0.11, hspace=0.12)
+    return
 # END
 #-------------------------------------------------------------------------------
 if __name__=='__main__':
     plt.close('all')
-    a = f3()
+    a = f4()
     plt.show()
     import gc
     gc.collect()
