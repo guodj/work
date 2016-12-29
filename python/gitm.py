@@ -580,19 +580,19 @@ class GitmBin(PbData):
 
                 # Different versions of GITM differ in header capitalization
                 if not nk in name_dict:
-                    print(nk)
-                    # Try to capitalize or lowercase the key
-                    if nk == nk.capitalize():
-                        nk = k.lower()
-                    else:
-                        nk = k.capitalize()
-
-                if not 'units' in self[k].attrs:
-                    self[k].attrs['units'] = unit_dict[nk]
-                if not 'scale' in self[k].attrs:
-                    self[k].attrs['scale'] = scale_dict[nk]
-                if not 'name' in self[k].attrs:
-                    self[k].attrs['name'] = name_dict[nk]
+                    print('Do not find '+nk+' in the name list')
+                #     # Try to capitalize or lowercase the key
+                #     if nk == nk.capitalize():
+                #         nk = k.lower()
+                #     else:
+                #         nk = k.capitalize()
+                else:
+                    if not 'units' in self[k].attrs:
+                        self[k].attrs['units'] = unit_dict[nk]
+                    if not 'scale' in self[k].attrs:
+                        self[k].attrs['scale'] = scale_dict[nk]
+                    if not 'name' in self[k].attrs:
+                        self[k].attrs['name'] = name_dict[nk]
 
     def append_data(self, varlist):
         '''

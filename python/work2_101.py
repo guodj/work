@@ -9,11 +9,11 @@ import pandas as pd
 import matplotlib.pyplot as plt
 from matplotlib.ticker import AutoMinorLocator
 import pdb   # set breakpoint
-from champ_grace import *
-from omni import *
+import champ_grace as cg
+import omni as omni
+import os
 
 
-DATADIR = '/home/guod/data/'
 def get_sblist():
     """ Get solar wind sector polarity reversing dates
 
@@ -22,8 +22,7 @@ def get_sblist():
     Returns:
         A dataframe indexed by dates with columns sbtype, lday, rday and season.
     """
-    global DATADIR
-    sb_fname = DATADIR + 'SBlist/SBlist.txt'
+    sb_fname = os.environ.get('DATAPATH') + 'SBlist/SBlist.txt'
     sblist = pd.read_csv(
         sb_fname,
         sep='\s+',
@@ -42,7 +41,6 @@ def f1():
     '''Imf, AE and density variations during epoch days of sblist
     Before running f1, run f2 firstly.
     '''
-    global DATADIR
     sblist = get_sblist()
     sblist = sblist['2002-8-1':'2010-6-27']
     index_name = ['Bx', 'Bym', 'Bzm', 'AE']
@@ -66,11 +64,11 @@ def f1():
                     data_tmp['epochday'] = (
                             data_tmp.index - k1)/pd.Timedelta('1D')
                     data[k00] = data[k00].append(data_tmp)
-        pd.to_pickle(data, DATADIR + 'tmp/w2_07.dat')
-# END of data preperation
+        pd.to_pickle(data, os.environ.get('DATAPATH') + 'tmp/w2_07.dat')
+    # END of data preperation
     fig,ax = plt.subplots(6,2,sharey=True,figsize=(7.3,9))
-# IMF and AE index
-    data = pd.read_pickle(DATADIR + 'tmp/w2_07.dat')
+    # IMF and AE index
+    data = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_07.dat')
     datagroup = [
             data[k].groupby([data[k].index.month,np.floor(data[k].epochday*24)])
             for k in [0,1]]
@@ -103,8 +101,8 @@ def f1():
                 cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=cticks[k11])
                 cbar.set_label(tl[k11])
                 plt.tick_params('both', length=0)
-# Density
-    data = pd.read_pickle(DATADIR + 'tmp/w2_13.dat')
+    # Density
+    data = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_13.dat')
     datagroup = [[None, None], [None, None]]
     rhoname = 'rrho400'
     tl = [r'N $\rho_r$ (%)', r'S $\rho_r$ (%)']
@@ -143,7 +141,7 @@ def f1():
                 cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=cticks[k11])
                 cbar.set_label(tl[k11])
                 plt.tick_params('both', length=0)
-# Set ax
+    # Set ax
     ax[-1, 0].set_xticklabels(np.arange(1, 13), minor=True, fontsize=13)
     ax[-1, 1].set_xticklabels(np.arange(1, 13), minor=True, fontsize=13)
     title1 = ax[0,0].set_title('Away-Toward')
@@ -164,7 +162,6 @@ def f2():
     """Near the geodetic poles, the longitude and LT are not important;
     so it is a good for research of UT variation
     """
-    global DATADIR
     def percentile(n):
         def percentile_(x):
             return np.percentile(x,n)
@@ -182,7 +179,7 @@ def f2():
             for k1 in sbtmp.index:
                 #for k2 in ['champ','grace']:
                 for k2 in ['grace']:  # only consider the grace
-                    rho = ChampDensity(
+                    rho = cg.ChampDensity(
                             k1-pd.Timedelta('3D'), k1+pd.Timedelta('3D'), k2)
                     if rho.empty:
                         print('no data around',k1)
@@ -239,17 +236,17 @@ def f2():
                                   'msis_rho', 'rmsis']])
                     sbn[k00] = sbn[k00]+1
                     print(sbn)
-        pd.to_pickle(density, DATADIR + 'tmp/w2_13.dat')
-# END of data preperation
+        pd.to_pickle(density, os.environ.get('DATAPATH') + 'tmp/w2_13.dat')
+    # END of data preperation
 
-# Pole density variation as a function of epoch time at different seasons
-# and sbtype.
-    density = pd.read_pickle(DATADIR + 'tmp/w2_13.dat')
+    # Pole density variation as a function of epoch time at different seasons
+    # and sbtype.
+    density = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_13.dat')
     fig,ax = plt.subplots(4,4,sharex=True,sharey=True,figsize=(8,8))
     # fl = [['(a1)','(a2)','(a3)','(a4)'],['(b1)','(b2)','(b3)','(b4)'],
     #       ['(c1)','(c2)','(c3)','(c4)'],['(d1)','(d2)','(d3)','(d4)']]
     fl = ['(a)', '(b)', '(c)', '(d)']
-# case number in each season catagary
+    # case number in each season catagary
     nn = np.zeros([4,4])*np.nan
     for k00,k in enumerate(['away-toward','toward-away']):
         for k11, k1 in enumerate(['N','S']):
@@ -312,10 +309,10 @@ def f2():
     plt.text(0.91,0.17,'Nov - Jan',transform=plt.gcf().transFigure,fontsize=11)
     print(nn)
 
-# Density, By and Bz variations versus UT
+    # Density, By and Bz variations versus UT
     fig, ax = plt.subplots(3, 2, sharex=True, sharey='row', figsize=(6.35, 7.02))
     density1 = density[1][1]  # Away-Toward, south pole
-# December solstice
+    # December solstice
     density1 = density1[(density1.index.month>=11) | (density1.index.month<=1)]
     fl = ['(a)', '(b)']
     for k00,k0 in enumerate(['Away', 'Toward']):
@@ -346,10 +343,10 @@ def f2():
         plt.grid(dashes=(4,1))
         plt.title(k0)
         plt.text(0,1.05,fl[k00], transform=plt.gca().transAxes)
-# IMF By, Bz and AE
-    data = pd.read_pickle(DATADIR + 'tmp/w2_07.dat')
+    # IMF By, Bz and AE
+    data = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_07.dat')
     data = data[0]  # away-toward
-# December solstice
+    # December solstice
     data = data[(data.index.month>=11) | (data.index.month<=1)]
     fl = [['(c)', '(d)'], ['(e)', '(f)']]
     for k00,k0 in enumerate(['Away', 'Toward']):
@@ -385,7 +382,7 @@ def f2():
     [ax[-1, k].set_xlabel('UT (hour)',fontsize=14) for k in range(2)]
     plt.subplots_adjust(left=0.15,wspace=0.08,hspace=0.24,bottom=0.1)
 
-# Density variations at solar maximum and minimum.
+    # Density variations at solar maximum and minimum.
     fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(6.35,7.02))
     density1 = density[0][1] # for away-toward and south pole
     fl = ['(a)','(b)']
@@ -434,7 +431,7 @@ def f2():
     print(nn)
     plt.subplots_adjust(left=0.15,wspace=0.04,hspace=0.24,bottom=0.1)
 
-# Magnetic local time changes at two poles as a function of UT
+    # Magnetic local time changes at two poles as a function of UT
     fig,ax = plt.subplots(2,1,sharex=True,sharey=True,figsize=(7,6))
     density1 = [pd.concat((density[0][0],density[1][0])),
                 pd.concat((density[0][1],density[1][1]))]
@@ -475,11 +472,162 @@ def f2():
         plt.text(0,1.05,fl[k11], transform=plt.gca().transAxes)
     plt.subplots_adjust(bottom=0.1)
     return
+
+
+def f3():
+    from apexpy import Apex
+    def percentile(n):
+        def percentile_(x):
+            return np.percentile(x,n)
+        percentile_.__name__ = 'percentile_%s' % n
+        return percentile_
+    # Get sector boundary list
+    sblist = get_sblist()
+    sblist = sblist['2002-1-1':'2010-12-31']
+    # Get away and toward sectors respectively
+    # [[[ame], [ase], [ajs], [ads]], [[tme], [tse], [tjs], [tds]],
+    #  [[tme], [tse], [tjs], [tds]], [[ame], [ase], [ajs], [ads]]]
+    sbdate = [[[pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D')],
+               [pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D')]],
+              [[pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D')],
+               [pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D'),
+                pd.date_range('1900-1-1', '1900-1-1', freq='1D')]]]
+    nsb = np.zeros([2, 2, 4])  # 1: at or ta, 2: before or after, 3: me, se, js, ds
+    for k00, k0 in enumerate(['at', 'ta']):
+        if k0 is 'at':
+            sbt = sblist[sblist.sbtype=='away-toward']
+        else:
+            sbt = sblist[sblist.sbtype=='toward-away']
+        for k11, k1 in enumerate(['me', 'se', 'js', 'ds']):
+            if k1 is 'me':
+                sbtt = sbt[(sbt.index.month >= 2) & (sbt.index.month <= 4)]
+            elif k1 is 'se':
+                sbtt = sbt[(sbt.index.month >= 8) & (sbt.index.month <= 10)]
+            elif k1 is 'js':
+                sbtt = sbt[(sbt.index.month >= 5) & (sbt.index.month <= 7)]
+            elif k1 is 'ds':
+                sbtt = sbt[(sbt.index.month >= 11) | (sbt.index.month <= 1)]
+            for k22 in sbtt.index:
+                for k33, k3 in enumerate(['before', 'after']):
+                    if k3 is 'before':
+                        ddays = np.arange(-4, -1)
+                    else:
+                        ddays = np.arange(1, 4)
+                    sbttt = k22 + pd.TimedeltaIndex(ddays, 'D')
+                    sbdate[k00][k33][k11] = sbdate[k00][k33][k11].append(sbttt)
+                    nsb[k00, k33, k11] +=3
+            sbdate[k00][0][k11] = sbdate[k00][0][k11][1:]
+            sbdate[k00][1][k11] = sbdate[k00][1][k11][1:]
+    print('Days of sectors:\n', nsb)
+
+    # Find density data.
+    if False:
+        rho = [[[pd.DataFrame(), pd.DataFrame(),
+                 pd.DataFrame(), pd.DataFrame()],
+                [pd.DataFrame(), pd.DataFrame(),
+                 pd.DataFrame(), pd.DataFrame()]],
+               [[pd.DataFrame(), pd.DataFrame(),
+                 pd.DataFrame(), pd.DataFrame()],
+                [pd.DataFrame(), pd.DataFrame(),
+                 pd.DataFrame(), pd.DataFrame()]]]
+        nsbu = np.zeros(nsb.shape)
+        for k00, k0 in enumerate(['at', 'ta']):
+            for k11, k1 in enumerate(['before', 'after']):
+                for k22, k2 in enumerate(['me', 'se', 'js', 'ds']):
+                    sbt = sbdate[k00][k11][k22]
+                    for k33 in sbt:
+                        rhot = cg.ChampDensity(
+                                k33, k33+pd.Timedelta('1D')-pd.Timedelta('1s'),
+                                satellite='grace', variables=['rho400', 'lat3'])
+                        if rhot.empty:
+                            print('No data on ',k33)
+                            continue
+                        rhott = rhot[rhot.lat3==-90].copy() # Only south pole
+                        if rhott.shape[0]<20:
+                            print(rhott.shape[0])
+                            print('There is gap in ', k33)
+                            continue
+                        rhott['rrho400'] = 100*(
+                                rhott['rho400']-rhott['rho400'].mean()
+                                )/rhott['rho400'].mean()
+                        nsbu[k00][k11][k22] +=1
+                        rho[k00][k11][k22] = rho[k00][k11][k22].append(rhott)
+        pd.to_pickle(
+                (rho, nsbu), os.environ.get('DATAPATH') + 'tmp/w2_f3_01.dat')
+    # End of data preparation
+
+    rho, nsbu = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_f3_01.dat')
+    print('Case numbers are: \n', nsbu)
+    fig, ax = plt.subplots(4, 4, sharex=True, sharey=True, figsize=(8, 8))
+    fl = ['(a)', '(b)', '(c)', '(d)']
+    for k00, k0 in enumerate(['at', 'ta']):
+        for k11, k1 in enumerate(['before', 'after']):
+            for k22, k2 in enumerate(['me', 'se', 'js', 'ds']):
+                cax = plt.sca(ax[k22, k00*2+k11])
+                rhot = rho[k00][k11][k22].copy()
+                rhot['uthour'] = (
+                        rhot.index.hour +
+                        rhot.index.minute/60 +
+                        rhot.index.second/3600)
+                rhot['uthour'] = np.floor(rhot['uthour'])+0.5
+                rhott = rhot.groupby('uthour')['rrho400'].agg(
+                        [np.median, percentile(25),percentile(75)])
+                rhott.columns = ['median', 'p25', 'p75']
+                plt.plot(rhott.index, rhott['p25'],'blue',
+                         rhott.index, rhott['p75'],'blue',
+                         linestyle='--',dashes=(2,2),linewidth=1)
+                plt.plot(rhott.index, rhott['median'],'b',linewidth=2)
+                plt.axvline((15+37/60), 0, 1,
+                        linestyle='--', linewidth=1, color='r')
+                plt.xlim(0,24)
+                plt.xticks(np.arange(0, 25, 6))
+                plt.ylim(-30,30)
+                plt.yticks(np.arange(-30, 30, 10))
+                plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
+                plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
+                plt.tick_params(
+                        axis='both', which='major', length=4)
+                plt.tick_params(
+                        axis='both', which='minor', length=2)
+                plt.grid()
+                if k22==3:
+                    plt.xlabel('UT (hour)',fontsize=12)
+                if k00*2+k11==0:
+                    plt.ylabel(r'$\rho_r$ (%)')
+                if k22==0:
+                    plt.text(
+                            0,1.07,fl[k00*2+k11], transform=plt.gca().transAxes)
+    plt.subplots_adjust(left=0.11,wspace=0.11, hspace=0.12)
+    return rho
+
+
+def f4():
+    def percentile(n):
+        def percentile_(x):
+            return np.percentile(x,n)
+        percentile_.__name__ = 'percentile_%s' % n
+        return percentile_
+    # Get sector boundary list
+    sblist = get_sblist()
+    sblist = sblist['2002-1-1':'2010-12-31']
+    # boundary list to [date polarity]
+    poltlist
 # END
 #-------------------------------------------------------------------------------
 if __name__=='__main__':
     plt.close('all')
-    a = f2()
+    a = f3()
     plt.show()
     import gc
     gc.collect()
