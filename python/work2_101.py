@@ -507,8 +507,6 @@ def f2():
 
 
 def f3():
-    # month and UT: insert data before and after ....
-    # Test all the programmes
     def percentile(n):
         def percentile_(x):
             return np.percentile(x,n)
@@ -536,18 +534,20 @@ def f3():
     # end of IMF data preparation
 
     # Grace density data.
-        nsbu = np.zeros(2)
-        rho = [pd.DataFrame(), pd.DataFrame()]
+        nsbu = np.zeros([2, 2])
+        rho = [[pd.DataFrame(), pd.DataFrame()],
+               [pd.DataFrame(), pd.DataFrame()]]
         for k00, k0 in enumerate(['away', 'toward']):
-                sbt = date_polarity[(date_polarity.polarity==k0)]
-                for k2 in sbt.index:
-                    rhot = cg.ChampDensity(
-                            k2, k2+pd.Timedelta('1D')-pd.Timedelta('1s'),
-                            satellite='grace', variables=['rho400', 'lat3'])
-                    if rhot.empty:
-                        print('No GRACE data on ',k2)
-                        continue
-                    rhott = rhot[rhot.lat3==-90].copy() # Only south pole
+            sbt = date_polarity[(date_polarity.polarity==k0)]
+            for k2 in sbt.index:
+                rhot = cg.ChampDensity(
+                        k2, k2+pd.Timedelta('1D')-pd.Timedelta('1s'),
+                        satellite='grace', variables=['rho400', 'lat3'])
+                if rhot.empty:
+                    print('No GRACE data on ',k2)
+                    continue
+                for k33, k3 in enumerate([-90, 90]):  # south and north poles
+                    rhott = rhot[rhot.lat3==k3].copy()
                     if rhott.shape[0]<25:
                         print('There is only {:d} '
                               'data points on '.format(rhott.shape[0]), k2)
@@ -555,8 +555,8 @@ def f3():
                     rhott['rrho400'] = 100*(
                             rhott['rho400']-rhott['rho400'].mean()
                             )/rhott['rho400'].mean()
-                    nsbu[k00] +=1
-                    rho[k00] = rho[k00].append(rhott)
+                    nsbu[k00, k33] +=1
+                    rho[k00][k33] = rho[k00][k33].append(rhott)
         pd.to_pickle(
                 (bae, rho, nsbu),
                 os.environ.get('DATAPATH') + 'tmp/w2_f4_02.dat')
@@ -564,9 +564,9 @@ def f3():
 
     bae, rho, nsbu= pd.read_pickle(
             os.environ.get('DATAPATH') + 'tmp/w2_f4_02.dat')
-    print('Total away and toward days: ', nsbu)
+    print('Total away and toward days [[AS, AN], [TS, TN]]: \n', nsbu)
     print('Begin figure 1')
-    fig, ax = plt.subplots(4, 2, sharex=True, sharey=True, figsize=(8, 10))
+    fig, ax = plt.subplots(5, 2, sharex=True, sharey=True, figsize=(8, 12))
     plt.subplots_adjust(
             left=0.13, right=0.85, top=0.93, bottom=0.07,
             wspace=0.11, hspace=0.12)
@@ -598,6 +598,9 @@ def f3():
             hc = plt.contourf(x, y, baettt, levels=ll, extend='both',
                               cmap='seismic')
             print('  Average {:s} is: {:5.1f}'.format(k1, baettt.mean().mean()))
+            if k1=='Bzm':
+                print('  Bz max: {:5.1f}'.format(baettt.max().max()))
+                print('  Bz min: {:5.1f}'.format(baettt.min().min()))
             plt.tick_params(
                     axis='both', which='major', direction='out', length=4)
             plt.tick_params(
@@ -614,159 +617,202 @@ def f3():
                 plt.ylabel(ctt[k11])
                 plt.tick_params(
                         axis='both', which='major', length=2)
-        rhot = rho[k00]
-        rhot['month'] = rhot.index.month
-        rhot['uthour'] = rhot.index.hour+0.5
-        rhott = rhot.groupby(['month', 'uthour']).agg(np.median)
-        rhott = rhott.reset_index()
-        plt.sca(ax[3, k00])
-        rhottt = rhott.pivot('month', 'uthour', 'rrho400')
-        # Extend month and ut
-        rhottt.ix[:, rhottt.columns[0]-1] = rhottt.ix[:, rhottt.columns[-1]]
-        rhottt.ix[:, rhottt.columns[-2]+1] = rhottt.ix[:, rhottt.columns[0]]
-        rhottt = rhottt.sort_index(axis=1)
-        rhottt.ix[rhottt.index[0]-1, :] = rhottt.ix[rhottt.index[-1], :]
-        rhottt.ix[rhottt.index[-2]+1, :] = rhottt.ix[rhottt.index[0], :]
-        rhottt = rhottt.sort_index(axis=0)
-        hc = plt.contourf(x, y, rhottt, levels=np.linspace(-20, 20, 11),
-                          extend='both', cmap='seismic')
-        print('  Density max (%): ', rhottt.max().max())
-        plt.axvline(15+37/60, 0, 1, color='k', linestyle='--')
-        plt.xlim(0, 24)
-        plt.xticks(np.arange(0, 25, 6))
-        plt.ylim(0, 12)
-        plt.yticks(np.arange(0, 13), np.arange(1, 13))
-        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
-        plt.tick_params(
-                axis='both', which='major', direction='out', length=4)
-        plt.tick_params(
-                axis='both', which='minor', direction='out', length=2)
-        if k00 == 0:
-            plt.ylabel('Month')
-        plt.xlabel('UT (hour)')
-        if k00 == 1:
-            axp = plt.gca().get_position()
-            cax = plt.axes([0.89, axp.y0, 0.01, axp.height])
-            plt.colorbar(hc, cax=cax, orientation='vertical',
-                         extend='neither', ticks=np.arange(-20, 21, 10))
-            plt.ylabel(r'$\Delta\rho$ (%)')
+        for k11, k1 in enumerate(['South', 'North']):
+            rhot = rho[k00][k11]
+            rhot['month'] = rhot.index.month
+            rhot['uthour'] = rhot.index.hour+0.5
+            rhott = rhot.groupby(['month', 'uthour']).agg(np.median)
+            rhott = rhott.reset_index()
+            plt.sca(ax[3+k11, k00])
+            rhottt = rhott.pivot('month', 'uthour', 'rrho400')
+            # Extend month and ut
+            rhottt.ix[:, rhottt.columns[0]-1] = rhottt.ix[:, rhottt.columns[-1]]
+            rhottt.ix[:, rhottt.columns[-2]+1] = rhottt.ix[:, rhottt.columns[0]]
+            rhottt = rhottt.sort_index(axis=1)
+            rhottt.ix[rhottt.index[0]-1, :] = rhottt.ix[rhottt.index[-1], :]
+            rhottt.ix[rhottt.index[-2]+1, :] = rhottt.ix[rhottt.index[0], :]
+            rhottt = rhottt.sort_index(axis=0)
+            hc = plt.contourf(x, y, rhottt, levels=np.linspace(-20, 20, 11),
+                              extend='both', cmap='seismic')
+            print('  ', k1, ' Density max (%): ', rhottt.max().max())
+            print('  ', k1, ' Density min (%): ', rhottt.min().min())
+            if k1 is 'South':
+                plt.axvline(15+37/60, 0, 1, color='k', linestyle='--')
+            if k1 is 'North':
+                plt.axvline(5+25/60, 0, 1, color='k', linestyle='--')
+            plt.xlim(0, 24)
+            plt.xticks(np.arange(0, 25, 6))
+            plt.ylim(0, 12)
+            plt.yticks(np.arange(0, 13), np.arange(1, 13))
+            plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
             plt.tick_params(
-                    axis='both', which='major', length=2)
+                    axis='both', which='major', direction='out', length=4)
+            plt.tick_params(
+                    axis='both', which='minor', direction='out', length=2)
+            if k00 == 0:
+                plt.ylabel('Month')
+            if k11 == 1:
+                plt.xlabel('UT (hour)')
+            if k00 == 1:
+                axp = plt.gca().get_position()
+                cax = plt.axes([0.89, axp.y0, 0.01, axp.height])
+                plt.colorbar(hc, cax=cax, orientation='vertical',
+                             extend='neither', ticks=np.arange(-20, 21, 10))
+                plt.ylabel(r'$\Delta\rho$ (%)')
+                plt.tick_params(
+                        axis='both', which='major', length=2)
     print('End of figure 1\n\n')
 
     print('Begin figure 2')
-    fig, ax = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(8.8, 4.3))
+    fig, ax = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(8.8, 8.3))
     plt.subplots_adjust(
             left=0.13, right=0.85, top=0.88, bottom=0.13,
             wspace=0.11, hspace=0.12)
     for k00, k0 in enumerate(['Solar Maximum', 'Solar Minimum']):
         print(k0, ':')
-        rhot = rho[0] # away sectors
-        if 'max' in k0.lower():
-            rhott = rhot['2002-1-1':'2005-12-31'].copy()
-            print('  {:d} days'.format(len(np.unique(rhott.index.date))))
-            tit = 'Year: 2002-2004'
-        else:
-            rhott = rhot['2006-1-1':'2010-12-31'].copy()
-            print('  {:d} days'.format(len(np.unique(rhott.index.date))))
-            tit = 'Year: 2008-2010'
-        rhott['month'] = rhott.index.month
-        rhott['uthour'] = rhott.index.hour+0.5
-        rhottt = rhott.groupby(['month', 'uthour']).agg(np.median)
-        rhottt = rhottt.reset_index()
-        plt.sca(ax[k00])
-        rhotttt = rhottt.pivot('month', 'uthour', 'rrho400')
-        # Extend month and ut
-        rhotttt.ix[:, rhotttt.columns[0]-1] = rhotttt.ix[:, rhotttt.columns[-1]]
-        rhotttt.ix[:, rhotttt.columns[-2]+1] = rhotttt.ix[:, rhotttt.columns[0]]
-        rhotttt = rhotttt.sort_index(axis=1)
-        rhotttt.ix[rhotttt.index[0]-1, :] = rhotttt.ix[rhotttt.index[-1], :]
-        rhotttt.ix[rhotttt.index[-2]+1, :] = rhotttt.ix[rhotttt.index[0], :]
-        rhotttt = rhotttt.sort_index(axis=0)
-        hc = plt.contourf(x, y, rhotttt, levels=np.linspace(-20, 20, 11),
-                          extend='both', cmap='seismic')
-        print('  Density max (%): ', rhottt.max().max())
-        plt.axvline(15+37/60, 0, 1, color='k', linestyle='--')
-        plt.xlim(0, 24)
-        plt.xticks(np.arange(0, 25, 6))
-        plt.ylim(0, 12)
-        plt.yticks(np.arange(0, 13), np.arange(1, 13))
-        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
-        plt.tick_params(
-                axis='both', which='major', direction='out', length=4)
-        plt.tick_params(
-                axis='both', which='minor', direction='out', length=2)
-        if k00 == 0:
-            plt.ylabel('Month')
-        plt.xlabel('UT (hour)')
-        plt.title(tit)
-        if k00 == 1:
-            axp = plt.gca().get_position()
-            cax = plt.axes([0.89, axp.y0, 0.01, axp.height])
-            plt.colorbar(hc, cax=cax, orientation='vertical',
-                         extend='neither', ticks=np.arange(-20, 21 ,10))
-            plt.ylabel(r'$\Delta\rho$ (%)')
+        for k11, k1 in enumerate(['South', 'North']):
+            if k1=='South':
+                rhot = rho[0][0] # south pole, away sectors
+            else:
+                rhot = rho[1][1] # north pole, toward sectors
+            if 'max' in k0.lower():
+                rhott = rhot['2002-1-1':'2005-12-31'].copy()
+                print('  {:d} days'.format(len(np.unique(rhott.index.date))))
+                tit = 'Year: 2002-2004'
+            else:
+                rhott = rhot['2006-1-1':'2010-12-31'].copy()
+                print('  {:d} days'.format(len(np.unique(rhott.index.date))))
+                tit = 'Year: 2008-2010'
+            rhott['month'] = rhott.index.month
+            rhott['uthour'] = rhott.index.hour+0.5
+            rhottt = rhott.groupby(['month', 'uthour']).agg(np.median)
+            rhottt = rhottt.reset_index()
+            plt.sca(ax[k11, k00])
+            rhotttt = rhottt.pivot('month', 'uthour', 'rrho400')
+            # Extend month and ut
+            rhotttt.ix[:, rhotttt.columns[0]-1] = rhotttt.ix[
+                    :, rhotttt.columns[-1]]
+            rhotttt.ix[:, rhotttt.columns[-2]+1] = rhotttt.ix[
+                    :, rhotttt.columns[0]]
+            rhotttt = rhotttt.sort_index(axis=1)
+            rhotttt.ix[rhotttt.index[0]-1, :] = rhotttt.ix[rhotttt.index[-1], :]
+            rhotttt.ix[rhotttt.index[-2]+1, :] = rhotttt.ix[rhotttt.index[0], :]
+            rhotttt = rhotttt.sort_index(axis=0)
+            hc = plt.contourf(x, y, rhotttt, levels=np.linspace(-20, 20, 11),
+                              extend='both', cmap='seismic')
+            print('  ', k1, ' Density max (%): ', rhottt.max().max())
+            print('  ', k1, ' Density min (%): ', rhottt.min().min())
+            if k1 is 'South':
+                plt.axvline(15+37/60, 0, 1, color='k', linestyle='--')
+            if k1 is 'North':
+                plt.axvline(5+25/60, 0, 1, color='k', linestyle='--')
+            plt.xlim(0, 24)
+            plt.xticks(np.arange(0, 25, 6))
+            plt.ylim(0, 12)
+            plt.yticks(np.arange(0, 13), np.arange(1, 13))
+            plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
             plt.tick_params(
-                    axis='both', which='major', length=2)
+                    axis='both', which='major', direction='out', length=4)
+            plt.tick_params(
+                    axis='both', which='minor', direction='out', length=2)
+            if k00 == 0:
+                plt.ylabel('Month')
+            plt.xlabel('UT (hour)')
+            plt.title(tit)
+            if k00 == 1:
+                axp = plt.gca().get_position()
+                cax = plt.axes([0.89, axp.y0, 0.01, axp.height])
+                plt.colorbar(hc, cax=cax, orientation='vertical',
+                             extend='neither', ticks=np.arange(-20, 21 ,10))
+                plt.ylabel(r'$\Delta\rho$ (%)')
+                plt.tick_params(
+                        axis='both', which='major', length=2)
     print('End of figure 2\n\n')
 
     print('Begin figure 3')
-    fig, ax = plt.subplots(1, 2, sharex=True, sharey=True, figsize=(8, 10))
+    fig, ax = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(8, 8))
     plt.subplots_adjust(
-            left=0.13, right=0.85, top=0.93, bottom=0.07,
+            left=0.13, right=0.95, top=0.90, bottom=0.15,
             wspace=0.11, hspace=0.12)
     for k00, k0 in enumerate(['Solar Maximum', 'Solar Minimum']):
         print(k0, ':')
-        rhot = rho[0] # away sectors
-        if 'max' in k0.lower():
-            rhott = rhot['2002-1-1':'2005-12-31'].copy()
-            print('  {:d} days'.format(len(np.unique(rhott.index.date))))
-            tit = 'Year: 2002-2004'
-        else:
-            rhott = rhot['2006-1-1':'2010-12-31'].copy()
-            print('  {:d} days'.format(len(np.unique(rhott.index.date))))
-            tit = 'Year: 2008-2010'
-        # September and October
-        rhott = rhott[(rhott.index.month>=9) & (rhott.index.month<=10)].copy()
-        rhott['uthour'] = rhott.index.hour+0.5
-        rhottt = rhott.groupby(['uthour']).agg(
-                np.median, percentile(25), percentile(75))
-        rhottt.columns = ['median', 'p25', 'p75']
-        plt.sca(ax[k00])
-        rhotttt = rhottt.pivot('month', 'uthour', 'rrho400')
-        # Extend month and ut
-        rhotttt.ix[:, rhotttt.columns[0]-1] = rhotttt.ix[:, rhotttt.columns[-1]]
-        rhotttt.ix[:, rhotttt.columns[-2]+1] = rhotttt.ix[:, rhotttt.columns[0]]
-        rhotttt = rhotttt.sort_index(axis=1)
-        rhotttt.ix[rhotttt.index[0]-1, :] = rhotttt.ix[rhotttt.index[-1], :]
-        rhotttt.ix[rhotttt.index[-2]+1, :] = rhotttt.ix[rhotttt.index[0], :]
-        rhotttt = rhotttt.sort_index(axis=0)
-        hc = plt.contourf(x, y, rhotttt, levels=np.linspace(-20, 20, 11),
-                          extend='both', cmap='seismic')
-        print('  Density max (%): ', rhottt.max().max())
-        plt.axvline(15+37/60, 0, 1, color='k', linestyle='--')
-        plt.xlim(0, 24)
-        plt.xticks(np.arange(0, 25, 6))
-        plt.ylim(0, 12)
-        plt.yticks(np.arange(0, 13), np.arange(1, 13))
-        plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
-        plt.tick_params(
-                axis='both', which='major', direction='out', length=4)
-        plt.tick_params(
-                axis='both', which='minor', direction='out', length=2)
-        if k00 == 0:
-            plt.ylabel('Month')
-        plt.xlabel('UT (hour)')
-        plt.title(tit)
-        if k00 == 1:
-            axp = plt.gca().get_position()
-            cax = plt.axes([0.89, axp.y0, 0.01, axp.height])
-            plt.colorbar(hc, cax=cax, orientation='vertical',
-                         extend='neither', ticks=np.arange(-20, 21 ,10))
-            plt.ylabel(r'$\Delta\rho$ (%)')
-            plt.tick_params(
-                    axis='both', which='major', length=2)
+        for k11, k1 in enumerate(['South', 'North']):
+            if k1=='South':
+                rhot = rho[0][0] # south pole, away sectors
+            else:
+                rhot = rho[1][1] # north pole, toward sectors
+            if 'max' in k0.lower():
+                rhott = rhot['2002-1-1':'2003-12-31'].copy()
+                print('  {:d} days'.format(len(np.unique(rhott.index.date))))
+                tit = 'Year: 2002-2003'
+            else:
+                rhott = rhot['2009-1-1':'2010-12-31'].copy()
+                print('  {:d} days'.format(len(np.unique(rhott.index.date))))
+                tit = 'Year: 2009-2010'
+            if k1=='South':
+                rhott = rhott[
+                        (rhott.index.month>=9) & (rhott.index.month<=10)].copy()
+            if k1=='North':
+                rhott = rhott[
+                        (rhott.index.month>=7) & (rhott.index.month<=8)].copy()
+            rhott['uthour'] = rhott.index.hour+0.5
+            rhottt = rhott.groupby(['uthour'])['rrho400'].agg(
+                    [np.median, percentile(25), percentile(75)])
+            rhottt.columns = ['median', 'p25', 'p75']
+            plt.sca(ax[k11, k00])
+            # Extend ut
+            rhottt.ix[rhottt.index[0]-1, :] = rhottt.ix[rhottt.index[-1], :]
+            rhottt.ix[rhottt.index[-2]+1, :] = rhottt.ix[rhottt.index[0], :]
+            rhottt = rhottt.sort_index(axis=0)
+            hp = plt.plot(rhottt.index, rhottt['median'], 'b')
+            print('  ', k1, ' Density max (%): ', rhottt['median'].max())
+            print('  ', k1, ' Density min (%): ', rhottt['median'].min())
+            plt.plot(rhottt.index, rhottt.p25,'gray', rhottt.index, rhottt.p75,
+                     'gray', linestyle='--')
+            if k1 is 'South':
+                plt.axvline(15+37/60, 0, 1, color='k', linestyle='--')
+            if k1 is 'North':
+                plt.axvline(5+25/60, 0, 1, color='k', linestyle='--')
+            plt.grid()
+            plt.xlim(0, 24)
+            plt.xticks(np.arange(0, 25, 6))
+            plt.ylim(-30, 30)
+            plt.yticks(np.arange(-30, 31, 10))
+            plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
+            plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
+            plt.tick_params( axis='both', which='major', length=4)
+            plt.tick_params( axis='both', which='minor', length=2)
+            if k00 == 0:
+                plt.ylabel(r'$\Delta\rho$ (%)')
+            if k11 ==1:
+                plt.xlabel('UT (hour)')
+            if k11 ==0:
+                plt.title(tit)
+    print('End of figure 3\n\n')
 
+    print('Begin figure 4')
+    # case: -,+  2002 09 03    15  12
+    edate = pd.Timestamp('2002-10-14')
+    imf = omni.get_omni(
+            edate-pd.Timedelta('5D'), edate+pd.Timedelta('0D'),
+            variables=['Bx', 'Bym', 'Bzm'], res='1h')
+    rho = cg.ChampDensity(
+            edate-pd.Timedelta('5D'), edate+pd.Timedelta('0D'),
+            variables=['rho400', 'lat3', 'Mlat', 'MLT'], satellite='grace')
+    fig, ax = plt.subplots(2, 1, sharex=True)
+    plt.sca(ax[0])
+    plt.plot(imf.index, imf.Bx, 'b')
+    plt.plot(imf.index, imf.Bym, 'r')
+    plt.plot(imf.index, imf.Bzm, 'k')
+    plt.sca(ax[1])
+    plt.plot(rho.index, rho.rho400, 'gray', lw=1)
+    rhot = rho[rho.lat3==-90]
+    rhott = rho[
+            ((rho.Mlat<=-70) & (rho.Mlat>=-80) &
+             (rho.MLT>=10) & (rho.MLT<=14)) ]
+    plt.plot(rhot.index, rhot.rho400, 'k')
+    plt.plot(rhott.index, rhott.rho400, 'ko', ms=5)
+    print('End of figure 4\n\n')
     return
 
 # END
