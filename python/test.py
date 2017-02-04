@@ -160,17 +160,23 @@ def func4():
     """
     Test (lat, lt) to (mlat, mlt) conversions.
 
-    height is needed for better conversion of mlat(qd)
-    champ and grace files use qd coordinates.
+    1, Use a = Apex(date=...); "date" determines which IGRF coefficients are
+       used in conversions. Uses current date as default.
+    2, height is needed for better conversion.
+       champ and grace files use qd coordinates.
+    3, mlt in qd and apex coordinates are the same.
     """
     import champ_grace as cg
     from apexpy import Apex as Apex
     import matplotlib.pyplot as plt
-    a =  cg.ChampDensity('2005-1-1', '2005-1-2')
-    mlat, mlt = Apex().convert(lat=a.lat, lon=a.long, source='geo', dest='mlt',
-                               datetime=a.index, height=a.height)
-    #mlat, mlon = Apex().convert(lat=a.lat, lon=a.long, source='geo', dest='qd',
-    #                            datetime=a.index, height=a.height)
+    a = cg.ChampDensity('2005-1-1', '2005-1-2')
+    b = Apex(date=2005)
+    mlatt, mlt = b.convert(
+            lat=a.lat, lon=a.long, source='geo', dest='mlt',
+            datetime=a.index, height=a.height)
+    mlat, mlongt = b.convert(
+            lat=a.lat, lon=a.long, source='geo', dest='qd',
+            height=a.height)
     mlat2 = np.array(a.Mlat)
     mlt2 = np.array(a.MLT)
     plt.plot(mlat-mlat2)
@@ -178,9 +184,10 @@ def func4():
     plt.show()
     return
 
+
 if __name__ == '__main__':
     plt.close('all')
     import gc
     gc.collect()
-    a = gitm_lat_lt_nspolar()
+    a = func4()
     plt.show()

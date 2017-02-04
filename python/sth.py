@@ -1,4 +1,4 @@
-#!/home/gdj/anaconda3/bin/python3
+#!/home/guod/anaconda3/bin/python3
 #-*- coding: utf-8 -*-
 
 __author__ = 'Guo Dongjie'

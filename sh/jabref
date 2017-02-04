@@ -1,2 +1,2 @@
 #!/bin/bash
-java -jar ~/JabRef/JabRef.jar "$@"
+java -jar $HOME/JabRef/JabRef.jar "$@"

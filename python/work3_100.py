@@ -385,9 +385,11 @@ def func5():
     # Analyze gitm output from run_imfby
     import os
     import gitm
-    import gitm_3D_lat_lt as g3ll
+    import gitm_3D_const_alt as g3ca
     import matplotlib.animation as animation
+    import gitm_vorticity as gv
     from apexpy import Apex
+    from matplotlib.ticker import AutoMinorLocator
 
     # Find file names (100322_230000 -> 100323_060000)
     bdir = '/home/guod/WD2T/run_imfby/run1/data/'
@@ -405,8 +407,8 @@ def func5():
     inds, = np.where(tname=='3DALL_t100322_230000.bin')[0]
     pertname = tname[inds:]
 
-    if True:  # Density change in run1 and run2
-        zlim = [[1.5e-10, 3e-10], [1.8e-11, 4e-11],
+    if False:  # Density and wind change in run1 and run2
+        zlim = [[1e-9, 2e-9], [1.5e-10, 3e-10], [1.8e-11, 4e-11],
                 [0.4e-11, 1e-11], [1.1e-12, 2.7e-12]]
         for kk in ['Run1', 'Run2']:
         #for kk in ['Run1']:#, 'Run2']:
@@ -418,22 +420,22 @@ def func5():
                 gg = gitm.GitmBin(
                         bpdir+k0,
                         varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)'])
-                for k22, k2 in enumerate([200, 300, 400, 500]):
+                for k22, k2 in enumerate([150, 200, 300, 400, 500]):
                     alt = gg['Altitude'][0, 0, :]
                     ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
                     altx = alt[ialt]/1000
                     # geomagnetic poles
                     mm = Apex(date=2010.3)
-                    mnplat, mnplon = mm.convert(90, 0, source='qd', dest='geo',
-                                                height=altx)
-                    mnplt = (gg['time'].hour+
-                             gg['time'].minute/60+
-                             gg['time'].second/3600)+mnplon/15
+                    mnplat, mnplon = mm.convert(
+                            90, 0, source='qd', dest='geo', height=altx)
+                    mnplt = (
+                            gg['time'].hour+gg['time'].minute/60+
+                            gg['time'].second/3600)+mnplon/15
                     msplat, msplon = mm.convert(-90, 0, source='qd', dest='geo',
                                                 height=altx)
-                    msplt = (gg['time'].hour+
-                             gg['time'].minute/60+
-                             gg['time'].second/3600)+msplon/15
+                    msplt = (
+                            gg['time'].hour+gg['time'].minute/60+
+                            gg['time'].second/3600)+msplon/15
                     for k33, k3 in enumerate(['North', 'South']):
                         fig = plt.figure()
                         ax = plt.subplot(polar=True)
@@ -443,16 +445,15 @@ def func5():
                         slat = -90 if k3 is 'South' else 40
                         rp = 90-mnplat if k3 is 'North' else 90+msplat
                         thetap = (mnplt*np.pi/12 if k3 is 'North'
-                                  else msplt*np.pi/12)
-                        ax, hc = g3ll.contour_single(
+                                  else (24-msplt)*np.pi/12)
+                        ax, hc = g3ca.contour_single(
                                 ax, 'Rho', 'pol', gg, alt=k2,
-                                title=False, nlat=nlat, slat=slat, dlat=10,
-                                dlt=6, lt00='S', zmax=zlim[k22][1],
-                                zmin=zlim[k22][0], zcolor=None,
-                                mag=False, data_type="contour")
-                        ax, hq = g3ll.vector_single(
+                                nlat=nlat, slat=slat, dlat=10,
+                                dlonlt=6, zmax=zlim[k22][1], nzlevels=20,
+                                zmin=zlim[k22][0], data_type="contour")
+                        ax, hq = g3ca.vector_single(
                                 ax, gg, 'neu', 'pol', alt=k2, nlat=nlat,
-                                slat=slat, dlat=10, dlt=6, lt00='S',
+                                slat=slat, dlat=10, dlonlt=6,
                                 color='k', alpha=0.6, scale=1000,
                                 scale_units='inches', headwidth=5)
                         ax.quiverkey(hq, 0, 0, 1000, '1000 m/s')
@@ -472,11 +473,11 @@ def func5():
                         hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
                         plt.tight_layout()
                         fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
-                                '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+'.png')
+                                '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+'.pdf')
                         plt.close(fig)
 
 
-    if True:  # Density difference between run2 and run1
+    if False:  # Density and wind difference between run2 and run1
         for k0, k1 in zip(basename, pertname):
             g1 = gitm.GitmBin(
                     bdir+k0,
@@ -484,23 +485,22 @@ def func5():
             g2 = gitm.GitmBin(
                     pdir+k1,
                     varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)'])
-            for k22, k2 in enumerate([200, 300, 400, 500]):
+            for k22, k2 in enumerate([150, 200, 300, 400, 500]):
                 alt = g1['Altitude'][0, 0, :]
                 ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
                 altx = alt[ialt]/1000
                 # geomagnetic poles
                 mm = Apex(date=2010.3)
-                mnplat, mnplon = mm.convert(90, 0, source='qd', dest='geo',
-                                            height=altx)
+                mnplat, mnplon = mm.convert(
+                        90, 0, source='qd', dest='geo', height=altx)
                 mnplt = (
                         g1['time'].hour+
                         g1['time'].minute/60+
                         g1['time'].second/3600)+mnplon/15
-                msplat, msplon = mm.convert(-90, 0, source='qd', dest='geo',
-                                            height=altx)
+                msplat, msplon = mm.convert(
+                        -90, 0, source='qd', dest='geo', height=altx)
                 msplt = (
-                        g1['time'].hour+
-                        g1['time'].minute/60+
+                        g1['time'].hour+g1['time'].minute/60+
                         g1['time'].second/3600)+msplon/15
                 for k33, k3 in enumerate(['North', 'South']):
                     fig = plt.figure()
@@ -509,18 +509,15 @@ def func5():
                     nlat = 90 if k3 is 'North' else -40
                     slat = -90 if k3 is 'South' else 40
                     rp = 90-mnplat if k3 is 'North' else 90+msplat
-                    thetap = mnplt*np.pi/12 if k3 is 'North' else msplt*np.pi/12
-                    ax, hc = g3ll.contour_diff(
-                            ax, 'Rho', 'pol', g1, g2, alt=k2,
-                            diff_type='relative',
-                            title=False, nlat=nlat, slat=slat, dlat=10,
-                            dlt=6, lt00='S', zmax=40, zmin=-40, zcolor=None,
-                            mag=False, data_type="contour")
-                    ax, hq = g3ll.vector_diff(
+                    thetap = (mnplt*np.pi/12
+                              if k3 is 'North' else (24-msplt)*np.pi/12)
+                    ax, hc = g3ca.contour_diff(
+                            ax, 'Rho', 'pol', g1, g2, alt=k2, nzlevels=20,
+                            nlat=nlat, slat=slat, dlonlt=6, zmax=40, zmin=-40)
+                    ax, hq = g3ca.vector_diff(
                             ax, g1, g2, 'neu', 'pol', alt=k2, nlat=nlat,
-                            slat=slat, dlat=10, dlt=6, lt00='S',
-                            color='k', alpha=0.6, scale=1000,
-                            scale_units='inches', headwidth=5)
+                            slat=slat, dlonlt=6, color='k', alpha=0.6,
+                            scale=1000, scale_units='inches', headwidth=5)
                     ax.quiverkey(hq, 0, 0, 1000, '1000 m/s')
                     ax.scatter(thetap, rp, s=20, c='k')
                     # Time
@@ -539,12 +536,371 @@ def func5():
                     plt.tight_layout()
                     fig.savefig(
                             '/home/guod/Documents/work/fig/run_imfby/'+
-                            '{:s}_{:d}_'.format(k3, k2)+k1+'.png')
+                            '{:s}_{:d}_'.format(k3, k2)+k1+'.pdf')
                     plt.close(fig)
-    return
+
+    if False:  # Temperature change in run1 and run2
+        zlim = [[650, 850],[1000, 1300], [1100, 1600],
+                [1100, 1700], [1100, 1700]]
+        for kk in ['Run1', 'Run2']:
+        #for kk in ['Run1']:#, 'Run2']:
+            if kk is 'Run1':
+                bpname, bpdir = basename, bdir
+            else:
+                bpname, bpdir = pertname, pdir
+            for k0 in bpname:
+                gg = gitm.GitmBin(bpdir+k0, varlist=['Temperature', 'Rho'])
+                for k22, k2 in enumerate([150, 200, 300, 400, 500]):
+                    alt = gg['Altitude'][0, 0, :]
+                    ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
+                    altx = alt[ialt]/1000
+                    # geomagnetic poles
+                    mm = Apex(date=2010.3)
+                    mnplat, mnplon = mm.convert(
+                            90, 0, source='qd', dest='geo', height=altx)
+                    mnplt = (gg['time'].hour+ gg['time'].minute/60+
+                             gg['time'].second/3600)+mnplon/15
+                    msplat, msplon = mm.convert(
+                            -90, 0, source='qd', dest='geo', height=altx)
+                    msplt = (gg['time'].hour+ gg['time'].minute/60+
+                             gg['time'].second/3600)+msplon/15
+                    for k33, k3 in enumerate(['North', 'South']):
+                        fig = plt.figure()
+                        ax = plt.subplot(polar=True)
+                        print('Figure info: {:s}, {:s}'
+                              ' at {:5.1f} km'.format(kk, k3, altx))
+                        nlat = 90 if k3 is 'North' else -40
+                        slat = -90 if k3 is 'South' else 40
+                        rp = 90-mnplat if k3 is 'North' else 90+msplat
+                        thetap = (mnplt*np.pi/12 if k3 is 'North'
+                                  else (24-msplt)*np.pi/12)
+                        ax, hc = g3ca.contour_single(
+                                ax, 'Temperature', 'pol', gg, alt=k2,
+                                nlat=nlat, slat=slat, dlonlt=6, nzlevels=20,
+                                zmax=zlim[k22][1], zmin=zlim[k22][0])
+                        ax.scatter(thetap, rp, s=20, c='k')
+                        # Time
+                        tt = gg['time']
+                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                        ht.set_position(
+                                [ht.get_position()[0],
+                                 ht.get_position()[1]+0.01])
+                        # north or south
+                        plt.annotate('{:s}, {:5.1f} km'.format(k3, altx),
+                                     [0, 1.09], xycoords='axes fraction',
+                                     horizontalalignment='center',
+                                     verticalalignment='center')
+                        # colorbar
+                        hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
+                        plt.tight_layout()
+                        fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
+                                '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+
+                                '.Temperature.pdf')
+                        plt.close(fig)
+
+    if False:  # Rho(filled contour) and vorticity change in run1 and run2
+        zlim = [[1e-9, 2e-9], [1.5e-10, 3e-10], [1.8e-11, 4e-11],
+                [0.4e-11, 1e-11], [1.1e-12, 2.7e-12]]
+        for kk in ['Run1', 'Run2']:
+        #for kk in ['Run1']:#, 'Run2']:
+            if kk is 'Run1':
+                bpname, bpdir = basename, bdir
+            else:
+                bpname, bpdir = pertname, pdir
+            for k0 in bpname:
+                gg = gitm.GitmBin(
+                        bpdir+k0,
+                        varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)'])
+                gv.add_vorticity(gg, 'neutral')
+                for k22, k2 in enumerate([150, 200, 300, 400, 500]):
+                    alt = gg['Altitude'][0, 0, :]
+                    ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
+                    altx = alt[ialt]/1000
+                    # geomagnetic poles
+                    mm = Apex(date=2010.3)
+                    mnplat, mnplon = mm.convert(
+                            90, 0, source='qd', dest='geo', height=altx)
+                    mnplt = (gg['time'].hour+ gg['time'].minute/60+
+                             gg['time'].second/3600)+mnplon/15
+                    msplat, msplon = mm.convert(
+                            -90, 0, source='qd', dest='geo', height=altx)
+                    msplt = (gg['time'].hour+ gg['time'].minute/60+
+                             gg['time'].second/3600)+msplon/15
+                    for k33, k3 in enumerate(['North', 'South']):
+                        fig = plt.figure()
+                        ax = plt.subplot(polar=True)
+                        print('Figure info: {:s}, {:s}'
+                              ' at {:5.1f} km'.format(kk, k3, altx))
+                        nlat = 90 if k3 is 'North' else -40
+                        slat = -90 if k3 is 'South' else 40
+                        rp = 90-mnplat if k3 is 'North' else 90+msplat
+                        thetap = (mnplt*np.pi/12 if k3 is 'North'
+                                  else (24-msplt)*np.pi/12)
+                        ax, hc = g3ca.contour_single(
+                                ax, 'Rho', 'pol', gg, alt=k2,
+                                nlat=nlat, slat=slat, dlonlt=6, nzlevels=20,
+                                zmax=zlim[k22][1], zmin=zlim[k22][0])
+                        ax, hv = g3ca.contour_single(
+                                ax, 'nvorticity', 'pol', gg, alt=k2, nlat=nlat,
+                                slat=slat, dlonlt=6, linewidths=1, alpha=0.8,
+                                nzlevels=10, colors='k', fill=False)
+                        ax.scatter(thetap, rp, s=20, c='k')
+                        # Time
+                        tt = gg['time']
+                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                        ht.set_position(
+                                [ht.get_position()[0],
+                                 ht.get_position()[1]+0.01])
+                        # north or south
+                        plt.annotate('{:s}, {:5.1f} km'.format(k3, altx),
+                                     [0, 1.09], xycoords='axes fraction',
+                                     horizontalalignment='center',
+                                     verticalalignment='center')
+                        # colorbar
+                        hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
+                        plt.tight_layout()
+                        fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
+                                '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+
+                                '.vortex.pdf')
+                        plt.close(fig)
+    if False:  #
+        from spacepy.datamodel import dmarray
+        fn = '/home/guod/WD2T/run_imfby/run2/data/3DALL_t100323_000000.bin'
+        g = gitm.GitmBin(fn, varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)'])
+        gv.add_vorticity_r(g, 'neutral')
+        g['vt'] = dmarray(
+                np.sqrt(g['V!Dn!N (north)']**2+g['V!Dn!N (east)']**2),
+                attrs={'units':'m/s', 'scale':'linear',
+                       'name':'total wind velocity'})
+        # Figure 1: minimum density versus altitude
+        fig1 = plt.figure()
+        ax1 = plt.subplot()
+        # Figure 4: MLAT of density minimum
+        fig4 = plt.figure()
+        ax4 = plt.subplot()
+        # Figure 5: MLT of density minimum
+        fig5 = plt.figure()
+        ax5 = plt.subplot()
+        for k1 in ('North', 'South'):
+            nlat, slat = (90, 60) if k1=='North' else (-60, -90)
+            dlat, dlon, rho, vorticity, vt = (
+                    g[k] for k in ['dLat', 'dLon', 'Rho', 'nvorticity', 'vt'])
+            # latitude and longitude limits
+            ilat = (dlat[0, :, 0] >= slat) & (dlat[0, :, 0]<=nlat)
+            ilon = (dlon[:, 0, 0] >= 0) & (dlon[:, 0, 0]<=360)
+            # fetch dlat, dlon, rho, vorticity
+            dlat, dlon, rho, vorticity, vt =(
+                    k[ilon][:, ilat] for k in (dlat, dlon, rho, vorticity, vt))
+            rhomin = pd.DataFrame(columns=('alt', 'lat', 'lon', 'rhomin'))
+            rhomax = pd.DataFrame(columns=('alt', 'lat', 'lon', 'rhomax'))
+            ax = plt.subplot(111)
+            for k0 in range(g.attrs['nAlt']):
+                rho[..., k0] = rho[..., k0]/np.mean(rho[..., k0])
+                altt = g['Altitude'][0, 0, k0]
+                # Minimum
+                ind = np.argmin(rho[:, :, k0].reshape(-1))
+                latt, lont, rhomint, vortt = (
+                        k[..., k0].reshape(-1)[ind]
+                        for k in [dlat, dlon, rho, vorticity])
+                rhomint = pd.DataFrame(
+                        np.array([altt, latt, lont, rhomint]).reshape(1, -1),
+                        columns=('alt', 'lat', 'lon', 'rhomin'))
+                rhomin = rhomin.append(rhomint)
+                # Maximum
+                ind = np.argmax(rho[:, :, k0].reshape(-1))
+                latt, lont, rhomaxt, vortt = (
+                        k[..., k0].reshape(-1)[ind]
+                        for k in [dlat, dlon, rho, vorticity])
+                rhomaxt = pd.DataFrame(
+                        np.array([altt, latt, lont, rhomaxt]).reshape(1, -1),
+                        columns=('alt', 'lat', 'lon', 'rhomax'))
+                rhomax = rhomax.append(rhomaxt)
+            apex=Apex(date=2010)
+            mlat, mlon = apex.convert(
+                    rhomin.lat, rhomin.lon, source='geo', dest='qd',
+                    height=rhomin.alt)
+            mlatt, mlt = apex.convert(
+                    rhomin.lat, rhomin.lon, source='geo', dest='mlt',
+                    height=rhomin.alt, datetime='2010-03-23 06:00:00')
+            ax1.plot(rhomin.rhomin, rhomin.alt/1000)
+            ax4.plot(mlt, rhomin.alt/1000)
+            ax5.plot(mlat, rhomin.alt/1000)
+        ax1.set_xlim(0.5, 1)
+        ax1.set_ylim(100, 700)
+        ax1.grid()
+        ax1.set_xlabel(r'$\rho_{min}/\rho_{mean}$', fontsize='x-large')
+        ax1.set_ylabel('Altitude (km)')
+        ax1.xaxis.set_minor_locator(AutoMinorLocator(10))
+        ax1.yaxis.set_minor_locator(AutoMinorLocator(10))
+        ax1.legend(['NH', 'SH'])
+        ax4.set_xlim(0, 12)
+        ax4.set_xticks(np.arange(0, 13, 2))
+        ax4.set_ylim(100, 700)
+        ax4.grid()
+        ax4.set_xlabel('MLT (hour)')
+        ax4.set_ylabel('Altitude (km)')
+        ax4.xaxis.set_minor_locator(AutoMinorLocator(2))
+        ax4.yaxis.set_minor_locator(AutoMinorLocator(10))
+        ax4.legend(['NH', 'SH'])
+        ax5.set_xlim(-90, 90)
+        ax5.set_xticks(np.arange(-90, 91, 30))
+        ax5.set_ylim(100, 700)
+        ax5.grid()
+        ax5.set_xlabel('MLAT (degree)')
+        ax5.set_ylabel('Altitude (km)')
+        ax5.xaxis.set_minor_locator(AutoMinorLocator(10))
+        ax5.yaxis.set_minor_locator(AutoMinorLocator(10))
+        ax5.legend(['NH', 'SH'])
+        # Figure 2: density change versus vorticity
+        fig2, ax2 = plt.subplots(
+                3,2, sharex=True, sharey='row', figsize=[8.5, 10.7])
+        for k11, k1 in enumerate(('North', 'South')):
+            nlat, slat = (85, 60) if k1=='North' else (-60, -85)
+            dlat, dlon, rho, vorticity, vt = (
+                    g[k] for k in ['dLat', 'dLon', 'Rho', 'nvorticity', 'vt'])
+            # latitude and longitude limits
+            ilat = (dlat[0, :, 0] >= slat) & (dlat[0, :, 0]<=nlat)
+            ilon = (dlon[:, 0, 0] >= 0) & (dlon[:, 0, 0]<=360)
+            # fetch dlat, dlon, rho, vorticity
+            dlat, dlon, rho, vorticity, vt =(
+                    k[ilon][:, ilat] for k in (dlat, dlon, rho, vorticity, vt))
+            for k22, k2 in enumerate((200, 400, 600)):
+                plt.sca(ax2[k22, k11])
+                alt = g['Altitude'][0, 0, :]
+                ialt = np.argmin(abs(alt-k2*1000)) # in GITM, unit of alt is m
+                altx = alt[ialt]/1000
+                rhot, vortt, vtt = (k[..., ialt] for k in (rho, vorticity, vt))
+                rhot, vortt, vtt = (k.reshape(-1) for k in (rhot, vortt, vtt))
+                ivtt = vtt>200
+                rhot, vortt, vtt = (k[ivtt] for k in (rhot, vortt, vtt))
+                plt.plot(vortt*1000, rhot,'k.')
+        plt.xlim(-2, 2)
+        [ax2[-1, k].set_xlabel('Vorticity (10$^{-3}$/s)') for k in range(2)]
+        ax2[0, 0].set_title('NH')
+        ax2[0, 1].set_title('SH')
+        [ax2[k, 0].set_ylabel(r'$\rho$ (kg/m$^3$)') for k in range(3)]
+        plt.tight_layout()
+        # Figure 3: density and vorticity changes versus LT and lat
+        fig3, ax3 = plt.subplots(
+                3, 2,  figsize=[7.5, 10.7], subplot_kw={'polar':True})
+        for k11, k1 in enumerate(('North', 'South')):
+            nlat, slat = (90, 60) if k1=='North' else (-60, -90)
+            for k22, k2 in enumerate((200, 400, 600)):
+                g3ca.contour_single(
+                        ax3[k22, k11], 'Rho', 'polar', g, alt=k2, nlat=nlat,
+                        slat=slat, nzlevels=20)
+                g3ca.contour_single(
+                        ax3[k22, k11], 'nvorticity', 'polar', g,
+                        alt=k2, nlat=nlat, slat=slat, nzlevels=10, fill=False,
+                        colors='k', linewidths=1, alpha=0.8)
+        ax3[0, 0].set_title('NH', y=1.1)
+        ax3[0, 1].set_title('SH', y=1.1)
+        #plt.tight_layout()
+
+    if True: # Time constant
+        import gitm_vorticity as gv
+        from apexpy import Apex
+        fig, ax = plt.subplots(4, 1, sharex=True)
+        btime = pd.Timestamp('2010-03-21 00:00:00')
+        etime = pd.Timestamp('2010-03-24 00:00:00')
+        dt = pd.Timedelta('1min')
+        time = pd.date_range(btime, etime, freq=dt)
+        # Figure 1: IMF By
+        plt.sca(ax[0])
+        fn1 = '/home/guod/tmp/imf1.dat'
+        imf1 = pd.read_csv(
+                fn1, delim_whitespace=True, comment='#',
+                header=None,
+                names=('year', 'month', 'day', 'hour', 'minute', 'second', 'ms',
+                       'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+                usecols=['by'])
+        imf1 = pd.DataFrame(np.array(imf1), index=time, columns=['By'])
+        plt.plot(imf1.index, imf1.By)
+        fn2 = '/home/guod/tmp/imf2.dat'
+        imf2 = pd.read_csv(
+                fn2, delim_whitespace=True, comment='#',
+                header=None,
+                names=('year', 'month', 'day', 'hour', 'minute', 'second', 'ms',
+                       'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+                usecols=['by'])
+        imf2 = pd.DataFrame(np.array(imf2), index=time, columns=['By'])
+        plt.plot(imf2.index, imf2.By)
+        # Figure 2-4: ion, neutral wind vorticity and neutral density
+        # Prepare data and save
+        if True:
+            oo1, oo2, oo3 = pd.DataFrame(), pd.DataFrame(), pd.DataFrame()
+            for k00, k0 in enumerate(basename):
+                # Read file
+                gg = gitm.GitmBin(
+                        pdir+k0,
+                        varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)',
+                                 'V!Di!N (north)', 'V!Di!N (east)'])
+                # Add vorticity
+                gv.add_vorticity_r(gg, neuion='neutral')
+                gv.add_vorticity_r(gg, neuion='ion')
+                # limit latitudes
+                ilat = (gg['dLat'][0, :, 0]>60) & (gg['dLat'][0, :, 0]<85)
+                for k1 in range(gg.attrs['nAlt']):
+                    alt, lat, lon, vorti, vortn, rho = (
+                            gg[k][..., k1][:, ilat].reshape(-1) for k in [
+                                    'Altitude', 'dLat', 'dLon',
+                                    'ivorticity', 'nvorticity', 'Rho'])
+                    # find maximum ion vorticity
+                    vortimax = np.argmax(vorti)
+                    lat1, lon1 = lat[vortimax], lon[vortimax]
+                    ilat1 = (lat < lat1+2.5) & (lat>lat1-2.5)
+                    ilon1 = (lon < lon1+5) & (lon>lon1-5)
+                    vortit = np.mean(vorti[(ilat1) & (ilon1)])
+                    vortnt = np.mean(vortn[(ilat1) & (ilon1)])
+                    rhot = np.mean(rho[(ilat1) & (ilon1)])/np.mean(rho)
+                    oo1 = oo1.append(
+                            pd.DataFrame(
+                                np.array([lat1, lon1, vortit, vortnt, rhot]).reshape(1, -1),
+                                index=pd.MultiIndex.from_product(
+                                    [[gg['time']], [gg['Altitude'][0, 0, k1]]],
+                                    names=['time', 'alt']),
+                                columns=['lat', 'lon', 'vorti', 'vortn', 'rho']))
+                    # find maximum neu vorticity
+                    vortnmax = np.argmax(vortn)
+                    lat1, lon1 = lat[vortnmax], lon[vortnmax]
+                    ilat1 = (lat < lat1+2.5) & (lat>lat1-2.5)
+                    ilon1 = (lon < lon1+5) & (lon>lon1-5)
+                    vortit = np.mean(vorti[(ilat1) & (ilon1)])
+                    vortnt = np.mean(vortn[(ilat1) & (ilon1)])
+                    rhot = np.mean(rho[(ilat1) & (ilon1)])/np.mean(rho)
+                    oo2 = oo2.append(
+                            pd.DataFrame(
+                                np.array([lat1, lon1, vortit, vortnt, rhot]).reshape(1, -1),
+                                index=pd.MultiIndex.from_product(
+                                    [[gg['time']], [gg['Altitude'][0, 0, k1]]],
+                                    names=['time', 'alt']),
+                                columns=['lat', 'lon', 'vorti', 'vortn', 'rho']))
+                    # find minimum neu vorticity
+                    rhomin = np.argmin(rho)
+                    lat1, lon1 = lat[rhomin], lon[rhomin]
+                    ilat1 = (lat < lat1+2.5) & (lat>lat1-2.5)
+                    ilon1 = (lon < lon1+5) & (lon>lon1-5)
+                    vortit = np.mean(vorti[(ilat1) & (ilon1)])
+                    vortnt = np.mean(vortn[(ilat1) & (ilon1)])
+                    rhot = np.mean(rho[(ilat1) & (ilon1)])/np.mean(rho)
+                    oo3 = oo3.append(
+                            pd.DataFrame(
+                                np.array([lat1, lon1, vortit, vortnt, rhot]).reshape(1, -1),
+                                index=pd.MultiIndex.from_product(
+                                    [[gg['time']], [gg['Altitude'][0, 0, k1]]],
+                                    names=['time', 'alt']),
+                                columns=['lat', 'lon', 'vorti', 'vortn', 'rho']))
+            print(oo1)
+            pd.to_pickle((oo1, oo2, oo3), '/home/guod/data/tmp/w3_05_01.dat')
+        oo1, oo2, oo3 = pd.read_pickle('/home/guod/data/tmp/w3_05_01.dat')
+
+
+    return oo1, oo2, oo3
+
 
 # END
 #------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    func5()
+    a = func5()
+    plt.show()
