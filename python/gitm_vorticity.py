@@ -29,18 +29,11 @@ def add_vorticity_r(gdata, neuion='neutral'):
         nwind = gdata['V!Di!N (north)']  # unit: m/s
         ewind = gdata['V!Di!N (east)']  # unit: m/s
     Re = 6371*1000 # Earth radius, unit: m
-    vorticity_r = 1.0/(Re+gdata['Altitude'][:-1, :-1, :])*(
-            np.diff(nwind, axis=0)[:, :-1, :] /
-            (np.cos(lat[:-1, :-1, :])*(np.diff(lon, axis=0)[:, :-1, :])) -
-            np.diff(ewind, axis=1)[:-1, :, :] /
-            np.diff(lat, axis=1)[:-1, :, :] +
-            (ewind*np.tan(lat))[:-1, :-1, :])
-    vorticity = np.ones([gdata.attrs[k] for k in ['nLon', 'nLat', 'nAlt']])*np.nan
-    vorticity[:-1, :-1, :] = vorticity_r
-    vorticity[-1, :, :] = vorticity[-2, :, :]
-    vorticity[:, -1, :] = vorticity[:, -2, :]
+    vorticity_r = 1.0/(Re+gdata['Altitude'])*(
+            np.gradient(nwind, axis=0) / (np.cos(lat)*np.gradient(lon, axis=0)) -
+            np.gradient(ewind, axis=1) / np.gradient(lat, axis=1) + (ewind*np.tan(lat)))
     ac = 'nvorticity' if 'neu' in neuion else 'ivorticity'
-    gdata[ac] = dmarray(vorticity, attrs={'units':'m/s^2', 'scale':'linear',
+    gdata[ac] = dmarray(vorticity_r, attrs={'units':'m/s^2', 'scale':'linear',
                         'name':neuion+' radial vorticity'})
     return
 

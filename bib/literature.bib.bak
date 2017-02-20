@@ -1187,7 +1187,7 @@
   Pages                    = {427--437},
   Volume                   = {274},
 
-  Abstract                 = {The solar minimum of 2008 was exceptionally quiet, with sunspot numbers at their lowest in 75 years. During this unique solar-minimum epoch, however, solar-wind high-speed streams emanating from near-equatorial coronal holes occurred frequently and were the primary contributor to the recurrent geomagnetic activity at Earth. These conditions enabled the isolation of forcing by geomagnetic activity on the preconditioned solar minimum state of the upper atmosphere caused by Corotating Interaction Regions (CIRs). Thermosphere density observations around 400Â km from the CHAMP satellite are used to study the thermosphere density response to solar-wind high-speed streams/CIRs. Superposed epoch results show that the thermosphere density responds to high-speed streams globally, and the density at 400 km changes by 75\% on average. The relative changes of neutral density are comparable at different latitudes, although its variability is largest at high latitudes. In addition, the response of thermosphere density to high-speed streams is larger at night than in daytime, indicating the preconditioning effect of the thermosphere response to storms. Finally, the thermosphere density variations at the periods of 9 and 13.5Â days associated with CIRs are linked to the spatial distribution of low\thinspace--\thinspacemiddle latitude coronal holes on the basis of the EUVI observations from STEREO.},
+  Abstract                 = {The solar minimum of 2008 was exceptionally quiet, with sunspot numbers at their lowest in 75 years. During this unique solar-minimum epoch, however, solar-wind high-speed streams emanating from near-equatorial coronal holes occurred frequently and were the primary contributor to the recurrent geomagnetic activity at Earth. These conditions enabled the isolation of forcing by geomagnetic activity on the preconditioned solar minimum state of the upper atmosphere caused by Corotating Interaction Regions (CIRs). Thermosphere density observations around 400Â km from the CHAMP satellite are used to study the thermosphere density response to solar-wind high-speed streams/CIRs. Superposed epoch results show that the thermosphere density responds to high-speed streams globally, and the density at 400 km changes by 75\% on average. The relative changes of neutral density are comparable at different latitudes, although its variability is largest at high latitudes. In addition, the response of thermosphere density to high-speed streams is larger at night than in daytime, indicating the preconditioning effect of the thermosphere response to storms. Finally, the thermosphere density variations at the periods of 9 and 13.5Â days associated with CIRs are linked to the spatial distribution of low\thinspace--\thinspacemiddle latitude coronal holes on the basis of the EUVI observations from STEREO.},
   Doi                      = {10.1007/s11207-010-9563-y},
   File                     = {Lei2010.pdf:Lei2010.pdf:PDF},
   Groups                   = {density and composition, Lei},
@@ -2784,20 +2784,102 @@
 ﻿
 
 @Article{Schoendorf1995,
-  author        = {Schoendorf, J. and Crowley, G.},
-  title         = {Interpretation of an unusual high latitude density decrease in terms of thermospheric density cells},
-  journal       = {Geophysical Research Letters},
-  year          = {1995},
-  volume        = {22},
-  number        = {22},
-  pages         = {3023--3026},
-  issn          = {1944-8007},
-  __markedentry = {[guod:6]},
-  abstract      = {The discovery of a cellular structure in the high latitude thermospheric (120–350 km) neutral density provides a new framework in which to interpret high latitude density data. During geomagnetically active times, above about 170 km, the cells consist of density enhancements near noon and midnight and depletions near dawn and dusk. In this paper, a previously unexplained observation is presented and interpreted in terms of the cells. In general the high latitude neutral density is expected to increase during magnetically active conditions. On the contrary, the SETA-1 satellite measured a 40% density decrease near 200 km during the geomagnetic storm of April 3, 1979. In the past, such ‘anomalous’ observations have often been attributed to the inseparability of density and winds in accelerometer measurements. We first show that the depletion cannot be caused by winds, and then show that the depletion is a natural consequence of the cellular structure inherent in the mass density at 200 km.},
-  doi           = {10.1029/95GL02226},
-  file          = {Schoendorf1995.pdf:Schoendorf1995.pdf:PDF},
-  keywords      = {Atmospheric Composition and Structure: Thermosphere—composition and chemistry, Atmospheric Composition and Structure: Pressure, density, and temperature},
-  url           = {http://dx.doi.org/10.1029/95GL02226},
+  author   = {Schoendorf, J. and Crowley, G.},
+  title    = {Interpretation of an unusual high latitude density decrease in terms of thermospheric density cells},
+  journal  = {Geophysical Research Letters},
+  year     = {1995},
+  volume   = {22},
+  number   = {22},
+  pages    = {3023--3026},
+  issn     = {1944-8007},
+  abstract = {The discovery of a cellular structure in the high latitude thermospheric (120–350 km) neutral density provides a new framework in which to interpret high latitude density data. During geomagnetically active times, above about 170 km, the cells consist of density enhancements near noon and midnight and depletions near dawn and dusk. In this paper, a previously unexplained observation is presented and interpreted in terms of the cells. In general the high latitude neutral density is expected to increase during magnetically active conditions. On the contrary, the SETA-1 satellite measured a 40% density decrease near 200 km during the geomagnetic storm of April 3, 1979. In the past, such ‘anomalous’ observations have often been attributed to the inseparability of density and winds in accelerometer measurements. We first show that the depletion cannot be caused by winds, and then show that the depletion is a natural consequence of the cellular structure inherent in the mass density at 200 km.},
+  doi      = {10.1029/95GL02226},
+  file     = {Schoendorf1995.pdf:Schoendorf1995.pdf:PDF},
+  keywords = {Atmospheric Composition and Structure: Thermosphere—composition and chemistry, Atmospheric Composition and Structure: Pressure, density, and temperature},
+  url      = {http://dx.doi.org/10.1029/95GL02226},
+}
+
+@Article{Schoendorf1996,
+  author   = {J. Schoendorf and G. Crowley and R.G. Roble},
+  title    = {Neutral density cells in the high latitude thermosphere—2. Mechanisms},
+  journal  = {Journal of Atmospheric and Terrestrial Physics},
+  year     = {1996},
+  volume   = {58},
+  number   = {15},
+  pages    = {1769 - 1781},
+  issn     = {0021-9169},
+  abstract = {NCAR-TIGCM simulations predict mesoscale cellular structures in the high latitude neutral density at altitudes from 120–350 km. During magnetically active conditions, the density structure at 200 km consists of low-density cells near dawn and dusk and high-density cells near noon and midnight. Mechanisms causing the structured density cells are a result of thermosphere-ionosphere coupling and can be explained in terms of dynamic meteorology. For example, at high latitudes ion drag causes the neutral circulation to flow cyclonically in the dawn sector and anticyclonically in the dusk sector. Low densities are contained within the cyclonic circulation at all altitudes. Below about 170 km, the densities inside the anticyclonic flow are high, while above that altitude densities within the anticyclonic flow are low. While typical dynamic meteorology explains low densities in the centre of cyclonic circulation and high densities inside anticyclonic circulation, the dusk low-density cell in the centre of anticyclonic flow is unexpected. The anticyclonic dusk low-density cell is explained by anomalous antibaric flow due to high-speed winds. 120 km and 200 km altitudes are used to demonstrate the relationship between the high latitude densities and winds as well as the effect of joule heating and auroral particle precipitation on the density structures. },
+  doi      = {http://dx.doi.org/10.1016/0021-9169(95)00166-2},
+  file     = {Schoendorf1996.pdf:Schoendorf1996.pdf:PDF},
+  url      = {//www.sciencedirect.com/science/article/pii/0021916995001662},
+}
+
+@Article{Schoendorf1996a,
+  author   = {J. Schoendorf and G. Crowley and R.G. Roble and F.A. Marcos},
+  title    = {Neutral density cells in the high latitude thermosphere—1. Solar maximum cell morphology and data analysis},
+  journal  = {Journal of Atmospheric and Terrestrial Physics},
+  year     = {1996},
+  volume   = {58},
+  number   = {15},
+  pages    = {1751 - 1768},
+  issn     = {0021-9169},
+  abstract = {A new high latitude thermospheric neutral density structure has been revealed in NCAR-TIGCM simulations at 120–350 km altitude. The structure consists of density cells above 50° latitude with radii of approximately 1000 km. There are between two to four cells present depending on the altitude and magnetic activity. For example, at 200 km under magnetically active conditions, the density structure consists of four cells: low density cells are located near dawn and dusk and high density cells are located near noon and midnight. Density variations among the cells range from 5 to 50% for magnetically quiet and active conditions respectively. The cells are present at all seasons, for a wide range of magnetic activity levels, and at solar minimum and solar maximum. The density cell morphology is established for equinox solar maximum as a function of altitude and magnetic activity. Departures of the cell structure from this morphology due to seasonal and solar cycles are discussed. The cell morphology provides a new framework in which to interpret lower thermospheric density data. Data to test and confirm the model predictions were provided by the SETA-1 satellite.},
+  doi      = {http://dx.doi.org/10.1016/0021-9169(95)00165-4},
+  file     = {Schoendorf1996a.pdf:Schoendorf1996a.pdf:PDF},
+  url      = {http://www.sciencedirect.com/science/article/pii/0021916995001654},
+}
+
+@Article{Forbes2007,
+  author  = {Jeffrey M. Forbes},
+  title   = {Dynamics of the Thermosphere},
+  journal = {Journal of the Meteorological Society of Japan. Ser. II},
+  year    = {2007},
+  volume  = {85B},
+  pages   = {193-213},
+  doi     = {10.2151/jmsj.85B.193},
+  file    = {Forbes2007.pdf:Forbes2007.pdf:PDF},
+}
+
+@Article{Schlegel2005a,
+  author  = {Schlegel, K. and L\"uhr, H. and St.-Maurice, J.-P. and Crowley, G. and Hackert, C.},
+  title   = {Thermospheric density structures over the polar regions observed with CHAMP},
+  journal = {Annales Geophysicae},
+  year    = {2005},
+  volume  = {23},
+  number  = {5},
+  pages   = {1659--1672},
+  doi     = {10.5194/angeo-23-1659-2005},
+  file    = {Schlegel2005a.pdf:Schlegel2005a.pdf:PDF},
+  url     = {http://www.ann-geophys.net/23/1659/2005/},
+}
+﻿
+
+@InBook{Crowley2013,
+  pages         = {339--348},
+  title         = {Satellite Observations of Neutral Density Cells in the Lower Thermosphere at High Latitudes},
+  publisher     = {American Geophysical Union},
+  year          = {2013},
+  author        = {Crowley, Geoffrey and Schoendorf, Jacqueline and Roble, Raymond G. and Marcos, Frank A.},
+  isbn          = {9781118664247},
+  __markedentry = {[guod:]},
+  abstract      = {This chapter contains sections titled:
+
+* Introduction
+
+* The S85-1 Satellite
+
+* Tigcm Predictions
+
+* Data Analysis
+
+* Conclusions
+
+},
+  booktitle     = {The Upper Mesosphere and Lower Thermosphere: A Review of Experiment and Theory},
+  doi           = {10.1029/GM087p0339},
+  file          = {Crowley2013.pdf:Crowley2013.pdf:PDF},
+  keywords      = {Mesosphere—Research, Thermosphere—Research},
+  url           = {http://dx.doi.org/10.1029/GM087p0339},
 }
 
 @Comment{jabref-meta: databaseType:bibtex;}

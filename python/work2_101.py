@@ -405,7 +405,7 @@ def f2():
             plt.yticks(np.arange(-4,5,2))
             plt.gca().xaxis.set_minor_locator(AutoMinorLocator(4))
             plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
-            plt.tick_params(axis='both', which='major', length=4)
+            plt.tick_params(axis='both', which='major')
             plt.grid(dashes=(4,1))
             plt.text(0,1.05,fl[k11][k00], transform=plt.gca().transAxes)
     ax[0,0].set_ylabel(r'$\rho_r$ (%)',fontsize=14)
@@ -446,7 +446,7 @@ def f2():
         plt.yticks(np.arange(-30,61,30))
         plt.gca().yaxis.set_minor_locator(AutoMinorLocator(3))
         plt.gca().xaxis.set_minor_locator(AutoMinorLocator(2))
-        plt.tick_params(axis='both', which='major', length=5)
+        plt.tick_params(axis='both', which='major')
         #plt.grid(which='minor',dashes=(4,1))
         #plt.grid(which='major',axis='y',dashes=(4,1))
         plt.grid(axis='y',dashes=(4,1))
@@ -609,7 +609,7 @@ def f3():
             plt.tick_params(axis='x', which='major', direction='out', length=4)
             plt.tick_params(axis='y', which='major', direction='out', length=0)
             plt.tick_params(axis='x', which='minor', direction='out', length=2)
-            plt.tick_params(axis='y', which='minor', direction='out', length=4)
+            plt.tick_params(axis='y', which='minor', direction='out', length=4, width=1.2)
             plt.text(
                     0.05, 0.8, '('+plb[k11, k00]+')',
                     bbox=dict(facecolor='white', alpha=0.3),
@@ -658,7 +658,7 @@ def f3():
             plt.tick_params(axis='x', which='major', direction='out', length=4)
             plt.tick_params(axis='y', which='major', direction='out', length=0)
             plt.tick_params(axis='x', which='minor', direction='out', length=2)
-            plt.tick_params(axis='y', which='minor', direction='out', length=4)
+            plt.tick_params(axis='y', which='minor', direction='out', length=4, width=1.2)
             plt.text(
                     0.05, 0.8, '('+plb[k11+3, k00]+')',
                     bbox=dict(facecolor='white', alpha=0.3),
@@ -716,8 +716,8 @@ def f3():
         plt.yticks(np.arange(-30, 31, 10))
         plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
         plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
-        plt.tick_params(axis='both', which='major', length=6)
-        plt.tick_params(axis='both', which='minor', length=3)
+        plt.tick_params(axis='both', which='major')
+        plt.tick_params(axis='both', which='minor')
         if k00 == 0:
             plt.ylabel(r'South, $\rho_r$ (%)')
         plt.xlabel('UT (hour)')
@@ -740,6 +740,7 @@ def f3():
     plt.plot(imf.index, imf.Bym, 'r')
     plt.plot(imf.index, imf.Bzm, 'k')
     plt.ylim(-10, 10)
+    plt.yticks(np.arange(-10, 11, 5))
     plt.gca().yaxis.set_minor_locator(AutoMinorLocator(5))
     plt.grid()
     plt.ylabel('IMF (nT)')

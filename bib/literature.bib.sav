@@ -2810,6 +2810,7 @@
   abstract = {NCAR-TIGCM simulations predict mesoscale cellular structures in the high latitude neutral density at altitudes from 120–350 km. During magnetically active conditions, the density structure at 200 km consists of low-density cells near dawn and dusk and high-density cells near noon and midnight. Mechanisms causing the structured density cells are a result of thermosphere-ionosphere coupling and can be explained in terms of dynamic meteorology. For example, at high latitudes ion drag causes the neutral circulation to flow cyclonically in the dawn sector and anticyclonically in the dusk sector. Low densities are contained within the cyclonic circulation at all altitudes. Below about 170 km, the densities inside the anticyclonic flow are high, while above that altitude densities within the anticyclonic flow are low. While typical dynamic meteorology explains low densities in the centre of cyclonic circulation and high densities inside anticyclonic circulation, the dusk low-density cell in the centre of anticyclonic flow is unexpected. The anticyclonic dusk low-density cell is explained by anomalous antibaric flow due to high-speed winds. 120 km and 200 km altitudes are used to demonstrate the relationship between the high latitude densities and winds as well as the effect of joule heating and auroral particle precipitation on the density structures. },
   doi      = {http://dx.doi.org/10.1016/0021-9169(95)00166-2},
   file     = {Schoendorf1996.pdf:Schoendorf1996.pdf:PDF},
+  groups   = {work3},
   url      = {//www.sciencedirect.com/science/article/pii/0021916995001662},
 }
 
@@ -2890,7 +2891,7 @@
   number        = {A8},
   pages         = {6339--6345},
   issn          = {2156-2202},
-  __markedentry = {[guod:6]},
+  __markedentry = {[guod:]},
   abstract      = {Mathematical expressions have been constructed that allow the large-scale global convection characteristics of the high-latitude ionosphere to be reproduced. The model contains no discontinuities in the ion convection velocity and as such should be useful in F region chemical models. The number of variables in the model allow such features as the dayside throat and the Harang discontinuity to be modeled. The applicability of the model to magnetospheric physics is limited by the exclusion of large-magnitude small-scale flow features associated with discrete arcs and by the inability of the model to produce separate flow cells at the same local time.},
   doi           = {10.1029/JA087iA08p06339},
   file          = {Heelis1982.pdf:Heelis1982.pdf:PDF},

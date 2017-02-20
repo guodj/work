@@ -134,12 +134,8 @@ if __name__ == '__main__':
     from timeit import time
     import matplotlib.pyplot as plt
     begintime = time.time()
-    omni1 = get_omni_backup('2010-1-1', '2010-12-31', ['Bx'], res='1m')
+    omni1 = get_omni('2010-1-1', '2010-12-31', ['AE'])
     endtime = time.time()
     print(endtime-begintime)
-    begintime = time.time()
-    omni2 = get_omni('2010-1-1', '2010-12-31', ['Bx'], res='1m')
-    endtime = time.time()
-    print(endtime-begintime)
-    plt.plot(omni1-omni2['Bx'])
+    plt.plot(omni1['AE'])
 

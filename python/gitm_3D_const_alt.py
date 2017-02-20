@@ -51,16 +51,12 @@ def _contour_data(
         ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
     # Confine latitudes and longitudes
     latitude = gdata['dLat'][0, :, 0]
-    ilat = np.argwhere(
-            (latitude >= -90) & (latitude <= 90) &
-            (latitude >= slat) & (latitude <= nlat))
-    ilatmin, ilatmax = ilat.min(), ilat.max()+1
+    ilat = (latitude >= slat) & (latitude <= nlat)
     longitude = gdata['dLon'][:, 0, 0]
-    ilon = np.argwhere((longitude>=0) & (longitude<=360))
-    ilonmin, ilonmax = ilon.min(), ilon.max()+1
+    ilon = (longitude>=0) & (longitude<=360)
     # Find the data
     lat0, lon0, lt0, zdata0 = (
-            gdata[k][ilonmin:ilonmax, ilatmin:ilatmax, ialt]
+            gdata[k][ilon, ...][:, ilat, :][..., ialt].copy()
             for k in ['dLat', 'dLon', 'LT', zkey])
     lonlt0 = lt0 if useLT else lon0
     # Sort LT
@@ -69,16 +65,16 @@ def _contour_data(
         lat0, lonlt0, zdata0 = (
                 np.roll(k, -ilt, 0) for k in [lat0, lonlt0, zdata0])
     # Extend latitude
-    if nlat == 90:
-        lat0 = np.hstack([lat0, lat0[:, -1][:, None]])
-        lat0[:, -1] = 90
-        lonlt0 = np.hstack([lonlt0, lonlt0[:, -1][:, None]])
-        zdata0 = np.hstack([zdata0, zdata0[:, -1][:, None]])
-        zdata0[:, -1] = np.mean(zdata0[:, -1])
-    if slat == -90:
-        lat0 = np.insert(lat0, 0, -90, axis=1)
-        lonlt0 = np.insert(lonlt0, 0, lonlt0[:,0], axis=1)
-        zdata0 = np.insert(zdata0, 0, np.mean(zdata0[:, 0]), axis=1)
+    #if nlat == 90:
+    #    lat0 = np.hstack([lat0, lat0[:, -1][:, None]])
+    #    lat0[:, -1] = 90
+    #    lonlt0 = np.hstack([lonlt0, lonlt0[:, -1][:, None]])
+    #    zdata0 = np.hstack([zdata0, zdata0[:, -1][:, None]])
+    #    zdata0[:, -1] = np.mean(zdata0[:, -1])
+    #if slat == -90:
+    #    lat0 = np.insert(lat0, 0, -90, axis=1)
+    #    lonlt0 = np.insert(lonlt0, 0, lonlt0[:,0], axis=1)
+    #    zdata0 = np.insert(zdata0, 0, np.mean(zdata0[:, 0]), axis=1)
     # Extend Lon/LT (for contour)
     maxlonlt = 24 if useLT else 360
     lat0, lonlt0, zdata0 = (
@@ -659,45 +655,32 @@ def vector_diff(
 #END
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
-    # test contour_diff
+    # test contour_single
+    #    import gitm
+    #    import pandas as pd
+    #    path = '/home/guod/WD2T/run_imfby/'
+    #    g = gitm.GitmBin(
+    #            path+'run1/data/3DALL_t100323_060000.bin', varlist=['Rho'])
+    #    ax = plt.subplot(polar=True)
+    #    ax, hc = contour_single(
+    #            ax, 'Rho', 'pol', g, alt=400,
+    #            title=True, nlat=90, slat=40, dlat=10,
+    #            dlonlt=90, lonlt00='S', nzlevels=20, zcolor=None,
+    #            mag=False, data_type="contour", fill=True, useLT=False)
+    #    plt.show()
+    # test vector plot
     import gitm
     import pandas as pd
     path = '/home/guod/WD2T/run_imfby/'
     g1 = gitm.GitmBin(
-            path+'run1/data/3DALL_t100323_060000.bin', varlist=['Rho'])
-    g2 = gitm.GitmBin(
-            path+'run2/data/3DALL_t100323_060000.bin', varlist=['Rho'])
-    ax = plt.subplot(polar=True)
-    ax, hc = contour_diff(
-            ax, 'Rho', 'pol', g1, g2, alt=400, diff_type='relative',
-            title=True, nlat=90, slat=40, dlat=10,
-            dlonlt=6, lonlt00='S', zmax=20, zmin=-20, nzlevels=20, zcolor=None,
-            mag=False, data_type="contour", fill=False, colors='black',
-            useLT=True)
-    plt.clabel(hc, np.linspace(-20, 20, 11), fmt='%d')
-    ax, hc = contour_single(
-            ax, 'Rho', 'pol', g1, alt=400,
-            title=True, nlat=90, slat=40, dlat=10,
-            dlonlt=6, lonlt00='S', nzlevels=10, zcolor=None,
-            mag=False, data_type="contour", fill=True,
-            useLT=True)
+            path+'run1/data/3DALL_t100323_050000.bin',
+            varlist=['V!Dn!N (east)', 'V!Dn!N (north)'])
+    ax = plt.subplot(121,polar=True)
+    ax, hq = vector_single(ax, g1, 'neu', 'pol', nlat=90, slat=40,
+            scale=800, dlonlt=6, scale_units='inches', useLT=True)
+    ax.quiverkey(hq, 0,1, 800, '800 m/s')
+    ax = plt.subplot(122,polar=True)
+    ax, hq = vector_single(ax, g1, 'neu', 'pol', nlat=-40, slat=-90,
+            scale=800, dlonlt=6, scale_units='inches', useLT=True)
+    ax.quiverkey(hq, 0,1, 800, '800 m/s')
     plt.show()
-    # test vector plot
-    #    import gitm
-    #    import pandas as pd
-    #    path = '/home/guod/WD2T/run_imfby/'
-    #    g1 = gitm.GitmBin(
-    #            path+'run1/data/3DALL_t100323_050000.bin',
-    #            varlist=['V!Dn!N (east)', 'V!Dn!N (north)'])
-    #    g2 = gitm.GitmBin(
-    #            path+'run2/data/3DALL_t100323_050000.bin',
-    #            varlist=['V!Dn!N (east)', 'V!Dn!N (north)'])
-    #    ax = plt.subplot(121,polar=True)
-    #    ax, hq = vector_single(ax, g1, 'neu', 'pol', nlat=90, slat=40,
-    #            scale=800, dlonlt=6, scale_units='inches', useLT=True)
-    #    ax.quiverkey(hq, 0,1, 800, '800 m/s')
-    #    ax = plt.subplot(122,polar=True)
-    #    ax, hq = vector_single(ax, g1, 'neu', 'pol', nlat=-40, slat=-90,
-    #            scale=800, dlonlt=6, scale_units='inches', useLT=True)
-    #    ax.quiverkey(hq, 0,1, 800, '800 m/s')
-    #    plt.show()
