@@ -571,7 +571,7 @@ def f3():
     fig, ax = plt.subplots(5, 2, sharex=True, sharey=True, figsize=(6, 8))
     plt.subplots_adjust(
             left=0.13, right=0.82, top=0.93, bottom=0.07,
-            wspace=0.11, hspace=0.12)
+            wspace=0.11, hspace=0.28)
     ctt = [r'$B_x$ (nT)', r'$B_y$ (nT)', r'$B_z$ (nT)']
     plb = np.array(list('abcdefghij')).reshape(2,5).T
     for k00, k0 in enumerate(['Away', 'Toward']):
@@ -607,12 +607,11 @@ def f3():
             plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
             plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
             plt.tick_params(axis='x', which='major', direction='out', length=4)
-            plt.tick_params(axis='y', which='major', direction='out', length=0)
+            plt.tick_params(axis='y', which='major', direction='out', length=0, pad=6)
             plt.tick_params(axis='x', which='minor', direction='out', length=2)
-            plt.tick_params(axis='y', which='minor', direction='out', length=4, width=1.2)
+            plt.tick_params(axis='y', which='minor', direction='out', length=3, width=1.2)
             plt.text(
-                    0.05, 0.8, '('+plb[k11, k00]+')',
-                    bbox=dict(facecolor='white', alpha=0.3),
+                    0, 1.08, '('+plb[k11, k00]+')',
                     transform=plt.gca().transAxes)
             if k11 == 0:
                 plt.title(k0)
@@ -656,12 +655,11 @@ def f3():
             plt.gca().xaxis.set_minor_locator(AutoMinorLocator(6))
             plt.gca().yaxis.set_minor_locator(AutoMinorLocator(2))
             plt.tick_params(axis='x', which='major', direction='out', length=4)
-            plt.tick_params(axis='y', which='major', direction='out', length=0)
+            plt.tick_params(axis='y', which='major', direction='out', length=0, pad=6)
             plt.tick_params(axis='x', which='minor', direction='out', length=2)
-            plt.tick_params(axis='y', which='minor', direction='out', length=4, width=1.2)
+            plt.tick_params(axis='y', which='minor', direction='out', length=3, width=1.2)
             plt.text(
-                    0.05, 0.8, '('+plb[k11+3, k00]+')',
-                    bbox=dict(facecolor='white', alpha=0.3),
+                    0, 1.08, '('+plb[k11+3, k00]+')',
                     transform=plt.gca().transAxes)
             if k00 == 0:
                 plt.ylabel('Month')

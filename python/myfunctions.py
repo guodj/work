@@ -100,6 +100,18 @@ def set_lat_lt_polar(ax, ns='N', boundinglat=0,
     return
 
 
+def create_polar(ax, ns='N', boundinglat=0, dlat=10, dlon=90, useLT=True):
+    '''
+    create a polar coordinate to ax
+    Input:
+        ax          : on which the polar coordinate is created
+        ns          : 'N' or 'S', northern or southern hemispheres
+        boundinglat : latitude at the boundary
+        dlat        : latitude grid gap, unit is degree
+        dlon        : longitude grid gap, unit is degree even useLT is True
+        useLT       : longitude label is LT
+    '''
+
 def add_polar_coordinate(ax, centerlat=90, boundinglat=0, dlat=30, dlon=90,
                          latlabel='lat', lonlabel='LT', rtl=0.08, rxl=0.16):
     """
@@ -145,6 +157,7 @@ def add_polar_coordinate(ax, centerlat=90, boundinglat=0, dlat=30, dlon=90,
                 horizontalalignment='center', verticalalignment='center',
                 fontsize=14)
     return ax
+
 
 # END
 #-------------------------------------------------------------------------------
