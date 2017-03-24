@@ -6,6 +6,7 @@ rsync -a $HOME/{.vimrc,.vim,.bashrc,.gitconfig,.muttrc,.tmux.conf,.getmail,.dir_
 rsync -a $HOME/anaconda3/lib/python3.5/site-packages/apexpy/{apex.py.gdj,helpers.py.gdj} "$configuredir"apexpy/
 rsync -a $HOME/.config/matplotlib/matplotlibrc "$configuredir".config/matplotlib/
 cd $configuredir
+read -p "Commit description: " desc
 git add --all
-git commit -m "$1"
+git commit -m "$desc"
 git push origin master
