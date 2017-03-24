@@ -1,8 +1,0 @@
-#!/bin/bash
-configuredir=$HOME/CONFIGURE_FILES/
-PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH
-export LANG=C
-cd $configuredir
-git add --all
-git commit -m $1
-git push origin master

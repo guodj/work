@@ -2,5 +2,5 @@
 workdir=$HOME/work/
 cd $workdir
 git add --all
-git commit -m $1
+git commit -m "$1"
 git push origin master
