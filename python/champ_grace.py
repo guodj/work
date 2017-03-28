@@ -9,7 +9,7 @@
 #
 #       class: ChampDensity,
 #           LT_median: Calculate the median local time of the ascending and
-#               descending orbits.
+#                   descending orbits.
 #
 #           orbit_mean: Calculate the orbit mean longitude, height, local time,
 #                   rho, rho400.
@@ -36,8 +36,9 @@ import os
 
 DATADIR = os.environ.get('DATAPATH')
 class ChampDensity(pd.DataFrame):
-    """Class to open, manipulate and visualize the CHAMP or/and GRACE
-    wind files.
+    """
+    Class to open, manipulate and visualize the CHAMP or/and GRACE
+    density files.
     """
 
     def __init__(self, btime, etime, satellite='champ', variables=-1,

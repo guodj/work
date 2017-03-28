@@ -112,7 +112,6 @@ def set_polar(ax, ns='N', boundinglat=0, dlat=10, dlon=90, useLT=True):
         thetatickl = ['{:.0f}\u00b0'.format((360-k)%360) for k in thetatick]
         if useLT:
             thetatickl = ['{:02.0f}'.format(((360-k)%360)*12/180) for k in thetatick]
-    # set rlim
     ax.set_rlim(0, rmax)
     ax.set_theta_zero_location('S')
     ax.set_rgrids(rtick, rtickl)

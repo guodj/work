@@ -4,6 +4,7 @@ import numpy as np
 import pandas as pd
 import myfunctions as mf
 from scipy.optimize import curve_fit
+import matplotlib.pylab as plt
 
 def image_energy_flux_one_file(ax, fn, ns, vmin=None, vmax=None, s=2, alpha=0.8):
     '''
@@ -18,6 +19,7 @@ def image_energy_flux_one_file(ax, fn, ns, vmin=None, vmax=None, s=2, alpha=0.8)
     output:
         ax      : axis handle
         hs      : handle of the scatter plot
+    Note: for both north and south poles, the parameter 'ns' in set_polar is 'N'
     '''
     ssusi = Dataset(fn)
     MLat = np.array(ssusi['LATITUDE_GEOMAGNETIC_GRID_MAP'])
@@ -49,8 +51,8 @@ def image_energy_flux_one_file(ax, fn, ns, vmin=None, vmax=None, s=2, alpha=0.8)
             '\nORBIT: '+str(np.int(ssusi.STARTING_ORBIT_NUMBER)),
             transform=ax.transAxes,
             fontsize=8)
-    cb = plt.colorbar(hs, ax=ax, pad=0.1)
-    cb.set_label(ssusi[var].UNITS)
+    #cb = plt.colorbar(hs, ax=ax, pad=0.1)
+    #cb.set_label(ssusi[var].UNITS)
     return ax, hs
 
 
@@ -246,6 +248,22 @@ def find_parameters_one_file(fn):
                 utt = np.nan
             pp.loc[(k0, k1),:] = [pbmlat1, mlatm1, ebmlat1, pbmlat2, mlatm2, ebmlat2,
                                   efm1, efm2, utt]
+    # remove defective points
+    for k00, k0 in enumerate(('N', 'S')):
+        # IF pbmlat1 or ebmlat2 is `mlatt` degrees greater or less than the
+        # median value of neighboring `points` points, the corresponding
+        # points are removed
+        points = 21
+        mlatt = 10
+        pp0 = pp.loc[(k0, slice(None)), ['pbmlat1', 'ebmlat2']].values
+        ppt = []  # initialize
+        for k1 in range(points):
+            ppt.append(np.roll(pp0, k1-int((points-1)/2), axis=0))
+        pp1 = np.stack(ppt, axis=2)
+        pp1 = np.nanmedian(pp1, axis=2)
+        fpt = np.sum(np.abs(pp1-pp0)>mlatt, axis=1)>=1
+        pp.loc[fpt] = np.nan
+
     # smooth result
     for k00, k0 in enumerate(('N', 'S')):
         points = 5  # size of the smoothing window
@@ -269,6 +287,12 @@ def find_parameters_one_file(fn):
 
 
 def test_find_parameters_one_file(ax, fn, ns='N'):
+    '''
+    Input:
+        ax        : a polar axis handle
+        fn        : ssusi file name
+        ns        : 'N' or 'S'
+    '''
     ax, hs = image_energy_flux_one_file(ax, fn, ns, vmin=0, vmax=10, s=1)
     pp = find_parameters_one_file(fn)
     eee = pp.loc[(ns, slice(None))][
@@ -278,29 +302,127 @@ def test_find_parameters_one_file(ax, fn, ns='N'):
     r3 = 90-eee['ebmlat1']
     r4 = 90-eee['pbmlat2']
     theta = eee.index/12*np.pi
-    ax.scatter(theta, r1, s=1, c='r')
-    ax.scatter(theta, r2, s=1, c='r')
-    ax.scatter(theta, r3, s=1, c='r')
-    ax.scatter(theta, r4, s=1, c='r')
-    return pp
+    ax.scatter(theta, r1, s=1, c='r', alpha=0.8)
+    ax.scatter(theta, r2, s=1, c='r', alpha=0.8)
+    ax.scatter(theta, r3, s=1, c='r', alpha=0.8)
+    ax.scatter(theta, r4, s=1, c='r', alpha=0.8)
+    return ax
 
+
+def find_parameters_2013():
+    import os
+    import fnmatch
+    import omni
+    fpath = '/home/guod/big/raid4/lecai/sussi/'
+    savepath = '/home/guod/big/raid4/guod/ssusi/'
+    fna = os.listdir(fpath)
+    # Read IMF By, Bz and AE in 2013
+    print('Begin to read solar wind speed, IMF, AE and Dst')
+    imfae = omni.get_omni(
+            bdate='2013-1-1', edate='2014-1-1',
+            variables=['Bym', 'Bzm', 'AE', 'V'], res='1m')
+    imfae['Bt'] = np.sqrt(imfae['Bym']**2 + imfae['Bzm']**2)
+    imfae['nwcf'] = imfae['V']**(4/3) * \
+            imfae['Bt']**(2/3) * \
+            ((1-imfae['Bzm']/imfae['Bt'])/2)**(4/3)
+    dst = omni.get_omni(bdate='2013-1-1', edate='2014-1-1',
+                        variables=['DST'], res='1h')
+    dst = dst.reindex(imfae.index, method='nearest')
+    imfae['Dst'] = dst.values
+    print('End of reading solar wind speed, IMF, AE and Dst')
+    for k0 in range(16,19): # satellite
+        pp = []
+        savefn = 'F{:d}_2013.dat'.format(k0)
+        for k1 in range(1,13): # month
+            print('Begin month {:02d}'.format(k1))
+            for k2 in range(1,32): # day
+                # 00 means full orbit?
+                fn = fnmatch.filter(
+                        fna, '*F{:d}*2013{:02d}{:02d}*00_DF.NC'.format(k0, k1, k2))
+                if not fn:
+                    continue
+                for k33, k3 in enumerate(fn):
+                    print('Processing '
+                          'satellite {:s}, orbit {:s}'.format(k3[36:39], k3[-14:-9]))
+                    pp0 = find_parameters_one_file(fpath+k3)
+                    pp0 = pp0.loc[~(pp0['pbmlat1'].isnull().values)]
+                    if not pp0.empty:
+                        pp.append(pp0)
+
+                        fig = plt.figure()
+                        ax = plt.subplot(121, polar=True)
+                        # North
+                        image_energy_flux_one_file(ax, fpath+k3, 'N', s=1,
+                                                   vmin=0, vmax=10)
+                        ppt = pp0.loc[('N', slice(None))]
+                        r1 = 90-ppt['pbmlat1']
+                        r2 = 90-ppt['ebmlat2']
+                        r3 = 90-ppt['ebmlat1']
+                        r4 = 90-ppt['pbmlat2']
+                        theta = ppt.index/12*np.pi
+                        ax.scatter(theta, r1, s=1, c='r', alpha=0.8)
+                        ax.scatter(theta, r2, s=1, c='r', alpha=0.8)
+                        ax.scatter(theta, r3, s=1, c='r', alpha=0.8)
+                        ax.scatter(theta, r4, s=1, c='r', alpha=0.8)
+                        ax.set_title('North')
+                        # South
+                        ax = plt.subplot(122, polar=True)
+                        image_energy_flux_one_file(ax, fpath+k3, 'S', s=1,
+                                                   vmin=0, vmax=10)
+                        ppt = pp0.loc[('S', slice(None))]
+                        r1 = 90-ppt['pbmlat1']
+                        r2 = 90-ppt['ebmlat2']
+                        r3 = 90-ppt['ebmlat1']
+                        r4 = 90-ppt['pbmlat2']
+                        theta = ppt.index/12*np.pi
+                        ax.scatter(theta, r1, s=1, c='r', alpha=0.8)
+                        ax.scatter(theta, r2, s=1, c='r', alpha=0.8)
+                        ax.scatter(theta, r3, s=1, c='r', alpha=0.8)
+                        ax.scatter(theta, r4, s=1, c='r', alpha=0.8)
+                        ax.set_title('South')
+                        plt.savefig(savepath+'F{:d}_2013{:02d}{:02d}_{:s}.png'.format(
+                                k0, k1, k2, k3[-14:-9]))
+                        plt.close(fig)
+                    else:
+                        print('    Empty file')
+            print('End of month {:02d}'.format(k1))
+        pp = pd.concat(pp, axis=0)
+        imfaet = imfae.reindex(pp['datetime'], method='nearest')
+        pp['Bym'] = imfaet['Bym'].values
+        pp['Bzm'] = imfaet['Bzm'].values
+        pp['AE'] = imfaet['AE'].values
+        pp['Dst'] = imfaet['Dst'].values
+        pp['nwcf'] = imfaet['nwcf'].values
+        pp.to_pickle(savepath+savefn)
+    return
+
+
+def parameters_imfae():
+    import matplotlib.pyplot as plt
+    xvar = 'AE'
+    ns = 'S'
+    iMLT = 18
+    sat = 'F17'
+
+    MLT = np.arange(0.25/2, 24, 0.25)
+    print(MLT[iMLT])
+    fpath = '/home/guod/big/raid4/guod/ssusi/'
+    ax = plt.subplot()
+    for k0 in range(1, 13):
+        pp = pd.read_pickle(fpath+'{:s}_2013{:02d}.dat'.format(sat, k0))
+        ppt = pp.loc[(ns, MLT[iMLT]), :]
+        #width = ppt['peak1']
+        fp = ppt['pbmlat1']-ppt['ebmlat2'] <4
+        x = ppt.loc[fp, xvar]
+        y = ppt.loc[fp, 'peak1']
+        ax.scatter(x, y,s=1,c='b')
+    plt.ylim(0,50)
+    plt.show()
+    return
 
 if __name__=='__main__':
-    import matplotlib.pyplot as plt
-    plt.close('all')
-    fig = plt.figure(figsize=(10.54, 3.8))
-    fn = ('/home/guod/big/raid4/lecai/sussi/PS.APL_V0105S024CB0005_SC.U_DI.A_GP.F18'
-          '-SSUSI_PA.APL-EDR-AURORA_DD.20130528_SN.18598-00_DF.NC')
-    #fn = ('/home/guod/big/raid4/lecai/sussi/PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16'
-    #      '-SSUSI_PA.APL-EDR-AURORA_DD.20130528_SN.49573-00_DF.NC')
-    #fn = ('/home/guod/big/raid4/lecai/sussi/PS.APL_V0105S024CB0005_SC.U_DI.A_GP.F18'
-    #      '-SSUSI_PA.APL-EDR-AURORA_DD.20130525_SN.18556-00_DF.NC')
-    ax=plt.subplot(1,2,1,polar=True)
-    a = test_find_parameters_one_file(ax, fn, ns='N')
+    a = find_parameters_2013()
 
-    ax=plt.subplot(1,2,2,polar=True)
-    a = test_find_parameters_one_file(ax, fn, ns='S')
-    plt.show()
     print('--------------------------------------------------------------------------------')
     print('Remaining problems:')
     print('  1, The smoothing process can not handle all the conditions')

@@ -1,2 +1,9 @@
 #!/bin/bash
-ctags -R -f ~/work/tags ~/work/python/ ~/work/matlab/ ~/work/fortran/ 
+cd $HOME/work/python
+ctags -R .
+cd $HOME/work/matlab
+ctags -R .
+cd $HOME/work/idl
+ctags -R .
+cd $HOME/work/python
+ctags -R .

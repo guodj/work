@@ -1,6 +1,6 @@
 #!/bin/bash
-#Compile tex file and get only pdf result
-#By Dongjie Guo
+# Compile tex file and get only pdf result
+# By Dongjie Guo
 
 texfile=$1
 texonlyname=${texfile%.*}
