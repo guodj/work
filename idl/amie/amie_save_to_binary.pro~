@@ -1,8 +1,0 @@
-
-
-
-FileOut = 'b'+ymd
-amie_write_binary, fileout, Vars, lats, mlts, t, AmieData, $
-                   imf = imf, ae = ae, dst = dst, hpi = hp, cpcp = cpcp, $
-                   Version = Version
-

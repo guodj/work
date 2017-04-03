@@ -3,15 +3,13 @@
 ; Get Inputs from the user
 ;--------------------------------------------------------------
 
-;initial_guess = findfile('-t b*')
-;iFile = 0
-;while (strpos(initial_guess(iFile),"data") gt 0 or $
-;       strpos(initial_guess(iFile),"ps") gt 0 or $
-;       strpos(initial_guess(iFile),"sum") gt 0) do iFile = iFile + 1
-;initial_guess = initial_guess(iFile)
-;if strlen(initial_guess) eq 0 then initial_guess='b970101'
-
-if (n_elements(initial_guess) eq 0) then initial_guess = 'substorm.bin'
+initial_guess = findfile('-t b*')
+iFile = 0
+while (strpos(initial_guess(iFile),"data") gt 0 or $
+       strpos(initial_guess(iFile),"ps") gt 0 or $
+       strpos(initial_guess(iFile),"sum") gt 0) do iFile = iFile + 1
+initial_guess = initial_guess(iFile)
+if strlen(initial_guess) eq 0 then initial_guess='b970101'
 
 amie_file = ask('AMIE binary file name',initial_guess)
 psfile = ask('ps file',amie_file+'.ps')

@@ -46,11 +46,7 @@ pro contour_circle, data, lons, lats, $
   if (n_elements(nlevels) eq 0) then nlevels = 31
   if (n_elements(nolines) eq 0) then nolines = 0
 
-  if (nlevels eq 1) then begin
-     levels = [(mini+maxi)/2]
-  endif else begin
-     levels = findgen(nlevels)*(maxi-mini)/(nlevels-1) + mini
-  endelse
+  levels = findgen(nlevels)*(maxi-mini)/(nlevels-1) + mini
 
   nlats = n_elements(lats)
   nlons = n_elements(lons)
@@ -89,9 +85,8 @@ pro contour_circle, data, lons, lats, $
                  yrange = [-maxrange,maxrange]
      endif
      if (not nolines) then begin
-        lsub = indgen((nLevels-1)/3)*3
         contour, data(*,loc), x(*,loc), y(*,loc), /noerase, pos = pos, $
-                 levels = levels(lsub), $
+                 levels = findgen(nlevels/4)*(maxi-mini)/(nlevels/4-1) + mini, $
                  /follow, xstyle = 5, ystyle = 5, $
                  xrange = [-maxrange,maxrange], $
                  yrange = [-maxrange,maxrange], thick = thick

@@ -9,11 +9,7 @@ Pro Supermag_data_cvrt,dir,date,stnm
   openw,unit1,'mag'+date+'.final',/get_lun
   temp=''
   readf,unit,temp
-  print, temp
-  while (strpos(temp,'================================') eq -1) Do begin
-     readf,unit,temp
-     print,temp
-  endwhile
+  while (temp ne '===================================================================') Do readf,unit,temp
 
 ;used to read daily data file from SuperMag with 1 min time resolution.
   For i=0,1439 Do begin
@@ -25,10 +21,6 @@ Pro Supermag_data_cvrt,dir,date,stnm
      doy=julday(month,day,year)-julday(1,1,year)+1
      IAGA=make_array(stnm,/string)
      H=make_array(stnm,/long) & D=make_array(stnm,/long) & Z=make_array(stnm,/long)
-
-     ; This is for the IMF line that SuperMAG people added::::
-     readf,unit,temp
-
      For j=0,stnm-1 Do begin
         readf,unit,temp
         result1=strsplit(temp,string(9b),/extract) ;data seperated by tap
@@ -54,7 +46,7 @@ Pro Supermag_station_master,date,stnm
 
 ;read magnetometer information from Supermag_all_station.dat file
 ;magnetometer locations in geographic and AACGM coordinates 
-  dir = '/raid3/columbanus/Amie/Data/srcData/perm/'
+  dir = '/bigdisk2/Amie/Data/srcData/perm/'
   file = 'Supermag_all_station.dat'
   print, 'Reading file : ',dir+file
   nlines=file_lines(dir+file)

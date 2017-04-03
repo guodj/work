@@ -12,7 +12,7 @@ pro read_superdarn, file, time, potential, lats, mlts
   dLat = 1.0
   dLon = 2.0
 
-  MinLat = 60.0
+  MinLat = 56.0
 
   nLats = (90.0-MinLat-dLat)/dLat + 1
   nLons = 360.0/dLon

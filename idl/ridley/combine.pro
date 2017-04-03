@@ -1,40 +1,10 @@
 
-superdir = '/raid3/Data/SuperDARN/'
-
-filelist = findfile(superdir+'*.map.pot')
+filelist = findfile('*.map.pot')
 display, filelist
 if (n_elements(iFile) eq 0) then iFile = 0
-iFileStart = fix(ask('first superdarn file to convert',tostr(iFile)))
-iFileEnd = fix(ask('last superdarn file to convert',tostr(iFile)))
-
-for iFile = iFileStart, iFileEnd do begin
-
-   file = filelist(iFile)
-   read_superdarn, file, TempTime, TempPotential, lats, mlts
-
-   if (iFile eq iFileStart) then begin
-      Potential = TempPotential
-      Time = TempTime
-      nMlts = n_elements(mlts(*,0))
-      nLats = n_elements(mlts(0,*))
-   endif else begin
-      nTs = n_elements(Time)
-      nTimes = n_elements(TempTime)+nTs
-      PotentialB = fltarr(nTimes, nMlts, nLats)
-      TimeB = dblarr(nTimes)
-      TimeB(0:nTs-1) = Time
-      for i=0,nTs-1 do begin
-         PotentialB(i,*,*) = Potential(i,*,*)
-      endfor
-      TimeB(nTs:nTimes-1) = TempTime
-      for i=nTs,nTimes-1 do begin
-         PotentialB(i,*,*) = TempPotential(i-nTs,*,*)
-      endfor
-      Time = TimeB
-      Potential = PotentialB
-   endelse
-
-endfor
+iFile = fix(ask('superdarn file to convert',tostr(iFile)))
+file = filelist(iFile)
+read_superdarn, file, time, potential, lats, mlts
 
 c_r_to_a, itime, time(0)
 fileout = 'sd'+tostr(itime(0),4)+tostr(itime(1),2)+tostr(itime(2),2)+'.bin'
@@ -56,21 +26,17 @@ nLatsAdd = 10.0/dLat
 lats = [findgen(nLatsAdd)+MinLat,lats]
 nLats = n_elements(lats)
 
+
 imffile = 'imf.dat'
 imf_read, imffile, imftime, mag, vel, den, temp, nPts, notes
-;calc_ec, imftime, mag, vel, den, Ec4Hour
-;load_ovation, ovation
 
-file='power.dat'
-power_read, file, PowerTime, Power, PowerNorth, nPts, notes
-load_aurora_model, aurora
+calc_ec, imftime, mag, vel, den, Ec4Hour
 
-aLats = aurora.lats(0,*)
-aMlts = aurora.mlts(*,0)
+load_ovation, ovation
 
 nTimesSD = n_elements(time)
 
-;nTimesSD = 20
+nTimesSD = 20
 
 by = fltarr(nTimesSD+2)
 bz = fltarr(nTimesSD+2)
@@ -113,7 +79,7 @@ for i=0,nTimesSD+1 do begin
 
    d = abs(imftime - t)
    l = where(d eq min(d))
-;   ec(i) = ec4Hour(l(0))
+   ec(i) = ec4Hour(l(0))
    by(i) = mag(1,l(0))
    bz(i) = mag(2,l(0))
    vx(i) = vel(0,l(0))
@@ -121,28 +87,16 @@ for i=0,nTimesSD+1 do begin
    print, itime
 ;   print, by(i), bz(i)
 
-   CurrentPower = interpolate_mine(newtime(i), Power, PowerTime)
+   run_ovation, ovation, ec(i), t, north, south
 
-;   print, 'Current Power : ',CurrentPower
-
-   l = where(aurora.hp lt CurrentPower, c)
-   iLevel = l(c-1)
-   ef = reform(aurora.eflux(iLevel,*,*))
-   ae = reform(aurora.avee(iLevel,*,*))
-   ratio = CurrentPower(0)/aurora.hp(iLevel)
-   ef = ef*ratio
-;   hp = total(ef/1000.0*aurora.Area)/1.0e9
-
-;   run_ovation, ovation, ec(i), t, north, south
-
-   interpolate_ovation, ef, aLats, aMlts, $
+   interpolate_ovation, north.eflux, north.lats, north.mlts, $
                         lats, mlts, eflux
 
-   interpolate_ovation, ae, aLats, aMlts, $
+   interpolate_ovation, north.avee, north.lats, north.mlts, $
                         lats, mlts, avee
 
-;   interpolate_ovation, north.nflux, north.lats, north.mlts, $
-;                        lats, mlts, nflux
+   interpolate_ovation, north.nflux, north.lats, north.mlts, $
+                        lats, mlts, nflux
 
    data(i,0,*,nLatsAdd:nLats-1) = potential(ii,*,*)
    for iMlt = 0, nMlts-1 do begin
@@ -158,16 +112,16 @@ for i=0,nTimesSD+1 do begin
    l = where(avee lt 0.5,c)
    if (c gt 0) then avee(l) = 0.5
 
-;   l = where(nflux lt 10.0,c)
-;   if (c gt 0) then nflux(l) = 10.0
+   l = where(nflux lt 10.0,c)
+   if (c gt 0) then nflux(l) = 10.0
 
    data(i,1,*,*) = eflux
    data(i,2,*,*) = avee
-;   data(i,3,*,*) = nflux
+   data(i,3,*,*) = nflux
 
    data(i,1,*,0:nLatsAdd-1) = 0.0
    data(i,2,*,0:nLatsAdd-1) = 0.0
-;   data(i,3,*,0:nLatsAdd-1) = 0.0
+   data(i,3,*,0:nLatsAdd-1) = 0.0
 
    hp(i,0) = total(area * eflux/1000.0)/1.0e9
 
@@ -177,7 +131,7 @@ for i=0,nTimesSD+1 do begin
    imf(i,2) = by(i)
    imf(i,3) = bz(i)
 
-   print, "power, cpcp : ",hp(i,0), cpcp(i)/1000.0
+   print, "power, cpcp : ",hp(i,0), cpcp(i)
 
 endfor
 
@@ -185,7 +139,7 @@ Version = 0.1
 colats = 90.0-lats
 
 amie_write_binary, fileout, Vars, lats, mlts, newtime, data, $
-                   imf = imf, dst = dst, hpi = hp, cpcp = cpcp, $
+                   imf = imf, ae = ae, dst = dst, hpi = hp, cpcp = cpcp, $
                    Version = Version
 
 

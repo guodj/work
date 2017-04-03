@@ -1,204 +1,228 @@
 
+if (n_elements(files) eq 0) then files = ''
+files = ask('files in the ensemble to plot',files)
 
-directories = findfile('-d Ccmc_Run0[24]/data Ccmc_Run1[159]/data')
-nDirs = n_elements(directories)
+;filelist = findfile('Flares0[01234]/data/3DALL_t110215_030000.bin')
+;filelist = findfile('Flares0[56789]/data/3DALL_t110215_030000.bin')
+;filelist = findfile('Flares1[01234]/data/3DALL_t110215_040000.bin')
+;filelist = findfile('Flares1[56789]/data/3DALL_t110215_030000.bin')
+filelist = findfile(files)
 
-nFilesMax = 1440
+gitm_read_bin, filelist, alldata, time, nVars, Vars, version
 
-Files = strarr(nDirs, nFilesMax)
+alt = reform(alldata(0,2,*,*,*)) / 1000.0
+lat = reform(alldata(0,1,*,*,*)) / !dtor
+lon = reform(alldata(0,0,*,*,*)) / !dtor
 
-nFm = 0
+nLons = n_elements(lon(*,0,0))
+nLats = n_elements(lon(0,*,0))
+nAlts = n_elements(lon(0,0,*))
 
-for iDir = 0,nDirs-1 do begin
-
-   filelist = findfile(directories(iDir)+'/'+'3DALL*.bin')
-   nFiles = n_elements(filelist)
-   if (nFiles gt nFm) then nFm = nFiles
-   Files(iDir, 0:nFiles-1) = filelist
-
-endfor
-
-nFilesMax = nFm
-
-file = Files(0,0)
-VarsToGet=[0,1,2]
-gitm_read_bin_1var, file, data, time, nVars, Vars, version, $
-                        VarsToGet = VarsToGet
-
-alts = reform(data(2,0,0,*)) / 1000.0
-lats = reform(data(1,*,*,0))
-lons = reform(data(0,*,*,0))
-nAlts = n_elements(alts)
-nLons = n_elements(lons(*,0))
-nLats = n_elements(lats(0,*))
-
-CalcTEC = 0
-display, vars
-print,tostr(nVars),'. TEC'
-if (n_elements(iVar) eq 0) then iVar = '9' else iVar = tostr(iVar)
+for i=0,nvars-1 do print, tostr(i)+'. '+vars(i)
+if (n_elements(iVar) eq 0) then iVar = '3' else iVar = tostr(iVar)
 iVar = fix(ask('which var to plot',iVar))
-if (iVar eq nVars) then begin
-   CalcTEC = 1
-   iVar = 33
-endif
 
-for i=0,nalts-1 do print, tostr(i)+'. '+string(alts(i))
+if (n_elements(psfile) eq 0) then psfile = 'tmp.ps'
+psfile = ask('psfile name',psfile)
+
+for i=0,nalts-1 do print, tostr(i)+'. '+string(alt(2,2,i))
 if (n_elements(iAlt) eq 0) then iAlt='0' else iAlt=tostr(iAlt)
 iAlt = fix(ask('which altitude to plot',iAlt))
 
-r = 6372000.0 + alts(iAlt)*1000.0
-dlat = lats(0,1) - lats(0,0)
-dlon = lons(1,0) - lons(0,0)
-area = dlat * dlon * r * cos(lats)
-totalarea = total(area)
+if (n_elements(IsPolar) eq 0) then IsPolar='1' else IsPolar = tostr(IsPolar)
+IsPolar = fix(ask('polar (1) or non-polar (0)',IsPolar))
 
-UseBaseDir = 1
-if (n_elements(basedir) eq 0) then basedir = 'none'
-basedir = ask('base directory to compare to (none for no comparison)',basedir)
-if (strpos(basedir,'none') ne 0) then begin
-   BaseFiles = findfile(basedir+'/3DALL*.bin')
-   nFilesBase = n_elements(BaseFiles)
-   BaseData = fltarr(nFilesBase, nLons, nLats)
-   BaseGlobalMean = fltarr(nFilesBase)
-   BaseTime = dblarr(nFilesBase)
+if (IsPolar) then begin
+   if (n_elements(IsNorth) eq 0) then IsNorth='1'
+   IsNorth = fix(ask('North (1) or South (0)',IsNorth))
+   MinLat  = abs(float(ask('minimum latitude to plot','50.0')))
 endif
 
-VarsToGet=[iVar]
+if (n_elements(smini) eq 0) then smini = '0.0'
+if (n_elements(smaxi) eq 0) then smaxi = '0.0'
+smini = ask('minimum (0.0 for automatic)',smini)
+smaxi = ask('maximum (0.0 for automatic)',smaxi)
 
-AllData = fltarr(nDirs, nFilesMax, nLons, nLats)
-MeanData = fltarr(nFilesMax, nLons, nLats)
-StdData  = fltarr(nFilesMax, nLons, nLats)
+if (n_elements(sminis) eq 0) then sminis = '0.0'
+if (n_elements(smaxis) eq 0) then smaxis = '0.0'
+sminis = ask('minimum (0.0 for automatic)',sminis)
+smaxis = ask('maximum (0.0 for automatic)',smaxis)
 
-AllTimes = dblarr(nFilesMax)
+if (n_elements(plotVector) eq 0) then plotvector='y' $
+else if (plotvector) then plotvector='y' else plotvector='n'
+plotvector=ask('whether you want vectors or not (y/n)',plotvector)
+if strpos(plotvector,'y') eq 0 then plotvector=1 $
+else plotvector = 0
 
-IsGood = intarr(nFilesMax)
+if (plotvector) then begin
 
-for iT = 0, nFilesMax-1 do begin
+   PlotNeutrals = fix(ask('plot neutral winds (1) or ions (0)','1'))
 
-   filelist = Files(*,iT)
-   IsGoodTime = 1
-   for iDir = 0,nDirs-1 do if (strlen(filelist(iDir)) eq 0) then IsGoodTime = 0
+   print,'-1  : automatic selection'
+   factors = [1.0, 5.0, 10.0, 20.0, 25.0, $
+              50.0, 75.0, 100.0, 150.0, 200.0,300.0]
+   nfacs = n_elements(factors)
+   for i=0,nfacs-1 do print, tostr(i+1)+'. '+string(factors(i)*10.0)
+   vector_factor = fix(ask('velocity factor','-1'))
+endif else vector_factor = 0
 
-   if (IsGoodTime) then begin
+meandata = fltarr(nLons, nLats)
+stddata  = fltarr(nLons, nLats)
 
-      IsGood(iT) = 1
+for iLon = 0, nLons-1 do for iLat = 0, nLats-1 do begin
 
-      for iDir = 0,nDirs-1 do begin
+   meandata(iLon,iLat) = mean(alldata(*,iVar,iLon,iLat,iAlt))
+   stddata(iLon,iLat)  = stddev(alldata(*,iVar,iLon,iLat,iAlt))/meandata(iLon,iLat)*100.0
 
-         file = Files(iDir,iT)
-         if (iDir eq 0) then print, 'Reading File : ',file
-         gitm_read_bin_1var, file, data, time, nVars, Vars, version, $
-                             VarsToGet = VarsToGet
-         if (iDir eq 0) then AllTimes(iT) = time
-         AllData(iDir, iT, *, *) = reform(data(0,*,*,iAlt))
+endfor
 
-      endfor
+Lon1D = reform(lon(*,0,iAlt))
+Lat1D = reform(lat(0,*,iAlt))
 
-      for iLon = 0,nLons-1 do for iLat=0,nLats-1 do begin
-         MeanData(iT,iLon,iLat) = mean(AllData(*,iT,iLon,iLat))
-         StdData(iT,iLon,iLat) = stdev(AllData(*,iT,iLon,iLat))
-      endfor
+c_r_to_a, itime, time(0)
+c_a_to_s, itime, sDate
 
+ut = float(itime(3)) + float(itime(4))/60.0 + float(itime(5))/3600.0
+utrot = ut * 15.0
+
+setdevice, psfile, 'p', 5
+
+makect,'mid'
+
+mini = float(smini)
+maxi = float(smaxi)
+if (mini eq 0.0 and maxi eq 0.0) then begin
+   mini = min(stddata)
+   maxi = max(stddata)
+endif
+
+if (IsPolar) then begin
+
+   ppp = 2
+   space = 0.01
+   pos_space, ppp, space, sizes
+
+   get_position, ppp, space, sizes, 1, pos
+
+   if (not IsNorth) then Lat1D=-Lat1D
+
+   minis = float(sminis)
+   maxis = float(smaxis)
+   if (minis eq 0.0 and maxis eq 0.0) then begin
+      minis = min(stddata)
+      maxis = max(stddata)
+   endif
+   no12=1
+   MaxRange = 90.0-MinLat
+   contour_circle, stddata, Lon1D+utrot, Lat1D, $
+                   no00 = no00, no06 = no06, no12 = no12, no18 = no18, $
+                   pos = pos, $
+                   maxrange = MaxRange, $
+                   colorbar = vars(iVar), $
+                   mini = minis, maxi = maxis
+
+   get_position, ppp, space, sizes, 0, pos
+
+   mini = float(smini)
+   maxi = float(smaxi)
+   if (mini eq 0.0 and maxi eq 0.0) then begin
+      mini = min(meandata)
+      maxi = max(meandata)
+   endif
+   no12=0
+   no00=1
+   contour_circle, meandata, Lon1D+utrot, Lat1D, $
+                   no00 = no00, no06 = no06, no12 = no12, no18 = no18, $
+                   pos = pos, $
+                   maxrange = MaxRange, $
+                   colorbar = vars(iVar), $
+                   mini = mini, maxi = maxi
+
+endif else begin
+
+   ppp = 3
+   space = 0.01
+   pos_space, ppp, space, sizes, nx = 1
+
+   get_position, ppp, space, sizes, 1, pos
+   dx = pos(2)-pos(0)
+   pos(0) = pos(0)-dx/2
+   pos(2) = pos(2)+dx/2
+
+   lon2d = reform(lon(*,*,iAlt))
+   lat2d = reform(lat(*,*,iAlt))
+
+   loc = where(abs(lat2d) le 90.0 and $
+               lon2d ge 0.0 and $
+               lon2d lt 360.0, count)
+
+   lon2d = (lon2d(loc) + utrot) mod 360.0
+   lat2d = lat2d(loc)
+
+   nLevels = 31
+
+   minis = float(sminis)
+   maxis = float(smaxis)
+   if (minis eq 0.0 and maxis eq 0.0) then begin
+      minis = min(stddata)
+      maxis = max(stddata)
    endif
 
-endfor
+   contour, stddata(loc), lon2d, lat2d, $
+            /noerase, pos = pos, /fill, $
+            nlevels = 31, $
+            xstyle = 5, ystyle = 5, /irr, $
+            levels = findgen(nlevels)*(maxis-minis)/(nlevels-1)+minis, $
+            c_colors = findgen(nlevels)*250/(nlevels-1) + 3, $
+            yrange = [-90,90], xrange = [0,360]
 
-for iT = 0, nFilesBase-1 do begin
-   file = BaseFiles(iT)
-   print, 'reading file ',file
-   gitm_read_bin_1var, file, data, time, nVars, Vars, version, $
-                       VarsToGet = VarsToGet
-   BaseGlobalMean(iT) = total(data(0,*,*,iAlt)*area)/totalarea
-   BaseTime(it) = time
-endfor
+   !p.position = pos
+   t = (180.0-utrot+360.0) mod 360.0
+   map_set, 0.0, t, /noerase
+   map_continents, color = 0
+   !p.position = -1
 
+   ctpos = [pos(2)+0.01, pos(1), pos(2)+0.03, pos(3)]
+   minmax = [minis,maxis]
+   title = 'stddev('+Vars(iVar)+') (%)'
+   plotct, 255, ctpos, minmax, title, /right
 
-l = where(IsGood,nGood)
-mini = min(StdData(l,*,*))
-maxi = max(StdData(l,*,*))
+   get_position, ppp, space, sizes, 0, pos
+   dx = pos(2)-pos(0)
+   pos(0) = pos(0)-dx/2
+   pos(2) = pos(2)+dx/2
 
-globalmean = fltarr(nGood)
-globalstd  = fltarr(nGood)
+   mini = float(smini)
+   maxi = float(smaxi)
+   if (mini eq 0.0 and maxi eq 0.0) then begin
+      mini = min(meandata)
+      maxi = max(meandata)
+   endif
 
-for iGood = 0, nGood-1 do begin
-   globalmean(iGood) = total(MeanData(l(iGood),*,*)*area)/totalarea
-   globalstd(iGood)  = total(StdData(l(iGood),*,*)*area)/totalarea
-endfor
+   contour, meandata(loc), lon2d, lat2d, $
+            /noerase, pos = pos, /fill, $
+            nlevels = 31, $
+            xstyle = 5, ystyle = 5, /irr, $
+            levels = findgen(nlevels)*(maxi-mini)/(nlevels-1)+mini, $
+            c_colors = findgen(nlevels)*250/(nlevels-1) + 3, $
+            yrange = [-90,90], xrange = [0,360]
 
-stime = min(AllTimes(l))
-etime = max(AllTimes(l))
+   !p.position = pos
+   map_set, 0.0, t, /noerase
+   map_continents, color = 0
+   !p.position = -1
 
-t = AllTimes(l)-stime
+   ctpos = [pos(2)+0.01, pos(1), pos(2)+0.03, pos(3)]
+   minmax = [mini,maxi]
+   title = Vars(iVar)
+   plotct, 255, ctpos, minmax, title, /right
 
-time_axis, stime, etime, btr, etr, xtickname, xtitle, xtickv, xminor, xtickn
+   xyouts, pos(0), pos(3)+0.01, sDate, /norm
+   xyouts, pos(2), pos(3)+0.01, tostr(alt(0,0,iAlt))+' km', /norm, alignment=1.0
 
-setdevice,'globalstd.ps','p',4
-plot, t, globalmean, pos=[0.1,0.3,0.95,0.8], thick = 4, $
-      xtickname = xtickname,			$
-      xtitle = xtitle,			$
-      xtickv = xtickv,			$
-      xminor = xminor,			$
-      xticks = xtickn, $
-      yrange = [min(globalmean)-max(globalstd), $
-                max(globalmean)+max(globalstd)], $
-      ytitle = vars(iVar)
-
-for iGood = 0, nGood-1 do begin
-   y = globalmean(iGood) + globalstd(iGood)*[-1.0,1.0]
-   oplot, t(iGood)*[1,1],y, thick = 2
-endfor
-
-if (UseBaseDir) then oplot, BaseTime-stime, BaseGlobalMean, thick = 4, linestyle = 2
+endelse
 
 closedevice
-
-stop
-
-; std plots
-
-IsPercent = 1
-
-;l = where(IsGood)
-;MinMean = min(MeanData(l,*,*))
-;if MinMean lt 0 then begin
-;   IsPercent = 1
-;endif else begin
-;   StdData(l,*,*) = 100.0 * StdData(l,*,*) / meanData(l,*,*)
-;   vars(iVar) = vars(iVar) + ' (% diff)'
-;endelse
-
-l = where(IsGood)
-mini = min(StdData(l,*,*))
-maxi = max(StdData(l,*,*))
-
-psfile = 'test.ps'
-maxrange = 40.0
-
-for iFile = 0,nFilesMax-1 do begin
-
-   if (IsGood(iFile)) then begin
-
-      if (nFiles gt 1) then begin
-         p = strpos(psfile,'.ps')
-         if (p gt -1) then psfile = strmid(psfile,0,p)
-         psfile_final = psfile+'_'+tostr(iFile,4)+'.ps'
-      endif else begin
-         psfile_final = psfile
-      endelse
-
-      value = reform(stdData(iFile,*,*))
-      c_r_to_a, itime, AllTimes(iFile)
-      c_a_to_s, itime, stime
-      title = vars(iVar) + ' at '+stime
-
-      print, 'Writing file ',psfile_final
-      thermo_threeplot, psfile_final, $
-                        value, AllTimes(iFile), lons, lats, mini, maxi, $
-                        title, vars(iVar), maxrange
-
-   endif
-
-endfor
 
 end
 

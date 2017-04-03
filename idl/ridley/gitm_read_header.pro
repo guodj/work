@@ -68,7 +68,6 @@ pro gitm_read_header, file, time, nVars, Vars, nLons, nLats, nAlts, version
   endfor
 
   time = TimeAllNew
-  if (n_elements(time) eq 1) then time = time(0)
 
 end
 

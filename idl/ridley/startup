@@ -1,4 +1,3 @@
-!PATH=!PATH+':'+Expand_Path('+~/work/idl/ridley/')+':'+Expand_Path('+~/work/idl/amie/')+':'+Expand_Path('+~/work/idl/gtoth')
 device, decomposed=0, true=24
 device,retain=2
 .r geopack

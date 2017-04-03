@@ -302,9 +302,9 @@ endif else begin
 endelse
 
 if (not polar and cnt1) then ppp = 2 else ppp = 1
-if (polar and portrait) then ppp = 1
+if (polar and portrait) then ppp = 2
 
-if (ppp eq 2) then space = 0.075 else space = 0.1
+space = 0.075
 pos_space, ppp, space, sizes, ny = 1
 get_position, ppp, space, sizes, 0, pos
 

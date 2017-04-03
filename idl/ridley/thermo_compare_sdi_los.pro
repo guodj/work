@@ -1,7 +1,4 @@
 
-clouddir = '/raid3/Data/Clouds/'
-sdidir = '/raid3/Data/SDI/'
-
 gitmfiles = findfile('3D*.bin')
 gitm_read_header, gitmfiles, GitmTimes, nVars, Vars, $
                   nLons, nLats, nAlts, version
@@ -25,42 +22,7 @@ iiNorth = 37
 dLons = GitmLongitudes(1) - GitmLongitudes(0)
 dLats = GitmLatitudes(1)  - GitmLatitudes(0)
 
-nTimes=n_elements(GitmTimes)
-
-c_r_to_a, itime, firsttime
-OldJulian = 0
-IsFirst = 1
-
-for iT = 0,nTimes-1 do begin
-
-   c_r_to_a, itime, GitmTimes(iT)
-   Julian = jday(iTime(0),itime(1),itime(2))
-
-   if (Julian ne OldJulian) then begin
-
-      sYear = tostr(iTime(0),4)
-      sMonth = tostr(iTime(1),2)
-      sDay = tostr(iTime(2),2)
-      sdi_dir = sdidir +sYear+'/'+sMonth+'/'
-
-      file = '???_'+sYear+'_'+tostr(Julian,3)+'_date_'+sMonth+'_'+sDay+'*.txt'
-
-      list = findfile(sdi_dir+file)
-
-      if (strlen(list(0)) gt 0) then begin
-         if (IsFirst) then filelist = list $
-         else filelist = [list,filelist]
-         IsFirst = 0
-      endif
-
-   endif
-
-   OldJulian = Julian
-
-   list = filelist
-
-endfor
-
+list = findfile('*.txt')
 nfiles = n_elements(list)
 display, list
 if (nfiles eq 1) then iFile = 0 $
@@ -76,8 +38,6 @@ endif else begin
    iStart = 0
    iEnd = nFiles-1
 endelse
-
-cloudfileOld = 'none'
 
 for iFile = iStart, iEnd do begin
 
@@ -130,15 +90,11 @@ for iFile = iStart, iEnd do begin
    gitmtempTotal = fltarr(4,nTimesSdi)
    sdilosTotal   = fltarr(4,nTimesSdi)
    sditempTotal  = fltarr(4,nTimesSdi)
-   sdiLats  = fltarr(5)
-   sdiLons  = fltarr(5)
 
    sditempZ  = fltarr(nTimesSdi)
 
    gitmtempZ = fltarr(nTimesSdi)
    gitmUpZ   = fltarr(nTimesSdi)
-
-   CloudCover = fltarr(nTimesSdi)
 
    for iT = 0, nTimesSdi-1 do begin
 
@@ -152,28 +108,6 @@ for iFile = iStart, iEnd do begin
 
       c_r_to_a, itime, SdiTimes(iT)
       c_a_to_ymd, itime, ymd
-
-      cloudfile = clouddir+'cloud_cover_'+site+'_'+strmid(ymd,0,6)+'.dat'
-      if (cloudfile ne cloudfileOld) then begin
-         f = findfile(cloudfile)
-         if (strlen(f) gt 0) then begin
-            read_clouds, cloudfile, cloudtime, clouddata, cloudlocation, $
-                         cloudstation, cloudstatlist
-         endif else begin
-            itime = [sdi.time.year(iT), $
-                     sdi.time.month(iT)+1, $
-                     sdi.time.day(iT), 0, 0, 0]
-            c_a_to_r, itime, rtime1
-            itime = [sdi.time.year(iT), $
-                     sdi.time.month(iT)+1, $
-                     sdi.time.day(iT)+1, 0, 0, 0]
-            c_a_to_r, itime, rtime2
-            cloudtime = [rtime1, rtime2]
-            clouddata = [-1,-1]
-         endelse
-      endif
-      cc = interpolate_mine(SdiTimes(iT), clouddata, cloudtime)
-      CloudCover(iT) = cc(0)
 
       dmy = strmid(ymd,6,2)+strmid(ymd,4,2)+strmid(ymd,0,4)
 
@@ -253,11 +187,6 @@ for iFile = iStart, iEnd do begin
       gitmtempTotal(0,iT) = mean(gitmtemp(iT,l))
       sditempTotal(0,iT) = mean(sdi.temp_skymap(iT,l))
 
-      if (iT eq 0) then begin
-         sdiLats(0)  = mean(SdiLatitudes(l))
-         sdiLons(0)  = mean(SdiLongitudes(l))
-      endif
-
       for i=1,3 do begin
          l = where(SdiAzimuth gt 90.0*i-width and $
                    SdiAzimuth lt 90*i+width and $
@@ -266,21 +195,12 @@ for iFile = iStart, iEnd do begin
          sdilosTotal(i,iT) = mean(sdi.los_wind_skymap(iT,l))
          gitmtempTotal(i,iT) = mean(gitmtemp(iT,l))
          sditempTotal(i,iT) = mean(sdi.temp_skymap(iT,l))
-         if (iT eq 0) then begin
-            sdiLats(i)  = mean(SdiLatitudes(l))
-            sdiLons(i)  = mean(SdiLongitudes(l))
-         endif
       endfor
 
       l = where(SdiZenith eq 0)
 
       gitmtempZ(iT) = gitmtemp(iT,l(0))
       gitmUpZ(iT)   = gitmUp(iT,l(0))
-
-      if (iT eq 0) then begin
-         sdiLats(4)  = mean(SdiLatitudes(l(0)))
-         sdiLons(4)  = mean(SdiLongitudes(l(0)))
-      endif
 
       l = where(SdiZenith lt 30)
       sditempZ(iT) = mean(sdi.temp_skymap(iT,l))
@@ -306,8 +226,7 @@ for iFile = iStart, iEnd do begin
    space = 0.01
    pos_space, ppp, space, sizes, ny = ppp
 
-   dirs = ['North', 'East', 'South', 'West','Vertical']
-   titleadd = ' Temp (K)'
+   titles = ['North Temp (K)', 'East Temp (K)', 'South Temp (K)', 'West Temp (K)']
 
    stime = min(SdiTimes)
    etime = max(SdiTimes)
@@ -332,26 +251,9 @@ for iFile = iStart, iEnd do begin
          xtn = strarr(10)+' '
       endelse
 
-      nP = n_elements(SdiTimes)
-      cc2d = fltarr(nP,2)
-      cc2d(*,0) = CloudCover
-      cc2d(*,1) = CloudCover
-      cx2d = dblarr(nP,2)
-      cx2d(*,0) = SdiTimes-stime
-      cx2d(*,1) = SdiTimes-stime
-      cy2d = dblarr(nP,2)
-      cy2d(*,0) = range(0)
-      cy2d(*,1) = range(1)
-      l = where(cc2d lt 0,c)
-      if (c gt 0) then cc2d(l) = 100.0
-      makect,'wb'
-      contour, cc2d+1.0, cx2d, cy2d, levels = findgen(21)*10.0-10, $
-               pos = pos, /noerase, /fill, $
-               xstyle = 5, ystyle = 5
-
       plot, SdiTimes-stime, gitmtempTotal(i,*), $
             pos = pos, /noerase, $
-            ytitle = dirs(i)+titleadd,		$
+            ytitle = titles(i),		$
             xtickname = xtn,			$
             xtitle = xt,			$
             xtickv = xtickv,			$
@@ -370,31 +272,12 @@ for iFile = iStart, iEnd do begin
       oplot, [dx*10, dx*10 + dx*2], [mini*0.95, mini*0.95], thick = 4, linestyle = 2
       xyouts, dx*12.1, mini*0.95, 'SDI ('+mkupper(site)+')
 
-
-
-      d = gitmtempTotal(i,*)-sditempTotal(i,*)
-      rms  = sqrt(mean((d)^2))
-      sRms = tostr(rms)
-      diff = mean(d)
-      sDiff = tostr(diff)
-      l = where(CloudCover ge 0 and CloudCover lt 100, c)
-      if (c gt 0) then begin
-         weight = 100.0-CloudCover
-         wDiff = total(d(l)*weight(l))/total(weight(l))
-         wRms  = sqrt(total(d(l)^2*weight(l))/total(weight(l)))
-         sRms = sRms+' ('+tostr(wRms)+')'
-         sDiff = sDiff+' ('+tostr(wDiff)+')'
-      endif 
       meansdi = mean(sditempTotal(i,*))
-      xyouts, dx, maxi*1.03,'RMS : '+sRms+' K; Diff : '+sDiff+ $
-              ' K; mean SDI : '+tostr(meansdi)+' K'
-
-
-;      rms  = sqrt(mean((gitmtempTotal(i,*)-sditempTotal(i,*))^2))
-;      diff = mean(gitmtempTotal(i,*)-sditempTotal(i,*))
-;      xyouts, dx, maxi*1.03, $
-;              'RMS : '+tostr(rms)+' K; Diff : '+tostr(diff)+' K; mean SDI : '+$
-;              tostr(meansdi)+' K'
+      rms  = sqrt(mean((gitmtempTotal(i,*)-sditempTotal(i,*))^2))
+      diff = mean(gitmtempTotal(i,*)-sditempTotal(i,*))
+      xyouts, dx, maxi*1.03, $
+              'RMS : '+tostr(rms)+' K; Diff : '+tostr(diff)+' K; mean SDI : '+$
+              tostr(meansdi)+' K'
 
    endfor
 
@@ -446,8 +329,7 @@ ppp = 6
 space = 0.01
 pos_space, ppp, space, sizes, ny = ppp
 
-;titles = ['North LOS (m/s)', 'East LOS (m/s)', 'South LOS (m/s)', 'West LOS (m/s)']
-titleadd = ' LOS (m/s)'
+titles = ['North LOS (m/s)', 'East LOS (m/s)', 'South LOS (m/s)', 'West LOS (m/s)']
 
 stime = min(SdiTimes)
 etime = max(SdiTimes)
@@ -471,26 +353,9 @@ for i = 0, 3 do begin
       xtn = strarr(10)+' '
    endelse
 
-   nP = n_elements(SdiTimes)
-   cc2d = fltarr(nP,2)
-   cc2d(*,0) = CloudCover
-   cc2d(*,1) = CloudCover
-   cx2d = dblarr(nP,2)
-   cx2d(*,0) = SdiTimes-stime
-   cx2d(*,1) = SdiTimes-stime
-   cy2d = dblarr(nP,2)
-   cy2d(*,0) = range(0)
-   cy2d(*,1) = range(1)
-   l = where(cc2d lt 0,c)
-   if (c gt 0) then cc2d(l) = 100.0
-   makect,'wb'
-   contour, cc2d+1.0, cx2d, cy2d, levels = findgen(21)*10.0-10, $
-            pos = pos, /noerase, /fill, $
-            xstyle = 5, ystyle = 5
-
    plot, SdiTimes-stime, gitmlosTotal(i,*), $
          pos = pos, /noerase, $
-         ytitle = dirs(i)+titleadd,		$
+         ytitle = titles(i),		$
          xtickname = xtn,			$
          xtitle = xt,			$
          xtickv = xtickv,			$
@@ -509,20 +374,9 @@ for i = 0, 3 do begin
    oplot, [dx*10, dx*10 + dx*2], [-maxi, -maxi], thick = 4, linestyle = 2
    xyouts, dx*12.1, -maxi, 'SDI ('+mkupper(site)+')'
 
-   d = gitmlosTotal(i,*)-sdilosTotal(i,*)
-   rms  = sqrt(mean((d)^2))
-   sRms = tostr(rms)
-   diff = mean(d)
-   sDiff = tostr(diff)
-   l = where(CloudCover ge 0 and CloudCover lt 100, c)
-   if (c gt 0) then begin
-      weight = 100.0-CloudCover
-      wDiff = total(d(l)*weight(l))/total(weight(l))
-      wRms  = sqrt(total(d(l)^2*weight(l))/total(weight(l)))
-      sRms = sRms+' ('+tostr(wRms)+')'
-      sDiff = sDiff+' ('+tostr(wDiff)+')'
-   endif 
-   xyouts, dx, maxi*0.85,'RMS : '+sRms+' m/s; Diff : '+sDiff+' m/s'
+   rms  = sqrt(mean((gitmlosTotal(i,*)-sdilosTotal(i,*))^2))
+   diff = mean(gitmlosTotal(i,*)-sdilosTotal(i,*))
+   xyouts, dx, maxi*0.85,'RMS : '+tostr(rms)+' m/s; Diff : '+tostr(diff)+' m/s'
 
 endfor
 
@@ -560,50 +414,13 @@ endif
 
 closedevice
 
-;-------------------------------------------------------
-; Write an output file of the results
-;-------------------------------------------------------
-
-outfile = 'compare_'+site+'_'+ymd+'.txt'
-
-openw,2,outfile
-
-printf,2,''
-printf,2,'Filename'
-printf,2,SdiFilename
-
-printf,2,''
-printf,2,'Coordinates'
-for i=0,3 do printf,2,SdiLats(i), SdiLons(i), ' '+dirs(i)
-
-printf,2,''
-printf,2,'nPoints'
-printf,2, n_elements(Sditimes)
-
-printf,2,''
-printf,2,'Format'
-printf,2,' YYYY   MM   DD   HH   MM   SS  SDI Temps                 SDI Los                     GITM Temps                  GITM Los'
-printf,2,'(6i5, 16f7.1)'
-
-printf,2,''
-printf,2,'Start'
-for i=0,n_elements(Sditimes)-1 do begin
-   c_r_to_a, itime, SdiTimes(i)
-   printf,2,itime, $
-          sditempTotal(*,i), sdilosTotal(*,i), $
-          gitmtempTotal(*,i), gitmlosTotal(*,i), $
-          format = '(6i5, 16f7.1)'
-endfor
-close,2
-
-
 combined = [sdi.los_wind_skymap,gitmlos]
 maxlos = max(abs(combined))
 nTotal = n_elements(sdi.los_wind_skymap)
 c = nTotal
 while (c gt 0.99*float(nTotal)) do begin
    maxlos = 0.99*maxlos
-   l = where(abs(sdi.los_wind_skymap) le maxlos, c)
+   l = where(sdi.los_wind_skymap le maxlos, c)
 endwhile
 LosLevels = (findgen(31)/15-1.0)*maxlos*1.05
 
@@ -689,10 +506,9 @@ if n_end(0) ge 0 then n_end = n_end(0) else n_end = n_elements(Sditimes)-1
 
 print, 'You have selected '+tostr(n_end-n_start+1)+' times to plot.'
 
-step = (n_end - n_start)/4+1
-
 if (iStart eq iEnd) then $
-   step = ask('number of times to skip between each plot',tostr(step,2))+1
+   step = ask('number of times to skip between each plot','0')+1 $
+else step = (iEnd-iStart)/4
 
 plotnum = -1
 page = 1
@@ -722,8 +538,8 @@ for iT = n_start, n_End, step do begin
    pos([1,3]) = pos([1,3]) + space*0.5 + 0.75*space*(float(fix(plotnum/5)))
 
    if (plotnum eq 0) then begin
-      xyouts, pos(0), pos(3)+0.035, strmid(stime,0,9), $
-              /norm, align=0.0, charsize=1.2
+      xyouts, 1.0-pos(0), pos(3)+0.03, strmid(stime,0,9), $
+              /norm, align=1.0, charsize=1.2
       xyouts, (pos(0)+pos(2))/2.0, pos(3)+0.01, mkupper(site)+' LOS', $
               /norm, align=0.5
    endif
@@ -744,12 +560,6 @@ for iT = n_start, n_End, step do begin
    plotmlt, maxran, no00 = 1, no06 = 1, no12 = 1, no18 = 1
    xyouts, pos(0)-0.005, (pos(1)+pos(3))/2, strmid(stime,10,5)+' UT', $
            align=0.5, orient=90, /norm
-   cc = 'CC:'+tostr(CloudCover(iT))+'%'
-   dx = (pos(2)-pos(0))/2/sqrt(2)+space/2
-   dy = (pos(3)-pos(1))/2/sqrt(2)+space/2
-   cx = (pos(2)+pos(0))/2.0
-   cy = (pos(3)+pos(1))/2.0
-   xyouts, cx+dx, cy+dy, cc, align = 0.5, /norm, charsize = 0.8, orient=-45
 
    if (plotnum+5 ge ppp or iT+step gt nTimesSdi-1) then begin
       ctpos = pos
@@ -885,11 +695,6 @@ for iT = n_start, n_End, step do begin
             xrange = [-maxran, maxran], $
             yrange = [-maxran, maxran]
    plotmlt, maxran, no00 = 1, no06 = 1, no12 = 1, no18 = 1
-   dx = (pos(2)-pos(0))/2/sqrt(2)+space/2
-   dy = (pos(3)-pos(1))/2/sqrt(2)+space/2
-   cx = (pos(2)+pos(0))/2.0
-   cy = (pos(3)+pos(1))/2.0
-   xyouts, cx+dx, cy+dy, cc, align = 0.5, /norm, charsize = 0.8, orient=-45
 
    if (plotnum-5 lt 0) then $
       xyouts, (pos(0)+pos(2))/2.0, pos(3)+0.01, mkupper(site)+' Temp', /norm, align=0.5

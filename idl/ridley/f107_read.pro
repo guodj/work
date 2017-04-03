@@ -1,7 +1,7 @@
 
 pro f107_read, time, f107
 
-  file = '/raid3/Data/f107.txt'
+  file = '/bigdisk1/Data6/Data/f107a.txt'
   spawn, 'wc '+file,wc
   wc = fix(wc)
   wc = wc(0)

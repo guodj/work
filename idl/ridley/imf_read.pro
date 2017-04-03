@@ -3,8 +3,6 @@ pro imf_read, file, time, mag, vel, den, temp, nPts, notes
 
   notes = ''
 
-  spawn, 'wc '+file,wc
-  nLinesMax = long(wc(0))
   openr,1,file
 
   done = 0
@@ -20,11 +18,11 @@ pro imf_read, file, time, mag, vel, den, temp, nPts, notes
 
       if (strpos(line,'#START') gt -1) then begin
 
-          vel  = fltarr(3,nLinesMax)
-          mag  = fltarr(3,nLinesMax)
-          den  = fltarr(nLinesMax)
-          temp = fltarr(nLinesMax)
-          time = dblarr(nLinesMax)
+          vel  = fltarr(3,50000)
+          mag  = fltarr(3,50000)
+          den  = fltarr(50000)
+          temp = fltarr(50000)
+          time = dblarr(50000)
 
           tmp = fltarr(15)
           itime = intarr(6)

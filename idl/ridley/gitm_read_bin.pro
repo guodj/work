@@ -99,10 +99,10 @@ pro gitm_read_bin, file, data, time, nVars, Vars, version, skip = skip
               IsFirstTime = 0
               spawn, 'ls -s '+filein,filesize
               filesize = long(filesize(0))*1024.0
-              datasize = float((nVars*nLons*nLats*nAlts*8L + $
+              datasize = (nVars*nLons*nLats*nAlts*8L + $
                           8 + 3*4 + 4 + nVars*40 + 7*4) + $
-                         2*4*(3+nVars+1+nVars))
-              nTimesMax = long(filesize/datasize)+1
+                         2*4*(3+nVars+1+nVars)
+              nTimesMax = fix(filesize/datasize)+1
               print, 'Found file with multiple times: ',filein
               print, 'Assuming that file contains nTimes : ',nTimesMax
 

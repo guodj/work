@@ -5,7 +5,7 @@ nFiles = n_elements(filelist)
 Is3DAll = 0
 if (nFiles eq 1) then begin
    Is3DAll = 1
-   filelist = findfile('3DALL_t000321_1[012345]*.bin')
+   filelist = findfile('3DALL*.bin')
    nFiles = n_elements(filelist)
 endif
    
@@ -15,22 +15,13 @@ local = fltarr(nFiles)
 
 ref_lon = 283.13
 
-iVar = [0,1,2,33]
-
-apexfile = getenv('IDL_EXTRAS')+'apex2002.dat'
-print, 'reading file : ',apexfile
-readapex, apexfile, apex
-
 for iFile = 0, nFiles-1 do begin
 
    file = filelist(iFile)
    print, "Reading File : ", file
 
-   gitm_read_bin_1var,file, data, time, nVars, Vars, version, VarsToGet = iVar
-   c_r_to_a, itime, time
-
-;   read_thermosphere_file, file, nvars, nalts, nlats, nlons,vars,data, $
-;                           nBLKlat, nBLKlon, nBLK, iTime, Version
+   read_thermosphere_file, file, nvars, nalts, nlats, nlons,vars,data, $
+                           nBLKlat, nBLKlon, nBLK, iTime, Version
 
    ut(iFile) = float(iTime(3))+float(iTime(4))/60.0 + float(itime(5))/3600.0
    local(iFile) = (ut(iFile) + ref_lon/15.0) mod 24.0
@@ -47,7 +38,7 @@ for iFile = 0, nFiles-1 do begin
 
    if (not Is3DAll) then begin
 
-      print, "Not a 3DALL file!"
+print, file
 
       lons = reform(data(0,*,0,0)/!dtor)
       d    = abs(lons - ref_lon)
@@ -126,8 +117,8 @@ for iFile = 0, nFiles-1 do begin
 
    endif else begin
 
-      iE = 3
-;      iE = 33
+      iE = 33
+;      iE = 32
       Lons  = reform(data(0,*,*,0)/!dtor)
       Lats  = reform(data(1,*,*,0)/!dtor)
       Alts  = reform(data(2,*,*,*)/1000.0)
@@ -139,13 +130,13 @@ for iFile = 0, nFiles-1 do begin
 
       for iLon = 0,nLons-1 do for iLat=0,nLats-1 do begin
          l = where(e(iLon,iLat,*) eq max(e(iLon,iLat,*)))
-         nmf2(iLon,iLat) = e(iLon,iLat,l(0))/1.0e12
+         nmf2(iLon,iLat) = e(iLon,iLat,l(0))
          hmf2(iLon,iLat) = Alts(iLon,iLat,l(0))
       endfor
 
    endelse
 
-;   setdevice, psfile, 'p', 5
+   setdevice, psfile, 'p', 5
 
    if (not Is3DAll) then begin
 
@@ -165,7 +156,7 @@ for iFile = 0, nFiles-1 do begin
 
    endif else begin
 
-;      makect, 'mid'
+      makect, 'mid'
 
       maxi = max(nmf2)
       mini = 0.0
@@ -175,85 +166,76 @@ for iFile = 0, nFiles-1 do begin
       l = where(nmf2 gt levels(29),c)
       if (c gt 0) then nmf2(l) = levels(29)
 
-      colortitle = 'NmF2 (1e12 /m3)'
-      title = colortitle
-      maxrange = 40.0
-      thermo_threeplot, psfile, nmf2, time, $
-                        lons*!dtor, lats*!dtor, mini, maxi, $
-                        title, colortitle, maxrange, apex=apex
-;, $
-;                        vn = vn, ve = ve
+      contour, nmf2, lons, lats, levels = levels, $
+               pos = [0.1, 0.6, 0.9, 1.0], $
+               xtitle = 'Longitude (deg)', ytitle = 'Latitude (deg)', $
+               xrange = [0.0,360.0], xstyle = 1, $
+               yrange = [-90.0,90.0], ystyle = 1, $
+               /fill, xtickv = findgen(9)*45.0, xticks = 9, xminor = 3, $
+               ytickv = findgen(5)*45.0-90.0, yticks = 5, yminor = 3
 
-;      contour, nmf2, lons, lats, levels = levels, $
-;               pos = [0.1, 0.6, 0.9, 1.0], $
-;               xtitle = 'Longitude (deg)', ytitle = 'Latitude (deg)', $
-;               xrange = [0.0,360.0], xstyle = 1, $
-;               yrange = [-90.0,90.0], ystyle = 1, $
-;               /fill, xtickv = findgen(9)*45.0, xticks = 9, xminor = 3, $
-;               ytickv = findgen(5)*45.0-90.0, yticks = 5, yminor = 3
-;
-;      its = itime
-;      c_a_to_r, its, time
-;      its(3:5) = 0
-;      c_a_to_r, its, basetime
-;      hour = (time/3600.0 mod 24.0) + fix((time-basetime)/(24.0*3600.0))*24.0
-;      localtime = (Lons/15.0 + hour) mod 24.0
-;    
-;      angle = 23.0 * !dtor * $
-;              sin((jday(its(0),its(1),its(2)) - $
-;                   jday(its(0),3,21))*2*!pi/365.0)
-;      sza =  acos(sin(angle)*sin(Lats*!dtor) + $
-;                  cos(angle)*cos(Lats*!dtor) * $ 
-;                  cos(!pi*(LocalTime-12.0)/12.0))/!dtor
-;
-;      contour, sza, lons, lats, levels = [45,90], thick = 4, /over, $
-;               c_linestyle = 1
-;
-;      if (n_elements(apex) eq 0) then begin
-;         apexfile = getenv('IDL_EXTRAS')+'apex2002.dat'
-;         print, 'reading file : ',apexfile
-;         readapex, apexfile, apex
-;      endif
-;      contour, apex.alats, apex.glons, apex.glats, $
-;               levels = [0.0], thick = 4, $
-;               xrange = [0.0,360.0], xstyle = 1, $
-;               yrange = [-90.0,90.0], ystyle = 1, /over, $
-;               c_linestyle = 2
-;
-;      ctpos = [0.91, 0.6, 0.93, 1.0]
-;      title = 'NmF2 (1e12 /m3)'
-;      plotct, 255, ctpos, mm(levels)/1.0e12, title, /right
-;
-;      ; HMF2
-;
-;      maxi = max(alts)
-;      mini = min(alts)
-;      levels = findgen(31)/30 * (maxi-mini) + mini
-;      l = where(hmf2 lt levels(1),c)
-;      if (c gt 0) then hmf2(l) = levels(1)
-;      l = where(hmf2 gt levels(29),c)
-;      if (c gt 0) then hmf2(l) = levels(29)
-;
-;      contour, hmf2, lons, lats, levels = levels, $
-;               pos = [0.1, 0.1, 0.9, 0.5], $
-;               xtitle = 'Longitude (deg)', ytitle = 'Latitude (deg)', $
-;               xrange = [0.0,360.0], xstyle = 1, $
-;               yrange = [-90.0,90.0], ystyle = 1, $
-;               /fill, xtickv = findgen(9)*45.0, xticks = 9, xminor = 3, $
-;               ytickv = findgen(5)*45.0-90.0, yticks = 5, yminor = 3, /noerase
-;
-;      contour, sza, lons, lats, levels = [45,90], thick = 4, /over, $
-;               c_linestyle = 1
-;
-;      contour, apex.alats, apex.glons, apex.glats, $
-;               levels = [0.0], thick = 4, $
-;               xrange = [0.0,360.0], xstyle = 1, $
-;               yrange = [-90.0,90.0], ystyle = 1, /over, $
-;               c_linestyle = 2
-;
-;      ctpos = [0.91, 0.1, 0.93, 0.5]
-;      title = 'HmF2 (km)'
-;      plotct, 255, ctpos, mm(levels), title, /right
+      its = itime
+      c_a_to_r, its, time
+      its(3:5) = 0
+      c_a_to_r, its, basetime
+      hour = (time/3600.0 mod 24.0) + fix((time-basetime)/(24.0*3600.0))*24.0
+      localtime = (Lons/15.0 + hour) mod 24.0
+    
+      angle = 23.0 * !dtor * $
+              sin((jday(its(0),its(1),its(2)) - $
+                   jday(its(0),3,21))*2*!pi/365.0)
+      sza =  acos(sin(angle)*sin(Lats*!dtor) + $
+                  cos(angle)*cos(Lats*!dtor) * $ 
+                  cos(!pi*(LocalTime-12.0)/12.0))/!dtor
+
+      contour, sza, lons, lats, levels = [45,90], thick = 4, /over, $
+               c_linestyle = 1
+
+      if (n_elements(apex) eq 0) then begin
+         apexfile = getenv('IDL_EXTRAS')+'apex2002.dat'
+         print, 'reading file : ',apexfile
+         readapex, apexfile, apex
+      endif
+      contour, apex.alats, apex.glons, apex.glats, $
+               levels = [0.0], thick = 4, $
+               xrange = [0.0,360.0], xstyle = 1, $
+               yrange = [-90.0,90.0], ystyle = 1, /over, $
+               c_linestyle = 2
+
+      ctpos = [0.91, 0.6, 0.93, 1.0]
+      title = 'NmF2 (1e12 /m3)'
+      plotct, 255, ctpos, mm(levels)/1.0e12, title, /right
+
+      ; HMF2
+
+      maxi = max(alts)
+      mini = min(alts)
+      levels = findgen(31)/30 * (maxi-mini) + mini
+      l = where(hmf2 lt levels(1),c)
+      if (c gt 0) then hmf2(l) = levels(1)
+      l = where(hmf2 gt levels(29),c)
+      if (c gt 0) then hmf2(l) = levels(29)
+
+      contour, hmf2, lons, lats, levels = levels, $
+               pos = [0.1, 0.1, 0.9, 0.5], $
+               xtitle = 'Longitude (deg)', ytitle = 'Latitude (deg)', $
+               xrange = [0.0,360.0], xstyle = 1, $
+               yrange = [-90.0,90.0], ystyle = 1, $
+               /fill, xtickv = findgen(9)*45.0, xticks = 9, xminor = 3, $
+               ytickv = findgen(5)*45.0-90.0, yticks = 5, yminor = 3, /noerase
+
+      contour, sza, lons, lats, levels = [45,90], thick = 4, /over, $
+               c_linestyle = 1
+
+      contour, apex.alats, apex.glons, apex.glats, $
+               levels = [0.0], thick = 4, $
+               xrange = [0.0,360.0], xstyle = 1, $
+               yrange = [-90.0,90.0], ystyle = 1, /over, $
+               c_linestyle = 2
+
+      ctpos = [0.91, 0.1, 0.93, 0.5]
+      title = 'HmF2 (km)'
+      plotct, 255, ctpos, mm(levels), title, /right
 
    endelse
 

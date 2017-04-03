@@ -14,7 +14,7 @@ pro get_gitm_points, Times, Lons, Lats, Alts, VarsToGet, Data
   for i=0L,nTimes-1 do begin
 
      l = where(gitmtimes lt Times(i), c)
-     if (c gt 0) then iFiles(i) = c-1 else iFiles(i) = -1
+     if (c gt 0) then iFiles(i) = c-1 else iFiles(i) = 0
 
   endfor
 
@@ -27,7 +27,7 @@ pro get_gitm_points, Times, Lons, Lats, Alts, VarsToGet, Data
 
   print, "Determining unique GITM files..."
   iFile = 0
-  while (max(iFilesToRead) gt -1) do begin
+  while (max(iFilesToRead) gt 0) do begin
      m = max(iFilesToRead)
      l = where(iFilesToRead eq m)
      iFilesUnique(iFile) = m
@@ -42,9 +42,7 @@ pro get_gitm_points, Times, Lons, Lats, Alts, VarsToGet, Data
   for iFile = 0, nFiles-2 do begin
 
      t1 = gitmtimes(iFilesUnique(iFile))
-     if (iFilesUnique(iFile)+1 lt n_elements(gitmtimes)) then begin
-        t2 = gitmtimes(iFilesUnique(iFile)+1)
-     endif else t2 = t1
+     t2 = gitmtimes(iFilesUnique(iFile)+1)
      l = where(times ge t1 and times lt t2, c)
 
      if (c gt 0) then begin
@@ -99,7 +97,6 @@ pro get_gitm_points, Times, Lons, Lats, Alts, VarsToGet, Data
                  (1.0-xLon(iT)) * (    xLat(iT)) * gitmdata2(iVar,iLon(iT),  iLat(iT)+1,*) + $
                  (    xLon(iT)) * (    xLat(iT)) * gitmdata2(iVar,iLon(iT)+1,iLat(iT)+1,*)
               Data(iT,iVar,*) = (1.0-x) * d1 + x * d2
-
            endfor
 
         endfor
@@ -113,7 +110,7 @@ pro get_gitm_points, Times, Lons, Lats, Alts, VarsToGet, Data
 
   if (max(Alts) gt 0.0) then begin
      DataNew = fltarr(nTimes,nVarsToGet)
-     for iTime = 0L, nTimes-1 do begin
+     for iTime = 0, nTimes-1 do begin
         l=where(gitmAlts gt Alts(iTime),c)
         if (c eq 0) then begin
            DataNew(iTime,*) = Data(iTime,*,nAlts-1)

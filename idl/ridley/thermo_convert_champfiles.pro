@@ -1,6 +1,6 @@
 
 
-if (n_elements(dirin) eq 0) then dirin = '/home/guod/data/CHAMP/density'
+if (n_elements(dirin) eq 0) then dirin = '/raid3/Data/CHAMP'
 dirin = ask('directory for CHAMP data',dirin)
 
 if (n_elements(year) eq 0) then year = '2003'
@@ -14,7 +14,7 @@ day = string(fix(ask('day',day)), format='(I02)')
 
 julian = string(format='(I03)',jday(fix(year),fix(month),fix(day)))
 
-filein = dirin+'/'+year+'/ascii/Density_3deg_'+chopr(year,2)+'_'+julian+'.ascii'
+filein = dirin+'/'+year+'/Density_3deg_'+chopr(year,2)+'_'+julian+'.ascii'
 
 fileout = 'champ'+year+month+day+'.dat'
 

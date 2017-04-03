@@ -15,14 +15,14 @@ import matplotlib.pyplot as plt
 # Basic information
 homepath = os.environ.get('HOME')
 btime = pd.Timestamp('2010-03-21 00:00:00')
-etime = pd.Timestamp('2010-03-24 00:00:00')
+etime = pd.Timestamp('2010-03-25 00:00:00')
 dt = pd.Timedelta('1min')
 time = pd.date_range(btime, etime, freq=dt)
 #----------------------------------------
 # Write imf.dat
 dim = time.shape
 imfby1 = np.ones(dim)*5 # run1
-reversalt = etime-pd.Timedelta('24hour')
+reversalt = etime-pd.Timedelta('12hour')
 mm = time>reversalt
 imfby2 = imfby1.copy()
 imfby2[mm] = imfby2[mm]-10
@@ -95,8 +95,8 @@ for k00, k0 in enumerate(time):
 fsme.close()
 #----------------------------------------
 # Write onsets.dat
-time1 = btime-pd.Timedelta('6hour')
-time2 = etime+pd.Timedelta('6hour')
+time1 = btime-pd.Timedelta('24hour')
+time2 = etime+pd.Timedelta('24hour')
 timetime =[time1, time2]
 fonsets = open(homepath+'/tmp/onsets.dat', 'w')
 for k in range(2):

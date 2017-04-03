@@ -1,8 +1,5 @@
 
-pro determine_min_max, data, mini, maxi, percent = percent
-
-  if (n_elements(percent) eq 0) then percent = 0.995 $
-  else percent = float(percent)/100
+pro determine_min_max, data, mini, maxi
 
   mini = min(data)
   maxi = max(data)
@@ -13,7 +10,7 @@ pro determine_min_max, data, mini, maxi, percent = percent
   n = float(n_elements(data))
   l = where(data lt maxi,c)
   p = float(c)/n
-  while p gt percent do begin
+  while p gt 0.995 do begin
      maxi = maxi - dr
      l = where(data lt maxi,c)
      p = float(c)/n
@@ -23,7 +20,7 @@ pro determine_min_max, data, mini, maxi, percent = percent
   n = float(n_elements(data))
   l = where(data gt mini,c)
   p = float(c)/n
-  while p gt percent do begin
+  while p gt 0.995 do begin
      mini = mini + dr
      l = where(data gt mini,c)
      p = float(c)/n

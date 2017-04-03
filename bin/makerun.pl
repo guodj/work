@@ -2,7 +2,7 @@
 
 $maindir = "/home/guod/data/";
 $datadir = "/raid3/Amie/Data/srcData/" if (!$datadir);
-$bindir = "/home/guod/work/sh";
+$bindir = "/home/guod/work/bin";
 
 $help = $h;
 

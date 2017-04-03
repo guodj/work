@@ -13,15 +13,7 @@ if (reread) then begin
    if (n_elements(SatType) eq 0) then SatType = 'cham'
    SatType = ask('satellite type (grac or cham)',SatType)
 
-   if (strpos(SatType,'cha') eq 0) then begin
-      Satellite = 'CHAMP'
-      IsChamp = 1
-   endif else begin
-      Satellite = 'Grace-B'
-      IsChamp = 0
-   endelse
-
-   print, 'Satellite : ',Satellite
+   if (SatType eq 'cham') then Satellite = 'CHAMP' else Satellite = 'Grace-B'
 
    filelist = file_search(SatType+'_*.bin')
    gitm_read_bin, filelist, GitmData, GitmTime, nVars, Vars, version, /skip
@@ -74,7 +66,7 @@ if (nTimes gt 0) then begin
    GitmData = GitmData(l,*,*,*,*)
 endif else stop
 
-if (IsChamp) then begin
+if (SatType eq 'cham') then begin
    if (n_elements(type) eq 0) then type = '0' else type = tostr(type)
    type = fix(ask('data type to compare to (0-rho, 1-electron, 2-winds)',type))
 endif else type = 0
@@ -86,7 +78,7 @@ LocalTime = (reform(GitmData(*, 0,0,0,0))/!dtor/15.0 + $
 ; mass density
 if (type eq 0) then GitmRho = reform(GitmData(*, 3,0,0,*))
 ; electron density
-if (type eq 1) then GitmRho = reform(GitmData(*,34,0,0,*))
+if (type eq 1) then GitmRho = reform(GitmData(*,33,0,0,*))
 ; eastward wind
 if (type eq 2) then begin
    east  = reform(GitmData(*,16,0,0,*))
@@ -101,7 +93,7 @@ for cday = 0, ndays - 1 do begin
    doy = doy0 + cday
 
    if (type eq 0) then begin
-      if (IsChamp) then $
+      if (SatType eq 'cham') then $
          filehead = champdir+sYear+'/Density_3deg_' $
       else filehead = gracedir+sYear+'/ascii/Density_graceB_3deg_'
       champfile = filehead+$
@@ -115,13 +107,11 @@ for cday = 0, ndays - 1 do begin
          ChampAlt = reform(champdata( 6,*))
          ChampRho = reform(champdata(11,*))
          ChampErr = reform(champdata(15,*))
-         ChampLat = reform(champdata(3,*))
          ChampTim = ChampTime
       endif else begin
          ChampAlt = [ChampAlt,reform(champdata( 6,*))]
          ChampRho = [ChampRho,reform(champdata(11,*))]
          ChampErr = [ChampErr,reform(champdata(15,*))]
-         ChampLat = [ChampLat,reform(champdata(3,*))]
          ChampTim = [ChampTim,ChampTime]
       endelse
 
@@ -179,18 +169,6 @@ for cday = 0, ndays - 1 do begin
    endelse
 
 endfor
-
-; Let's adjust the Champ Altitude, since GITM assumes a
-; spherical Earth.
-if (n_elements(ChampLat) gt 0) then begin
-   re = 6378.137
-   rp = 6356.75
-   diff = re-rp
-   rgitm = 6372.0
-   r = rp+diff*cos(ChampLat*!dtor)
-   correction = r - rgitm
-   ChampAlt = ChampAlt + correction
-endif
 
 ChampTime = ChampTim
 
@@ -617,20 +595,16 @@ oplot, gitmtime-stime, gitmAve, linestyle = 2, thick = 3
 t1 = (etr-btr)*0.05
 t2 = (etr-btr)*0.10
 t3 = (etr-btr)*0.11
-
-ChampMedian = median(ChampAve)
-GitmMedian = median(GitmAve)
+    
 oplot, [t1,t2], max(yrange)*[1.05,1.05], thick = 3, linestyle = 2
-xyouts, t3, max(yrange)*1.05, 'GITM (Median: '+ $
-        string(GitmMedian,format='(f5.3)')+' x10!U-12!N kg/m!U3!N)'
+xyouts, t3, max(yrange)*1.05, 'GITM'
     
 t1 = (etr-btr)*0.55
 t2 = (etr-btr)*0.60
 t3 = (etr-btr)*0.61
     
 oplot, [t1,t2], max(yrange)*[1.05,1.05], thick = 3
-xyouts, t3, max(yrange)*1.05, Satellite+' ('+ $
-        string(ChampMedian,format='(f5.3)')+' x10!U-12!N kg/m!U3!N)'
+xyouts, t3, max(yrange)*1.05, Satellite
 
 d = ChampAve-gitmAve 
 yr = [-maxi,maxi]

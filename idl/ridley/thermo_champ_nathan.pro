@@ -700,13 +700,8 @@ closedevice
 
 setdevice, psfile_bias, 'p', 5
 
-BIAS = mean(ChampAve-gitmAve)
+BIAS = mean(ChampAve)-mean(gitmAve)
 gitmAveBIAS = gitmAve+BIAS
-print, 'BIAS =', BIAS
-print, 'ChampAve =', mean(ChampAve)
-print, 'gitmAve =', mean(gitmAve)
-print, 'Champ peak density =', max(ChampAve)
-print, 'GITM peak density =', max(gitmAve)
 
 plot, Gitmtime-stime, ChampAve, yrange = yrange*1.2, pos = pos, $
       xtickname = xtickname, xtickv = xtickv, ystyle = 1, $
@@ -779,34 +774,28 @@ rmseLOW = sqrt(mean((ChampAve(low)-gitmAveBIAS(low))^2))
 rmsdLOW = sqrt(mean((ChampAve(low))^2))
 nrmsLOW = rmseLOW/rmsdLOW * 100.0
 pdifLOW = mean((ChampAve(low)-gitmAveBIAS(low))/ChampAve(low)) * 100.0
-difLOW = mean(ChampAve(low)-gitmAveBIAS(low))*100.0
 
 rmseMID = sqrt(mean((ChampAve(mid)-gitmAveBIAS(mid))^2))
 rmsdMID = sqrt(mean((ChampAve(mid))^2))
 nrmsMID = rmseMID/rmsdMID * 100.0
 pdifMID = mean((ChampAve(mid)-gitmAveBIAS(mid))/ChampAve(mid)) * 100.0
-difMID = mean(ChampAve(mid)-gitmAveBIAS(mid))*100.0
 
 rmseHI = sqrt(mean((ChampAve(hi)-gitmAveBIAS(hi))^2))
 rmsdHI = sqrt(mean((ChampAve(hi))^2))
 nrmsHI = rmseHI/rmsdHI * 100.0
 pdifHI = mean((ChampAve(hi)-gitmAveBIAS(hi))/ChampAve(hi)) * 100.0
-difHI = mean(ChampAve(hi)-gitmAveBIAS(hi))*100.0
 
 t3 = (etr-btr)*0.05
 
 xyouts, t3, max(yrange)*.75, 'Low: '+string(pdifLOW, format = '(f5.1)')+'% Diff.'
-xyouts, t3, max(yrange)*.60, 'Low: '+string(difLOW, format = '(f6.2)')
 
 t3 = (etr-btr)*0.35
 
 xyouts, t3, max(yrange)*.75, 'Mid: '+string(pdifMID, format = '(f5.1)')+'% Diff.'
-xyouts, t3, max(yrange)*.60, 'Mid: '+string(difMID, format = '(f6.2)')
 
 t3 = (etr-btr)*0.65
 
 xyouts, t3, max(yrange)*.75, 'High: '+string(pdifHI, format = '(f5.1)')+'% Diff.'
-xyouts, t3, max(yrange)*.60, 'High: '+string(difHI, format = '(f6.2)')+' (1x10!U-14!Nkg/m!U3!N)'
 
 ;--------- nRMS ----------
 

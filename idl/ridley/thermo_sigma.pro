@@ -1,5 +1,5 @@
 
-filelist = findfile('3DALL_t980106_??00*.bin')
+filelist = findfile('3DALL_t970223_0[2345]000*.bin')
 nFiles = n_elements(filelist)
 
 op_  = 24
@@ -11,7 +11,7 @@ e_   = 33
 
 setdevice, 'pedersen.ps', 'p', 5
 
-ppp = 12
+ppp = nFiles
 space = 0.05
 pos_space, ppp, space, sizes
 
@@ -19,8 +19,6 @@ for iFile = 0, nFiles-1 do begin
 
    file = filelist(iFile)
    print, 'Reading file : ',file
-
-   if (iFile mod ppp eq 0) then plotdumb
 
    gitm_read_bin, file, data, GitmTime, nVars, Vars, version
 
@@ -94,7 +92,7 @@ for iFile = 0, nFiles-1 do begin
 
    print, maxi
 
-   get_position, ppp, space, sizes, iFile mod ppp, pos
+   get_position, ppp, space, sizes, iFile, pos
    
    makect,'mid'
    
@@ -120,15 +118,13 @@ for iFile = 0, nFiles-1 do begin
 ;                    nomaxmin = nomaxmin, thick = thick, average = average
 
    
-   if ((iFile+1) mod ppp eq 0) then begin
-      ctpos = pos
-      ctpos(0) = ctpos(2)+0.01
-      ctpos(2) = ctpos(0)+0.02
-      plotct,254,ctpos,[mini,maxi],'Pedersen Conductance (mho)',/right
-   endif
-
 endfor
 
+ctpos = pos
+ctpos(0) = ctpos(2)+0.01
+ctpos(2) = ctpos(0)+0.02
+
+plotct,254,ctpos,[mini,maxi],'Pedersen Conductance (mho)',/right
 
 
 closedevice

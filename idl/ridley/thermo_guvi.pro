@@ -1,41 +1,9 @@
 
-guvidir = '/raid3/Data/GUVI/'
-
-filelist = findfile('3DALL*.bin')
-
-file = filelist(0)
-gitm_read_header, file, StartTime, nVars, Vars, $
-                  nLons, nLats, nAlts, version
-
-
-file = filelist(n_elements(filelist)-1)
-gitm_read_header, file, EndTime, nVars, Vars, $
-                  nLons, nLats, nAlts, version
-
-nDays = (EndTime-StartTime)/86400 + 1
-files = strarr(nDays)
-
-nFiles = 0
-for i = 0,nDays-1 do begin
-   t = StartTime + 86400.0D * double(i)
-   c_r_to_a, itime, t
-   sYear = tostr(itime(0))
-   sDay = tostr(jday(itime(0),itime(1),itime(2)),3)
-   filelist = findfile(guvidir+sYear+'/ON2_'+sYear+'_'+sDay+'m.sav')
-   if (strlen(filelist(0)) gt 0) then begin
-      files(nFiles) = filelist(0)
-      nFiles++
-   endif
-endfor
-filelist = files(0:nFiles-1)
-print, filelist
-
+filelist=findfile('ValidationData/ON2*sav')
 nfiles=n_elements(filelist)
 print,'nfiles=',nfiles
 
 for iFile=0,nFiles-1 do begin
-
-   print,'restoring file ... ', filelist(iFile)
 
    restore,filelist(iFile)
    fdoy = saved_data.fdoy
@@ -67,22 +35,17 @@ for iFile=0,nFiles-1 do begin
          timesub(il) = rtime
       endfor
 
-      Guvilats  = latsub
-      GuviLons  = lonsub
-      GuviOn2   = on2sub
-      GuviTimes = timesub
-
-      l = where(GuviTimes ge StartTime and GuviTimes le EndTime,c)
-
-      if (c gt 0) then begin
-         GuviTimes = GuviTimes(l)
-         GuviLats  = GuviLats(l)
-         GuviLons  = GuviLons(l)
-         GuviOn2   = GuviOn2(l)
-      endif else begin
-         print, 'Didnt find any guvi times!'
-         stop
-      endelse
+;      if (iFile eq 0) then begin
+         Guvilats  = latsub
+         GuviLons  = lonsub
+         GuviOn2   = on2sub
+         GuviTimes = timesub
+;      endif else begin
+;         Guvilats  = [Guvilats,latsub]
+;         GuviLons  = [GuviLons,lonsub]
+;         GuviOn2   = [GuviOn2,on2sub]
+;         GuviTimes = [GuviTimes,timesub]
+;      endelse
 
    endif
 
@@ -141,7 +104,7 @@ for iFile=0,nFiles-1 do begin
    levels = findgen(31)/30.0*(maxi-mini)+mini
    
    dLon = 15.0
-   dLat =  2.0
+   dLat =  2.5
 
    ShiftedLons = guvilons+shift
    minLon = float(fix(min(ShiftedLons)/dLon))*dLon
@@ -203,11 +166,9 @@ for iFile=0,nFiles-1 do begin
    etime = max(guvitimes)
    c_r_to_a, itime, stime
    c_a_to_s, itime, sdate
+   c_a_to_ymd, itime, ymd
    c_r_to_a, itime, etime
    c_a_to_s, itime, edate
-
-   c_r_to_a, itime, (stime+etime)/2
-   c_a_to_ymd, itime, ymd
 
    setdevice, 'guvi_no_'+ymd+'.ps','p', 5
 
@@ -239,8 +200,8 @@ for iFile=0,nFiles-1 do begin
 ;ctpos = [0.96, 0.05, 0.98, 0.45]
 ;plotct, ncolors, ctpos, mm(levels), title, /right
 
-   xyouts, 0.05, 0.955, strmid(edate,0,15), /norm
-   xyouts, 0.95, 0.955, strmid(sdate,0,15), /norm, align=1.0
+   xyouts, 0.05, 0.955, strmid(edate,0,9), /norm
+   xyouts, 0.95, 0.955, strmid(sdate,0,9), /norm, align=1.0
 
    closedevice
 
@@ -249,34 +210,14 @@ for iFile=0,nFiles-1 do begin
 
    makect, 'rainbow'
 
-   mapsize = 0.6
-   xMin = 0.5-mapsize/2.0
-   yMax = 0.99
-   xMax = xMin + mapsize
-   yMin = yMax - mapsize/2.0
-
-   pos = [xMin, yMin, xMax, yMax]
+   pos = [0.05, 0.55, 0.95, 0.95]
    !p.position = pos
    map_set, 0.0, 0.0
 
+   levels = findgen(31)/30.0*1.5
+
    GriddedGuvion2(0,*) = (GriddedGuvion2(0,*) + GriddedGuvion2(nLons-1,*))/2
    GriddedGuvion2(nLons-1,*) = GriddedGuvion2(0,*)
-
-   GriddedOn2(0,*) = (GriddedOn2(0,*) + GriddedOn2(nLons-1,*))/2
-   GriddedOn2(nLons-1,*) = GriddedOn2(0,*)
-
-   rms = sqrt(mean((On2(l) - Guvion2(l))^2))
-   dif = mean(On2(l) - Guvion2(l))
-   cor = c_correlate(on2,guvion2,0.0)
-
-   maxi = max([GriddedOn2,GriddedGuvion2])*1.05
-;   maxi = max(GriddedGuvion2)*1.01
-   mini = 0.0
-
-;   maxi = 0.8
-;   mini = 0.0
-
-   levels = findgen(31)/30.0*(maxi-mini) + mini
 
    contour, GriddedGuvion2, GriddedLon, GriddedLat, /cell, levels=levels, $
             pos = pos, xstyle = 1, ystyle = 1, /over, $
@@ -284,71 +225,37 @@ for iFile=0,nFiles-1 do begin
    map_continents
    map_grid, lats = findgen(7)*30-90, glinethick=3
 
-   xyouts, xMax, yMax+0.005, strmid(sdate,0,15), /norm, align=1.0
-   xyouts, xMin, yMax+0.005, strmid(edate,0,15), /norm
-   xyouts, (xMax+xMin)/2.0, yMax+0.005, 'GUVI', /norm, align = 0.5
+   xyouts, 0.95, 0.955, strmid(sdate,0,9), /norm, align=1.0
 
    ncolors = 254
    title = 'O/N2 Ratio'
-   ctpos = [xMax+0.01, yMin, xMax+0.03, yMax]
+   ctpos = [0.96, 0.55, 0.98, 0.95]
    plotct, ncolors, ctpos, mm(levels), title, /right
 
-   yMax = yMin - 0.03
-   yMin = yMax - mapsize/2.0
-
-   pos = [xMin, yMin, xMax, yMax]
+   pos = [0.05, 0.05, 0.95, 0.45]
    !p.position = pos
    map_set, 0.0, 0.0, /noerase
 
-;   maxi = max([GriddedOn2,GriddedGuvion2])*1.05
-;   maxi = max(GriddedOn2)*1.01
-;   mini = 0.0
+   levels = findgen(31)/30.0*0.9
 
-;   maxi = 1.2
-;   mini = 0.2
+   GriddedOn2(0,*) = (GriddedOn2(0,*) + GriddedOn2(nLons-1,*))/2
+   GriddedOn2(nLons-1,*) = GriddedOn2(0,*)
 
-   levels = findgen(31)/30.0*(maxi-mini) + mini
-
-   l = where(GriddedOn2 gt levels(29),c)
-   if (c gt 0) then GriddedOn2(l) = levels(29)
    contour, GriddedOn2, GriddedLon, GriddedLat, /cell, levels=levels, $
             pos = pos, /noerase, xstyle = 1, ystyle = 1, /over, $
             xtitle = 'Shifted Longitude (deg)', ytitle = 'Latitude (deg)'
+   xyouts, 0.95, 0.455, strmid(sdate,0,9), /norm, align=1.0
    map_continents
    map_grid, lats = findgen(7)*30-90, glinethick=3
-
-   xyouts, xMax, yMax+0.005, strmid(sdate,0,15), /norm, align=1.0
-   xyouts, xMin, yMax+0.005, strmid(edate,0,15), /norm
-   xyouts, (xMax+xMin)/2.0, yMax+0.005, 'GITM', /norm, align = 0.5
 
 ;linelevels = findgen(11)/10.0*1.5
 ;contour, GriddedGuvion2, GriddedLon, GriddedLat, /follow, levels=linelevels, $
 ;         pos = [0.05, 0.05, 0.95, 0.45], xstyle = 5, ystyle = 5, /noerase
 
-   ctpos = [xMax+0.01, yMin, xMax+0.03, yMax]
+   ctpos = [0.96, 0.05, 0.98, 0.45]
    plotct, ncolors, ctpos, mm(levels), title, /right
 
-   xyouts, xMin, 0.00, 'RMS  = '+string(rms,format='(f6.3)'), /norm
-   xyouts, 0.50, 0.00, 'DIFF = '+string(dif,format='(f6.3)'), /norm,align=0.5
-   xyouts, xMax, 0.00, 'COR = '+string(cor,format='(f6.3)'), /norm,align=1.0
-
 ;xyouts, 0.05, 0.955, strmid(edate,0,9), /norm
-
-   yMax = yMin - 0.03
-   
-   space = 0.01
-   pos_space, 4, space, sizes, ny = 4
-   get_position, 4, space, sizes, 3, pos
-
-   dy = pos(3)-pos(1)
-   pos(3) = yMax
-   pos(1) = pos(3) - dy
-
-   plot, guvion2, on2, xrange = [0,maxi], yrange = [0,maxi], $
-         xtitle = 'GUVI O/N2 Ratio', ytitle = 'GITM O/N2 Ratio', $
-         /noerase, pos = pos, psym = 3, thick = 4, xstyle = 1, ystyle = 1
-
-   oplot, [0,maxi], [0,maxi], thick = 4
 
    closedevice
 

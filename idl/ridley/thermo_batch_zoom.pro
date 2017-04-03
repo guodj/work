@@ -127,15 +127,8 @@ for iFile = 0, nFiles-1 do begin
       al = a(l)
       ol = o(l)
 
-      colorbar = 'all'
       if (float(smini) eq 0) then mini = min(vl) else mini = float(smini)
       if (float(smaxi) eq 0) then maxi = max(vl) else maxi = float(smaxi)
-      if (float(smini) eq 0 and mini lt 0.0) then begin
-         maxi = max([maxi,abs(mini)])
-         mini = -maxi
-         colorbar = 'mid'
-      endif
-
       levels = findgen(31)/30.0 * (maxi-mini) + mini
 
       loc2 = where(vl lt levels(1),c2)
@@ -144,7 +137,7 @@ for iFile = 0, nFiles-1 do begin
       loc2 = where(vl gt levels(29),c2)
       if (c2 gt 0) then vl(loc2) = levels(29)
 
-      makect, colorbar
+      makect, 'mid'
       contour, vl, ol, al, nlevels=31, /over, /cell, /irregular, levels =levels
 
       for i=0L,c-1 do begin
@@ -215,12 +208,7 @@ for iFile = 0, nFiles-1 do begin
 
    endif
              
-   map_set, lat0, lo0, limit = limit, /grid, /continents, /usa, /hires, /noerase
-
-   centerlats = [ 18.344167, -6.88, -7.38,-11.96, 37.75, 42.619,-14.97, 40.13, 42.27, 35.20]
-   centerlons = [-66.752778,-38.56,-36.52,-76.86,-84.29,-71.491,-74.89,-88.20,-83.75,-82.85]+360.0
-
-   oplot, centerlons, centerlats, psym = 5, thick = 4
+   map_set, lat0, lo0, limit = limit, /grid, /cont, /hires, /noerase
 
    salt  = tostr(alt(0,0,iAlt))+' km'
    c_a_to_s, itime, stime
@@ -256,14 +244,8 @@ for iFile = 0, nFiles-1 do begin
       al = a(l)
       ol = o(l)
 
-      colorbar = 'all'
       if (float(smini2) eq 0) then mini2 = min(vl) else mini2 = float(smini2)
       if (float(smaxi2) eq 0) then maxi2 = max(vl) else maxi2 = float(smaxi2)
-      if (float(smini2) eq 0 and mini2 lt 0.0) then begin
-         maxi2 = max([maxi2,abs(mini2)])
-         mini2 = -maxi2
-         colorbar = 'mid'
-      endif
       levels = findgen(31)/30.0 * (maxi2-mini2) + mini2
 
       loc2 = where(vl lt levels(1),c2)
@@ -272,7 +254,7 @@ for iFile = 0, nFiles-1 do begin
       loc2 = where(vl gt levels(29),c2)
       if (c2 gt 0) then vl(loc2) = levels(29)
 
-      makect, colorbar
+      makect, 'mid'
       contour, vl, ol, al, nlevels=31, /over, /cell, /irregular, levels = levels
 
       for i=0L,c-1 do begin
@@ -280,8 +262,8 @@ for iFile = 0, nFiles-1 do begin
          x0 = o(l(i))
          y0 = a(l(i))
 
-         dy = vn(l(i))/100.0
-         dx = ve(l(i))/100.0/cos((a(l(i))+dy)*!dtor)
+         dy = vn(l(i))/200.0
+         dx = ve(l(i))/200.0/cos((a(l(i))+dy)*!dtor)
 
          if (y0+dy gt 90.0) then begin
             y = 180.0 - (y0+dy)
@@ -314,7 +296,7 @@ for iFile = 0, nFiles-1 do begin
       x0 = lonmax + 0.1 * (lonmax-lonmin)
       y0 = latmax - 0.3 * (latmax-latmin)
 
-      dy = -200.0/100.0
+      dy = -200.0/200.0
       dx = 0.0
 
       if (y0+dy gt 90.0) then begin
@@ -355,7 +337,7 @@ for iFile = 0, nFiles-1 do begin
       o = reform(lon(*,*,iAlt2))
 
       l = where(a ge lat0-dlat/2 and a le lat0+dlat/2 and $
-                o ge lo0-dlon/2 and o le lo0 +dlon/2,c)
+                o ge lo0 and o le lo0 +dlon/10,c)
 
       if (c gt 0) then begin
 
@@ -368,8 +350,8 @@ for iFile = 0, nFiles-1 do begin
             x0 = o(l(i))
             y0 = a(l(i))
 
-            dy = vn(l(i))/100.0
-            dx = ve(l(i))/100.0/cos((a(l(i))+dy)*!dtor)
+            dy = vn(l(i))/500.0
+            dx = ve(l(i))/500.0/cos((a(l(i))+dy)*!dtor)
 
             if (y0+dy gt 90.0) then begin
                y = 180.0 - (y0+dy)
@@ -377,7 +359,7 @@ for iFile = 0, nFiles-1 do begin
                dx = dx + 180.0
             endif
 
-            plots, [x0,x0+dx], [y0,y0+dy], thick = 6, color = 100
+            plots, [x0,x0+dx], [y0,y0+dy], thick = 6, color = 10
 
             length = (dx^2+dy^2)^0.5
             t2     = asin(dy/length)
@@ -389,8 +371,8 @@ for iFile = 0, nFiles-1 do begin
             x2 = 0.5*length*cos(t2 - 15.0*!pi/180.0)
             y2 = 0.5*length*sin(t2 - 15.0*!pi/180.0)
 
-            plots, [x0+dx, x0+dx-x1], [y0+dy,y0+dy-y1], thick = 6, color = 100
-            plots, [x0+dx, x0+dx-x2], [y0+dy,y0+dy-y2], thick = 6, color = 100
+            plots, [x0+dx, x0+dx-x1], [y0+dy,y0+dy-y1], thick = 6, color = 10
+            plots, [x0+dx, x0+dx-x2], [y0+dy,y0+dy-y2], thick = 6, color = 10
 
          endfor
 
@@ -399,12 +381,7 @@ for iFile = 0, nFiles-1 do begin
 
    endif
              
-   map_set, lat0, lo0, limit = limit, /grid, /continents, /usa, /hires, /noerase
-
-   centerlats = [ 18.344167, -6.88, -7.38,-11.96, 37.75, 42.619,-14.97, 40.13, 42.27, 35.20]
-   centerlons = [-66.752778,-38.56,-36.52,-76.86,-84.29,-71.491,-74.89,-88.20,-83.75,-82.85]+360.0
-
-   oplot, centerlons, centerlats, psym = 5, thick = 4
+   map_set, lat0, lo0, limit = limit, /grid, /cont, /hires, /noerase
 
    salt  = tostr(alt(0,0,iAlt2))+' km'
    c_a_to_s, itime, stime

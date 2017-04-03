@@ -100,7 +100,7 @@ Stations = ['Arecibo','Cajazeiras','Cariri',$
             'Movil','Urbana','PeachMountain',$
             'Pari']
 centerlats = [ 18.344167, -6.88, -7.38,-11.96, 37.75, 42.619,-14.97, 40.13, 42.27, 35.20]
-centerlons = [-66.752778,-38.56,-36.52,-76.86,-84.29,-71.491,-74.89,-88.20,-83.75,-82.85]+360.0
+centerlons = [-66.752778,-38.56,-36.52,-76.86,-84.29,-79.491,-74.89,-88.20,-83.75,-82.85]+360.0
 
 print, 'Where is the FPI located?'
 display, Stations

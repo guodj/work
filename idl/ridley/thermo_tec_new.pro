@@ -6,10 +6,19 @@ file = filelist(0)
 
 gitm_read_header, file, Vars, Time, nLats, nLons, nAlts, version
 
+;c_r_to_a, itime, time
+;print, itime
+;print, nLons, nLats, nAlts, version
+
+;display, Vars
 IsDone = 0
-iVar = [0,1,2,34]
+iVar = [0,1,2,33]
 
 nFiles = n_elements(filelist)
+
+;nFiles = 20
+
+makect,'mid'
 
 totaltec    = fltarr(nFiles)
 TECnorth    = fltarr(nFiles)
@@ -96,8 +105,6 @@ time_axis, stime, etime, btr, etr, xtickname, xtitle, xtickv, xminor, xtickn
 
 setdevice, 'tec_hemisphere.ps','p',5, 0.9
 
-makect,'wyrb'
-
 ppp = 2
 space = 0.04
 pos_space, ppp, space, sizes, ny = ppp
@@ -161,54 +168,55 @@ xyouts, 1.05,0.0,pwd,/norm,charsize=0.8, orient=90
 
 closedevice
 
-DoWriteFile = 1
+end
 
-if (DoWriteFile) then begin
-
-   c_r_to_a, itime, time(0)
-   c_a_to_ymd, itime, ymd
-   outfile='tec_summary_'+ymd+'.txt'
-   openw,1,outfile
-
-   for iFile = 0, nFiles-1 do begin
-
-      c_r_to_a, itime, time(iFile)
-      printf,1,itime,tecnorth(iFile),tecnorthday(iFile),tecsouth(iFile),tecsouthday(iFile),format='(i5,5i3,4f7.2)'
-
-   endfor
-
-   close,1
-
-endif
-
+;;--------------------------------------------------------------
+;; Set up plot sizes for the circles
+;;--------------------------------------------------------------
+;
+;setdevice, 'tec.ps', 'p', 5
+;
+;ppp = 12
+;
+;space = 0.005
+;pos_space, ppp, space, sizes
+;total_plots = sizes.nby*sizes.nbx
+;
+;;--------------------------------------------------------------
+;; determine how much slop we have for the color table.
+;;--------------------------------------------------------------
+;
+;get_position, ppp, space, sizes, 0, pos
+;x_left = pos(0)
+;get_position, ppp, space, sizes, sizes.nbx-1, pos
+;x_right = pos(2)
+;slop = 1.0 - (x_right - x_left)
+;
+;;--------------------------------------------------------------
+;; If there is too little room for the color table, we need
+;; to make a little more room.
+;;--------------------------------------------------------------
+;
+;if (slop gt 0.02) then begin
+;  if (x_right lt 0.98) then shift_left = 0.0 				$
+;  else shift_left = 0.02 - (1.0-x_right)
+;  ct_left  = x_right+0.01
+;  ct_right = ct_left+0.02
+;  d_shift_left = 0.0
+;endif else begin
+;  space = space*2.0
+;  pos_space, ppp, space, sizes
+;  get_position, ppp, space, sizes, 0, pos
+;  x_left = pos(0)
+;  get_position, ppp, space, sizes, sizes.nbx-1, pos
+;  x_right = pos(2)
+;  shift_left = x_left
+;  d_shift_left = space*0.5
+;  ct_right = 1.00
+;  ct_left  = ct_right - shift_left - d_shift_left*(sizes.nbx-1)
+;endelse
 
 tec = tec/1.0e16
-
-if (n_elements(AverageAll) eq 0) then AverageAll = 0 
-AverageAll = fix(ask('Average all times together (0=no,1=yes)',tostr(AverageAll)))
-
-if (AverageAll) then begin
-
-   tecave = fltarr(nLons, nLats)
-
-   iShift = round((time-time(0))/3600.0/24.0 * (nLons-4))
-
-   for iFile = 0, nFiles-1 do begin
-      for iLon = 0, nLons-1 do begin
-         iL = (iLon - iShift(iFile) + nLons ) mod nLons
-         tecave(iLon,*) = tecave(iLon,*) + tec(iFile,iL,*)/nFiles
-      endfor
-   endfor
-
-   tecave(0,*) = (tecave(0,*) + tecave(nLons-2,*))/2
-   tecave(1,*) = (tecave(1,*) + tecave(nLons-1,*))/2
-   tecave(nLons-2) = tecave(0,*)
-   tecave(nLons-1) = tecave(1,*)
-
-   tec(0,*,*) = tecave
-   nFiles=1
-
-endif
 
 maxrange = 30.0
 
@@ -217,14 +225,11 @@ la = reform(lats(0,*))/!dtor
 
 l = where(90-la lt maxrange)
 mini = 0.0
-if (AverageAll) then begin
-   maxi = float(fix(max(tecave))+1.0)
-endif else maxi = float(fix(max(tec))+1.0)
-maxi = fix(maxi/10.0+1)*10.0
+maxi = float(fix(max(tec))+1.0)
 
 for iFile = 0, nFiles-1 do begin
 
-   setdevice, 'tec_'+tostr(iFile,4)+'.ps', 'p', 5 
+   setdevice, 'tec_'+tostr(iFile,3)+'.ps', 'p', 5 
 
    ppp = 4
    space = 0.01
@@ -257,7 +262,7 @@ for iFile = 0, nFiles-1 do begin
    nLevels = 31
    lon = lo+utrot
    contour_circle, reform(tec(iFile,*,*)), lon, la, $
-                   mini = mini, maxi = maxi/2, $
+                   mini = mini, maxi = maxi, $
                    nLevels = nLevels, $
                    no00 = no00, no06 = no06, no12 = no12, no18 = no18, $
                    pos = pos, $
@@ -271,15 +276,6 @@ for iFile = 0, nFiles-1 do begin
    yp = yc + yr*sin(!pi/4)
    xyouts, xp, yp, 'North', $
            /norm, charsize = 0.9, align = 0.5, orient = 45
-
-   xm = 0.5-xr/2
-   xp = 0.5+xr/2
-   ctpos = [xm, pos(3)+0.01, xp, pos(3)+0.03]
-   range = [mini,maxi/2]
-   units = 'TEC (10!U16!N/m!U2!N)'
-   ncolors = 255
-   plotct, ncolors, ctpos, range, units, /bottom
-
 
 ;************************************************************************
 
@@ -298,7 +294,7 @@ for iFile = 0, nFiles-1 do begin
    nLevels = 31
    lon = lo+utrot
    contour_circle, reform(tec(iFile,*,*)), lon, -la, $
-                   mini = mini, maxi = maxi/2, $
+                   mini = mini, maxi = maxi, $
                    nLevels = nLevels, $
                    no00 = no00, no06 = no06, no12 = no12, no18 = no18, $
                    pos = pos, $
@@ -365,63 +361,36 @@ for iFile = 0, nFiles-1 do begin
             /follow, /cell_fill, /over, $
             levels = levels
 
-   nLevels = 11
-   levels = findgen(nlevels)*(maxi-mini)/(nlevels-1) + mini
-   contour, newrat, newlon, newlat, $
-            /follow, /over, $
-            levels = levels, thick = 2
-
-   map_grid, lats = findgen(19)*10-90, glinethick=1
-   if (not AverageAll) then begin
-      map_continents
-   endif else begin
-      contour, newlat, newlon, newlat, $
-               /over, thick = 5, c_linestyle = [2,2,2,2], $
-               levels = [-60,-30,30,60]
-      dy = (pos(3)-pos(1))/6
-
-      x = pos(0)-0.01
-      y = pos(3)-dy/2
-      xyouts, x, y, 'N.P.', orient = 90, align = 0.5, /norm
-      y = pos(3)-dy*1.5
-      xyouts, x, y, 'N.M.L.', orient = 90, align = 0.5, /norm
-      y = pos(3)-dy*3
-      xyouts, x, y, 'EQ.', orient = 90, align = 0.5, /norm
-      y = pos(1)+dy*1.5
-      xyouts, x, y, 'S.M.L.', orient = 90, align = 0.5, /norm
-      y = pos(1)+dy*0.5
-      xyouts, x, y, 'S.P.', orient = 90, align = 0.5, /norm
-      dx = (pos(2)-pos(0))/8.0
-      for i=0,8 do begin
-         x = pos(0) + dx*i
-         y = pos(1)-0.02
-         xyouts, x, y, tostr(i*3,2)+' LT', /norm, align = 0.5, charsize=0.9
-      endfor
-   endelse
+   map_continents
+   map_grid, lats = findgen(19)*10-90, glinethick=3
 
    maxs = 'Max : '+string(max(newrat),format="(f5.1)")+'(10!U16!N/m!U2!N)'
 
    xp = pos(2)
-   yp = pos(1)-yr/10.0*2
+   yp = pos(1)-yr/10.0
    xyouts, xp, yp, maxs, charsize = 0.9, align = 1.0, /norm
 
    xp = pos(0)
-   yp = pos(3)+(pos(3)-pos(1))*1.1 ; pos(3)+yr/20.0
+   yp = pos(3)+yr/20.0
    xyouts, xp, yp, strmid(stime,0,9), $
-           /norm, charsize = 1.1, align = 0.0
+           /norm, charsize = 0.9, align = 0.0
   
-   if (not AverageAll) then begin
-      xp = pos(2)
-      yp = pos(3)+(pos(3)-pos(1))*1.1                  ; pos(3)+yr/20.0
-      xyouts, xp, yp, strmid(stime,10,5)+' UT', $
-              /norm, charsize = 1.1, align = 1.0
-   endif
+   xp = pos(2)
+   yp = pos(3)+yr/20.0
+   xyouts, xp, yp, strmid(stime,10,5)+' UT', $
+           /norm, charsize = 0.9, align = 1.0
 
    ctpos = [pos(2)+0.005, pos(1), pos(2)+0.02, pos(3)]
    range = [mini,maxi]
    units = 'TEC (10!U16!N/m!U2!N)'
    ncolors = 255
    plotct, ncolors, ctpos, range, units, /right
+
+;   contour, tec, data(0,*,*,40)/!dtor, data(1,*,*,40)/!dtor, $
+;            levels = findgen(31),/fill
+;   
+;   contour, tec, data(0,*,*,40)/!dtor, data(1,*,*,40)/!dtor, $
+;            levels = findgen(11)*3,/follow, /noerase
 
   closedevice
    

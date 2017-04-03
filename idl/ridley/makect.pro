@@ -15,7 +15,6 @@ pro makect, color
 
     print,'red     - white to red'
     print,'wyr     - white to red'
-    print,'wyrb    - white, yellow, red, black'
     print,'blue    - white to blue'
     print,'rwb     - red white blue'
     print,'bwr     - blue white red'
@@ -82,22 +81,6 @@ pro makect, color
               r(half:n-1) = 1.
               g(half:n-1) = 1. - findgen(n-half)/(n-half-1)
               b(half:n-1) = 0.
-            end
-
-    'wyrb' : begin
-              n3=n/3
-              r(0:n3-1) = 1.
-              g(0:n3-1) = 1.
-              b(0:n3-1) = 1. - findgen(n3)/(n3-1)
-
-              r(n3:2*n3-1) = 1.
-              g(n3:2*n3-1) = 1. - findgen(n3)/(n3-1)
-              b(n3:2*n3-1) = 0.
-
-              r(2*n3:n-1) = 1. - findgen(n-2*n3)/(n-2*n3-1)
-              g(2*n3:n-1) = 0.
-              b(2*n3:n-1) = 0.
-
             end
 
     'bwr' : begin

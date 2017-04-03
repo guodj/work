@@ -68,7 +68,7 @@ endif
 
   if (plane eq 1) then begin
 
-      for i =0,nlats-1,step*2 do begin
+      for i =0,nlats-1,step do begin
 
           if (npolar eq 1) then la = lat(0,i,k) else la = -lat(0,i,k)
 
