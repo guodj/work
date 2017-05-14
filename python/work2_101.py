@@ -775,6 +775,7 @@ def f3():
 # END
 #-------------------------------------------------------------------------------
 if __name__=='__main__':
+    import seaborn as sns
     plt.close('all')
     a = f3()
     plt.show()

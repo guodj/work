@@ -337,7 +337,7 @@ def func5():
     from matplotlib.ticker import AutoMinorLocator
 
     # Find file names (100322_230000 -> 100323_060000)
-    bdir = '/home/guod/WD2T/run_imfby/run1/data/'
+    bdir = '/home/guod/WD4T/gitm/run_imfby/run1b/data/'
     tname = os.listdir(bdir)
     tname = [i for i in tname if '.bin' in os.path.splitext(i)]
     tname = np.sort(tname)
@@ -345,8 +345,8 @@ def func5():
     #inds, = np.where(tname=='3DALL_t100322_000000.bin')[0]
     basename = tname[inds:]
 
-    pdir = '/home/guod/WD2T/run_imfby/run2/data/'
-    tname = os.listdir('/home/guod/WD2T/run_imfby/run2/data')
+    pdir = '/home/guod/WD4T/gitm/run_imfby/run2b/data/'
+    tname = os.listdir(pdir)
     tname = [i for i in tname if '.bin' in os.path.splitext(i)]
     tname = np.sort(tname)
     inds, = np.where(tname=='3DALL_t100322_230000.bin')[0]
@@ -394,7 +394,7 @@ def func5():
                         ax, hc = g3ca.contour_single(
                                 ax, 'Rho', 'pol', gg, alt=k2,
                                 nlat=nlat, slat=slat, dlat=10,
-                                dlonlt=6, zmax=zlim[k22][1], nzlevels=20,
+                                dlonlt=6, zmax=zlim[k22][1], nzlevels=21,
                                 zmin=zlim[k22][0], data_type="contour")
                         ax, hq = g3ca.vector_single(
                                 ax, gg, 'neu', 'pol', alt=k2, nlat=nlat,
@@ -405,7 +405,7 @@ def func5():
                         ax.scatter(thetap, rp, s=20, c='k')
                         # Time
                         tt = gg['time']
-                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M'))
                         ht.set_position(
                                 [ht.get_position()[0],
                                  ht.get_position()[1]+0.01])
@@ -417,8 +417,8 @@ def func5():
                         # colorbar
                         hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
                         plt.tight_layout()
-                        fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
-                                '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+'.pdf')
+                        fig.savefig('/home/guod/WD4T/work3/'+
+                                '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+'_den_wind.pdf')
                         plt.close(fig)
 
 
@@ -467,7 +467,7 @@ def func5():
                     ax.scatter(thetap, rp, s=20, c='k')
                     # Time
                     tt = g2['time']
-                    ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                    ht = plt.title(tt.strftime('%y-%m-%d %H:%M'))
                     ht.set_position(
                             [ht.get_position()[0], ht.get_position()[1]+0.01])
                     # north or south
@@ -480,8 +480,8 @@ def func5():
                     hcb = plt.colorbar(hc, ticks=np.arange(-40, 41, 10))
                     plt.tight_layout()
                     fig.savefig(
-                            '/home/guod/Documents/work/fig/run_imfby/'+
-                            '{:s}_{:d}_'.format(k3, k2)+k1+'.pdf')
+                            '/home/guod/WD4T/work3/'+
+                            '{:s}_{:d}_'.format(k3, k2)+k1+'_den_wind_diff.pdf')
                     plt.close(fig)
 
     if False:  # Temperature change in run1 and run2
@@ -526,7 +526,7 @@ def func5():
                         ax.scatter(thetap, rp, s=20, c='k')
                         # Time
                         tt = gg['time']
-                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M'))
                         ht.set_position(
                                 [ht.get_position()[0],
                                  ht.get_position()[1]+0.01])
@@ -538,9 +538,9 @@ def func5():
                         # colorbar
                         hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
                         plt.tight_layout()
-                        fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
+                        fig.savefig('/home/guod/WD4T/work3/'+
                                 '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+
-                                '.Temperature.pdf')
+                                '_Temperature.pdf')
                         plt.close(fig)
 
     if False:  # Rho(filled contour) and vorticity change in run1 and run2
@@ -592,7 +592,7 @@ def func5():
                         ax.scatter(thetap, rp, s=20, c='k')
                         # Time
                         tt = gg['time']
-                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M:%S'))
+                        ht = plt.title(tt.strftime('%y-%m-%d %H:%M'))
                         ht.set_position(
                                 [ht.get_position()[0],
                                  ht.get_position()[1]+0.01])
@@ -604,9 +604,9 @@ def func5():
                         # colorbar
                         hcb = plt.colorbar(hc)#, ticks=np.arange(-50, 51, 10))
                         plt.tight_layout()
-                        fig.savefig('/home/guod/Documents/work/fig/run_imfby/'+
+                        fig.savefig('/home/guod/WD4T/work3/'+
                                 '{:s}_{:s}_{:d}_'.format(kk, k3, k2)+k0+
-                                '.vortex.pdf')
+                                '_den_vortex.pdf')
                         plt.close(fig)
     return
 
@@ -621,7 +621,7 @@ def func6():
     from apexpy import Apex
     from matplotlib.ticker import AutoMinorLocator
     import gitm_3D_const_alt as g3ca
-    timedate = pd.Timestamp('2010-03-23 00:30:00')
+    timedate = pd.Timestamp('2010-03-23 06:00:00')
     if True:
         nlat, slat = 90, 60
     else:
@@ -643,9 +643,10 @@ def func6():
     fig3, ax3 = plt.subplots(
             len(salt), 2,  figsize=[len(salt)*3, len(salt)*3.2], subplot_kw={'polar':True})
     for k11, k1 in enumerate(['1', '2']):
-        fn = ('/home/guod/WD2T/run_imfby/run' +
-              k1+'/data/3DALL_t'+timedate.strftime('%y%m%d_%H%M%S')+'.bin')
-        g = gitm.GitmBin(fn, varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)'])
+        fn = ('/home/guod/WD4T/gitm/run_imfby/run' +
+              k1+'b/data/3DALL_t'+timedate.strftime('%y%m%d_%H%M%S')+'.bin')
+        g = gitm.GitmBin(fn, varlist=['Rho', 'V!Dn!N (north)',
+                                      'V!Dn!N (east)', 'V!Dn!N (up)'])
         gv.calc_vorticity(g, 'neutral')
         g['vt'] = dmarray(
                 np.sqrt(g['V!Dn!N (north)']**2+g['V!Dn!N (east)']**2),
@@ -785,13 +786,13 @@ def func7():
     print('Results for '+NS+'H')
     fig, ax = plt.subplots(7, 1, sharex=True, figsize=(5.3, 8))
     # Time index only for imf by
-    btime = pd.Timestamp('2010-03-21 00:00:00')
+    btime = pd.Timestamp('2010-03-20 00:00:00')
     etime = pd.Timestamp('2010-03-24 00:00:00')
     dt = pd.Timedelta('1min')
     time = pd.date_range(btime, etime, freq=dt)
     # Figure 1: IMF By
     plt.sca(ax[0])
-    fn1 = '/home/guod/WD2T/run_imfby/run1/imf1.dat'
+    fn1 = '/home/guod/WD4T/gitm/run_imfby/run1c/imf1.dat'
     imf1 = pd.read_csv(
             fn1, delim_whitespace=True, comment='#',
             header=None,
@@ -800,7 +801,7 @@ def func7():
             usecols=['by'])
     imf1 = pd.DataFrame(np.array(imf1), index=time, columns=['By'])
     plt.plot(imf1.index, imf1.By)
-    fn2 = '/home/guod/WD2T/run_imfby/run2/imf2.dat'
+    fn2 = '/home/guod/WD4T/gitm/run_imfby/run2c/imf2.dat'
     imf2 = pd.read_csv(
             fn2, delim_whitespace=True, comment='#',
             header=None,
@@ -813,7 +814,7 @@ def func7():
     plt.ylim([-10, 10])
 
     # Find file names (100322_230000 -> 100323_060000)
-    bdir = '/home/guod/WD2T/run_imfby/run1/data/'
+    bdir = '/home/guod/WD4T/gitm/run_imfby/run1c/data/'
     tname = os.listdir(bdir)
     tname = [i for i in tname if '.bin' in os.path.splitext(i)]
     tname = np.sort(tname)
@@ -821,8 +822,8 @@ def func7():
     #inds, = np.where(tname=='3DALL_t100322_000000.bin')[0]
     basename = tname[inds:]
 
-    pdir = '/home/guod/WD2T/run_imfby/run2/data/'
-    tname = os.listdir('/home/guod/WD2T/run_imfby/run2/data')
+    pdir = '/home/guod/WD4T/gitm/run_imfby/run2c/data/'
+    tname = os.listdir(pdir)
     tname = [i for i in tname if '.bin' in os.path.splitext(i)]
     tname = np.sort(tname)
     inds, = np.where(tname=='3DALL_t100322_230000.bin')[0]
@@ -830,7 +831,7 @@ def func7():
 
     # Figure 2-5: ion, neutral wind vorticity and neutral density
     # Prepare data and save
-    if False:
+    if True:
         print('Data preparation:')
         oo = pd.DataFrame()
         if False: # Run1
@@ -960,15 +961,15 @@ def func8():
     stime = pd.Timestamp('2010-03-23 00:00:00')
     etime = pd.Timestamp('2010-03-23 06:00:00')
     timeidx = pd.DatetimeIndex(start=stime, end=etime, freq='30min')
-    fn1 = ['/home/guod/WD2T/run_imfby/run1/data/3DALL_t'+
+    fn1 = ['/home/guod/WD4T/gitm/run_imfby/run1c/data/3DALL_t'+
           k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
-    fn2 = ['/home/guod/WD2T/run_imfby/run2/data/3DALL_t'+
+    fn2 = ['/home/guod/WD4T/gitm/run_imfby/run2c/data/3DALL_t'+
           k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
-    oo = pd.read_pickle('/home/guod/data/tmp/w3_05_02.dat')
+    #oo = pd.read_pickle('/home/guod/data/tmp/w3_05_02.dat')
     alt = 400
     path =  '/home/guod/Documents/work/fig/tmp/w03/'
-    altarray = oo.index.get_level_values(1).values
-    ialt = np.argmin(np.abs(altarray-alt*1000))
+    #altarray = oo.index.get_level_values(1).values
+    #ialt = np.argmin(np.abs(altarray-alt*1000))
     apex = Apex(date=2010)
     qlat, qlon = apex.convert(90, 0, source='apex', dest='geo', height=400)
     for k0 in range(len(fn1)):
@@ -985,10 +986,11 @@ def func8():
         qlt = g2['time'].hour+g2['time'].minute/60+g2['time'].second/3600+qlon/15
         qtheta, qr = qlt/12*np.pi, 90-qlat
         # location of density minima
-        oot = oo.loc[(g2['time'], oo.index.get_level_values(1)[ialt]), :]
-        lat, lon = oot['lat'], oot['lon']
-        lt = g2['time'].hour+g2['time'].minute/60+g2['time'].second/3600+lon/15
-        theta, r = lt/12*np.pi, 90-lat
+        #oot = oo.loc[(g2['time'], oo.index.get_level_values(1)[ialt]), :]
+        #lat, lon = oot['lat'], oot['lon']
+        #lt = g2['time'].hour+g2['time'].minute/60+g2['time'].second/3600+lon/15
+        #theta, r = lt/12*np.pi, 90-lat
+
         # Density and wind run2
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -998,11 +1000,11 @@ def func8():
         ax, hv = g3ca.vector_single(
                 ax, g2, 'neu', 'pol', alt=alt, nlat=90, slat=60,
                 scale=1500, alpha=0.7)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_den_win_run2_'+g1['time'].strftime('%H%M')+'.pdf')
-        plt.figure()
+
         # Density and wind run1
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1016,8 +1018,9 @@ def func8():
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_den_win_run1_'+g1['time'].strftime('%H%M')+'.pdf')
-        plt.figure()
+
         # Density and wind difference
+        plt.figure()
         ax = plt.subplot(polar=True)
         ax, hc = g3ca.contour_diff(
                 ax, 'Rho', 'pol', g1, g2, alt=alt, nlat=90, slat=60,
@@ -1025,10 +1028,11 @@ def func8():
         ax, hv = g3ca.vector_diff(
                 ax, g1, g2, 'neu', 'pol', alt=alt, nlat=90, slat=60,
                 scale=1000, alpha=0.7)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_den_win_diff_'+g1['time'].strftime('%H%M')+'.pdf')
+
         # Temperature difference
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1036,10 +1040,11 @@ def func8():
                 ax, 'Temperature', 'pol', g1, g2, alt=alt, nlat=90, slat=60,
                 diff_type='absolute', nzlevels=30, zmin=-200, zmax=200)
         plt.colorbar(hc)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_T_diff_'+g1['time'].strftime('%H%M')+'.pdf')
+
         # Temperature run1
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1058,7 +1063,7 @@ def func8():
                 ax, 'Temperature', 'pol', g2, alt=alt, nlat=90, slat=60,
                 nzlevels=20, zmin=1350, zmax=1650)
         plt.colorbar(hc)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_T_run2_'+g1['time'].strftime('%H%M')+'.pdf')
@@ -1069,7 +1074,7 @@ def func8():
                 ax, 'V!Dn!N (up)', 'pol', g1, g2, alt=alt, nlat=90, slat=60,
                 diff_type='absolute', nzlevels=30, zmin=-30, zmax=30)
         plt.colorbar(hc)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_vup_diff_'+g1['time'].strftime('%H%M')+'.pdf')
@@ -1080,7 +1085,7 @@ def func8():
                 ax, 'V!Dn!N (up)', 'pol', g2, alt=alt, nlat=90, slat=60,
                 nzlevels=30, zmin=-50, zmax=50)
         plt.colorbar(hc)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_vup_run2_'+g1['time'].strftime('%H%M')+'.pdf')
@@ -1091,7 +1096,7 @@ def func8():
                 ax, 'V!Dn!N (up)', 'pol', g1, alt=alt, nlat=90, slat=60,
                 nzlevels=30, zmin=-50, zmax=50)
         plt.colorbar(hc)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_vup_run1_'+g1['time'].strftime('%H%M')+'.pdf')
@@ -1102,7 +1107,7 @@ def func8():
                 ax, 'divergence', 'pol', g2, alt=alt, nlat=90, slat=60,
                 nzlevels=20, zmin=-0.0005, zmax=0.0005)
         plt.colorbar(hc)
-        ax.scatter(theta, r, color='green')
+        #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
         plt.savefig(path+'w03_func08_div_run2_'+g1['time'].strftime('%H%M')+'.pdf')
@@ -1111,18 +1116,21 @@ def func8():
 
 def func9():
     import gitm
+    import seaborn
     # UT change in density
-    dt = pd.date_range(start='2010-03-22 00:00:00', end='2010-03-23 06:00:00',
-                       freq='30min')
-    path = '/home/guod/WD2T/run_imfby/run1/data/'
+    dt = pd.date_range(start='2010-03-20 00:00:00', end='2010-03-23 06:00:00',
+                       freq='1h')
+    path = '/home/guod/WD4T/gitm/run_imfby/run2c/data/'
     fn = (path+'3DALL_t{:s}.bin'.format(k.strftime('%y%m%d_%H%M%S')) for k in dt)
     nlat, slat, alt = 90, 60, 400
-    if False: # data preparation
+    if True: # data preparation
         oo = pd.DataFrame(columns=('time', 'rhomean', 'tempmean'))
         for k00, k0 in enumerate(fn):
+            if not os.path.isfile(k0):
+                continue
             g = gitm.GitmBin(k0, varlist=['Rho', 'Temperature'])
             ilat = (g['dLat'][0, :, 0]>slat) & (g['dLat'][0, :, 0]<nlat)
-            ilon = (g['dLon'][:, 0, 0]>0) & (g['dLon'][:, 0, 0]<360)
+            ilon = (g['dLon'][:, 0, 0]>=0) & (g['dLon'][:, 0, 0]<=360)
             ialt = np.argmin(np.abs(g['Altitude'][0, 0, :]-alt*1000))
             gt = g['time']
             rho, temp, lat = (g[k][ilon][:, ilat][:, :, ialt] for k in (
@@ -1131,25 +1139,35 @@ def func9():
             tempmean = np.mean(temp*np.cos(lat))/np.mean(np.cos(lat))
             oo = oo.append(pd.DataFrame(
                 [[gt, rhomean, tempmean]], columns=('time', 'rhomean', 'tempmean')))
-        pd.to_pickle(oo, '/home/guod/data/tmp/w3_09.dat')
-    oo = pd.read_pickle('/home/guod/data/tmp/w3_09.dat')
+        if path[-8] == '2':
+            pd.to_pickle(oo, '/home/guod/data/tmp/w3_09_2.dat')
+        if path[-8] == '1':
+            pd.to_pickle(oo, '/home/guod/data/tmp/w3_09_1.dat')
+    if path[-8] == '2':
+        oo = pd.read_pickle('/home/guod/data/tmp/w3_09_2.dat')
+    if path[-8] == '1':
+        oo = pd.read_pickle('/home/guod/data/tmp/w3_09_1.dat')
     fig, ax = plt.subplots(2, 1, sharex=True)
     plt.sca(ax[0])
     plt.plot(oo['time'], oo['rhomean'])
     plt.ylabel(r'$\rho$')
+    plt.ylim(4.5*1e-12, 17.5*1e-12)
     plt.sca(ax[1])
     plt.plot(oo['time'], oo['tempmean'])
     plt.ylabel(r'T')
-    plt.xlim('2010-03-22 00:00:00', '2010-03-23 06:00:00')
-    xticks = pd.date_range('2010-03-22 00:00:00', '2010-03-23 06:00:00', freq='6H')
+    plt.xlim('2010-03-20 00:00:00', '2010-03-23 06:00:00')
+    #plt.ylim(1300, 1500)
+    xticks = pd.date_range('2010-03-20 00:00:00', '2010-03-23 06:00:00', freq='6H')
     plt.xticks(xticks, xticks.strftime('%H'))
     plt.xlabel('UT')
+    return
 
 
 
 # END
 #------------------------------------------------------------
 if __name__ == '__main__':
+    import seaborn as sns
     plt.close('all')
     a = func9()
     plt.show()

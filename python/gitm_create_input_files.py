@@ -14,15 +14,15 @@ import matplotlib.pyplot as plt
 #------------------------------------------------------------
 # Basic information
 homepath = os.environ.get('HOME')
-btime = pd.Timestamp('2010-03-21 00:00:00')
-etime = pd.Timestamp('2010-03-25 00:00:00')
+btime = pd.Timestamp('2010-03-20 00:00:00')
+etime = pd.Timestamp('2010-03-24 00:00:00')
 dt = pd.Timedelta('1min')
 time = pd.date_range(btime, etime, freq=dt)
 #----------------------------------------
 # Write imf.dat
 dim = time.shape
 imfby1 = np.ones(dim)*5 # run1
-reversalt = etime-pd.Timedelta('12hour')
+reversalt = etime-pd.Timedelta('24hour')
 mm = time>reversalt
 imfby2 = imfby1.copy()
 imfby2[mm] = imfby2[mm]-10

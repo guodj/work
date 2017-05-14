@@ -3,10 +3,10 @@ pwd=$PWD
 cd $HOME/opt/xmind/XMind_amd64/
 if [ "$#" == 1 ];then
     if [[ "$1" =~ '/' ]];then
-        ./XMind $1 2> /dev/null &
+        nohup ./XMind $1 2> /dev/null &
     else
-        ./XMind $pwd/$1 2> /dev/null &
+        nohup ./XMind $pwd/$1 2> /dev/null &
     fi
 elif [ "$#" == 0 ];then 
-    ./XMind 2> /dev/null  &
+    nohup ./XMind 2> /dev/null  &
 fi

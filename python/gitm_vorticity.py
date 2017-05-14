@@ -11,7 +11,6 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 def calc_vorticity(gdata, neuion='neutral', name='nvorticity', component='radial'):
-    from spacepy.datamodel import dmarray
     '''
     calculate the vertical vorticity in a spherical coordinate.
     input:
@@ -22,6 +21,7 @@ def calc_vorticity(gdata, neuion='neutral', name='nvorticity', component='radial
     return:
         add 'nvorticity' or 'ivorticity' to gdata
     '''
+    from spacepy.datamodel import dmarray
     # Calculate vorticity
     lat, lon, alt = (gdata[k] for k in ['Latitude', 'Longitude', 'Altitude'])
     if 'neu' in neuion.lower():

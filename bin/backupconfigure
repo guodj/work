@@ -1,11 +1,9 @@
 #!/bin/bash
-export LANG=C
-PATH=/bin:/usr/bin:/sbin:/usr/sbin; export PATH
-configuredir=$HOME/configure_files/
-rsync -a $HOME/{.vimrc,.vim,.bashrc,.gitconfig,.muttrc,.tmux.conf,.getmail,.dir_colors} $configuredir
-rsync -a $HOME/anaconda3/lib/python3.5/site-packages/apexpy/{apex.py.gdj,helpers.py.gdj} "$configuredir"apexpy/
-rsync -a $HOME/.config/matplotlib/matplotlibrc "$configuredir".config/matplotlib/
-cd $configuredir
+cfdir="$HOME"/configure_files/
+rsync -a "$HOME"/{.vimrc,.bashrc,.gitconfig,.muttrc,.msmtprc,.tmux.conf} "$cfdir"
+rsync -a "$HOME"/anaconda3/lib/python3.5/site-packages/apexpy/{apex.py.gdj,helpers.py.gdj} "$cfdir"apexpy/
+rsync -a "$HOME"/.config/matplotlib/matplotlibrc "$cfdir".config/matplotlib/
+cd "$cfdir"
 read -p "Commit description: " desc
 git add --all
 git commit -m "$desc"

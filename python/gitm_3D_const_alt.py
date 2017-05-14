@@ -49,21 +49,25 @@ def _contour_data(
     if ialt == None:
         altitude = gdata['Altitude'][0, 0, :]
         ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
+
     # Confine latitudes and longitudes
     latitude = gdata['dLat'][0, :, 0]
     ilat = (latitude >= slat) & (latitude <= nlat)
     longitude = gdata['dLon'][:, 0, 0]
     ilon = (longitude>=0) & (longitude<=360)
+
     # Find the data
     lat0, lon0, lt0, zdata0 = (
             gdata[k][ilon, ...][:, ilat, :][..., ialt].copy()
             for k in ['dLat', 'dLon', 'LT', zkey])
     lon0[lon0>180]=lon0[lon0>180]-360
     lonlt0 = lt0 if useLT else lon0
+
     # Sort LT or longitude
     ilt = np.argmin(lonlt0[:,0])
     lat0, lonlt0, zdata0 = (
             np.roll(k, -ilt, 0) for k in [lat0, lonlt0, zdata0])
+
     # Extend Lon/LT (for contour)
     maxlonlt = 24 if useLT else 360
     lat0, lonlt0, zdata0 = (
@@ -152,7 +156,8 @@ def _contour_data_mag(
 def _contour_plot(
         ax, plot_type, lat0, lonlt0, zdata0, nlat=90, slat=-90, dlat=10,
         dlonlt=6, lonlt00='S', zmax=None, zmin=None, nzlevels=20, zcolor=None,
-        data_type="contour", fill=True, useLT=True, log10=False, *args, **kwargs):
+        earth=False, data_type="contour", fill=True, useLT=True, log10=False,
+        *args, **kwargs):
     '''
     Creates a rectangular or polar map projection plot for a specified latitude
     range.
@@ -171,7 +176,8 @@ def _contour_plot(
            nzlevels   = split [zmin, zmax] into nzlevels sets (default=20)
            zcolor     = Color map for the z variable.  If none, will be chosen
                         based on the z range (default=None)
-           data_type  = scatter or contour (default=scatter)
+           earth      = with coastline? (default=False)
+           data_type  = scatter or contour (default=contour)
            fill       = whether to use contour fill (default=True)
            useLT      = Whether you use LT or Longitude (default LT)
            log10      = whether the log10(zdata0) is used
