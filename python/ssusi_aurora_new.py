@@ -17,6 +17,7 @@ LLEFTOT = 10  # lower limit of total energy flux in each bin, for method 1,2
 datapath = '/home/guod/WD4T/ssusi/'
 savepath = '/home/guod/WD4T/work4/'
 dratio = 0.05 # flag 5%, 10%, ..., 95% of the total energy flux
+LLSMP = 200 # lower limit of samples
 
 
 def image_energy_flux_one_file(
@@ -238,7 +239,7 @@ def find_parameters():
     import os
     import fnmatch
     import omni
-    # Read IMF By, Bz and AE in 2013
+    # Read IMF By, Bz and AE
     print('Begin to read solar wind speed, IMF, AE and Dst')
     imfae = omni.get_omni(
             bdate='2011-1-1', edate='2015-1-1',
@@ -273,24 +274,25 @@ def find_parameters():
                         pp3.append(pp3t)
                         pp4.append(pp4t)
 
-                        # fig = plt.figure(figsize=(8.7, 4.4))
-                        # for k44, k4 in enumerate(['N', 'S']):
-                        #     ax = plt.subplot(1, 2, k44+1, polar=True)
-                        #     image_energy_flux_one_file(
-                        #             ax, datapath+k3, k4, s=1, vmin=0, vmax=5,
-                        #             alpha=1)
-                        #     fp = (pp2t.ns == k4).values
-                        #     for k55, k5 in enumerate(range(int(1/dratio-1))):
-                        #         r = 90-pp1t[fp, k55]
-                        #         theta = pp2t.loc[fp, 'mlt']/12*np.pi
-                        #         ax.scatter(theta, r, c='b', s=1, alpha=0.5)
-                        #     ax.set_title(k4+'H')
-                        # plt.tight_layout()
-                        # plt.savefig(
-                        #         savepath +
-                        #         'method5/F{:d}_2013{:02d}{:02d}_{:s}.png'.
-                        #         format(k0, k1, k2, k3[-14:-9]))
-                        # plt.close(fig)
+                        if False:
+                            fig = plt.figure(figsize=(8.7, 4.4))
+                            for k44, k4 in enumerate(['N', 'S']):
+                                ax = plt.subplot(1, 2, k44+1, polar=True)
+                                image_energy_flux_one_file(
+                                        ax, datapath+k3, k4, s=1, vmin=0,
+                                        vmax=5, alpha=1)
+                                fp = (pp2t.ns == k4).values
+                                for k55, k5 in enumerate(range(int(1/dratio-1))):
+                                    r = 90-pp1t[fp, k55]
+                                    theta = pp2t.loc[fp, 'mlt']/12*np.pi
+                                    ax.scatter(theta, r, c='b', s=1, alpha=0.5)
+                                ax.set_title(k4+'H')
+                            plt.tight_layout()
+                            plt.savefig(
+                                    savepath +
+                                    'method5/F{:d}_2013{:02d}{:02d}_{:s}.png'.
+                                    format(k0, k1, k2, k3[-14:-9]))
+                            plt.close(fig)
                     else:
                         print('    No parameters found in this file')
         pp1 = np.concatenate(pp1, axis=0)
@@ -309,33 +311,41 @@ def find_parameters():
 
 
 def aurora_reconstruction_statistics(
-        ax, sat='F16', ns='S', AErange=[0, 50], cmap='hot_r', whichp='ef'):
+        ax, AErange=[0, 50], cmap='viridis', whichp='ef', vmin=0, vmax=5):
     """
     Reconstruct Aurora to a map
     """
-    s=4
+    s=5
     marker='o'
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(
-            savepath+'method5/'+'{:s}.dat'.format(sat))
-    fp = ((Mixps.ns == ns) & (Mixps.AE>AErange[0]) &
-          (Mixps.AE<AErange[1])).values
-    mlats1, mixps1, efs1, avees1 = (
+    # F16
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
+    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
+    mlats16_1, mixps16_1, efs16_1, avees16_1 = (
             MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
+    # F17
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
+    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
+    mlats17_1, mixps17_1, efs17_1, avees17_1 = (
+            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
+    # combine
+    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
+    mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
+    efs1 =np.concatenate((efs16_1, efs17_1), axis=0)
+    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
+
     mlatsout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
     psout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
     if whichp == 'ef':
-        vmin, vmax = 0, 6
         usep = efs1
     else:
-        vmin, vmax = 0, 5
         usep = avees1
     for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
         fp = (mixps1.mlt == k0).values
-        if np.sum(fp) < 200:
+        if np.sum(fp) < LLSMP:
             continue
         mlatsout[:, k00] = np.median(mlats1[fp, :], axis=0)
         psout[:, k00] = np.median(usep[fp, :], axis=0)
-        ax.scatter(
+        hs = ax.scatter(
                 (np.ones(mlatsout[:, k00].shape)*k0)/12*np.pi,
                 90-mlatsout[:, k00],
                 vmin=vmin, vmax=vmax, c=psout[:, k00],
@@ -398,7 +408,7 @@ def statistics():
     #                for k33 , mlt in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
     #                    fp = ((p2.ns==ns) & (p2.AE>AEranget[0]) &
     #                          (p2.AE<AEranget[1]) & (p2.mlt==mlt)).values
-    #                    if np.sum(fp) < 200:
+    #                    if np.sum(fp) < LLSMP:
     #                        continue
     #                    # plt.scatter(mlt/12*np.pi, 90-np.median(p1[fp, 9]),
     #                    #             c=cc, s=s)
@@ -421,7 +431,7 @@ def statistics():
     #            for k22 , mlt in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
     #                fp = ((p2.ns==ns) & (p2.AE>AEranget[0]) &
     #                      (p2.AE<AEranget[1]) & (p2.mlt==mlt)).values
-    #                if np.sum(fp) < 200:
+    #                if np.sum(fp) < LLSMP:
     #                    continue
     #                #plt.scatter(mlt/12*np.pi, 90-np.median(p1[fp, 9]),
     #                #            c=cc[k00], s=s)
@@ -448,7 +458,7 @@ def statistics():
     #            for k22, k2 in enumerate(x):
     #                fp1 = ((p2.ns==ns) & (p2.AE>AEranget[0]) &
     #                       (p2.AE<AEranget[1]) & (p2.mlt==k2)).values
-    #                if np.sum(fp1)<200:
+    #                if np.sum(fp1)<LLSMP:
     #                    continue
     #                # plt.boxplot(p1[fp1, idratio], notch=True,
     #                #             positions=[k2], widths=0.6)
@@ -477,7 +487,7 @@ def statistics():
     #            for k22, k2 in enumerate(x):
     #                fp1 = ((p2.ns==ns) & (p2.AE>AEranget[0]) &
     #                       (p2.AE<AEranget[1]) & (p2.mlt==k2)).values
-    #                if np.sum(fp1)<200:
+    #                if np.sum(fp1)<LLSMP:
     #                    continue
     #                # plt.boxplot(p3[fp1, idratio], notch=True,
     #                #             positions=[k2], widths=0.6)
@@ -504,7 +514,7 @@ def epstein(x, a, b, c, d):
     return a*np.exp((x-b)/c)/((1+np.exp((x-b)/d))**2)
 
 
-def epstein_fourier_fit(sat='F16', ns='S', AErange=(0, 50), n=4):
+def epstein_fourier_fit_remove(sat='F16', ns='S', AErange=(0, 50), n=4):
     from scipy.optimize import curve_fit
     MLats, Mixps, EFs, AveEs = pd.read_pickle(
             savepath+'method5/'+'{:s}.dat'.format(sat))
@@ -553,7 +563,7 @@ def epstein_fourier_fit(sat='F16', ns='S', AErange=(0, 50), n=4):
     return fgp4ef, fgp4avee
 
 
-def fourier_fit(AErange=(0, 50), n=4):
+def fourier_fit(AErange=(1000, 1500), n=2):
     # F16
     MLats16, Mixps16, EFs16, AveEs16 = pd.read_pickle(
             savepath+'method5/F16.dat')
@@ -579,7 +589,7 @@ def fourier_fit(AErange=(0, 50), n=4):
     aveesout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
     for imlt, mlt in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
         fp = (mixps1.mlt==mlt).values
-        if np.sum(fp) < 200:
+        if np.sum(fp) < LLSMP:
             continue
         mlatsout[:, imlt] = np.median(mlats1[fp, :], axis=0)
         efsout[:, imlt] = np.median(efs1[fp, :], axis=0)
@@ -589,13 +599,15 @@ def fourier_fit(AErange=(0, 50), n=4):
         cossin[:, k0*2] = np.cos(k0*np.pi*np.arange(BinMLT/2, 24, BinMLT)/12)
         cossin[:, k0*2+1] = np.sin(k0*np.pi*np.arange(BinMLT/2, 24, BinMLT)/12)
     fp = ~np.isnan(mlatsout[0, :])
-    fg4mlat = np.linalg.lstsq(cossin[fp, :], mlatsout[:, fp].T)[0]
-    #mlat50p = mlatsout[9, :]  # 50% of total energy
-    #fg4mlat50p = np.linalg.lstsq(cossin[fp, :], mlat50p[fp])[0]
-    #dmlatsout = mlatsout - mlat50p.reshape(1, -1)
-    #fg4dmlat = np.linalg.lstsq(cossin[fp, :], dmlatsout[:, fp].T)[0]
 
-    #fg4mlat = fg4dmlat + fg4mlat50p.reshape(-1, 1)
+    fg4mlat = np.linalg.lstsq(cossin[fp, :], mlatsout[:, fp].T)[0]
+
+    # mlat50p = mlatsout[9, :]  # 50% of total energy
+    # fg4mlat50p = np.linalg.lstsq(cossin[fp, :], mlat50p[fp])[0]
+    # dmlatsout = mlatsout - mlat50p.reshape(1, -1)
+    # fg4dmlat = np.linalg.lstsq(cossin[fp, :], dmlatsout[:, fp].T)[0]
+    # fg4mlat = fg4dmlat + fg4mlat50p.reshape(-1, 1)
+
     fg4ef = np.linalg.lstsq(cossin[fp, :], efsout[:, fp].T)[0]
     fg4avee = np.linalg.lstsq(cossin[fp, :], aveesout[:, fp].T)[0]
     if True:   # for test
@@ -611,10 +623,10 @@ def fourier_fit(AErange=(0, 50), n=4):
 
         fig = plt.figure()
         ax = plt.subplot()
-        for k0 in np.arange(10, 15):
+        for k0 in np.arange(9, 16):
             imlt, = np.where(mlt==k0)
             plt.plot(mlatst[imlt, :].reshape(-1), efst[imlt, :].reshape(-1))
-        plt.xlim(75, 80)
+        plt.xlim(70, 80)
         plt.ylim(0, 5)
         fig = plt.figure()
         ax = plt.subplot()
@@ -624,13 +636,119 @@ def fourier_fit(AErange=(0, 50), n=4):
         for k0 in np.arange(int(1/dratio-1)):
             plt.scatter(mlt/12*np.pi,
                         90-mlatst[:, k0], s=3, c = aveest[:, k0],
-                        vmin=0, vmax=6, cmap='hot_r')
+                        vmin=0, vmax=6, cmap='viridis')
         mf.set_polar(ax, boundinglat=60)
         plt.show()
+    return fg4mlat, fg4ef, fg4avee
+
+
+def fourier_fit_save_parameters():
+    AErange = np.ones([8, 2])
+    AErange[:, 0] = np.arange(0, 400, 50)
+    AErange[:, 1] = AErange[:, 0]+50
+    fgn4 = []
+    for k0 in range(8):
+        print(4, ', ', AErange[k0, :])
+        fg4mlat, fg4ef, fg4avee = fourier_fit(AErange=AErange[k0, :], n=4)
+        fgn4.append(np.stack([fg4mlat, fg4ef, fg4avee], axis=2))
+    fgn4 = np.stack(fgn4, axis=3)
+    fgn6 = []
+    for k0 in range(8):
+        print(6, ', ', AErange[k0, :])
+        fg4mlat, fg4ef, fg4avee = fourier_fit(AErange=AErange[k0, :], n=6)
+        fgn6.append(np.stack([fg4mlat, fg4ef, fg4avee], axis=2))
+    fgn6 = np.stack(fgn6, axis=3)
+    pd.to_pickle((fgn4, fgn6), '/home/guod/WD4T/work4/method5/fg.dat')
     return
 
 
 def aurora_reconstruction_fit(
+        ax, AErange=[0, 50], n=4, whichp='ef', vmin=0, vmax=8, cmap='viridis',
+        s=3):
+    iAE = int(AErange[0]/50)
+    fgn4, fgn6 = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.dat')
+    if n == 4:
+        fg = fgn4[:, :, :, iAE]
+    elif n == 6:
+        fg = fgn6[:, :, :, iAE]
+    mlt = np.arange(0, 24, 0.1)
+    cossin = np.ones((len(mlt), (n+1)*2))*np.nan
+    for k0 in np.arange(n+1):
+        cossin[:, k0*2] = np.cos(k0*np.pi*mlt/12)
+        cossin[:, k0*2+1] = np.sin(k0*np.pi*mlt/12)
+    mlat = np.dot(cossin, fg[:, :, 0])
+    ef = np.dot(cossin, fg[:, :, 1])
+    avee = np.dot(cossin, fg[:, :, 2])
+    yy = ef if whichp == 'ef' else avee
+    for imlt, mltv in enumerate(mlt):
+        hc =ax.scatter(np.ones(mlat.shape[1])*mltv/12*np.pi, 90-mlat[imlt, :],
+                       c=yy[imlt, :], s=s, vmin=vmin, vmax=vmax, cmap=cmap)
+    return ax, hc
+
+
+def diff_fit_statistics(
+        ax, AErange=[0, 50], cmap='viridis', whichp='ef', vmin=0, vmax=5,
+        n=4, s=5):
+    # statistics
+    # F16
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
+    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
+    mlats16_1, mixps16_1, efs16_1, avees16_1 = (
+            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
+    # F17
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
+    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
+    mlats17_1, mixps17_1, efs17_1, avees17_1 = (
+            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
+    # combine
+    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
+    mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
+    efs1 =np.concatenate((efs16_1, efs17_1), axis=0)
+    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
+
+    mlatsout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
+    psout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
+    if whichp == 'ef':
+        usep = efs1
+    else:
+        usep = avees1
+    mlt = np.arange(BinMLT/2, 24, BinMLT)
+    for k00, k0 in enumerate(mlt):
+        fp = (mixps1.mlt == k0).values
+        if np.sum(fp) < LLSMP:
+            continue
+        mlatsout[:, k00] = np.median(mlats1[fp, :], axis=0)
+        psout[:, k00] = np.median(usep[fp, :], axis=0)
+    fp = ~np.isnan(mlatsout[0, :])
+    mlt = mlt[fp]
+    mlatsout = mlatsout[:, fp].T
+    psout = psout[:, fp].T
+
+    # fit
+    iAE = int(AErange[0]/50)
+    fgn4, fgn6 = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.dat')
+    if n == 4:
+        fg = fgn4[:, :, :, iAE]
+    elif n == 6:
+        fg = fgn6[:, :, :, iAE]
+    cossin = np.ones((len(mlt), (n+1)*2))*np.nan
+    for k0 in np.arange(n+1):
+        cossin[:, k0*2] = np.cos(k0*np.pi*mlt/12)
+        cossin[:, k0*2+1] = np.sin(k0*np.pi*mlt/12)
+    mlatfit = np.dot(cossin, fg[:, :, 0])
+    effit = np.dot(cossin, fg[:, :, 1])
+    aveefit = np.dot(cossin, fg[:, :, 2])
+    psfit = effit if whichp == 'ef' else aveefit
+
+    for imlt, mltv in enumerate(mlt):
+        hc =ax.scatter(
+                np.ones(mlatfit.shape[1])*mltv/12*np.pi, 90-mlatfit[imlt, :],
+                c=(100*(psfit-psout)/psout)[imlt, :],
+                s=s, vmin=vmin, vmax=vmax, cmap=cmap)
+    return ax, hc
+
+
+def aurora_reconstruction_fit_remove(
         sat='F16', ns='S', AErange=(0, 50), n=4, whichp='ef'):
     fgp4ef, fgp4avee = epstein_fourier_fit(sat, ns, AErange, n)
     fg = fgp4ef if whichp=='ef' else fgp4avee
@@ -648,7 +766,7 @@ def aurora_reconstruction_fit(
     mlt, mlat = np.meshgrid(mlt, mlat)
     plt.close('all')
     ax = plt.subplot(polar=True)
-    plt.contourf(mlt/12*np.pi, 90-mlat, yout, cmap='hot_r',
+    plt.contourf(mlt/12*np.pi, 90-mlat, yout, cmap='viridis',
                  levels=np.arange(100), zorder=0, extend='both')
     mf.set_polar(ax, boundinglat=60)
     plt.show()
@@ -734,28 +852,29 @@ if __name__ == '__main__':
     #     ax[2], fn, ns='S', vmin=0, vmax=5, kernel_size=5)
     # plt.show()
 
-    # Aurora reconstruction
-    # plt.close('all')
-    # fig, ax = plt.subplots(2, 4, subplot_kw={'polar': True}, figsize=(14, 8))
-    # AErange = np.ones([8, 2])
-    # AErange[:, 0] = np.arange(0, 400, 50)
-    # AErange[:, 1] = AErange[:, 0]+50
-    # whichp = 'avees' if False else 'ef'
-    # for k0 in range(2):
-    #     for k1 in range(4):
-    #         axt = ax[k0, k1]
-    #         a, b = aurora_reconstruction_statistics(
-    #                 axt, AErange=AErange[k0*4+k1, :], whichp=whichp)
-    #         mf.set_polar(axt, boundinglat=60)
-    #         axt.set_title('AE: [{:.0f}, {:.0f}]'.\
-    #                 format(AErange[k0*4+k1, 0], AErange[k0*4+k1, 1]), y=1.06)
-    # cax = plt.axes([0.35, 0.06, 0.3, 0.03])
-    # plt.colorbar(b, cax=cax, orientation='horizontal')
-    # if whichp == 'ef':
-    #     plt.xlabel('Energy flux (ergs/s/cm$^2$)')
-    # else:
-    #     plt.xlabel('Mean Energy (keV)')
-    # plt.show()
+    #  Aurora reconstruction
+    #  plt.close('all')
+    #  fig, ax = plt.subplots(2, 4, subplot_kw={'polar': True}, figsize=(14, 8))
+    #  AErange = np.ones([8, 2])
+    #  AErange[:, 0] = np.arange(0, 400, 50)
+    #  AErange[:, 1] = AErange[:, 0]+50
+    #  whichp = 'avees' if False else 'ef'
+    #  for k0 in range(2):
+    #      for k1 in range(4):
+    #          axt = ax[k0, k1]
+    #          a, b = aurora_reconstruction_statistics(
+    #                  axt, AErange=AErange[k0*4+k1, :],
+    #                  whichp=whichp, vmin=0, vmax=5)
+    #          mf.set_polar(axt, boundinglat=60)
+    #          axt.set_title('AE: [{:.0f}, {:.0f}]'.\
+    #                  format(AErange[k0*4+k1, 0], AErange[k0*4+k1, 1]), y=1.06)
+    #  cax = plt.axes([0.35, 0.06, 0.3, 0.03])
+    #  plt.colorbar(b, cax=cax, orientation='horizontal')
+    #  if whichp == 'ef':
+    #      plt.xlabel('Energy flux (ergs/s/cm$^2$)')
+    #  else:
+    #      plt.xlabel('Mean Energy (keV)')
+    #  plt.show()
 
     # plt.close('all')
     # fn = (datapath+'PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16'
@@ -773,10 +892,53 @@ if __name__ == '__main__':
 
     # statistics()
 
-    # a, b = epstein_fourier_fit()
-    # aurora_reconstruction_fit()
+    # fourier_fit_save_parameters()
+
+    # What does the fitting aurora look like
+    # plt.close('all')
+    # fig, ax = plt.subplots(2, 4, subplot_kw={'polar': True}, figsize=(14, 8))
+    # AErange = np.ones([8, 2])
+    # AErange[:, 0] = np.arange(0, 400, 50)
+    # AErange[:, 1] = AErange[:, 0]+50
+    # whichp = 'avees' if True else 'ef'
+    # n = 6
+    # for k0 in range(2):
+    #     for k1 in range(4):
+    #         axt = ax[k0, k1]
+    #         axt, hc = aurora_reconstruction_fit(
+    #                 axt, AErange=AErange[k0*4+k1, :], whichp=whichp, n=n,
+    #                 vmin=0, vmax=5)
+    #         axt.set_title('AE: [{:.0f}, {:.0f}]'.\
+    #                 format(AErange[k0*4+k1, 0], AErange[k0*4+k1, 1]), y=1.06)
+    #         mf.set_polar(axt, boundinglat=60)
+    # cax = plt.axes([0.35, 0.06, 0.3, 0.03])
+    # plt.colorbar(hc, cax=cax, orientation='horizontal')
+    # plt.show()
 
     fourier_fit()
+
+    # difference between statistics and fourier fit
+    # plt.close('all')
+    # whichp = 'avees' if True else 'ef'
+    # n = 4
+    # fig, ax = plt.subplots(2, 4, subplot_kw={'polar': True}, figsize=(14, 8))
+    # AErange = np.ones([8, 2])
+    # AErange[:, 0] = np.arange(0, 400, 50)
+    # AErange[:, 1] = AErange[:, 0]+50
+    # for k0 in range(2):
+    #     for k1 in range(4):
+    #         axt = ax[k0, k1]
+    #         axt, hc = diff_fit_statistics(
+    #             axt, AErange=AErange[k0*4+k1, :], cmap='seismic',
+    #             whichp=whichp, vmin=-10, vmax=10,
+    #             n=n, s=3)
+    #         axt.set_title('AE: [{:.0f}, {:.0f}]'.\
+    #                 format(AErange[k0*4+k1, 0], AErange[k0*4+k1, 1]), y=1.06)
+    #         mf.set_polar(axt, boundinglat=60)
+    # cax = plt.axes([0.35, 0.06, 0.3, 0.03])
+    # plt.colorbar(hc, cax=cax, orientation='horizontal')
+    # plt.show()
+
 
     print('----------------------------------------------------------------')
     print('Remaining problems:')
