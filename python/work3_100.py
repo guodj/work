@@ -11,6 +11,16 @@ from champ_grace import *
 from goce import *
 from omni import *
 import myfunctions as mf
+import seaborn as sns
+from apexpy import Apex
+import os
+import gitm
+import gitm_3D_const_alt as g3ca
+import matplotlib.animation as animation
+import gitm_vorticity as gv
+from apexpy import Apex
+from matplotlib.ticker import AutoMinorLocator
+sns.set('paper', 'whitegrid')
 
 DATADIR = os.environ.get('DATAPATH')
 def func1():
@@ -638,10 +648,12 @@ def func6():
     # Figure 2: density change versus vorticity
     salt = [200, 400]
     fig2, ax2 = plt.subplots(
-            len(salt), 2, sharex=True, sharey='row', figsize=[len(salt)*3, len(salt)*3.2])
+            len(salt), 2, sharex=True, sharey='row',
+            figsize=[len(salt)*3, len(salt)*3.2])
     # Figure 3: density and vorticity changes versus LT and lat
     fig3, ax3 = plt.subplots(
-            len(salt), 2,  figsize=[len(salt)*3, len(salt)*3.2], subplot_kw={'polar':True})
+            len(salt), 2,  figsize=[len(salt)*3,
+            len(salt)*3.2], subplot_kw={'polar':True})
     for k11, k1 in enumerate(['1', '2']):
         fn = ('/home/guod/WD4T/gitm/run_imfby/run' +
               k1+'b/data/3DALL_t'+timedate.strftime('%y%m%d_%H%M%S')+'.bin')
@@ -773,14 +785,6 @@ def func6():
 
 def func7():
     # Time constant of the density response to IMF By reversal
-    from apexpy import Apex
-    import os
-    import gitm
-    import gitm_3D_const_alt as g3ca
-    import matplotlib.animation as animation
-    import gitm_vorticity as gv
-    from apexpy import Apex
-    from matplotlib.ticker import AutoMinorLocator
 
     NS = 'N'
     print('Results for '+NS+'H')
@@ -814,7 +818,7 @@ def func7():
     plt.ylim([-10, 10])
 
     # Find file names (100322_230000 -> 100323_060000)
-    bdir = '/home/guod/WD4T/gitm/run_imfby/run1c/data/'
+    bdir = '/home/guod/big/raid4/guod/run_imfby/run1c/data/'
     tname = os.listdir(bdir)
     tname = [i for i in tname if '.bin' in os.path.splitext(i)]
     tname = np.sort(tname)
@@ -822,7 +826,7 @@ def func7():
     #inds, = np.where(tname=='3DALL_t100322_000000.bin')[0]
     basename = tname[inds:]
 
-    pdir = '/home/guod/WD4T/gitm/run_imfby/run2c/data/'
+    pdir = '/home/guod/big/raid4/guod/run_imfby/run2c/data/'
     tname = os.listdir(pdir)
     tname = [i for i in tname if '.bin' in os.path.splitext(i)]
     tname = np.sort(tname)
@@ -831,10 +835,10 @@ def func7():
 
     # Figure 2-5: ion, neutral wind vorticity and neutral density
     # Prepare data and save
-    if True:
+    if False:
         print('Data preparation:')
         oo = pd.DataFrame()
-        if False: # Run1
+        if True: # Run1
             bpdir = bdir
             bpname = basename
             savename = '/home/guod/data/tmp/w3_07_01.dat'
@@ -851,9 +855,9 @@ def func7():
             # Read file
             gg = gitm.GitmBin(
                     bpdir+k0,
-                    varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)', 'V!Dn!N (up)',
-                             'V!Di!N (north)', 'V!Di!N (east)',  'V!Di!N (up)',
-                             'Temperature'])
+                    varlist=['Rho', 'V!Dn!N (north)', 'V!Dn!N (east)',
+                             'V!Dn!N (up)', 'V!Di!N (north)', 'V!Di!N (east)',
+                             'V!Di!N (up)', 'Temperature'])
             # Add vorticity
             gv.calc_vorticity(gg, neuion='neutral', name='nvorticity')
             gv.calc_vorticity(gg, neuion='ion', name='ivorticity')
@@ -861,9 +865,9 @@ def func7():
             ilon = (gg['dLon'][:, 0, 0]>0) & (gg['dLon'][:, 0, 0]<360)
             for k1 in range(gg.attrs['nAlt']):
                 alt, lat, lon, vorti, vortn, rho, Temp = (
-                        gg[k][..., k1][:, ilat][ilon, ...].reshape(-1) for k in [
-                                'Altitude', 'dLat', 'dLon',
-                                'ivorticity', 'nvorticity', 'Rho', 'Temperature'])
+                        gg[k][..., k1][:, ilat][ilon, ...].reshape(-1) \
+                        for k in ['Altitude', 'dLat', 'dLon', 'ivorticity',
+                                  'nvorticity', 'Rho', 'Temperature'])
                 # find minimum neu density
                 rhomini = np.argmin(rho)
                 lat1, lon1 = lat[rhomini], lon[rhomini]
@@ -871,16 +875,19 @@ def func7():
                 ilat1 = (lat < lat1+0.01) & (lat>lat1-0.01)
                 #ilon1 = (lon < lon1+5) & (lon>lon1-5)
                 ilon1 = (lon < lon1+0.01) & (lon>lon1-0.01)
-                rhomean = np.mean(rho*np.cos(lat/180*np.pi))/np.mean(np.cos(lat/180*np.pi))
-                tempmean = np.mean(Temp*np.cos(lat/180*np.pi))/np.mean(np.cos(lat/180*np.pi))
+                rhomean = np.mean(rho*np.cos(lat/180*np.pi))\
+                          / np.mean(np.cos(lat/180*np.pi))
+                tempmean = np.mean(Temp*np.cos(lat/180*np.pi))\
+                           / np.mean(np.cos(lat/180*np.pi))
                 rhomin = np.mean(rho[(ilat1) & (ilon1)])
                 rhot = rhomin/rhomean
                 vortit = np.mean(vorti[(ilat1) & (ilon1)])
                 vortnt = np.mean(vortn[(ilat1) & (ilon1)])
                 oo = oo.append(
                         pd.DataFrame(
-                            np.array([lat1, lon1, vortit, vortnt,
-                                      rhot, rhomean, rhomin, tempmean]).reshape(1, -1),
+                            np.array([lat1, lon1, vortit, vortnt, rhot,
+                                      rhomean, rhomin, tempmean]
+                                    ).reshape(1, -1),
                             index=pd.MultiIndex.from_product(
                                 [[gg['time']], [gg['Altitude'][0, 0, k1]]],
                                 names=['time', 'alt']),
@@ -888,7 +895,8 @@ def func7():
                                      'rho', 'rhomean', 'rhomin', 'tempmean']))
         pd.to_pickle(oo, savename)
         print('End of data preparation.')
-    fn = ('/home/guod/data/tmp/w3_07_01.dat', '/home/guod/data/tmp/w3_07_02.dat')
+    fn = ('/home/guod/data/tmp/w3_07_01.dat',
+          '/home/guod/data/tmp/w3_07_02.dat')
     alt = 400
     print('Altitude {:d} Km'.format(alt))
     for k in fn:
@@ -906,7 +914,8 @@ def func7():
         oot = oo.xs(oo.index.get_level_values(1)[ialt], level=1)
         # ivorticity
         plt.sca(ax[1])
-        vorti_rolling = oot['vorti'].rolling(window=6, min_periods=1, center=True).mean()
+        vorti_rolling = oot['vorti'].rolling(
+                window=1, min_periods=1, center=True).mean()
         plt.plot(oot.index, vorti_rolling*1e4)
         plt.ylabel('$V_i$')
         plt.ylim([-10, 20])
@@ -944,9 +953,12 @@ def func7():
         #    plt.ylim([4, 10])
     # set axis
     plt.xlim('2010-03-22 23:00:00', '2010-03-23 06:00:00')
-    plt.xticks(pd.date_range('2010-03-22 23:00:00', '2010-03-23 06:00:00', freq='1H'),
-               (pd.date_range('2010-03-22 23:00:00', '2010-03-23 06:00:00', freq='1H')
-               -pd.Timestamp('2010-03-23 00:00:00'))/pd.Timedelta('1H'))
+    plt.xticks(
+            pd.date_range(
+                '2010-03-22 23:00:00', '2010-03-23 06:00:00', freq='1H'),
+            (pd.date_range(
+                '2010-03-22 23:00:00', '2010-03-23 06:00:00', freq='1H')
+             -pd.Timestamp('2010-03-23 00:00:00'))/pd.Timedelta('1H'))
     plt.xlabel(r'Hours from B$_y$ reversal')
     plt.tight_layout(h_pad=0.01)
     return
@@ -961,9 +973,9 @@ def func8():
     stime = pd.Timestamp('2010-03-23 00:00:00')
     etime = pd.Timestamp('2010-03-23 06:00:00')
     timeidx = pd.DatetimeIndex(start=stime, end=etime, freq='30min')
-    fn1 = ['/home/guod/WD4T/gitm/run_imfby/run1c/data/3DALL_t'+
+    fn1 = ['/home/guod/big/raid4/guod/run_imfby/run1c/data/3DALL_t'+
           k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
-    fn2 = ['/home/guod/WD4T/gitm/run_imfby/run2c/data/3DALL_t'+
+    fn2 = ['/home/guod/big/raid4/guod/run_imfby/run2c/data/3DALL_t'+
           k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
     #oo = pd.read_pickle('/home/guod/data/tmp/w3_05_02.dat')
     alt = 400
@@ -1116,14 +1128,13 @@ def func8():
 
 def func9():
     import gitm
-    import seaborn
     # UT change in density
     dt = pd.date_range(start='2010-03-20 00:00:00', end='2010-03-23 06:00:00',
                        freq='1h')
-    path = '/home/guod/WD4T/gitm/run_imfby/run2c/data/'
+    path = '/home/guod/big/raid4/guod/run_imfby/run1c/data/'
     fn = (path+'3DALL_t{:s}.bin'.format(k.strftime('%y%m%d_%H%M%S')) for k in dt)
     nlat, slat, alt = 90, 60, 400
-    if True: # data preparation
+    if False: # data preparation
         oo = pd.DataFrame(columns=('time', 'rhomean', 'tempmean'))
         for k00, k0 in enumerate(fn):
             if not os.path.isfile(k0):
@@ -1143,21 +1154,22 @@ def func9():
             pd.to_pickle(oo, '/home/guod/data/tmp/w3_09_2.dat')
         if path[-8] == '1':
             pd.to_pickle(oo, '/home/guod/data/tmp/w3_09_1.dat')
-    if path[-8] == '2':
-        oo = pd.read_pickle('/home/guod/data/tmp/w3_09_2.dat')
-    if path[-8] == '1':
-        oo = pd.read_pickle('/home/guod/data/tmp/w3_09_1.dat')
+    oo2 = pd.read_pickle('/home/guod/data/tmp/w3_09_2.dat')
+    oo1 = pd.read_pickle('/home/guod/data/tmp/w3_09_1.dat')
     fig, ax = plt.subplots(2, 1, sharex=True)
     plt.sca(ax[0])
-    plt.plot(oo['time'], oo['rhomean'])
+    plt.plot(oo1['time'], oo1['rhomean'], label='run1')
+    plt.plot(oo2['time'], oo2['rhomean'], label='run2')
+    plt.legend()
     plt.ylabel(r'$\rho$')
-    plt.ylim(4.5*1e-12, 17.5*1e-12)
+    plt.ylim(4.5*1e-12, 6*1e-12)
     plt.sca(ax[1])
-    plt.plot(oo['time'], oo['tempmean'])
+    plt.plot(oo1['time'], oo1['tempmean'])
+    plt.plot(oo2['time'], oo2['tempmean'])
     plt.ylabel(r'T')
-    plt.xlim('2010-03-20 00:00:00', '2010-03-23 06:00:00')
+    plt.xlim('2010-03-21 00:00:00', '2010-03-23 06:00:00')
     #plt.ylim(1300, 1500)
-    xticks = pd.date_range('2010-03-20 00:00:00', '2010-03-23 06:00:00', freq='6H')
+    xticks = pd.date_range('2010-03-21 00:00:00', '2010-03-23 06:00:00', freq='6H')
     plt.xticks(xticks, xticks.strftime('%H'))
     plt.xlabel('UT')
     return
@@ -1167,7 +1179,6 @@ def func9():
 # END
 #------------------------------------------------------------
 if __name__ == '__main__':
-    import seaborn as sns
     plt.close('all')
-    a = func9()
+    a = func7()
     plt.show()
