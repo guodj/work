@@ -119,6 +119,23 @@ def set_polar(ax, ns='N', boundinglat=0, dlat=10, dlon=90, useLT=True):
     return ax
 
 
+def declination_of_sun(doy):
+    '''
+    note: doy is from 0 (January 1 == 0) and can include decimals
+    declination range [-23.44, 23.44]
+    '''
+    from numpy import pi
+    return -np.arcsin(
+            0.39779 *
+            np.cos(0.98565/180*pi*(doy+10) +
+                   1.914/180*pi*np.sin(0.98565/180*pi*(doy-2))))
+
+def solar_zenith_angle(doy, lat, lt):
+    from numpy import pi
+    return 180/pi*np.arccos(
+            np.sin(lat/180*pi)*np.sin(declination_of_sun(doy)) +
+            np.cos(lat/180*pi)*np.cos(declination_of_sun(doy)) *
+            np.cos((lt-12)/12*pi))
 # END
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
@@ -135,6 +152,13 @@ if __name__ == '__main__':
     #    lon2 = np.arange(10)
     #    a = great_circle_distance_earth(lat1, lon1, lat2, lon2)
     # Test set_polar
-    ax = plt.subplot(polar=True)
-    ax = set_polar(ax, ns='S', boundinglat=0, dlat=10, dlon=90, useLT=False)
+    #    ax = plt.subplot(polar=True)
+    #    ax = set_polar(ax, ns='S', boundinglat=0, dlat=10, dlon=90, useLT=False)
+    #    plt.show()
+
+    lat=np.arange(-90, 90)
+    lt = np.arange(0, 24)
+    doy = np.arange(1, 365)
+    plt.plot(lat, solar_zenith_angle(90, lat, 12))
+    #plt.plot(doy, declination_of_sun(doy)/np.pi*180)
     plt.show()
