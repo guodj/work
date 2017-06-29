@@ -21,7 +21,8 @@ BinMLT = 0.25  # MLT range in one bin
 LLEFTOT = 10  # lower limit of total energy flux in each bin, for method 1,2
 datapath = '/home/guod/WD4T/ssusi/'
 savepath = '/home/guod/WD4T/work4/'
-dratio = 0.05 # flag 5%, 10%, ..., 95% of the total energy flux
+dMLat = 1
+wMLat = 20
 LLSMP = 200 # lower limit of samples
 n = 6 # number of fourier fitting terms
 RE = 6371000 # unit: m
@@ -63,25 +64,23 @@ def image_energy_flux_one_file(
     variable = signal.medfilt2d(variable, kernel_size)
     # Only include data points inside the boundary
     fp = (ut != nodatavalue)
-    MLat, MLT, variable, ut = (k[fp] for k in (MLat, MLT, variable, ut))
-    utmean = np.mean(ut)
-    utmhour = int(np.floor(utmean))
-    utmminute = int(np.floor((utmean-utmhour)*60))
+    MLat, MLT, variable = (k[fp] for k in (MLat, MLT, variable))
     # plot variable
     r = 90-MLat
     theta = MLT/12*np.pi
     hs = ax.scatter(theta, r, s=s, c=variable, vmin=vmin,
-                    vmax=vmax, alpha=alpha, cmap='jet')
+                    vmax=vmax, alpha=alpha, cmap='nipy_spectral')
     # Set polar coordinates
     mf.set_polar(
             ax, ns='N', boundinglat=50,
             dlat=10, dlon=90, useLT=True)
-    ax.set_title(ssusi[var].TITLE, y=1.1)
-    ax.text(0.85, -0.12,
+    ax.set_title(ssusi[var].TITLE)
+    ax.text(0.85, 0.05,
             'YEAR: '+str(np.int(ssusi['YEAR'][:])) +
             '\nDOY: '+str(np.int(ssusi['DOY'][:])) +
-            '\nUT: {:02d}:{:02d}'.format(utmhour, utmminute),
-            transform=ax.transAxes)
+            '\nORBIT: '+str(np.int(ssusi.STARTING_ORBIT_NUMBER)),
+            transform=ax.transAxes,
+            fontsize=8)
     # cb = plt.colorbar(hs, ax=ax, pad=0.1)
     # cb.set_label(ssusi[var].UNITS)
     return ax, hs
@@ -110,18 +109,11 @@ def find_parameters_one_file_5(fn, test=False):
     uts = np.array(ssusi['UT_S'])
     bv = np.array(ssusi['ELECTRON_ENERGY_FLUX_THRESHOLDS']) # boundary values
 
-    # Apply median filter to the energy flux to remove impulse noise
-    kernel_size_own = 3
-    energyfluxn = signal.medfilt2d(energyfluxn, kernel_size_own)
-    energyfluxs = signal.medfilt2d(energyfluxs, kernel_size_own)
-    meanenergyn = signal.medfilt2d(meanenergyn, kernel_size_own)
-    meanenergys = signal.medfilt2d(meanenergys, kernel_size_own)
-
     # exclude pixels without data
     fpn = (utn != nodatavalue)
     MLatn, MLTn, MLonn, energyfluxn, utn, meanenergyn = (
             k[fpn] for k in (MLat, MLT, MLonn, energyfluxn, utn, meanenergyn))
-    fps = (uts != nodatavalue)
+    fps = uts != nodatavalue
     MLats, MLTs, MLons, energyfluxs, uts, meanenergys = (
             k[fps] for k in (MLat, MLT, MLons, energyfluxs, uts, meanenergys))
 
@@ -137,13 +129,11 @@ def find_parameters_one_file_5(fn, test=False):
     # Now, utn can be negative, negative valus mean yesterday
 
     # Initialize output
-    # pp1: MLats; pp2: other parameters; pp3: ef; pp4: mean energy
-    pp1 = np.ones([np.int(2*24/BinMLT), int(1/dratio-1)])*np.nan  # MLats
-    pp2 = pd.DataFrame(
+    MixP = pd.DataFrame(
             index=np.arange(int(2*24/BinMLT)),
-            columns=('ns', 'mlt', 'datetime', 'eftot', 'mlon'))
-    pp3 = np.ones([np.int(2*24/BinMLT), int(1/dratio-1)])*np.nan  # ef
-    pp4 = np.ones([np.int(2*24/BinMLT), int(1/dratio-1)])*np.nan  # mean energy
+            columns=('ns', 'mlt', 'datetime', 'eftot', 'mlat', 'mlon'))
+    EFlux = np.ones([np.int(2*24/BinMLT), int(wMLat/dMLat)])*np.nan  # ef
+    AveE = np.ones([np.int(2*24/BinMLT), int(wMLat/dMLat)])*np.nan  # mean energy
 
     # group data according to hemispheres
     for k00, k0 in enumerate(['N', 'S']):
@@ -172,24 +162,24 @@ def find_parameters_one_file_5(fn, test=False):
         # group data according to MLT
         for k11, k1 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
 
-            idpp = k00*int(24/BinMLT)+k11 # point to pp1, pp2, ...
+            idpp = k00*int(24/BinMLT)+k11
 
             # Select data in the specified MLT range
             lmlt, rmlt = k1-BinMLT/2, k1+BinMLT/2
             fp = (mlt0 >= lmlt) & (mlt0 <= rmlt)
+
             # If the total number of pixels in one MLT bin is small, exclude
             if np.sum(fp) <= LLP1:
                 continue
             mlat1, mlon1, ef1, ut1, me1 = (
                     mlat0[fp], mlon0[fp], ef0[fp], ut0[fp], me0[fp])
+
             # If the Mlat range is too small in one MLT bin, exclude
             if mlat1.min() > llmlat or mlat1.max() < ulmlat:
                 continue
 
             # sort MLat
             idx = np.argsort(mlat1)
-            # mlat1, ef1, ut1, me1, sza1 = (
-            #         mlat1[idx], ef1[idx], ut1[idx], me1[idx], sza1[idx])
             mlat1, mlon1, ef1, ut1, me1 = (
                     mlat1[idx], mlon1[idx], ef1[idx], ut1[idx], me1[idx])
 
@@ -197,79 +187,78 @@ def find_parameters_one_file_5(fn, test=False):
             efcum = ef1.cumsum()
             eftot = efcum[-1]
 
-            # Mlats of 5%, 10%... energy flux -->pp1
-            # energy fluxes at 5%, 10%, ... --> pp3
-            # mean energy --> pp4
-            pp1t = np.ones(int(1/dratio-1))*np.nan
-            pp3t = np.ones(int(1/dratio-1))*np.nan
-            pp4t = np.ones(int(1/dratio-1))*np.nan
-            utt = np.ones(int(1/dratio-1))*np.nan
-            mlont = np.ones(int(1/dratio-1))*np.nan
-            for k22, k2 in enumerate(np.arange(dratio, 1, dratio)):
-                fp = (efcum >= eftot*k2)
-                pp1t[k22] = mlat1[fp][0]
-                pp3t[k22] = ef1[fp][0]
-                pp4t[k22] = me1[fp][0]
-                utt[k22] = ut1[fp][0]
-                mlont[k22] = mlon1[fp][0]
-            pp1[idpp, :] = pp1t
-            pp3[idpp, :] = pp3t
-            pp4[idpp, :] = pp4t
+            efluxt = np.zeros(int(wMLat/dMLat))
+            aveet = np.zeros(int(wMLat/dMLat))
+            if eftot == 0:
+                mlat50p = 100
+                fp = (mlat1>(llmlat+ulmlat)/2)
+                ut50p = ut1[fp][0]
+                mlon50p = mlon1[fp][0]
+            else:
+                fp = (efcum >= eftot/2)
+                mlat50p = mlat1[fp][0]
+                ut50p = ut1[fp][0]
+                mlon50p = mlon1[fp][0]
+                for k2 in np.arange(int(wMLat/dMLat)):
+                    fp = ((mlat1 > mlat50p-wMLat/2+k2*dMLat) &
+                          (mlat1 < mlat50p-wMLat/2+(k2+1)*dMLat))
+                    if np.sum(fp) == 0:
+                        continue
+                    efluxt[k2] = np.mean(ef1[fp])
+                    aveet[k2] = np.mean(me1[fp])
+            EFlux[idpp, :] = efluxt
+            AveE[idpp, :] = aveet
 
-            # ns, MLT, UT, eftot --> pp2
-            pp2.iloc[idpp, :] = [
-                    k0, k1, date+pd.Timedelta(np.median(utt), 'h'),
-                    eftot, np.median(mlont)]
+            # ns, MLT, UT, eftot --> MixP
+            MixP.iloc[idpp, :] = [
+                    k0, k1, date+pd.Timedelta(ut50p, 'h'),
+                    eftot, mlat50p, mlon50p]
 
     # exclude NaN
-    fp = (np.isnan(pp1[:, 0]))
-    pp1 = pp1[~fp]
-    pp2 = pp2.loc[~fp, :]
-    pp3 = pp3[~fp]
-    pp4 = pp4[~fp]
-    pp2 = pp2.astype({'ns': str, 'mlt': float, 'datetime': np.datetime64,
-                      'eftot': float, 'mlon': float})
+    fp = (np.isnan(EFlux[:, 0]))
+    MixP = MixP.loc[~fp, :]
+    EFlux = EFlux[~fp]
+    AveE = AveE[~fp]
+    MixP = MixP.astype({'ns': str, 'mlt': float,
+                      'datetime': np.datetime64,
+                      'eftot': float, 'mlat': float, 'mlon': float})
     if test: # for test
-        vmin = 0
-        vmax = 5
-        ns = 'S'
         plt.figure(figsize=(8.7, 4.4))
         ax = plt.subplot(1, 2, 1, polar=True)
         ax, hs = image_energy_flux_one_file(
-                ax, fn, ns, vmin=vmin, vmax=vmax, s=1, alpha=1)
-        plt.title('SSUSI Energy Flux Map', y=1.08)
+                ax, fn, 'S', vmin=0, vmax=5, s=1, alpha=1)
         ax = plt.subplot(1, 2, 2, polar=True)
-        fp = ((pp2.ns == ns) &(pp2.eftot != 0)).values
-        for k11, k1 in enumerate(range(int(1/dratio-1))):
-            r = 90-pp1[fp, k11]
-            theta = pp2.loc[fp, 'mlt']/12*np.pi
-            ax.scatter(theta, r, c=pp3[fp, k11], s=5, alpha=0.5, vmin=vmin,
-                       vmax=vmax, cmap='jet')
-        mf.set_polar(ax, 'N', boundinglat=50)
-        plt.title('Selected Pixels', y=1.08)
-        # plt.tight_layout()
-    return pp1, pp2, pp3, pp4  # Mlats, ..., EFs, MEs
+        fp = (MixP.ns == 'S').values
+        for k11, k1 in enumerate(range(int(wMLat/dMLat))):
+            r = 90-(MixP.loc[fp, 'mlat']-wMLat/2+(k11+0.5)*dMLat)
+            theta = MixP.loc[fp, 'mlt']/12*np.pi
+            ax.scatter(theta, r, c=EFlux[fp, k11], s=3, vmin=0, vmax=5,
+                       cmap='jet')
+        mf.set_polar(ax, ns='N', boundinglat=50)
+        plt.title('NH')
+        plt.tight_layout()
+    return MixP, EFlux, AveE
 
 
 def find_parameters(saveplot=False):
     # Read IMF By, Bz and AE
     print('Begin to read solar wind speed, IMF, AE and Dst')
     imfae = omni.get_omni(
-            bdate='2011-1-1', edate='2018-1-1',
+            bdate='2011-1-1', edate='2015-1-1',
             variables=['Bym', 'Bzm', 'AE', 'V'], res='1m')
     imfae['Bt'] = np.sqrt(imfae['Bym']**2 + imfae['Bzm']**2)
     imfae['nwcf'] = (imfae['V']**(4/3)) * (imfae['Bt']**(2/3)) * \
         (((1-imfae['Bzm']/imfae['Bt'])/2)**(4/3))/100.0
     imfae['EKL'] = 0.5*imfae['V']*(imfae['Bt']-imfae['Bzm'])/1e6
-    dst = omni.get_omni(bdate='2011-1-1', edate='2018-1-1',
+    dst = omni.get_omni(bdate='2011-1-1', edate='2015-1-1',
                         variables=['DST'], res='1h')
     dst = dst.reindex(imfae.index, method='nearest')
     imfae['Dst'] = dst.values
     print('End of reading solar wind speed, IMF, AE and Dst')
-    for k0 in range(17, 18):  # satellite
-        for year in (2011, 2012, 2013, 2014, 2015, 2016, 2017):
-            pp1, pp2, pp3, pp4 = [], [], [], []
-            savefn = 'F{:d}_{:d}.old.dat'.format(k0, year)  # file to save data
+    for k0 in range(16, 18):  # satellite
+        MixP, EFlux, AveE = [], [], []
+        savefn = 'F{:d}.dat'.format(k0)  # file to save data
+        for year in (2011, 2012, 2013, 2014):
             for doy in np.arange(1, 367):
                 # 00 means full orbit?
                 fn = glob.glob('/home/guod/WD4T/ssusi/ssusi.jhuapl.edu/'
@@ -280,95 +269,69 @@ def find_parameters(saveplot=False):
                 for k33, k3 in enumerate(fn):
                     print('F{:d}, {:d}-{:03d}, {:s}'.format(
                         k0, year, doy, k3[-14:-9]))
-                    pp1t, pp2t, pp3t, pp4t = find_parameters_one_file_5(k3)
-                    if np.size(pp1t) != 0:
-                        pp1.append(pp1t)
-                        pp2.append(pp2t)
-                        pp3.append(pp3t)
-                        pp4.append(pp4t)
-
-                        if saveplot:
-                            fig = plt.figure(figsize=(8.7, 4.4))
-                            for k44, k4 in enumerate(['N', 'S']):
-                                ax = plt.subplot(1, 2, k44+1, polar=True)
-                                image_energy_flux_one_file(
-                                        ax, datapath+k3, k4, s=1, vmin=0,
-                                        vmax=5, alpha=1)
-                                fp = (pp2t.ns == k4).values
-                                for k55, k5 in enumerate(range(int(1/dratio-1))):
-                                    r = 90-pp1t[fp, k55]
-                                    theta = pp2t.loc[fp, 'mlt']/12*np.pi
-                                    ax.scatter(theta, r, c='b', s=1, alpha=0.5)
-                                ax.set_title(k4+'H')
-                            plt.tight_layout()
-                            plt.savefig(
-                                    savepath +
-                                    'method5/F{:d}_2013{:02d}{:02d}_{:s}.png'.
-                                    format(k0, k1, k2, k3[-14:-9]))
-                            plt.close(fig)
+                    mixpt, efluxt, aveet = find_parameters_one_file_5(k3)
+                    if np.size(efluxt) != 0:
+                        MixP.append(mixpt)
+                        EFlux.append(efluxt)
+                        AveE.append(aveet)
                     else:
                         print('    No parameters found in this file')
-            if not pp1:
-                continue
-            pp1 = np.concatenate(pp1, axis=0)
-            pp2 = pd.concat(pp2, axis=0, ignore_index=True)
-            pp3 = np.concatenate(pp3, axis=0)
-            pp4 = np.concatenate(pp4, axis=0)
-            imfaet = imfae.reindex(pp2['datetime'], method='nearest')
-            pp2['Bym'] = imfaet['Bym'].values
-            pp2['Bzm'] = imfaet['Bzm'].values
-            pp2['AE'] = imfaet['AE'].values
-            pp2['Dst'] = imfaet['Dst'].values
-            pp2['nwcf'] = imfaet['nwcf'].values
-            pp2['EKL'] = imfaet['EKL'].values
-            pd.to_pickle((pp1, pp2, pp3, pp4), savepath+'method5/'+savefn)
+        MixP = pd.concat(MixP, axis=0, ignore_index=True)
+        EFlux = np.concatenate(EFlux, axis=0)
+        AveE = np.concatenate(AveE, axis=0)
+        imfaet = imfae.reindex(MixP['datetime'], method='nearest')
+        MixP['Bym'] = imfaet['Bym'].values
+        MixP['Bzm'] = imfaet['Bzm'].values
+        MixP['AE'] = imfaet['AE'].values
+        MixP['Dst'] = imfaet['Dst'].values
+        MixP['nwcf'] = imfaet['nwcf'].values
+        MixP['EKL'] = imfaet['EKL'].values
+        pd.to_pickle((MixP, EFlux, AveE), savepath+'method5/'+savefn)
     return
 
 
 def aurora_reconstruction_statistics(
-        ax, AErange=(0, 50), cmap='viridis', whichp='ef', vmin=0, vmax=5):
+        ax, AErange=(0, 50), cmap='nipy_spectral', whichp='ef', vmin=0, vmax=5):
     """
     Reconstruct Aurora to a map
     """
     s=5
     marker='o'
     # F16
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
+    Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
     fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
               (Mixps.eftot!=0)).values
     fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    mlats16_1, mixps16_1, mlats16_2, mixps16_2, efs16_2, avees16_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
-            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
+    mixps16_1, mixps16_2, efs16_2, avees16_2 = (
+            Mixps.loc[fpmlat, :],
+            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpef, :])
     # F17
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
+    Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
     fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
               (Mixps.eftot!=0)).values
     fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    mlats17_1, mixps17_1, mlats17_2, mixps17_2, efs17_2, avees17_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
-            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
+    mixps17_1, mixps17_2, efs17_2, avees17_2 = (
+            Mixps.loc[fpmlat, :],
+            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpef, :])
     # combine
-    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
     mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
-    mlats2 = np.concatenate((mlats16_2, mlats17_2), axis=0)
     mixps2 = pd.concat((mixps16_2, mixps17_2), axis=0, ignore_index=True)
     efs2 =np.concatenate((efs16_2, efs17_2), axis=0)
-    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
+    avees2 =np.concatenate((avees16_2, avees17_2), axis=0)
 
-    mlatsout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
-    psout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
+    mlatsout = np.ones(int(24/BinMLT))*np.nan
+    psout = np.ones((int(wMLat/dMLat), int(24/BinMLT)))*np.nan
     if whichp == 'ef':
         usep = efs2
     else:
-        usep = avees1
+        usep = avees2
     for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
         if (k0>=10) & (k0<=14):
             continue
         fp1 = (mixps1.mlt == k0).values
         if np.sum(fp1) < LLSMP:
             continue
-        mlatsout[:, k00] = np.median(mlats1[fp1, :], axis=0)
+        mlatsout[k00] = np.median(mixps1.loc[fp1, 'mlat'])
     for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
         if (k0>=10) & (k0<=14):
             continue
@@ -376,25 +339,28 @@ def aurora_reconstruction_statistics(
         fp2 = (mixps2.mlt == k0).values
         if np.sum(fp1) < LLSMP:
             continue
-        if whichp == 'ef':
-            d1 = mlats2[fp2, -1]-mlats2[fp2, 0]
-            d2 = mlatsout[-1, k00] - mlatsout[0, k00]
-            dout = np.tile((d1/d2).reshape(-1, 1), (1, usep.shape[-1]))
-            psout[:, k00] = np.median(usep[fp2, :]*dout, axis=0)
-        else:
-            psout[:, k00] = np.median(usep[fp1, :], axis=0)
+        psout[:, k00] = np.mean(usep[fp2, :], axis=0)
+        mlaty = np.arange(mlatsout[k00]-wMLat/2, mlatsout[k00]+wMLat/2, dMLat)
+        fp = psout[:, k00]>0.5
         hs = ax.scatter(
-                (np.ones(mlatsout[:, k00].shape)*k0)/12*np.pi,
-                90-mlatsout[:, k00],
-                vmin=vmin, vmax=vmax, c=psout[:, k00],
+                (np.ones(np.sum(fp))*k0)/12*np.pi,
+                90-mlaty[fp],
+                vmin=vmin, vmax=vmax, c=psout[:, k00][fp],
                 cmap=cmap, s=s, marker=marker)
-    mlatsout_ext = 0.5*(mlatsout+np.roll(mlatsout, 1, axis=1))
-    psout_ext = 0.5*(psout+np.roll(psout, 1, axis=1))
+    # mlatsout_ext = 0.5*(mlatsout+np.roll(mlatsout, 1))
+    # psout_ext = 0.5*(psout+np.roll(psout, 1, axis=1))
     for k00, k0 in enumerate(np.arange(0, 24, BinMLT)):
+        if (k0>=10) & (k0<=14):
+            continue
+        fp1 = (mixps1.mlt == k0).values
+        if np.sum(fp1) < LLSMP:
+            continue
+        mlaty = np.arange(mlatsout[k00]-wMLat/2, mlatsout[k00]+wMLat/2, dMLat)
+        fp = psout[:, k00]>0.5
         hs = ax.scatter(
-                (np.ones(mlatsout_ext[:, k00].shape)*k0)/12*np.pi,
-                90-mlatsout_ext[:, k00],
-                vmin=vmin, vmax=vmax, c=psout_ext[:, k00],
+                (np.ones(np.sum(fp))*k0)/12*np.pi,
+                90-mlaty[fp],
+                vmin=vmin, vmax=vmax, c=psout[:, k00][fp],
                 cmap=cmap, s=s, marker=marker)
     return ax, hs
 
@@ -415,7 +381,7 @@ def aurora_reconstruction_statistics_all(whichp='ef', cmap='nipy_spectral',
             mf.set_polar(axt, boundinglat=60)
             axt.set_title('AE: [{:.0f}, {:.0f}]'.\
                     format(AErange[k0*4+k1, 0], AErange[k0*4+k1, 1]), y=1.06)
-    cax = plt.axes([0.35, 0.08, 0.3, 0.03])
+    cax = plt.axes([0.35, 0.06, 0.3, 0.03])
     plt.colorbar(b, cax=cax, orientation='horizontal')
     if whichp == 'ef':
         plt.xlabel('Energy flux (ergs/s/cm$^2$)')
@@ -428,52 +394,37 @@ def statistics():
     plt.close('all')
 
     # 1, sample number
-    # F16
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
-    fpmlat = (Mixps.eftot!=0).values
-    mlats16_1, mixps16_1, mlats16_2, mixps16_2, efs16_2, avees16_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats,
-            Mixps, EFs, AveEs[fpmlat, :])
-    # F17
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
-    fpmlat = (Mixps.eftot!=0).values
-    mlats17_1, mixps17_1, mlats17_2, mixps17_2, efs17_2, avees17_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats,
-            Mixps, EFs, AveEs[fpmlat, :])
-    # combine
-    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
-    mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
-    mlats2 = np.concatenate((mlats16_2, mlats17_2), axis=0)
-    mixps2 = pd.concat((mixps16_2, mixps17_2), axis=0, ignore_index=True)
-    efs2 =np.concatenate((efs16_2, efs17_2), axis=0)
-    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
-
-    fig, ax = plt.subplots(2, 4, figsize=(11, 6), sharex=True, sharey=True)
-    x = np.arange(BinMLT/2, 24, BinMLT)
-    y = np.ones(x.shape)*np.nan
-    for k00, k0 in enumerate(range(2)):
-        for k11, k1 in enumerate(range(4)):
-            plt.sca(ax[k00, k11])
-            AEranget = AErange[k00*4+k11, :]
-            for k22, k2 in enumerate(x):
-                fp1 = ((mixps1.AE>AEranget[0]) & (mixps1.AE<AEranget[1]) &
-                       (mixps1.mlt==k2) & (mixps1.eftot!=0)).values
-                y[k22] = np.sum(fp1)
-            plt.bar(x, y, align='center', width=BinMLT)
-            plt.title('AE: [{:.0f}, {:.0f}]'.format(AEranget[0], AEranget[1]))
-            if k00 ==1:
-                plt.xlabel('MLT')
-            if k1 ==0:
-                plt.ylabel('Num')
-    plt.ylim(0, 10000)
-    plt.xlim(0, 24)
-    plt.xticks(np.arange(0, 25, 4))
-    plt.tight_layout()
+    #    ns = 'S'
+    #    sat = 'F16'
+    #    p1, p2, p3, p4 = pd.read_pickle(
+    #            '/home/guod/WD4T/work4/method5/{:s}.dat'.format(sat))
+    #    fig, ax = plt.subplots(2, 4, figsize=(11, 6), sharex=True, sharey=True)
+    #    x = np.arange(BinMLT/2, 24, BinMLT)
+    #    y = np.ones(x.shape)*np.nan
+    #    for k00, k0 in enumerate(range(2)):
+    #        for k11, k1 in enumerate(range(4)):
+    #            plt.sca(ax[k00, k11])
+    #            AEranget = AErange[k00*4+k11, :]
+    #            for k22, k2 in enumerate(x):
+    #                fp1 = ((p2.ns==ns) & (p2.AE>AEranget[0]) &
+    #                       (p2.AE<AEranget[1]) & (p2.mlt==k2) &
+    #                       (p2.eftot>LLEFTOT)).values
+    #                y[k22] = np.sum(fp1)
+    #            plt.bar(x, y, align='center', width=BinMLT)
+    #            plt.title('AE: [{:.0f}, {:.0f}]'.format(AEranget[0], AEranget[1]))
+    #            if k00 ==1:
+    #                plt.xlabel('MLT')
+    #            if k1 ==0:
+    #                plt.ylabel('Num')
+    #    plt.ylim(0, 2500)
+    #    plt.xlim(0, 24)
+    #    plt.xticks(np.arange(0, 25, 4))
+    #    plt.tight_layout()
 
     # Can we combine N and S?
     # s = 3
     # p1, p2, p3, p4 = pd.read_pickle(
-    #         '/home/guod/WD4T/work4/method5/F17.old.dat')
+    #         '/home/guod/WD4T/work4/method5/F17.dat')
     # fig, ax = plt.subplots(2, 4, subplot_kw={'polar':True}, figsize=(9.7, 5.4))
     # for k00, k0 in enumerate(range(2)):
     #     for k11, k1 in enumerate(range(4)):
@@ -501,7 +452,7 @@ def statistics():
     # fig, ax = plt.subplots(1, 2, subplot_kw={'polar':True})
     # for k00, k0 in enumerate(['F16', 'F17', 'F18']):
     #     p1, p2, p3, p4 = pd.read_pickle(
-    #             '/home/guod/WD4T/work4/method5/{:s}.old.dat'.format(k0))
+    #             '/home/guod/WD4T/work4/method5/{:s}.dat'.format(k0))
     #     cc = ['k', 'b', 'r']
     #     for k11, ns in enumerate(['N', 'S']):
     #         plt.sca(ax[k11])
@@ -525,7 +476,7 @@ def statistics():
     #    sat = 'F16'
     #    idratio = 9  # 0-->5%, 9-->50%, 18-->95%
     #    p1, p2, p3, p4 = pd.read_pickle(
-    #            '/home/guod/WD4T/work4/method5/{:s}.old.dat'.format(sat))
+    #            '/home/guod/WD4T/work4/method5/{:s}.dat'.format(sat))
     #    # MLat
     #    fig, ax = plt.subplots(2, 4, figsize=(11, 6), sharex=True, sharey=True)
     #    x = np.arange(BinMLT/2, 24, BinMLT)
@@ -588,37 +539,37 @@ def statistics():
     #    plt.tight_layout()
 
     # What are discarded
-    #    AErange = (200, 250)
-    #    # F16
-    #    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
-    #    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    #    mlats16_1, mixps16_1, efs16_1, avees16_1 = (
-    #            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
-    #    # F17
-    #    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
-    #    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    #    mlats17_1, mixps17_1, efs17_1, avees17_1 = (
-    #            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
-    #    # combine
-    #    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
-    #    mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
-    #    efs1 =np.concatenate((efs16_1, efs17_1), axis=0)
-    #    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
+    AErange = (200, 250)
+    # F16
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
+    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
+    mlats16_1, mixps16_1, efs16_1, avees16_1 = (
+            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
+    # F17
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
+    fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
+    mlats17_1, mixps17_1, efs17_1, avees17_1 = (
+            MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
+    # combine
+    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
+    mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
+    efs1 =np.concatenate((efs16_1, efs17_1), axis=0)
+    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
 
-    #    fig, ax = plt.subplots(4, 6, sharex=True, sharey=True)
-    #    for imlt, mlt in enumerate(np.arange(BinMLT/2, 24, 1)):
-    #        plt.sca(ax[imlt//6, imlt%6])
-    #        fp = (mixps1.mlt==mlt)
-    #        xx = mixps1.loc[fp, 'eftot'].values
-    #        print(mlt, np.sum(xx==0)/xx.size)
-    #        for p in np.arange(0, 200, LLEFTOT):
-    #            xxt = np.sum((xx>=p) & (xx<p+LLEFTOT))/xx.size
-    #            plt.bar(p+LLEFTOT/2, xxt, width=LLEFTOT)
-    #        plt.xlim(0, 100)
-    #        plt.ylim(0, 1)
-    #        plt.title('MLT={:6.3f}'.format(mlt))
-    #    [ax[k, 0].set_ylabel('P') for k in range(4)]
-    #    [ax[-1, k].set_xlabel('Sum of EF') for k in range(6)]
+    fig, ax = plt.subplots(4, 6, sharex=True, sharey=True)
+    for imlt, mlt in enumerate(np.arange(BinMLT/2, 24, 1)):
+        plt.sca(ax[imlt//6, imlt%6])
+        fp = (mixps1.mlt==mlt)
+        xx = mixps1.loc[fp, 'eftot'].values
+        print(mlt, np.sum(xx==0)/xx.size)
+        for p in np.arange(0, 200, LLEFTOT):
+            xxt = np.sum((xx>=p) & (xx<p+LLEFTOT))/xx.size
+            plt.bar(p+LLEFTOT/2, xxt, width=LLEFTOT)
+        plt.xlim(0, 100)
+        plt.ylim(0, 1)
+        plt.title('MLT={:6.3f}'.format(mlt))
+    [ax[k, 0].set_ylabel('P') for k in range(4)]
+    [ax[-1, k].set_xlabel('Sum of EF') for k in range(6)]
 
     plt.show()
 
@@ -629,40 +580,37 @@ def epstein(x, a, b, c, d):
 
 def fourier_fit(AErange=(100, 150), test=False):
     # F16
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
+    Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
     fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
-          (Mixps.eftot!=0)).values
+              (Mixps.eftot!=0)).values
     fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    mlats16_1, mixps16_1, mlats16_2, mixps16_2, efs16_2, avees16_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
-            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
+    mixps16_1, mixps16_2, efs16_2, avees16_2 = (
+            Mixps.loc[fpmlat, :],
+            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpef, :])
     # F17
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
+    Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
     fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
-          (Mixps.eftot!=0)).values
+              (Mixps.eftot!=0)).values
     fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    mlats17_1, mixps17_1, mlats17_2, mixps17_2, efs17_2, avees17_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
-            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
+    mixps17_1, mixps17_2, efs17_2, avees17_2 = (
+            Mixps.loc[fpmlat, :],
+            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpef, :])
     # combine
-    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
     mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
-    mlats2 = np.concatenate((mlats16_2, mlats17_2), axis=0)
     mixps2 = pd.concat((mixps16_2, mixps17_2), axis=0, ignore_index=True)
     efs2 =np.concatenate((efs16_2, efs17_2), axis=0)
-    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
+    avees2 =np.concatenate((avees16_2, avees17_2), axis=0)
 
-    mlatsout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
-    efsout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
-    aveesout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
+    mlatsout = np.ones(int(24/BinMLT))*np.nan
+    efsout = np.ones((int(wMLat/dMLat), int(24/BinMLT)))*np.nan
+    aveesout = np.ones((int(wMLat/dMLat), int(24/BinMLT)))*np.nan
     for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
         if (k0>=10) & (k0<=14):
             continue
         fp1 = (mixps1.mlt == k0).values
         if np.sum(fp1) < LLSMP:
             continue
-        mlatsout[:, k00] = np.median(mlats1[fp1, :], axis=0)
-        aveesout[:, k00] = np.median(avees1[fp1, :], axis=0)
+        mlatsout = np.mean(mixps1.loc[fp1, 'mlat'])
     for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
         if (k0>=10) & (k0<=14):
             continue
@@ -670,10 +618,10 @@ def fourier_fit(AErange=(100, 150), test=False):
         fp2 = (mixps2.mlt == k0).values
         if np.sum(fp1) < LLSMP:
             continue
-        d1 = mlats2[fp2, -1]-mlats2[fp2, 0]
-        d2 = mlatsout[-1, k00] - mlatsout[0, k00]
-        dout = np.tile((d1/d2).reshape(-1, 1), (1, efs2.shape[-1]))
-        efsout[:, k00] = np.median(efs2[fp2, :]*dout, axis=0)
+        efsout[:, k00] = np.mean(efs2[fp2, :], axis=0)
+        aveesout[:, k00] = np.mean(avees2[fp2, :], axis=0)
+
+    mlatsout = np.tile(mlatsout, (efsout.shape[0], 1))
 
     # complement data gap
     cossin = np.ones((int(24/BinMLT), 2*(2+1)))*np.nan
@@ -741,14 +689,14 @@ def fourier_fit_save_parameters():
         fg4mlat, fg4ef, fg4avee = fourier_fit(AErange=AErange[k0, :])
         fg.append(np.stack([fg4mlat, fg4ef, fg4avee], axis=2))
     fg = np.stack(fg, axis=3)
-    pd.to_pickle(fg, '/home/guod/WD4T/work4/method5/fg.old.dat')
+    pd.to_pickle(fg, '/home/guod/WD4T/work4/method5/fg.dat')
     return
 
 
 def aurora_reconstruction_fit(
         ax, AErange=(0, 50), whichp='ef', vmin=0, vmax=8, cmap='viridis', s=3):
     iAE = int(AErange[0]/50)
-    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.old.dat')
+    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.dat')
     fg = fg[:, :, :, iAE]
     mlt = np.arange(0, 24, 0.1)
     cossin = np.ones((len(mlt), (n+1)*2))*np.nan
@@ -795,12 +743,12 @@ def diff_fit_statistics(
         ax, AErange=(0, 50), cmap='viridis', whichp='ef', vmin=0, vmax=5, s=5):
     # statistics
     # F16
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
     fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
     mlats16_1, mixps16_1, efs16_1, avees16_1 = (
             MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
     # F17
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
     fp = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
     mlats17_1, mixps17_1, efs17_1, avees17_1 = (
             MLats[fp, :], Mixps.loc[fp, :], EFs[fp, :], AveEs[fp, :])
@@ -830,7 +778,7 @@ def diff_fit_statistics(
 
     # fit
     iAE = int(AErange[0]/50)
-    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.old.dat')
+    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.dat')
     fg = fg[:, :, :, iAE]
     cossin = np.ones((len(mlt), (n+1)*2))*np.nan
     for k0 in np.arange(n+1):
@@ -856,7 +804,7 @@ def hp_fit(test=True):
     for k0 in np.arange(n+1):
         cossin[:, k0*2] = np.cos(k0*np.pi*mlt/12)
         cossin[:, k0*2+1] = np.sin(k0*np.pi*mlt/12)
-    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.old.dat')
+    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.dat')
     HP = np.arange(8)*np.nan
     for iAE in np.arange(AErange.shape[0]):
         fgt = fg[:, :, :, iAE]
@@ -879,20 +827,21 @@ def hp_fit(test=True):
                  1.3+0.048*np.arange(1,400)+0.241*np.sqrt(np.arange(1,400)))
         plt.show()
         plt.xlim(0, 400)
-        plt.ylim(0, 55)
+        plt.ylim(0, 25)
         plt.xlabel('AE')
         plt.ylabel('Hemisphere Power (GW)')
     return HP
 
 
-def linear_fit_AE(test=True):
-    dmlt = 0.1
+
+def linear_fit_AE(whichp='ef', test=True):
+    dmlt = 1
     mlt = np.arange(0, 24, dmlt)
     cossin = np.ones((len(mlt), (n+1)*2))*np.nan
     for k0 in np.arange(n+1):
         cossin[:, k0*2] = np.cos(k0*np.pi*mlt/12)
         cossin[:, k0*2+1] = np.sin(k0*np.pi*mlt/12)
-    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.old.dat')
+    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.dat')
     mlatsout = np.ones((len(mlt), int(1/dratio-1), AErange.shape[0]))*np.nan
     efsout = np.ones((len(mlt), int(1/dratio-1), AErange.shape[0]))*np.nan
     aveesout = np.ones((len(mlt), int(1/dratio-1), AErange.shape[0]))*np.nan
@@ -901,54 +850,32 @@ def linear_fit_AE(test=True):
         mlatsout[:, :, iAE] = np.dot(cossin, fgt[:, :, 0])
         efsout[:, :, iAE] = np.dot(cossin, fgt[:, :, 1])
         aveesout[:, :, iAE] = np.dot(cossin, fgt[:, :, 2])
-    mlatcof = np.ones((len(mlt), int(1/dratio-1), 2))*np.nan
-    efcof = np.ones((len(mlt), int(1/dratio-1), 2))*np.nan
-    efcof[:, :, 1] = 0.5*(efcof[:, :, 1]+np.abs(efcof[:, :, 1]))
-    for k00, k0 in enumerate(mlt):
-        for k11, k1 in enumerate(np.arange(1/dratio-1)):
-            mlatcof[k00, k11, :] = np.polyfit(
-                    np.mean(AErange, axis=1)[:8],
-                    mlatsout[k00, k11, :8], 1)
-            efcof[k00, k11, :] = np.polyfit(
-                    np.mean(AErange, axis=1)[:4],
-                    efsout[k00, k11, :4], 1)
     if test: # Test
         plt.close('all')
-        fig, ax = plt.subplots(2, 5, subplot_kw={'polar':True}, figsize=(14.5, 7.8))
-        for iAE, AE in enumerate(np.arange(0, 1000, 100)):
-            plt.sca(ax[iAE//5, iAE%5])
-            mlat = mlatcof[:, :, 0]*AE+mlatcof[:, :, 1]
-            ef = efcof[:, :, 0]*AE+efcof[:, :, 1]
-            for k0 in np.arange(int(1/dratio-1)):
-                hc = plt.scatter(mlt/12*np.pi, 90-mlat[:, k0], c=ef[:, k0], s=1,
-                            vmin=0, vmax=15, cmap='jet')
-            mf.set_polar(plt.gca(), 'N', boundinglat=50)
-            plt.title('AE = {:d}'.format(AE))
-        cax = plt.axes([0.35, 0.08, 0.3, 0.03])
-        plt.colorbar(hc, cax=cax, orientation='horizontal')
-        plt.xlabel('Energy flux (ergs/s/cm$^2$)')
+        fig, ax = plt.subplots(4, 6, sharex=True, sharey=True)
+        if whichp=='ef':
+            usep = efsout
+        else:
+            usep = mlatsout
+        for k in range(24):
+            plt.sca(ax[k//6, k%6])
+            plt.plot(AErange.mean(axis=1),
+                     usep[k, 1::8,  :].T, 'o-', lw=1.5)
+            plt.xlim(0, 400)
+            plt.ylim((0, 8) if whichp=='ef' else (60, 80))
+            plt.title('MLT: {:02d}'.format(k))
+        # ax[1, -1].legend([2, 6, 10, 14, 18, 22],
+        #                  bbox_to_anchor=(1, 1.05), frameon=True)
+        [ax[-1, k].set_xlabel('AE') for k in range(6)]
+        [ax[k, 0].set_ylabel('EF' if whichp=='ef' else 'MLat') for k in range(4)]
         plt.show()
-    return mlatcof, efcof
-
-
-def aurora_reconstruction_fit_AE(
-        ax, AE=100, vmin=0, vmax=8, cmap='rainbow', s=3):
-    dmlt = 0.1
-    mlt = np.arange(0, 24, dmlt)
-    mlatcof, efcof = linear_fit_AE(test=False)
-    mlat = mlatcof[:, :, 0]*AE+mlatcof[:, :, 1]
-    ef = efcof[:, :, 0]*AE+efcof[:, :, 1]
-    for k0 in np.arange(int(1/dratio-1)):
-        plt.scatter(mlt/12*np.pi, 90-mlat[:, k0], c=ef[:, k0], s=1,
-                    vmin=vmin, vmax=vmax, cmap=cmap)
-    mf.set_polar(plt.gca(), 'N', boundinglat=50)
-    return ax
+    return
 
 
 def imf_by_effect(
         AErange=(00, 50), cmap='viridis', whichp='ef', vmin=0, vmax=3, byb=3):
     # F16
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.dat')
     fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
           (Mixps.eftot!=0)).values
     fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
@@ -956,7 +883,7 @@ def imf_by_effect(
             MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
             Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
     # F17
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
+    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.dat')
     fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
           (Mixps.eftot!=0)).values
     fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
@@ -1026,10 +953,10 @@ def imf_by_effect(
 def hp_statistics():
     # F16
     MLats16, Mixps16, EFs16, AveEs16 = pd.read_pickle(
-            savepath+'method5/F16.old.dat')
+            savepath+'method5/F16.dat')
     # F17
     MLats17, Mixps17, EFs17, AveEs17 = pd.read_pickle(
-            savepath+'method5/F17.old.dat')
+            savepath+'method5/F17.dat')
     # combine
     MLats, Mixps, EFs, AveEs = (
             np.concatenate((MLats16, MLats17), axis=0),
@@ -1063,42 +990,42 @@ def hp_statistics():
 
 
 def case_substorm():
-    ae = omni.get_omni('2010-03-28', '2010-03-30',variables=['AE'], res='1m')
-    # time = ['2010-05-28 09:19:00',
-    #         '2010-05-28 11:02:00',
-    #         '2010-05-28 12:43:00']
-    # time = ['2010-03-28 03:30:00',
-    #         '2010-03-28 05:14:00',
-    #         '2010-03-28 06:58:00']
-    time = ['2010-03-28 10:24:00',
-            '2010-03-28 12:06:00',
-            '2010-03-28 13:47:00']
-    plt.close('all')
-    for itime in time:
-        plt.figure(figsize=(7.4, 5.3))
-        ax = plt.subplot(polar=True)
-        aurora_reconstruction_fit_AE(
-            ax, AE=float(ae.loc[itime]), vmin=0, vmax=20, cmap='rainbow')
-        plt.colorbar()
-    plt.show()
+    # Read substorm list
+    fn = '/home/guod/data/substorms_2015.txt'
+    sslist = pd.read_csv(
+            fn, delim_whitespace=True, header=None,
+            names=['year', 'month', 'day', 'hour', 'minute', 'mlat', 'mlt'],
+            skiprows=68)
+    sslist = pd.DataFrame(
+            data=sslist[['mlat', 'mlt']].values,
+            index=pd.to_datetime(
+                sslist[['year', 'month', 'day', 'hour', 'minute']]),
+            columns=['mlat', 'mlt'])
+    for k in np.arange(sslist.shape[0]):
+        ae = omni.get_omni(
+                sslist.index[k], sslist.index[k]+pd.Timedelta('5h'),
+                variables=['AE'], res='1m')
+        plt.close('all')
+        plt.plot(ae)
+        plt.show()
+        input()
     return ae
 
 if __name__ == '__main__':
     # plt.close('all')
     # sat = 'f16'
     # year = 2011
-    # doy = 160
+    # doy = 5
     # path = '/home/guod/WD4T/ssusi/ssusi.jhuapl.edu/data/{:s}/'\
     #        'apl/edr-aur/{:d}/{:03d}/'.format(sat, year, doy)
     # fns = os.listdir(path)
     # for fn in fns:
-    #     print(fn)
     #     find_parameters_one_file_5(path+fn, test=True)
     # plt.show()
 
-    find_parameters()
+    # find_parameters()
 
-    # aurora_reconstruction_statistics_all('avee', cmap='jet', vmax=6)
+    aurora_reconstruction_statistics_all('ef', cmap='jet', vmax=5)
 
     # statistics()
 
@@ -1131,16 +1058,13 @@ if __name__ == '__main__':
 
     # hp_fit()
 
-    # linear_fit_AE(test=True)
-
-    # ax=plt.subplot(polar=True)
-    # aurora_reconstruction_fit_AE(ax, AE=1000)
+    # linear_fit_AE(whichp='ef')
 
     # imf_by_effect(cmap='nipy_spectral', vmax=5, byb=3)
 
     # hp_statistics()
 
-    # case_substorm()
+    # ae = case_substorm()
     print('----------------------------------------------------------------')
     print('Remaining problems:')
     print('  1, Aurora with complicated structure')

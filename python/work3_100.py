@@ -20,7 +20,7 @@ import matplotlib.animation as animation
 import gitm_vorticity as gv
 from apexpy import Apex
 from matplotlib.ticker import AutoMinorLocator
-sns.set('paper', 'whitegrid')
+sns.set('talk', 'whitegrid')
 
 DATADIR = os.environ.get('DATAPATH')
 def func1():
@@ -814,7 +814,7 @@ def func7():
             usecols=['by'])
     imf2 = pd.DataFrame(np.array(imf2), index=time, columns=['By'])
     plt.plot(imf2.index, imf2.By)
-    plt.ylabel(r'$B_y$')
+    plt.ylabel(r'IMF $B_Y$')
     plt.ylim([-10, 10])
 
     # Find file names (100322_230000 -> 100323_060000)
@@ -917,12 +917,12 @@ def func7():
         vorti_rolling = oot['vorti'].rolling(
                 window=1, min_periods=1, center=True).mean()
         plt.plot(oot.index, vorti_rolling*1e4)
-        plt.ylabel('$V_i$')
+        plt.ylabel('$\omega (ion)$')
         plt.ylim([-10, 20])
         # nvorticity
         plt.sca(ax[2])
         plt.plot(oot.index, oot.vortn*1e4)
-        plt.ylabel('$V_n$')
+        plt.ylabel('$\omega (neu)$')
         plt.ylim([0, 15])
         # minimum density
         plt.sca(ax[3])
@@ -940,7 +940,7 @@ def func7():
         # mean Temperature
         plt.sca(ax[6])
         plt.plot(oot.index, oot.tempmean)
-        plt.ylabel(r'$Temp_{mean}$')
+        plt.ylabel(r'$T_{mean}$')
         #    # mlat
         #    plt.sca(ax[6])
         #    plt.plot(oot.index, oot.mlat)
@@ -1008,28 +1008,30 @@ def func8():
         ax = plt.subplot(polar=True)
         ax, hc = g3ca.contour_single(
                 ax, 'Rho', 'pol', g2, alt=alt, nlat=90, slat=60,
-                zmin=4e-12, zmax=9e-12, nzlevels=30)
+                zmin=3e-12, zmax=7e-12, nzlevels=30)
         ax, hv = g3ca.vector_single(
                 ax, g2, 'neu', 'pol', alt=alt, nlat=90, slat=60,
                 scale=1500, alpha=0.7)
+        plt.colorbar(hc)
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_den_win_run2_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_den_win_run2_'+g1['time'].strftime('%H%M')+'.eps')
 
         # Density and wind run1
         plt.figure()
         ax = plt.subplot(polar=True)
         ax, hc = g3ca.contour_single(
                 ax, 'Rho', 'pol', g1, alt=alt, nlat=90, slat=60,
-                zmin=4e-12, zmax=9e-12, nzlevels=30)
+                zmin=3e-12, zmax=7e-12, nzlevels=30)
         ax, hv = g3ca.vector_single(
                 ax, g1, 'neu', 'pol', alt=alt, nlat=90, slat=60,
                 scale=1500, alpha=0.7)
+        plt.colorbar(hc)
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_den_win_run1_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_den_win_run1_'+g1['time'].strftime('%H%M')+'.eps')
 
         # Density and wind difference
         plt.figure()
@@ -1040,10 +1042,11 @@ def func8():
         ax, hv = g3ca.vector_diff(
                 ax, g1, g2, 'neu', 'pol', alt=alt, nlat=90, slat=60,
                 scale=1000, alpha=0.7)
+        plt.colorbar(hc)
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_den_win_diff_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_den_win_diff_'+g1['time'].strftime('%H%M')+'.eps')
 
         # Temperature difference
         plt.figure()
@@ -1055,30 +1058,30 @@ def func8():
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_T_diff_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_T_diff_'+g1['time'].strftime('%H%M')+'.eps')
 
         # Temperature run1
         plt.figure()
         ax = plt.subplot(polar=True)
         ax, hc = g3ca.contour_single(
                 ax, 'Temperature', 'pol', g1, alt=alt, nlat=90, slat=60,
-                nzlevels=20, zmin=1350, zmax=1650)
+                nzlevels=20, zmin=1300, zmax=1550)
         plt.colorbar(hc)
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_T_run1_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_T_run1_'+g1['time'].strftime('%H%M')+'.eps')
         # Temperature run2
         plt.figure()
         ax = plt.subplot(polar=True)
         ax, hc = g3ca.contour_single(
                 ax, 'Temperature', 'pol', g2, alt=alt, nlat=90, slat=60,
-                nzlevels=20, zmin=1350, zmax=1650)
+                nzlevels=20, zmin=1300, zmax=1550)
         plt.colorbar(hc)
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_T_run2_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_T_run2_'+g1['time'].strftime('%H%M')+'.eps')
         # vertical wind difference
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1089,7 +1092,7 @@ def func8():
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_vup_diff_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_vup_diff_'+g1['time'].strftime('%H%M')+'.eps')
         # vertical wind run2
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1100,7 +1103,7 @@ def func8():
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_vup_run2_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_vup_run2_'+g1['time'].strftime('%H%M')+'.eps')
         # vertical wind run1
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1111,7 +1114,7 @@ def func8():
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_vup_run1_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_vup_run1_'+g1['time'].strftime('%H%M')+'.eps')
         # divergence run 2
         plt.figure()
         ax = plt.subplot(polar=True)
@@ -1122,7 +1125,7 @@ def func8():
         #ax.scatter(theta, r, color='green')
         ax.scatter(qtheta, qr, color='k')
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT')
-        plt.savefig(path+'w03_func08_div_run2_'+g1['time'].strftime('%H%M')+'.pdf')
+        plt.savefig(path+'w03_func08_div_run2_'+g1['time'].strftime('%H%M')+'.eps')
         plt.close('all')
 
 
