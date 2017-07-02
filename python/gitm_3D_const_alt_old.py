@@ -28,38 +28,61 @@
 import gitm
 import numpy as np
 import matplotlib.pyplot as plt
-from mpl_toolkits.basemap import Basemap, addcyclic, shiftgrid
 
 
 def _contour_data(
-        zkey, gdata, alt=400, ialt=None):
+        zkey, gdata, alt=400, nlat=90, slat=-90, ialt=None, useLT=True):
     '''
     Get Latitude, Local Time (or Longitude) and z data for plot
     Input: zkey       = key for z variable (ie 'Vertical TEC')
            gdata      = gitm bin structure
            alt        = altitude (default 400 km)
+           nlat       = northern latitude limit (degrees North, default 90)
+           slat       = southern latitude limit (degrees North, defalut -90)
            ialt       = another way to assign the altitude. if None will use
                         alt, else use ialt
+           useLT      = Whether you use LT or Longitude (default LT)
 
-    Output: Lat, lon, zdata
+    Output: Lat, LT(Lon), zdata
     '''
     # Find altitude index
     if ialt == None:
         altitude = gdata['Altitude'][0, 0, :]
         ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
 
-    # Find the data
-    lat0, lon0, zdata0 = (
-            gdata[k][2:-2, 2:-2, ialt]
-            for k in ['dLat', 'dLon', zkey])
+    # Confine latitudes and longitudes
+    latitude = gdata['dLat'][0, :, 0]
+    ilat = (latitude >= slat) & (latitude <= nlat)
+    longitude = gdata['dLon'][:, 0, 0]
+    ilon = (longitude>=0) & (longitude<=360)
 
-    return np.array(lat0).T, np.array(lon0).T, np.array(zdata0).T
+    # Find the data
+    lat0, lon0, lt0, zdata0 = (
+            gdata[k][ilon, ...][:, ilat, :][..., ialt].copy()
+            for k in ['dLat', 'dLon', 'LT', zkey])
+    lon0[lon0>180]=lon0[lon0>180]-360
+    lonlt0 = lt0 if useLT else lon0
+
+    # Sort LT or longitude
+    ilt = np.argmin(lonlt0[:,0])
+    lat0, lonlt0, zdata0 = (
+            np.roll(k, -ilt, 0) for k in [lat0, lonlt0, zdata0])
+
+    # Extend Lon/LT (for contour)
+    maxlonlt = 24 if useLT else 360
+    lat0, lonlt0, zdata0 = (
+            np.vstack([k[-1, :][None, :], k]) for k in [lat0, lonlt0, zdata0])
+    lat0, lonlt0, zdata0 = (
+            np.vstack([k, k[1, :][None, :]]) for k in [lat0, lonlt0, zdata0])
+    lonlt0[0, :] = lonlt0[0, :]-maxlonlt
+    lonlt0[-1, :] = lonlt0[-1, :]+maxlonlt
+    return lat0, lonlt0, zdata0
 
 
 def _contour_data_mag(
         zkey, gdata, alt=400, nlat=90, slat=-90, ialt=None, useLT=True):
     '''
-    Get magnetic Latitude, Local Time and z data for plot, only for scatter?
+    Get magnetic Latitude, Local Time and z data for plot
     Input: zkey        = key for z variable (ie 'Vertical TEC')
            gdata       = gitm bin structure
            alt         = altitude (default 400 km)
@@ -131,8 +154,8 @@ def _contour_data_mag(
 
 
 def _contour_plot(
-        ax, plot_type, lat0, lon0, zdata0, utime, nlat=90, slat=-90, dlat=10,
-        dlon=90, zmax=None, zmin=None, nzlevels=20, zcolor=None,
+        ax, plot_type, lat0, lonlt0, zdata0, nlat=90, slat=-90, dlat=10,
+        dlonlt=6, lonlt00='S', zmax=None, zmin=None, nzlevels=20, zcolor=None,
         earth=False, data_type="contour", fill=True, useLT=True, log10=False,
         *args, **kwargs):
     '''
@@ -141,13 +164,12 @@ def _contour_plot(
     Input: ax         = ax to draw the plot on
            plot_type  = key to determine plot type (rectangular, polar)
            lat0       = 2D latitude data
-           lon0       = 2D local time data
+           lonlt0     = 2D local time data
            zdata0     = 2D data to be drawn
-           utime      = universal time
            nlat       = northern latitude limit (degrees North, default 90)
            slat       = southern latitude limit (degrees North, defalut -90)
            dlat       = increment of latitude ticks (default 10)
-           dlon       = increment of longitude
+           dlonlt     = increment of longitude/local time ticks (default 6)
            lonlt00    = 00 local direction (default 'S')
            zmax       = Maximum z range (default None)
            zmin       = Minimum z range (default None)
@@ -163,42 +185,11 @@ def _contour_plot(
     Output: ax = handle of the axis
             h  = handle of contourf or scatter plot
     '''
-    # create Basemap instance
-    if 'pol' in plot_type.lower(): # polar
-        lon_0 = (24-utime)*15 if useLT else 0
-        if slat*nlat < 0:
-            print('Error: For polar plot, nlat and slat should '
-                  'have the same sign')
-            return
-        csign = 1 if nlat > 0 else -1
-        projection = 'npaeqd' if csign==1 else 'spaeqd'
-        boundinglat = slat if csign==1 else nlat
-        m = Basemap(projection = projection, boundinglat=boundinglat,
-                    lon_0=lon_0, resolution='c', round=True, ax=ax)
-        ll = m.drawmeridians(np.arange(lon_0-180, lon_0+180, dlon),
-                             color='gray', labels=[1, 1, 0, 0], latmax=90)
-    else:
-        lon_0 = (12-utime)*15 if useLT else 0
-        m = Basemap(projection='cyl', llcrnrlat=slat, urcrnrlat=nlat,
-                    lon_0=lon_0, resolution='c', ax=ax)
-        ll = m.drawmeridians(np.arange(lon_0-180, lon_0+181, dlon),
-                             color='gray', labels=[0, 0, 0, 1])
-        print(np.arange(lon_0-180, lon_0+181, dlon))
-    m.drawparallels(np.arange(slat, nlat+1, dlat), color='gray',
-                    labels=[1, 0, 0, 0])
-    if earth:
-        m.drawcoastlines(color='gray', linestyle='--', linewidth=0.5)
-    if useLT:
-        for k0 in ll:
-            ll[k0][1][0].set_text('{:02.0f}'.format((utime+k0/15)%24))
-
-    # plot
-    # zdata range
     if log10:
         zdata0 = np.log10(zdata0)
+    maxlonlt = 24 if useLT else 360
     if (zmin is None) | (zmax is None):
         zmin, zmax = np.min(zdata0), np.max(zdata0)
-
     # set color map
     if zcolor is None:
         if zmin < 0.0 and zmax > 0.0:
@@ -212,42 +203,95 @@ def _contour_plot(
             zcolor = "Spectral_r"
 
     if 'pol' in plot_type.lower(): # polar
-        lat0, lon1 = addcyclic(lat0, lon0[0, :])
-        zdata0, lon1 = addcyclic(zdata0, lon0[0, :])
-        lon0, lon1 = addcyclic(lon0, lon0[0, :])
-    if 'rec' in plot_type.lower():
-        lat0, lon1 = shiftgrid(lon_0+180, lat0, lon0[0, :])
-        zdata0, lon1 = shiftgrid(lon_0+180, zdata0, lon0[0, :])
-        lon0 = lon1.reshape(1, -1).repeat(lat0.shape[0], axis=0)-360
-
-    if 'cont' in data_type.lower(): # contour
-        if fill:
-            hcont = m.contourf(
-                    lon0.copy(), lat0.copy(), zdata0,
-                    levels=np.linspace(zmin, zmax, nzlevels+1),
-                    cmap=zcolor, extend='both', latlon=True, *args, **kwargs)
-        if not fill:
-            if 'colors' in kwargs:
-                zcolor=None
-            hcont = m.contour(
-                    lon0.copy(), lat0.copy(), np.array(zdata0),
-                    levels=np.linspace(zmin, zmax, nzlevels+1),
-                    cmap=zcolor, latlon=True, *args, **kwargs)
-    if 'sca' in data_type.lower(): # scatter
-        hcont = m.scatter(
-                lon0.copy(), lat0.copy(), c=np.array(zdata0),
-                vmin=zmin, vmax=zmax, cmap=zcolor, lw=0, latlon=True,
-                *args, **kwargs)
-
-    return ax, hcont
+        if slat*nlat < 0:
+            print('Error: For polar plot, nlat and slat should '
+                  'have the same sign')
+            return
+        csign = 1 if nlat > 0 else -1
+        # Convert lat and lt to r and theta
+        r0 = 90-csign*lat0
+        theta0 = lonlt0*2*np.pi/maxlonlt
+        if csign == -1: # south pole
+            theta0 = 2*np.pi-theta0
+        if 'cont' in data_type.lower(): # contour
+            if fill:
+                hcont = ax.contourf(
+                        np.array(theta0), np.array(r0), np.array(zdata0),
+                        levels=np.linspace(zmin, zmax, nzlevels+1),
+                        cmap=zcolor, extend='both', *args, **kwargs)
+            if not fill:
+                if 'colors' in kwargs:
+                    zcolor=None
+                hcont = ax.contour(
+                        np.array(theta0), np.array(r0), np.array(zdata0),
+                        levels=np.linspace(zmin, zmax, nzlevels+1),
+                        cmap=zcolor, *args, **kwargs)
+        if 'sca' in data_type.lower(): # scatter
+            hcont = ax.scatter(
+                    np.array(theta0), np.array(r0),
+                    c=np.array(zdata0), vmin=zmin, vmax=zmax,
+                    cmap=zcolor, lw=0, *args, **kwargs)
+        # Set polar coordinates
+        rticks = np.arange(dlat, r0.max()+dlat/2, dlat)
+        rlabels = ['{:02.0f}$^\circ$'.format(k) for k in csign*(90-rticks)]
+        thetaticks = np.arange(0, 360, dlonlt*360/maxlonlt)
+        thetafmt = '{:02.0f}' if useLT else '{:.0f}'
+        thetaticklabel = thetaticks*maxlonlt/360
+        if csign==-1:
+            thetaticklabel = ((360-thetaticks)*maxlonlt/360)%maxlonlt
+        if not useLT:
+            thetaticklabel[thetaticklabel>180] -=360
+        thetalabels = [thetafmt.format(k) for k in thetaticklabel]
+        ax.set_rgrids(rticks, rlabels)
+        ax.set_thetagrids(thetaticks, thetalabels)
+        ax.set_theta_zero_location(lonlt00)
+        ax.set_rlim(0, min(90-slat, 90+nlat))
+        return ax, hcont
+    if 'rec' in plot_type.lower(): # rectangular
+        if 'cont' in data_type.lower(): # contour
+            if fill:
+                hcont = ax.contourf(
+                        np.array(lonlt0), np.array(lat0), np.array(zdata0),
+                        levels=np.linspace(zmin, zmax, nzlevels+1),
+                        cmap=zcolor, extend='both', *args, **kwargs)
+            if not fill:
+                if 'colors' in kwargs:
+                    zcolor=None
+                hcont = ax.contour(
+                        np.array(lonlt0), np.array(lat0), np.array(zdata0),
+                        levels=np.linspace(zmin, zmax, nzlevels+1),
+                        cmap=zcolor, *args, **kwargs)
+        if 'sca' in data_type.lower(): # scatter
+            hcont = ax.scatter(np.array(lonlt0), np.array(lat0),
+                               c=np.array(zdata0), vmin=zmin, vmax=zmax,
+                               cmap=zcolor, lw=0, *args, **kwargs)
+        if useLT:
+            xticks = np.arange(0, maxlonlt+dlonlt/2, dlonlt)
+        else:
+            xticks = np.arange(-180, 180+dlonlt/2, dlonlt)
+        xticklabels = ['{:.0f}'.format(k) for k in xticks]
+        if useLT:
+            xticklabels = ['{:02.0f}'.format(k) for k in xticks]
+        yticks = np.arange(slat, nlat+0.00001, dlat)
+        yticklabels = ['{:02.0f}'.format(k) for k in yticks]
+        ax.set_xticks(xticks)
+        ax.set_xticklabels(xticklabels)
+        ax.set_yticks(yticks)
+        ax.set_yticklabels(yticklabels)
+        if useLT:
+            ax.set_xlim(0,24)
+        else:
+            ax.set_xlim(-180,180)
+        ax.set_ylim(slat, nlat)
+        return ax, hcont
 
 
 def contour_single(
         ax, zkey, plot_type, gdata, alt=400, title=False,
-        nlat=90, slat=-90, dlat=10, dlon=90, mag=False,
-        zmax=None, zmin=None, nzlevels=20, zcolor=None,
-        earth=False, data_type="contour", fill=True, ialt=None, useLT=True,
-        log10=False, *args, **kwargs):
+        nlat=90, slat=-90, dlat=10, dlonlt=6, mag=False,
+        lonlt00='S', zmax=None, zmin=None, nzlevels=20, zcolor=None,
+        data_type="contour", fill=True, ialt=None, useLT=True, log10=False,
+        *args, **kwargs):
     '''
     Creates a rectangular or polar map projection plot for a specified latitude
     range at a fixed altitude for one 3D file.
@@ -260,7 +304,7 @@ def contour_single(
            nlat       = northern latitude limit (degrees North, default 90)
            slat       = southern latitude limit (degrees North, defalut -90)
            dlat       = increment of latitude ticks (default 10)
-           dlon       = increment of local time ticks (default 6)
+           dlonlt     = increment of local time ticks (default 6)
            mag        = whether use magnetic coordinates (default False)
            lonlt00    = 00 local direction (default 'S')
            zmax       = Maximum z range (default None)
@@ -268,7 +312,6 @@ def contour_single(
            nzlevels   = split [zmin, zmax] into nzlevels sets (default=20)
            zcolor     = Color map for the z variable.  If none, will be chosen
                         based on the z range (default=None)
-           earth      = with coastline? (default=False)
            data_type  = scatter or contour (default=contour)
            fill       = whether to use contour fill (default=True)
            ialt       = another way to assign the altitude. if None will use
@@ -281,20 +324,19 @@ def contour_single(
     '''
     from apexpy import Apex
     if not mag:
-        lat0, lon0, zdata0 = _contour_data(
-                zkey=zkey, gdata=gdata, alt=alt, ialt=ialt)
-    if mag:
-        lat0, lon0, zdata0 = _contour_data_mag(
+        lat0, lonlt0, zdata0 = _contour_data(
                 zkey=zkey, gdata=gdata, alt=alt, nlat=nlat, slat=slat,
-                ialt=ialt)
-    ut = (gdata['time'].hour * 3600 + gdata['time'].minute * 60
-          + gdata['time'].second + gdata['time'].microsecond * 1e-6) / 3600.0
+                ialt=ialt, useLT=useLT)
+    if mag:
+        lat0, lonlt0, zdata0 = _contour_data_mag(
+                zkey=zkey, gdata=gdata, alt=alt, nlat=nlat, slat=slat,
+                ialt=ialt, useLT=useLT)
     ax, hc = _contour_plot(
-             ax=ax, plot_type=plot_type, lat0=lat0, lon0=lon0,
-             zdata0=zdata0, utime=ut, nlat=nlat, slat=slat, dlat=dlat,
-             dlon=dlon, zmax=zmax, zmin=zmin, nzlevels=nzlevels, zcolor=zcolor,
-             earth=earth, data_type=data_type, fill=fill, useLT=useLT,
-             log10=log10, *args, **kwargs)
+             ax=ax, plot_type=plot_type, lat0=lat0, lonlt0=lonlt0, zdata0=zdata0,
+             nlat=nlat, slat=slat, dlat=dlat, dlonlt=dlonlt, lonlt00=lonlt00,
+             zmax=zmax, zmin=zmin, nzlevels=nzlevels, zcolor=zcolor,
+             data_type=data_type, fill=fill, useLT=useLT, log10=log10,
+             *args, **kwargs)
     if title:
         # Find altitude index
         if ialt == None:
@@ -634,21 +676,25 @@ def vector_diff(
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
     # test
-    plt.close('all')
-    path = '/home/guod/WD4T/gitm/run_imfby/run1b/data/'
+    import gitm
+    import pandas as pd
+    path = '/home/guod/big/raid4/guod/run_imfby/run1c/data/'
     g = gitm.GitmBin(
-            path+'/3DALL_t100322_210000.bin',
+            path+'3DALL_t100323_060000.bin',
             varlist=['Rho', 'V!Dn!N (east)', 'V!Dn!N (north)'])
-
     # Tested parameters
     polar = False
-    nlat, slat, dlat, dlon = 90, -90, 10, 60
-    data_type = 'scatter'
-    useLT = True
+    nlat, slat = 90, -90
+    useLT, dlonlt = False , 90
     #-----------------------
     pr = 'pol' if polar else 'rec'
-    ax = plt.subplot()
+    ax = plt.subplot(polar=polar)
     ax, hc = contour_single(
-            ax, 'Rho', pr, g, alt=400, nlat=nlat, slat=slat, earth=True,
-            dlat=dlat, dlon=dlon, useLT=useLT, data_type='sca')
+            ax, 'Rho', pr, g, alt=400,
+            nlat=nlat, slat=slat,
+            dlonlt=dlonlt, useLT=useLT)
+    ax, hc = vector_single(
+            ax, g, 'neu', pr, alt=400,
+            nlat=nlat, slat=slat,
+            dlonlt=dlonlt, useLT=useLT, scale=1500, scale_units='inches')
     plt.show()

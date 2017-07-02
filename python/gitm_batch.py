@@ -70,14 +70,15 @@ if ptype == 'Altitude':
     else:
         zmax=float(zmax)
     axt, hc = g3ca.contour_single(
-            ax, vl[vi], polar, g, ialt=ialt, nlat=nlat, slat=slat, dlonlt=dlonlt,
-            zmax=zmax, zmin=zmin, log10=log10, useLT=useLT, dlat=dlat)
+            ax, vl[vi], polar, g, ialt=ialt, nlat=nlat, slat=slat,
+            dlonlt=dlonlt, zmax=zmax, zmin=zmin, log10=log10,
+            useLT=useLT, dlat=dlat)
     plt.colorbar(hc, ax=axt, pad=0.1)
     if vi2!=-1:
         axt, hc = g3ca.contour_single(
-                ax, vl[vi2], polar, g, ialt=ialt, nlat=nlat, slat=slat, dlonlt=dlonlt,
-                zmax=zmax, zmin=zmin, fill=False, colors='k', alpha=0.5,
-                dlat=dlat, useLT=useLT)
+                ax, vl[vi2], polar, g, ialt=ialt, nlat=nlat, slat=slat,
+                dlonlt=dlonlt, zmax=zmax, zmin=zmin, fill=False, colors='k',
+                alpha=0.5, dlat=dlat, useLT=useLT)
         plt.clabel(hc, fmt='%.1f')
     vectoryn = input('Enter whether you want vectors or not (y/n) [y]: ')
     if vectoryn=='y' or len(vectoryn)==0:
@@ -98,7 +99,8 @@ if ptype == 'Altitude':
                 ax, g, neuion, polar, ialt=ialt, nlat=nlat, slat=slat,
                 scale=scalel[scalew], alpha=0.6, useLT=useLT,
                 dlat=dlat, dlonlt=dlonlt)
-    plt.title(g[vl[vi]].attrs['name']+' at '+ '%.1f'%(g['Altitude'][0, 0, ialt]/1000)+
+    plt.title(g[vl[vi]].attrs['name']+' at '+
+              '%.1f'%(g['Altitude'][0, 0, ialt]/1000)+
               ' km Altitude at '+ g['time'].strftime('%d-%b-%y %H:%M')+ ' UT')
 if ptype == 'Longitude':
     print('Unimplemented')

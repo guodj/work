@@ -10,7 +10,8 @@ import gitm
 import numpy as np
 import matplotlib.pyplot as plt
 
-def calc_vorticity(gdata, neuion='neutral', name='nvorticity', component='radial'):
+def calc_vorticity(gdata, neuion='neutral', name='nvorticity',
+                   component='radial'):
     '''
     calculate the vertical vorticity in a spherical coordinate.
     input:
@@ -35,13 +36,18 @@ def calc_vorticity(gdata, neuion='neutral', name='nvorticity', component='radial
     Re = 6371*1000 # Earth radius, unit: m
     if 'radial' in component.lower():
         vort = 1.0/(Re+alt)*(
-                np.gradient(nwind, axis=0) / (np.cos(lat)*np.gradient(lon, axis=0)) -
-                np.gradient(ewind, axis=1) / np.gradient(lat, axis=1) + (ewind*np.tan(lat)))
-    if 'north' in component.lower():
+                np.gradient(nwind, axis=0) / \
+                (np.cos(lat)*np.gradient(lon, axis=0)) -
+                np.gradient(ewind, axis=1) / \
+                np.gradient(lat, axis=1) + (ewind*np.tan(lat)))
+        vort = vort + 2*(2*np.pi/24/3600)*np.sin(lat) # coriolis effect
+    if 'north' in component.lower(): # coriolis effect?
         vort = -1.0/(Re+alt)*(
-                1.0/np.cos(lat)*np.gradient(uwind, axis=0)/np.gradient(lon, axis=0) -
+                1.0/np.cos(lat)*np.gradient(uwind, axis=0) / \
+                np.gradient(lon, axis=0) -
                 np.gradient((Re+alt)*ewind, axis=2)/np.gradient(alt, axis=2))
-    if 'east' in component.lower():
+        vort = vort + 2*(2*np.pi/24/3600)*np.cos(lat)
+    if 'east' in component.lower(): # coriolis effect?
         vort = 1.0/(Re+alt)*(
                 np.gradient(-(r+alt)*nwind, axis=2)/np.gradient(alt, axis=2) +
                 np.gradient(uwind, axis=1)/np.gradient(lat, axis=1))
@@ -54,8 +60,8 @@ def calc_vorticity(gdata, neuion='neutral', name='nvorticity', component='radial
 if __name__ == '__main__':
     import gitm_3D_const_alt as g3ca
     from spacepy.datamodel import dmarray
-    path = '/home/guod/WD2T/run_imfby/'
-    gdata = gitm.GitmBin(path+'run2/data/3DALL_t100323_000000.bin')
+    fn = '/home/guod/WD4T/gitm/run_imfby/run2b/data/3DALL_t100323_042000.bin'
+    gdata = gitm.GitmBin(fn)
     calc_vorticity(gdata, 'neu', name='nvorticity')
 
     alt = 200

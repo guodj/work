@@ -38,9 +38,11 @@ def calc_divergence(gdata, neuion='neutral', name='divergence'):
     Re = 6371*1000 # Earth radius, unit: m
     RR = Re+alt
     divergence = (
-            1.0/(RR**2)*np.gradient(RR**2*uwind, axis=2) / np.gradient(alt, axis=2) +
+            1.0/(RR**2)*np.gradient(RR**2*uwind, axis=2) / \
+            np.gradient(alt, axis=2) +
             1.0/(RR*np.cos(lat))*(
-                np.gradient(nwind*np.cos(lat), axis=1) / np.gradient(lat, axis=1) +
+                np.gradient(nwind*np.cos(lat), axis=1) / \
+                np.gradient(lat, axis=1) +
                 np.gradient(ewind, axis=0) / np.gradient(lon, axis=0)))
     gdata[name] = dmarray(divergence, attrs={'units':'/s', 'scale':'linear',
                         'name':neuion+' velocity divergence'})
