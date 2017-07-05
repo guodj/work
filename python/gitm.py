@@ -84,7 +84,7 @@ class GitmBin(PbData):
         self.attrs['file']=filename
 
         # Load the GITM data
-        print('Read gitm data from: '+filename)
+        print('Read GITM output from: '+filename)
         self._read(varlist)
         self.calc_deg()
         self.calc_lt()

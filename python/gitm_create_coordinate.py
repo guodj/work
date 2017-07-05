@@ -4,7 +4,6 @@ import numpy as np
 import gitm
 import matplotlib.path as mpath
 from matplotlib.offsetbox import AnchoredText
-from cartopy.mpl.ticker import LongitudeFormatter, LatitudeFormatter
 import sys
 
 def create_polar(nrow, ncolumn, n, nlat=90, slat=0, centrallon=0,
@@ -16,7 +15,6 @@ def create_polar(nrow, ncolumn, n, nlat=90, slat=0, centrallon=0,
     '''
     # In the northern hemisphere, central longitude is at 6 o'clock
     # In the southern hemisphere, central longitude is at 12 o'clock
-    # This is really strange
     if nlat*slat<0:
         sys.exit('Input of `nlat` or `slat` is wrong!!!')
     if nlat == 90:

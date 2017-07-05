@@ -325,6 +325,82 @@ def find_parameters(saveplot=False):
     return
 
 
+def aurora_reconstruction_statistics_data():
+    # fns = glob.glob('{:s}method5/F*.old.dat'.format(savepath))
+    # mlatsout, mixpsout, efsout, aveesout = [], [], [], []
+    # for fn in fns:
+    #     print(fn)
+    #     mlats, mixps, efs, avees = pd.read_pickle(fn)
+    #     mlatsout.append(mlats)
+    #     mixpsout.append(mixps)
+    #     efsout.append(efs)
+    #     aveesout.append(avees)
+    # mlatsout = np.concatenate(mlatsout)
+    # mixpsout = pd.concat(mixpsout)
+    # efsout = np.concatenate(efsout)
+    # aveesout = np.concatenate(aveesout)
+
+    # pct = np.arange(0.05, 1, 0.05)
+    # mlt = np.arange(BinMLT/2, 24, BinMLT)
+    # mlatstat = np.ones(
+    #         [np.size(pct), np.size(mlt), np.size(AErange, axis=0)])*np.nan
+    # efstat = mlatstat.copy()
+    # aveestat = mlatstat.copy()
+    # # for mlat and avee
+    # for iAE in np.arange(np.size(AErange, axis=0)):
+    #     fp = ((mixpsout['AE']>=AErange[iAE, 0]) &
+    #           (mixpsout['AE']<=AErange[iAE, 1]) &
+    #           (mixpsout['eftot']!=0))
+    #     mlatsout1 = mlatsout[fp, :]
+    #     mixpsout1 = mixpsout.loc[fp, :]
+    #     aveesout1 = aveesout[fp, :]
+    #     for imlt, mlt1 in enumerate(mlt):
+    #         fp = mixpsout1['mlt']==mlt1
+    #         if np.sum(fp) < LLSMP:
+    #             continue
+    #         mlatstat[:, imlt, iAE] = np.median(mlatsout1[fp, :], axis=0)
+    #         aveestat[:, imlt, iAE] = np.median(aveesout1[fp, :], axis=0)
+    # for iAE in np.arange(np.size(AErange, axis=0)):
+    #     fp = ((mixpsout['AE']>=AErange[iAE, 0]) &
+    #           (mixpsout['AE']<=AErange[iAE, 1]))
+    #     efsout1 = efsout[fp, :]
+    #     mixpsout1 = mixpsout.loc[fp, :]
+    #     for imlt, mlt1 in enumerate(mlt):
+    #         fp = mixpsout1['mlt']==mlt1
+    #         if np.sum(fp) < LLSMP:
+    #             continue
+    #         efstat[:, imlt, iAE] = np.median(efsout1[fp, :], axis=0)
+    # efstat[np.isnan(mlatstat)] = np.nan
+    # pd.to_pickle([mlatstat, efstat, aveestat],
+    #              '{:s}method5/statistics.old.dat'.format(savepath))
+
+    # save to txt file
+    mlt = np.arange(BinMLT/2, 24, BinMLT)
+    mlatstat, efstat, aveestat = pd.read_pickle(
+            '{:s}method5/statistics.old.dat'.format(savepath))
+    for iAE in np.arange(np.size(AErange, axis=0)):
+        mlatstat1 = mlatstat[:, :, iAE]
+        efstat1 = efstat[:, :, iAE]
+        aveestat1 = aveestat[:, :, iAE]
+        f = open('{:s}method5/AE_{:03.0f}_{:03.0f}.old.dat'.format(
+                savepath, AErange[iAE, 0], AErange[iAE, 1]), 'w')
+        f.write('# MLT(line2), Mlat(lines 3-21), EFlux(lines 22-40),'+
+                ' AveE(lines 41-59)\n')
+        f.write(mlt.size*'%-6.3f  '%(tuple(mlt)))
+        f.write('\n')
+        for iline in np.arange(mlatstat1.shape[0]):
+            f.write(mlatstat1.shape[1]*'%5.2f  '%(tuple(mlatstat1[iline, :])))
+            f.write('\n')
+        for iline in np.arange(efstat1.shape[0]):
+            f.write(efstat1.shape[1]*'%-6.3f  '%(tuple(efstat1[iline, :])))
+            f.write('\n')
+        for iline in np.arange(aveestat1.shape[0]):
+            f.write(aveestat1.shape[1]*'%-6.3f  '%(tuple(aveestat1[iline, :])))
+            f.write('\n')
+        f.close()
+    return
+
+
 def aurora_reconstruction_statistics(
         ax, AErange=(0, 50), cmap='viridis', whichp='ef', vmin=0, vmax=5):
     """
@@ -332,70 +408,22 @@ def aurora_reconstruction_statistics(
     """
     s=5
     marker='o'
-    # F16
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F16.old.dat')
-    fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
-              (Mixps.eftot!=0)).values
-    fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    mlats16_1, mixps16_1, mlats16_2, mixps16_2, efs16_2, avees16_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
-            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
-    # F17
-    MLats, Mixps, EFs, AveEs = pd.read_pickle(savepath+'method5/F17.old.dat')
-    fpmlat = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1]) &
-              (Mixps.eftot!=0)).values
-    fpef = ((Mixps.AE>AErange[0]) & (Mixps.AE<AErange[1])).values
-    mlats17_1, mixps17_1, mlats17_2, mixps17_2, efs17_2, avees17_1 = (
-            MLats[fpmlat, :], Mixps.loc[fpmlat, :], MLats[fpef, :],
-            Mixps.loc[fpef, :], EFs[fpef, :], AveEs[fpmlat, :])
-    # combine
-    mlats1 = np.concatenate((mlats16_1, mlats17_1), axis=0)
-    mixps1 = pd.concat((mixps16_1, mixps17_1), axis=0, ignore_index=True)
-    mlats2 = np.concatenate((mlats16_2, mlats17_2), axis=0)
-    mixps2 = pd.concat((mixps16_2, mixps17_2), axis=0, ignore_index=True)
-    efs2 =np.concatenate((efs16_2, efs17_2), axis=0)
-    avees1 =np.concatenate((avees16_1, avees17_1), axis=0)
 
-    mlatsout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
-    psout = np.ones((int(1/dratio-1), int(24/BinMLT)))*np.nan
-    if whichp == 'ef':
-        usep = efs2
-    else:
-        usep = avees1
-    for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
-        if (k0>=10) & (k0<=14):
-            continue
-        fp1 = (mixps1.mlt == k0).values
-        if np.sum(fp1) < LLSMP:
-            continue
-        mlatsout[:, k00] = np.median(mlats1[fp1, :], axis=0)
-    for k00, k0 in enumerate(np.arange(BinMLT/2, 24, BinMLT)):
-        if (k0>=10) & (k0<=14):
-            continue
-        fp1 = (mixps1.mlt == k0).values
-        fp2 = (mixps2.mlt == k0).values
-        if np.sum(fp1) < LLSMP:
-            continue
-        if whichp == 'ef':
-            d1 = mlats2[fp2, -1]-mlats2[fp2, 0]
-            d2 = mlatsout[-1, k00] - mlatsout[0, k00]
-            dout = np.tile((d1/d2).reshape(-1, 1), (1, usep.shape[-1]))
-            psout[:, k00] = np.median(usep[fp2, :]*dout, axis=0)
-        else:
-            psout[:, k00] = np.median(usep[fp1, :], axis=0)
-        hs = ax.scatter(
-                (np.ones(mlatsout[:, k00].shape)*k0)/12*np.pi,
-                90-mlatsout[:, k00],
-                vmin=vmin, vmax=vmax, c=psout[:, k00],
-                cmap=cmap, s=s, marker=marker)
-    mlatsout_ext = 0.5*(mlatsout+np.roll(mlatsout, 1, axis=1))
-    psout_ext = 0.5*(psout+np.roll(psout, 1, axis=1))
-    for k00, k0 in enumerate(np.arange(0, 24, BinMLT)):
-        hs = ax.scatter(
-                (np.ones(mlatsout_ext[:, k00].shape)*k0)/12*np.pi,
-                90-mlatsout_ext[:, k00],
-                vmin=vmin, vmax=vmax, c=psout_ext[:, k00],
-                cmap=cmap, s=s, marker=marker)
+    mlatstat, efstat, aveestat = pd.read_pickle(
+            '{:s}method5/statistics.old.dat'.format(savepath))
+    iAE = int(AErange[0]/50)
+    mlatstat1 = mlatstat[:, :, iAE]
+    efstat1 = efstat[:, :, iAE]
+    aveestat1 = aveestat[:, :, iAE]
+    pstat1 = efstat1 if whichp=='ef' else aveestat1
+    mltstat1 = np.arange(BinMLT/2, 24, BinMLT)
+    mltstat1 = np.tile(mltstat1, [mlatstat1.shape[0], 1])
+    hs = ax.scatter(mltstat1/12*np.pi, 90-mlatstat1, s=s, vmin=vmin, vmax=vmax,
+               c=pstat1, cmap=cmap, marker=marker)
+    mlatstat1_ext = 0.5*(mlatstat1+np.roll(mlatstat1, 1, axis=1))
+    pstat1_ext = 0.5*(pstat1+np.roll(pstat1, 1, axis=1))
+    ax.scatter(mltstat1/12*np.pi, mlatstat1, s=s, vmin=vmin, vmax=vmax,
+               c=pstat1, cmap=cmap, marker=marker)
     return ax, hs
 
 
@@ -1096,9 +1124,11 @@ if __name__ == '__main__':
     #     find_parameters_one_file_5(path+fn, test=True)
     # plt.show()
 
-    find_parameters()
+    # find_parameters()
 
-    # aurora_reconstruction_statistics_all('avee', cmap='jet', vmax=6)
+    # aurora_reconstruction_statistics_data()
+
+    aurora_reconstruction_statistics_all('ef', cmap='jet', vmax=10)
 
     # statistics()
 

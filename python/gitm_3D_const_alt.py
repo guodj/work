@@ -54,7 +54,7 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
 
 def vector_data(
         gdata, species, alt=400, ialt=None, dindlon=2, dindlat=2,
-        plot_type='polar', projection=None):
+        projection=None, plot_type='polar'):
     '''
     Obtain data for _vector_plot.
     Input: gdata      = gitm bin structure
