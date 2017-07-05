@@ -7,3 +7,5 @@ files are removed.
 2016-12-21:
 1, Complete vector plot of gitm winds.
 2, No cell structure in the density structure (gitm), why?
+
+nothing
