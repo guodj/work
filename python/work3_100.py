@@ -1243,7 +1243,7 @@ def func9():
     dt = pd.date_range(
             start='2010-03-23 00:00:00', end='2010-03-23 05:00:00',
             freq='10min')
-    nlat, slat, alt = 90, -90, 150
+    nlat, slat, alt = 90, -90, 400
     if False: # data preparation
         whichrun = 'run2'
         path = '/home/guod/big/raid4/guod/run_imfby/{:s}c/data/'.format(
