@@ -12,13 +12,13 @@
 import pandas as pd
 import numpy as np
 import os
+import datetime as dt
+import matplotlib.pyplot as plt
 
 OMNIDATADIR = os.environ.get('DATAPATH') + 'omni/'
 def get_omni(bdate, edate,variables,res='1m'):
     # Get multiple days omni data.
     # variables should be list or tuple even if only one variable.
-    import datetime as dt
-    global OMNIDATADIR
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     years = np.arange(bdate.year, edate.year+1)
@@ -31,20 +31,22 @@ def get_omni(bdate, edate,variables,res='1m'):
                 'Bx', 'Bye','Bze','Bym','Bzm',
                 't10','t11','t12','t13','t14',
                 'ProTmp','ProDen', 'V',
-                't15','t16','t17','t18','t19','t20','t21','t22','t23','t24','t25','t26','t27',
+                't15','t16','t17','t18','t19','t20','t21','t22','t23','t24',
+                't25','t26','t27',
                 'Kp','R','DST','AE',
                 't28','t29','t30','t31','t32','t33','t34',
                 'ap','f107','PC','AL','AU',
                 't35']
-        na_value={'Bx':[999.9],'Bye':[999.9],'Bze':[999.9],'Bym':[999.9],'Bzm':[999.9],
-                   'ProTmp':[9999999.],'ProDen':[999.9],'V':[9999.],
-                   'Kp':[99],'R':[999],'DST':[99999],'AE':[9999]}
+        na_value={'Bx':[999.9],'Bye':[999.9],'Bze':[999.9],'Bym':[999.9],
+                  'Bzm':[999.9], 'ProTmp':[9999999.],'ProDen':[999.9],
+                  'V':[9999.], 'Kp':[99],'R':[999],'DST':[99999],'AE':[9999]}
         if res in ['1day', '1d', '1D']:
             # Use list in order to keep consistency with other resolutions
             fname = [OMNIDATADIR+'low_res_omni/omni_01_av.dat']
             freq = 'D'
         if res in ['1hour', '1Hour', '1h', '1H']:
-            fname = [OMNIDATADIR+'low_res_omni/omni2_{:4d}.dat'.format(k) for k in years]
+            fname = [OMNIDATADIR+'low_res_omni/omni2_{:4d}.dat'.format(k)
+                     for k in years]
             freq = 'H'
     # high resolution
     if res in ['5minute', '5minutes', '5m','1minute', '1m']:
@@ -58,17 +60,20 @@ def get_omni(bdate, edate,variables,res='1m'):
                 't13','t14','t15','t16','t17','t18','t19','t20','t21','t22',
                 'AE','AL','AU','SYMD','SYMH','ASYD','ASYH','PC',
                 't23']
-        na_value={'Bx':[9999.99],'Bye':[9999.99],'Bze':[9999.99],'Bym':[9999.99],'Bzm':[9999.99],
-                   'V':[99999.9],'Vx':[99999.9],'Vy':[99999.9],'Vz':[99999.9],
-                   'ProTmp':[9999999.],'ProDen':[999.99],
-                   'AE':[99999],'AL':[99999],'AU':[99999],
-                   'SYMD':[99999],'SYMH':[99999],'ASYD':[99999],'ASYH':[99999],'PC':[999.99]}
+        na_value={'Bx':[9999.99],'Bye':[9999.99],'Bze':[9999.99],
+                  'Bym':[9999.99],'Bzm':[9999.99], 'V':[99999.9],
+                  'Vx':[99999.9],'Vy':[99999.9],'Vz':[99999.9],
+                  'ProTmp':[9999999.],'ProDen':[999.99],
+                  'AE':[99999],'AL':[99999],'AU':[99999], 'SYMD':[99999],
+                  'SYMH':[99999],'ASYD':[99999],'ASYH':[99999],'PC':[999.99]}
         if res in ['5minute', '5minutes', '5m']:
-            fname =[OMNIDATADIR+'high_res_omni/omni_5min{:4d}.asc'.format(k) for k in years]
+            fname =[OMNIDATADIR+'high_res_omni/omni_5min{:4d}.asc'.format(k)
+                    for k in years]
             column_name.extend(['t24','t25','t26'])
             freq = '5T'
         if res in ['1minute', '1m']:
-            fname =[OMNIDATADIR+'high_res_omni/omni_min{:4d}.asc'.format(k) for k in years]
+            fname =[OMNIDATADIR+'high_res_omni/omni_min{:4d}.asc'.format(k)
+                    for k in years]
             freq = 'T'
     omni_data = []
     for k0, k1 in zip(years, fname):
@@ -103,7 +108,6 @@ def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):
     #----------------------------------------
     # variablename gives the column names in pd.Dataname and the possible names
     # used in ticklables
-    import matplotlib.pyplot as plt
     variablename = {'Bx':'$B_x$ (nT)',
                     'Bye':'GSE $B_y$ (nT)', 'Bym':'GSM $B_y$ (nT)',
                     'Bze':'GSE $B_z$ (nT)', 'Bzm':'GSM $B_z$ (nT)',

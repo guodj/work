@@ -7,6 +7,8 @@
 
 import numpy as np
 import pandas as pd
+import matplotlib.pyplot as plt
+from numpy import pi
 
 def updown(lat):
     '''
@@ -124,22 +126,83 @@ def declination_of_sun(doy):
     note: doy is from 0 (January 1 == 0) and can include decimals
     declination range [-23.44, 23.44]
     '''
-    from numpy import pi
     return -np.arcsin(
             0.39779 *
             np.cos(0.98565/180*pi*(doy+10) +
                    1.914/180*pi*np.sin(0.98565/180*pi*(doy-2))))
 
 def solar_zenith_angle(doy, lat, lt):
-    from numpy import pi
     return 180/pi*np.arccos(
             np.sin(lat/180*pi)*np.sin(declination_of_sun(doy)) +
             np.cos(lat/180*pi)*np.cos(declination_of_sun(doy)) *
             np.cos((lt-12)/12*pi))
+
+
+def subplots_create_cbar_axis(ax, location='right', pad=0.02, size=0.05):
+    axlc = ax.get_position()
+    if location=='right':
+        x0 = axlc.x0+axlc.width+pad*axlc.width
+        y0 = axlc.y0
+        width = size*axlc.width
+        height = axlc.height
+    elif location=='top':
+        x0 = axlc.x0
+        y0 = axlc.y0+axlc.height+pad*axlc.height
+        width = axlc.width
+        height = size*axlc.height
+    return plt.axes([x0, y0, width, height])
+
+
+def subplots_xylabel(ax, nrow, ncol, xlabel, ylabel, mode='L', **kwargs):
+    if type(xlabel)==str:
+        xlabel = ncol*[xlabel]
+    if type(ylabel)==str:
+        ylabel = nrow*[ylabel]
+    if mode=='L':
+        if nrow == 1:
+            ax[0].set_ylabel(ylabel[0], **kwargs)
+            for k00 in range(ncol):
+                ax[k00].set_xlabel(xlabel[k00], **kwargs)
+        elif ncol == 1:
+            ax[-1].set_xlabel(xlabel[0], **kwargs)
+            for k00 in range(nrow):
+                ax[k00].set_ylabel(ylabel[k00], **kwargs)
+        else:
+            for k00 in range(nrow):
+                ax[k00, 0].set_ylabel(ylabel[k00], **kwargs)
+            for k00 in range(ncol):
+                ax[-1, k00].set_xlabel(xlabel[k00], **kwargs)
+    if mode=='1':
+        if nrow == 1:
+            axt = ax[0]
+        elif ncol == 1:
+            axt = ax[-1]
+        else:
+            axt = ax[-1, 0]
+        axt.set_ylabel(ylabel[0], **kwargs)
+        axt.set_xlabel(xlabel[0], **kwargs)
+    return
+
+
+def subplots_create_abcde(ax, direction='row', x=0.01, y=1.05):
+    abcde = list('abcdefghijklmnopqrstuvwxyz')
+    if ax.size == ax.shape[0]:
+        for k11, k1 in enumerate(ax):
+            k1.text(x, y, '( '+abcde[k11]+' )', transform=k1.transAxes)
+    else:
+        for k1 in range(ax.shape[0]):
+            for k2 in range(ax.shape[1]):
+                if 'row' in direction:
+                    idx=k2+k1*ax.shape[1]
+                else:
+                    idx=k1+k2*ax.shape[0]
+                ax[k1, k2].text(x, y, '( '+abcde[idx]+' )',
+                                transform=ax[k1, k2].transAxes)
+    return
+
 # END
 #-------------------------------------------------------------------------------
 if __name__ == '__main__':
-    import matplotlib.pyplot as plt
     import champ_grace as cg
     import goce as gc
     # Test lat2arglat

@@ -18,9 +18,8 @@ import sys
 def calculate_centrallon(gdata, plot_type='polar', useLT=True):
     centrallon = 0
     if useLT:
-        ut = (gdata['time'].hour +
-              gdata['time'].minute/60 +
-              gdata['time'].second/3600)
+        gt = gdata['time']
+        ut = (gt.hour + gt.minute/60 + gt.second/3600)
         if 'po' in plot_type:
             centrallon = (0-ut)*15
         else:
@@ -37,6 +36,9 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
                         alt, else use ialt
 
     Output: Lat, lon, zdata
+
+    *** Note: Lon raries in x direction, lat varies in y direction. This is ***
+    ***       different with GITM settings.                                 ***
     '''
     # Find altitude index
     if ialt == None:
@@ -49,12 +51,10 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
     zdata0 = np.array(gdata[zkey][2:-2, 2:-2, ialt])
     zdata0, lon0 = add_cyclic_point(zdata0.T, coord=lon0, axis=1)
     lon0, lat0 = np.meshgrid(lon0, lat0)
-    return lon0, lat0, zdata0
+    return np.array(lon0), np.array(lat0), np.array(zdata0)
 
 
-def vector_data(
-        gdata, species, alt=400, ialt=None, dindlon=2, dindlat=2,
-        projection=None, plot_type='polar'):
+def vector_data(gdata, species, alt=400, ialt=None):
     '''
     Obtain data for _vector_plot.
     Input: gdata      = gitm bin structure
@@ -71,21 +71,21 @@ def vector_data(
         ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
 
     # Find the data
-    lon0 = np.array(gdata['dLon'][2:-2:dindlon, 0, 0])
-    lat0 = np.array(gdata['dLat'][0, 2:-2:dindlat, 0])
+    lon0 = np.array(gdata['dLon'][2:-2, 0, 0])
+    lat0 = np.array(gdata['dLat'][0, 2:-2, 0])
     if 'neu' in species.lower():
-        nwind = np.array(
-                gdata['V!Dn!N (north)'][2:-2:dindlon, 2:-2:dindlat, ialt])
-        ewind = np.array(
-                gdata['V!Dn!N (east)'][2:-2:dindlon, 2:-2:dindlat, ialt])
+        nwind = np.array(gdata['V!Dn!N (north)'][2:-2, 2:-2, ialt])
+        ewind = np.array(gdata['V!Dn!N (east)'][2:-2, 2:-2, ialt])
     elif 'ion' in species.lower():
-        nwind = np.array(
-                gdata['V!Di!N (north)'][2:-2:dindlon, 2:-2:dindlat, ialt])
-        ewind = np.array(
-                gdata['V!Di!N (east)'][2:-2:dindlon, 2:-2:dindlat, ialt])
+        nwind = np.array(gdata['V!Di!N (north)'][2:-2, 2:-2, ialt])
+        ewind = np.array(gdata['V!Di!N (east)'][2:-2, 2:-2, ialt])
     nwind, lon0 = add_cyclic_point(nwind.T, coord=lon0, axis=1)
     ewind = add_cyclic_point(ewind.T, axis=1)
     lon0, lat0 = np.meshgrid(lon0, lat0)
+    return np.array(lon0), np.array(lat0), np.array(ewind), np.array(nwind)
+
+
+def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
     if 'po' in plot_type:
         if projection is None:
             sys.exit('projection is not given')
@@ -98,13 +98,13 @@ def vector_data(
         theta = csign*theta
         xwind = csign*(ewind*np.cos(theta)-nwind*np.sin(theta))
         ywind = csign*(ewind*np.sin(theta)+nwind*np.cos(theta))
-        xyz = projection.transform_points(
-                ccrs.PlateCarree(), lon0, lat0)
+        xyz = projection.transform_points(ccrs.PlateCarree(), lon0, lat0)
         x, y = xyz[..., 0], xyz[..., 1]
         return x, y, xwind, ywind
-    xyz = projection.transform_points(ccrs.PlateCarree(), lon0, lat0)
-    lon0, lat0 = xyz[..., 0], xyz[..., 1]
-    return lon0, lat0, ewind, nwind
+    else:
+        xyz = projection.transform_points(ccrs.PlateCarree(), lon0, lat0)
+        lon0, lat0 = xyz[..., 0], xyz[..., 1]
+        return lon0, lat0, ewind, nwind
 
 
 #END
@@ -112,16 +112,16 @@ def vector_data(
 if __name__ == '__main__':
     # test
     plt.close('all')
-    path = '/home/guod/big/raid4/guod/run_imfby/run1c/data/'
+    path = '/home/guod/big/raid4/guod/run_imfby/run2c/data/'
     #path = '/home/guod/tmp/'
     g = gitm.GitmBin(
             path+'3DALL_t100323_060000.bin',
             varlist=['Rho', 'V!Dn!N (east)', 'V!Dn!N (north)'])
 
     # Tested parameters
-    polar = False
-    useLT = False
-    nlat, slat, dlat, dlon = 90, -90, 30, 90
+    polar = True
+    useLT = True
+    nlat, slat, dlat, dlon = 90, 50, 10, 90
     #-----------------------
     pr = 'pol' if polar else 'rec'
     centrallon = calculate_centrallon(g, pr, useLT)
@@ -131,9 +131,9 @@ if __name__ == '__main__':
     lon0, lat0, zdata0 = contour_data('Rho', g, alt=400)
     ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
                 levels=np.linspace(zdata0.min(), zdata0.max(), 21))
-    lon0, lat0, ewind, nwind = vector_data(
-            g, 'neutral', alt=400, dindlon=3, dindlat=3,
-            plot_type=pr, projection=projection)
-    ax.quiver(lon0, lat0, ewind, nwind, scale=1500,
-              scale_units='inches')
+    lon0, lat0, ewind, nwind = vector_data(g, 'neutral', alt=400)
+    lon0, lat0, ewind, nwind = convert_vector(
+            lon0, lat0, ewind, nwind, plot_type=pr, projection=projection)
+    ax.quiver(lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
+              regrid_shape=30)
     plt.show()

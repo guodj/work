@@ -37,6 +37,7 @@ def calc_divergence(gdata, neuion='neutral', name='divergence'):
         uwind = gdata['V!Di!N (up)']
     Re = 6371*1000 # Earth radius, unit: m
     RR = Re+alt
+    ewind = ewind + ((2*np.pi)/(24*3600))*RR*np.cos(lat)
     divergence = (
             1.0/(RR**2)*np.gradient(RR**2*uwind, axis=2) / \
             np.gradient(alt, axis=2) +

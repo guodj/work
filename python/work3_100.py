@@ -27,9 +27,12 @@ from scipy.interpolate import NearestNDInterpolator
 from spacepy.datamodel import dmarray
 import gitm_divergence as gd
 from mpl_toolkits.axes_grid1 import AxesGrid
+import gitm_gradient as ggt
 sns.set('paper', 'whitegrid')
+sns.set_style({'ytick.major.size':3, 'xtick.major.size':3})
 
 DATADIR = os.environ.get('DATAPATH')
+Re = 6371*1000 # Earth radius, unit: m
 def func1():
     '''
     Find interesting cases in 2009 (11,12) and 2010
@@ -951,7 +954,220 @@ def func7():
     return
 
 
-def func8():
+def animate_all():
+    stime = pd.Timestamp('2010-03-23 00:00:00')
+    etime = pd.Timestamp('2010-03-23 05:00:00')
+    timeidx = pd.DatetimeIndex(start=stime, end=etime, freq='5min')
+    timeidxepoch = (timeidx - pd.Timestamp('2010-03-23 00:00:00'))\
+            /pd.Timedelta('1hour')
+    fn1 = ['/home/guod/big/raid4/guod/run_imfby/run1c/data/3DALL_t'+
+          k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
+    fn2 = ['/home/guod/big/raid4/guod/run_imfby/run2c/data/3DALL_t'+
+          k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
+
+    # save path
+    path =  '/home/guod/Documents/work/fig/w03/animation/'
+
+    # geomagnetic pole
+    apex = Apex(date=2010)
+    qlatn, qlonn = apex.convert(90, 0, source='apex', dest='geo', height=400)
+    qlats, qlons = apex.convert(-90, 0, source='apex', dest='geo', height=400)
+
+    fig = plt.figure(figsize=[8,16])
+    def animate_den_wind(i):
+        # IMF By
+        plt.subplot(4, 1, 1)
+        plt.gca().clear()
+        btimeby = pd.Timestamp('2010-03-20 00:00:00')
+        etimeby = pd.Timestamp('2010-03-24 00:00:00')
+        dtby = pd.Timedelta('1min')
+        timeby = pd.date_range(btimeby, etimeby, freq=dtby)
+        epochhour = (timeby - pd.Timestamp('2010-03-23 00:00:00'))\
+                /pd.Timedelta('1hour')
+        fnimf1 = '/home/guod/WD4T/gitm/run_imfby/run1c/imf1.dat'
+        imf1 = pd.read_csv(
+                fnimf1, delim_whitespace=True, comment='#',
+                header=None,
+                names=('year', 'month', 'day', 'hour', 'minute', 'second',
+                       'ms', 'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+                usecols=['by'])
+        imf1 = pd.DataFrame(np.array(imf1), index=timeby, columns=['By'])
+        plt.plot(epochhour, imf1.By, 'b')
+        fnimf2 = '/home/guod/WD4T/gitm/run_imfby/run2c/imf2.dat'
+        imf2 = pd.read_csv(
+                fnimf2, delim_whitespace=True, comment='#',
+                header=None,
+                names=('year', 'month', 'day', 'hour', 'minute', 'second',
+                       'ms', 'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+                usecols=['by'])
+        imf2 = pd.DataFrame(np.array(imf2), index=timeby, columns=['By'])
+        plt.plot(epochhour, imf2.By, 'r')
+        plt.xlim(-1, 5)
+        plt.xticks(np.arange(-1, 5.1, 0.5))
+        plt.xlabel('Epoch (hour)')
+        plt.ylim([-10, 10])
+        plt.ylabel(r'IMF $B_Y$')
+        plt.axvline(timeidxepoch[i], color='k', linestyle='--')
+
+        # read gitm data
+        g1, g2 = [gitm.GitmBin(
+                k[i], varlist=['Rho', 'Temperature', 'V!Dn!N (north)',
+                               'V!Dn!N (east)', 'V!Dn!N (up)', 'V!Di!N (east)',
+                               'V!Di!N (north)']) for k in [fn1, fn2]]
+
+        # create axis
+        ax = list(range(6))
+        projection = ax.copy()
+        for ins in range(2):
+            nlat, slat = [90, 50] if ins==0 else [-50, -90]
+            for irun in range(3):
+                ax[ins+irun*2], projection[ins+irun*2] = gcc.create_map(
+                        4, 2, 3+ins+irun*2, 'polar', nlat=nlat, slat=slat,
+                        dlat=10, centrallon=g3ca.calculate_centrallon(
+                            g1, 'polar',  useLT=True),
+                        coastlines=False)
+
+        # Density
+        lon1, lat1, zdata1 = g3ca.contour_data('Rho', g1, alt=400)
+        lon2, lat2, zdata2 = g3ca.contour_data('Rho', g2, alt=400)
+        hc = [ax[k].contourf(
+                lon1, lat1, zdata1, transform=ccrs.PlateCarree(),
+                levels=np.linspace(3e-12, 6e-12, 21), cmap='viridis',
+                extend='both') for k in [0, 1]]
+        hc = [ax[k].contourf(
+                lon2, lat2, zdata2, transform=ccrs.PlateCarree(),
+                levels=np.linspace(3e-12, 6e-12, 21), cmap='viridis',
+                extend='both') for k in [2, 3]]
+        diffzdata = 100*(zdata2-zdata1)/zdata1
+        hc = [ax[k].contourf(
+                lon2, lat2, diffzdata, transform=ccrs.PlateCarree(),
+                levels=np.linspace(-30, 30, 21), cmap='seismic',
+                extend='both') for k in [4, 5]]
+
+        # wind
+        lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1, 'neutral', alt=400)
+        lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2, 'neutral', alt=400)
+        for iax in range(6):
+            if iax == 0 or iax == 1:
+                lon0, lat0, ewind, nwind = (
+                        lon1.copy(), lat1.copy(), ewind1.copy(), nwind1.copy())
+                lon0, lat0, ewind, nwind = g3ca.convert_vector(
+                        lon0, lat0, ewind, nwind, plot_type='polar',
+                        projection=projection[iax])
+            elif iax == 2 or iax == 3:
+                lon0, lat0, ewind, nwind = (
+                        lon2.copy(), lat2.copy(), ewind2.copy(), nwind2.copy())
+                lon0, lat0, ewind, nwind = g3ca.convert_vector(
+                        lon0, lat0, ewind, nwind, plot_type='polar',
+                        projection=projection[iax])
+            elif iax == 4 or iax == 5:
+                lon0, lat0, ewind, nwind = (
+                        lon1.copy(), lat1.copy(), ewind2-ewind1, nwind2-nwind1)
+                lon0, lat0, ewind, nwind = g3ca.convert_vector(
+                        lon0, lat0, ewind, nwind, plot_type='polar',
+                        projection=projection[iax])
+            hq = ax[iax].quiver(
+                    lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
+                    color='k', regrid_shape=20)
+            # ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
+            # hc = plt.colorbar(hc, ticks=np.arange(3, 7)*1e-12)
+            # hc.set_label(r'$\rho$ (kg/m$^3$)')
+            ax[iax].scatter(
+                    qlonn, qlatn, color='k', transform=ccrs.PlateCarree())
+            ax[iax].scatter(
+                    qlons, qlats, color='k', transform=ccrs.PlateCarree())
+        return
+    anim = animation.FuncAnimation(
+            fig, animate_den_wind, interval=200, frames=len(fn1))
+    anim.save(path+'den_wind.gif', writer='imagemagick')
+    plt.close('all')
+
+    #    fig = plt.figure(figsize=[8,16])
+    #    def animate_temperature(i):
+    #        # IMF By
+    #        plt.subplot(4, 1, 1)
+    #        plt.gca().clear()
+    #        btimeby = pd.Timestamp('2010-03-20 00:00:00')
+    #        etimeby = pd.Timestamp('2010-03-24 00:00:00')
+    #        dtby = pd.Timedelta('1min')
+    #        timeby = pd.date_range(btimeby, etimeby, freq=dtby)
+    #        epochhour = (timeby - pd.Timestamp('2010-03-23 00:00:00'))\
+    #                /pd.Timedelta('1hour')
+    #        fnimf1 = '/home/guod/WD4T/gitm/run_imfby/run1c/imf1.dat'
+    #        imf1 = pd.read_csv(
+    #                fnimf1, delim_whitespace=True, comment='#',
+    #                header=None,
+    #                names=('year', 'month', 'day', 'hour', 'minute', 'second',
+    #                       'ms', 'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+    #                usecols=['by'])
+    #        imf1 = pd.DataFrame(np.array(imf1), index=timeby, columns=['By'])
+    #        plt.plot(epochhour, imf1.By, 'b')
+    #        fnimf2 = '/home/guod/WD4T/gitm/run_imfby/run2c/imf2.dat'
+    #        imf2 = pd.read_csv(
+    #                fnimf2, delim_whitespace=True, comment='#',
+    #                header=None,
+    #                names=('year', 'month', 'day', 'hour', 'minute', 'second',
+    #                       'ms', 'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+    #                usecols=['by'])
+    #        imf2 = pd.DataFrame(np.array(imf2), index=timeby, columns=['By'])
+    #        plt.plot(epochhour, imf2.By, 'r')
+    #        plt.xlim(-1, 5)
+    #        plt.xticks(np.arange(-1, 5.1, 0.5))
+    #        plt.xlabel('Epoch (hour)')
+    #        plt.ylim([-10, 10])
+    #        plt.ylabel(r'IMF $B_Y$')
+    #        plt.axvline(timeidxepoch[i], color='k', linestyle='--')
+
+    #        # read gitm data
+    #        g1, g2 = [gitm.GitmBin(
+    #                k[i], varlist=['Rho', 'Temperature', 'V!Dn!N (north)',
+    #                               'V!Dn!N (east)', 'V!Dn!N (up)', 'V!Di!N (east)',
+    #                               'V!Di!N (north)']) for k in [fn1, fn2]]
+
+    #        # create axis
+    #        ax = list(range(6))
+    #        projection = ax.copy()
+    #        for ins in range(2):
+    #            nlat, slat = [90, 50] if ins==0 else [-50, -90]
+    #            for irun in range(3):
+    #                ax[ins+irun*2], projection[ins+irun*2] = gcc.create_map(
+    #                        4, 2, 3+ins+irun*2, 'polar', nlat=nlat, slat=slat,
+    #                        dlat=10, centrallon=g3ca.calculate_centrallon(
+    #                            g1, 'polar',  useLT=True),
+    #                        coastlines=False)
+
+    #        # Temperature
+    #        lon1, lat1, zdata1 = g3ca.contour_data('Temperature', g1, alt=400)
+    #        lon2, lat2, zdata2 = g3ca.contour_data('Temperature', g2, alt=400)
+    #        hc = [ax[k].contourf(
+    #                lon1, lat1, zdata1, transform=ccrs.PlateCarree(),
+    #                levels=np.linspace(1300, 1550, 21), cmap='viridis',
+    #                extend='both') for k in [0, 1]]
+    #        hc = [ax[k].contourf(
+    #                lon2, lat2, zdata2, transform=ccrs.PlateCarree(),
+    #                levels=np.linspace(1300, 1550, 21), cmap='viridis',
+    #                extend='both') for k in [2, 3]]
+    #        diffzdata = zdata2-zdata1
+    #        hc = [ax[k].contourf(
+    #                lon2, lat2, diffzdata, transform=ccrs.PlateCarree(),
+    #                levels=np.linspace(-200, 200, 21), cmap='seismic',
+    #                extend='both') for k in [4, 5]]
+
+    #        # magnetic poles
+    #        for iax in range(6):
+    #            ax[iax].scatter(
+    #                    qlonn, qlatn, color='k', transform=ccrs.PlateCarree())
+    #            ax[iax].scatter(
+    #                    qlons, qlats, color='k', transform=ccrs.PlateCarree())
+    #        return
+    #    anim = animation.FuncAnimation(
+    #            fig, animate_temperature, interval=200, frames=len(fn1))
+    #    anim.save(path+'temperature.mp4', writer='ffmpeg')
+    #    plt.close('all')
+    return
+
+
+def snapshot_30min():
     # Every 30 minutes, see the results.
     stime = pd.Timestamp('2010-03-23 00:00:00')
     etime = pd.Timestamp('2010-03-23 06:00:00')
@@ -961,8 +1177,8 @@ def func8():
     fn2 = ['/home/guod/big/raid4/guod/run_imfby/run2c/data/3DALL_t'+
           k.strftime('%y%m%d_%H%M%S')+'.bin' for k in timeidx]
     #oo = pd.read_pickle('/home/guod/data/tmp/w3_05_02.dat')
-    alt = 400
-    path =  '/home/guod/Documents/work/fig/tmp/w03/'
+    nlat, slat, alt = 90, 50, 400
+    path =  '/home/guod/Documents/work/fig/w03/snapshot/'
     #altarray = oo.index.get_level_values(1).values
     #ialt = np.argmin(np.abs(altarray-alt*1000))
     apex = Apex(date=2010)
@@ -985,211 +1201,294 @@ def func8():
         #lt = g2['time'].hour+g2['time'].minute/60+g2['time'].second/3600+lon/15
         #theta, r = lt/12*np.pi, 90-lat
 
-        # Density and wind run1
+        #    # Density and wind run1
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
+        #            coastlines=False)
+        #    lon0, lat0, zdata0 = g3ca.contour_data('Rho', g1, alt=400)
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(3e-12, 6e-12, 21), cmap='viridis',
+        #                     extend='both')
+        #    lon0, lat0, ewind, nwind = g3ca.vector_data(g1, 'neutral', alt=400)
+        #    lon0, lat0, ewind, nwind = g3ca.convert_vector(
+        #            lon0, lat0, ewind, nwind, plot_type='polar',
+        #            projection=projection)
+        #    hq = ax.quiver(
+        #            lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
+        #            alpha=0.5, regrid_shape=20)
+        #    ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
+        #    hc = plt.colorbar(hc, ticks=np.arange(3, 7)*1e-12)
+        #    hc.set_label(r'$\rho$ (kg/m$^3$)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_den_win_run1_'+
+        #            g1['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # Density and wind run2
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
+        #            coastlines=False)
+        #    lon0, lat0, zdata0 = g3ca.contour_data('Rho', g2, alt=400)
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(3e-12, 6e-12, 21), cmap='viridis',
+        #                     extend='both')
+        #    lon0, lat0, ewind, nwind = g3ca.vector_data(g2, 'neutral', alt=400)
+        #    lon0, lat0, ewind, nwind = g3ca.convert_vector(
+        #            lon0, lat0, ewind, nwind, plot_type='polar',
+        #            projection=projection)
+        #    hq = ax.quiver(
+        #            lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
+        #            alpha=0.5, regrid_shape=20)
+        #    ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
+        #    hc = plt.colorbar(hc, ticks=np.arange(3, 7)*1e-12)
+        #    hc.set_label(r'$\rho$ (kg/m$^3$)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_den_win_run2_'+
+        #            g2['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # Density and wind difference
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
+        #            coastlines=False)
+        #    lon1, lat1, zdata1 = g3ca.contour_data('Rho', g1, alt=400)
+        #    lon2, lat2, zdata2 = g3ca.contour_data('Rho', g2, alt=400)
+        #    zdata0 = 100*(zdata2-zdata1)/zdata1
+        #    hc = ax.contourf(lon1, lat1, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(-30, 30, 21), cmap='seismic',
+        #                     extend='both')
+        #    lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1, 'neutral', alt=400)
+        #    lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2, 'neutral', alt=400)
+        #    lon0, lat0, ewind, nwind =g3ca.convert_vector(
+        #            lon1, lat1, ewind2-ewind1, nwind2-nwind1,
+        #            plot_type='polar', projection=projection)
+        #    hq = ax.quiver(
+        #            lon0, lat0, ewind, nwind, scale=1000, scale_units='inches',
+        #            alpha=0.5, regrid_shape=20)
+        #    ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
+        #    hc = plt.colorbar(hc, ticks = np.arange(-30, 31, 10))
+        #    hc.set_label(r'$100\times\frac{\rho_2-\rho_1}{\rho_1}$')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_den_win_diff_'+
+        #            g1['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # Temperature run1
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
+        #            coastlines=False)
+        #    lon0, lat0, zdata0 = g3ca.contour_data('Temperature', g1, alt=400)
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(1300, 1550, 21), cmap='viridis',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(1300, 1551, 50))
+        #    hc.set_label('T (degree)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_temperature_run1_'+
+        #            g1['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # Temperature run2
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
+        #            coastlines=False)
+        #    lon0, lat0, zdata0 = g3ca.contour_data('Temperature', g2, alt=400)
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(1300, 1550, 21), cmap='viridis',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(1300, 1551, 50))
+        #    hc.set_label('T (degree)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_temperature_run2_'+
+        #            g1['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # Temperature run2 - run1
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
+        #            coastlines=False)
+        #    lon1, lat1, zdata1 = g3ca.contour_data('Temperature', g1, alt=400)
+        #    lon2, lat2, zdata2 = g3ca.contour_data('Temperature', g2, alt=400)
+        #    zdata0 = zdata2-zdata1
+        #    hc = ax.contourf(lon1, lat1, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(-200, 200, 21), cmap='seismic',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(-200, 201, 50))
+        #    hc.set_label('T$_2$ - T$_1$ (degree)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_temperature_diff_'+
+        #            g1['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # neutral and ion velocity difference, Run 1
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
+        #            coastlines=False, useLT=True)
+        #    lon0, lat0, nnwind = g3ca.contour_data('V!Dn!N (north)', g1, alt=400)
+        #    lon0, lat0, newind = g3ca.contour_data('V!Dn!N (east)', g1, alt=400)
+        #    lon0, lat0, inwind = g3ca.contour_data('V!Di!N (north)', g1, alt=400)
+        #    lon0, lat0, iewind = g3ca.contour_data('V!Di!N (east)', g1, alt=400)
+        #    zdata0 = np.sqrt((nnwind-inwind)**2+(newind-iewind)**2)
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(0, 500, 21), cmap='viridis',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(0, 501, 100))
+        #    hc.set_label('Vn-i (m/s)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_dv_run1_'+
+        #            g1['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # neutral and ion velocity difference, Run 2
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
+        #            coastlines=False, useLT=True)
+        #    lon0, lat0, nnwind = g3ca.contour_data('V!Dn!N (north)', g2, alt=400)
+        #    lon0, lat0, newind = g3ca.contour_data('V!Dn!N (east)', g2, alt=400)
+        #    lon0, lat0, inwind = g3ca.contour_data('V!Di!N (north)', g2, alt=400)
+        #    lon0, lat0, iewind = g3ca.contour_data('V!Di!N (east)', g2, alt=400)
+        #    zdata0 = np.sqrt((nnwind-inwind)**2+(newind-iewind)**2)
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(0, 500, 21), cmap='viridis',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(0, 501, 100))
+        #    hc.set_label('Vn-i (m/s)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_dv_run2_'+
+        #            g2['time'].strftime('%H%M')+'_new.pdf')
+
+        #    # neutral and ion velocity difference, Run 2 - Run 1
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
+        #            coastlines=False, useLT=True)
+        #    lon1, lat1, nnwind1 = g3ca.contour_data('V!Dn!N (north)', g1, alt=400)
+        #    lon1, lat1, newind1 = g3ca.contour_data('V!Dn!N (east)', g1, alt=400)
+        #    lon1, lat1, inwind1 = g3ca.contour_data('V!Di!N (north)', g1, alt=400)
+        #    lon1, lat1, iewind1 = g3ca.contour_data('V!Di!N (east)', g1, alt=400)
+        #    zdata1 = np.sqrt((nnwind1-inwind1)**2+(newind1-iewind1)**2)
+        #    lon2, lat2, nnwind2 = g3ca.contour_data('V!Dn!N (north)', g2, alt=400)
+        #    lon2, lat2, newind2 = g3ca.contour_data('V!Dn!N (east)', g2, alt=400)
+        #    lon2, lat2, inwind2 = g3ca.contour_data('V!Di!N (north)', g2, alt=400)
+        #    lon2, lat2, iewind2 = g3ca.contour_data('V!Di!N (east)', g2, alt=400)
+        #    zdata2 = np.sqrt((nnwind2-inwind2)**2+(newind2-iewind2)**2)
+        #    zdata0 = zdata2 -zdata1
+        #    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(-250, 250, 21), cmap='seismic',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(-250, 251, 50))
+        #    hc.set_label(r'$\Delta$Vn-i (m/s)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_dv_diff_'+
+        #            g2['time'].strftime('%H%M')+'_new.pdf')
+
+        # horizontal advection term, Run1
         plt.figure()
         ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
+                1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
                 centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
                 coastlines=False)
-        lon0, lat0, zdata0 = g3ca.contour_data('Rho', g1, alt=400)
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(3e-12, 6e-12, 21), cmap='viridis',
+        lon0, lat0, rho0 = g3ca.contour_data('Rho', g1, alt=400)
+        gradn = (1.0/(Re+alt*1000))*np.gradient(rho0, axis=0) / \
+               np.gradient(lat0/180*np.pi, axis=0)
+        grade = ((1.0/((Re+alt*1000)*np.sin(np.pi/2-lat0/180*np.pi))) * \
+                 np.gradient(rho0, axis=1) / np.gradient(lon0/180*np.pi, axis=1))
+        lon0, lat0, ewind = g3ca.contour_data('V!Dn!N (east)', g1, alt=400)
+        lon0, lat0, nwind = g3ca.contour_data('V!Dn!N (north)', g1, alt=400)
+        ewind = ewind + \
+                ((2*np.pi)/(24*3600))*(Re+alt*1000)*np.cos(lat0/180*np.pi)
+
+        advect0 = ewind*grade + nwind*gradn
+
+        hc = ax.contourf(lon0, lat0, advect0, transform=ccrs.PlateCarree(),
+                         levels=np.linspace(-3e-17, 3e-17, 21), cmap='seismic',
                          extend='both')
-        lon0, lat0, ewind, nwind = g3ca.vector_data(
-                g1, 'neutral', alt=400, dindlon=3, dindlat=3,
-                plot_type='polar', projection=projection)
-        hq = ax.quiver(
-                lon0, lat0, ewind, nwind, scale=1500, scale_units='inches')
-        ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
         hc = plt.colorbar(hc, ticks=np.arange(3, 7)*1e-12)
         hc.set_label(r'$\rho$ (kg/m$^3$)')
         ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_den_win_run1_'+
-                g1['time'].strftime('%H%M')+'_new.eps')
+        plt.savefig(path+'w03_func08_advect_term_run1_'+
+                    g1['time'].strftime('%H%M')+'_new.pdf')
 
-        # Density and wind run2
+        # vertical advection term, Run1
         plt.figure()
         ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
+                1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+                centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
                 coastlines=False)
-        lon0, lat0, zdata0 = g3ca.contour_data('Rho', g2, alt=400)
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(3e-12, 6e-12, 21), cmap='viridis',
+        ggt.calc_gradient(g1, 'Rho', 'grad_r', component='radial')
+        lon0, lat0, grad_r0 = g3ca.contour_data('grad_r', g1, alt=alt)
+        lon0, lat0, uwind0 = g3ca.contour_data('V!Dn!N (up)', g1, alt=alt)
+        vadvect = grad_r0*uwind0
+
+        hc = ax.contourf(lon0, lat0, vadvect, transform=ccrs.PlateCarree(),
+                         levels=np.linspace(-3e-17, 3e-17, 21), cmap='seismic',
                          extend='both')
-        lon0, lat0, ewind, nwind = g3ca.vector_data(
-                g2, 'neutral', alt=400, dindlon=3, dindlat=3,
-                plot_type='polar', projection=projection)
-        hq = ax.quiver(
-                lon0, lat0, ewind, nwind, scale=1500, scale_units='inches')
-        ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
         hc = plt.colorbar(hc, ticks=np.arange(3, 7)*1e-12)
         hc.set_label(r'$\rho$ (kg/m$^3$)')
         ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_den_win_run2_'+
-                g2['time'].strftime('%H%M')+'_new.eps')
-
-        # Density and wind difference
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
-                coastlines=False)
-        lon1, lat1, zdata1 = g3ca.contour_data('Rho', g1, alt=400)
-        lon2, lat2, zdata2 = g3ca.contour_data('Rho', g2, alt=400)
-        zdata0 = 100*(zdata2-zdata1)/zdata1
-        hc = ax.contourf(lon1, lat1, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(-30, 30, 21), cmap='seismic',
-                         extend='both')
-        lon1, lat1, ewind1, nwind1 = g3ca.vector_data(
-                g1, 'neutral', alt=400, dindlon=3, dindlat=3,
-                plot_type='polar', projection=projection)
-        lon2, lat2, ewind2, nwind2 = g3ca.vector_data(
-                g2, 'neutral', alt=400, dindlon=3, dindlat=3,
-                plot_type='polar', projection=projection)
-        hq = ax.quiver(
-                lon1, lat1, ewind2-ewind1, nwind2-nwind1,
-                scale=1000, scale_units='inches')
-        ax.quiverkey(hq, 0.93, 0, 1000, '1000 m/s')
-        hc = plt.colorbar(hc, ticks = np.arange(-30, 31, 10))
-        hc.set_label(r'$\rho_2$ - $\rho_1$ (kg/m$^3$)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
         plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_den_win_diff_'+
-                g1['time'].strftime('%H%M')+'_new.eps')
+        plt.savefig(path+'w03_func08_advect_term_vertical_run1_'+
+                    g1['time'].strftime('%H%M')+'_new.pdf')
 
-        # Temperature run1
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
-                coastlines=False)
-        lon0, lat0, zdata0 = g3ca.contour_data('Temperature', g1, alt=400)
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(1300, 1550, 21), cmap='viridis',
-                         extend='both')
-        hc = plt.colorbar(hc, ticks=np.arange(1300, 1551, 50))
-        hc.set_label('T (degree)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_temperature_run1_'+
-                g1['time'].strftime('%H%M')+'_new.eps')
+        #    # horizontal advection term, Run2
+        #    plt.figure()
+        #    ax, projection = gcc.create_map(
+        #            1, 1, 1, 'polar', nlat=nlat, slat=slat, dlat=10,
+        #            centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
+        #            coastlines=False)
 
-        # Temperature run2
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
-                coastlines=False)
-        lon0, lat0, zdata0 = g3ca.contour_data('Temperature', g2, alt=400)
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(1300, 1550, 21), cmap='viridis',
-                         extend='both')
-        hc = plt.colorbar(hc, ticks=np.arange(1300, 1551, 50))
-        hc.set_label('T (degree)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_temperature_run2_'+
-                g1['time'].strftime('%H%M')+'_new.eps')
+        #    lon0, lat0, rho0 = g3ca.contour_data('Rho', g2, alt=400)
+        #    gradn = (1.0/(Re+alt*1000))*np.gradient(rho0, axis=0) / \
+        #           np.gradient(lat0/180*np.pi, axis=0)
+        #    grade = ((1.0/((Re+alt*1000)*np.sin(np.pi/2-lat0/180*np.pi))) * \
+        #             np.gradient(rho0, axis=1) / np.gradient(lon0/180*np.pi, axis=1))
 
-        # Temperature run2 - run1
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
-                coastlines=False)
-        lon1, lat1, zdata1 = g3ca.contour_data('Temperature', g1, alt=400)
-        lon2, lat2, zdata2 = g3ca.contour_data('Temperature', g2, alt=400)
-        zdata0 = zdata2-zdata1
-        hc = ax.contourf(lon1, lat1, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(-200, 200, 21), cmap='seismic',
-                         extend='both')
-        hc = plt.colorbar(hc, ticks=np.arange(-200, 201, 50))
-        hc.set_label('T$_2$ - T$_1$ (degree)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_temperature_diff_'+
-                g1['time'].strftime('%H%M')+'_new.eps')
+        #    lon0, lat0, ewind = g3ca.contour_data('V!Dn!N (east)', g2, alt=400)
+        #    lon0, lat0, nwind = g3ca.contour_data('V!Dn!N (north)', g2, alt=400)
+        #    ewind = ewind + \
+        #            ((2*np.pi)/(24*3600))*(Re+alt*1000)*np.cos(lat0/180*np.pi)
 
-        # neutral and ion velocity difference, Run 1
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
-                coastlines=False, useLT=True)
-        lon0, lat0, nnwind = g3ca.contour_data('V!Dn!N (north)', g1, alt=400)
-        lon0, lat0, newind = g3ca.contour_data('V!Dn!N (east)', g1, alt=400)
-        lon0, lat0, inwind = g3ca.contour_data('V!Di!N (north)', g1, alt=400)
-        lon0, lat0, iewind = g3ca.contour_data('V!Di!N (east)', g1, alt=400)
-        zdata0 = np.sqrt((nnwind-inwind)**2+(newind-iewind)**2)
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(0, 500, 21), cmap='viridis',
-                         extend='both')
-        hc = plt.colorbar(hc, ticks=np.arange(0, 501, 100))
-        hc.set_label('Vn-i (m/s)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_dv_run1_'+
-                g1['time'].strftime('%H%M')+'_new.eps')
+        #    advect0 = ewind*grade + nwind*gradn
 
-        # neutral and ion velocity difference, Run 2
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g2, 'polar',  useLT=True),
-                coastlines=False, useLT=True)
-        lon0, lat0, nnwind = g3ca.contour_data('V!Dn!N (north)', g2, alt=400)
-        lon0, lat0, newind = g3ca.contour_data('V!Dn!N (east)', g2, alt=400)
-        lon0, lat0, inwind = g3ca.contour_data('V!Di!N (north)', g2, alt=400)
-        lon0, lat0, iewind = g3ca.contour_data('V!Di!N (east)', g2, alt=400)
-        zdata0 = np.sqrt((nnwind-inwind)**2+(newind-iewind)**2)
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(0, 500, 21), cmap='viridis',
-                         extend='both')
-        hc = plt.colorbar(hc, ticks=np.arange(0, 501, 100))
-        hc.set_label('Vn-i (m/s)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_dv_run2_'+
-                g2['time'].strftime('%H%M')+'_new.eps')
-
-        # neutral and ion velocity difference, Run 2 - Run 1
-        plt.figure()
-        ax, projection = gcc.create_map(
-                1, 1, 1, 'polar', nlat=90, slat=60, dlat=10,
-                centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
-                coastlines=False, useLT=True)
-        lon1, lat1, nnwind1 = g3ca.contour_data('V!Dn!N (north)', g1, alt=400)
-        lon1, lat1, newind1 = g3ca.contour_data('V!Dn!N (east)', g1, alt=400)
-        lon1, lat1, inwind1 = g3ca.contour_data('V!Di!N (north)', g1, alt=400)
-        lon1, lat1, iewind1 = g3ca.contour_data('V!Di!N (east)', g1, alt=400)
-        zdata1 = np.sqrt((nnwind1-inwind1)**2+(newind1-iewind1)**2)
-        lon2, lat2, nnwind2 = g3ca.contour_data('V!Dn!N (north)', g2, alt=400)
-        lon2, lat2, newind2 = g3ca.contour_data('V!Dn!N (east)', g2, alt=400)
-        lon2, lat2, inwind2 = g3ca.contour_data('V!Di!N (north)', g2, alt=400)
-        lon2, lat2, iewind2 = g3ca.contour_data('V!Di!N (east)', g2, alt=400)
-        zdata2 = np.sqrt((nnwind2-inwind2)**2+(newind2-iewind2)**2)
-        zdata0 = zdata2 -zdata1
-        hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                         levels=np.linspace(-250, 250, 21), cmap='seismic',
-                         extend='both')
-        hc = plt.colorbar(hc, ticks=np.arange(-250, 251, 50))
-        hc.set_label(r'$\Delta$Vn-i (m/s)')
-        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
-        plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-        plt.savefig(
-                path+'w03_func08_dv_diff_'+
-                g2['time'].strftime('%H%M')+'_new.eps')
+        #    hc = ax.contourf(lon0, lat0, advect0, transform=ccrs.PlateCarree(),
+        #                     levels=np.linspace(-3e-17, 3e-17, 21), cmap='seismic',
+        #                     extend='both')
+        #    hc = plt.colorbar(hc, ticks=np.arange(3, 7)*1e-12)
+        #    hc.set_label(r'$\rho$ (kg/m$^3$)')
+        #    ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        #    plt.title(g2['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
+        #    plt.savefig(
+        #            path+'w03_func08_advect_term_run2_'+
+        #            g2['time'].strftime('%H%M')+'_new.pdf')
 
         #  # vertical wind difference
         #  plt.figure()
@@ -1238,19 +1537,20 @@ def func8():
         plt.close('all')
 
 
-def func9():
+def time_evolution_mean_density_temperature():
     # UT change in density and temperature
     dt = pd.date_range(
             start='2010-03-23 00:00:00', end='2010-03-23 05:00:00',
-            freq='10min')
-    nlat, slat, alt = 90, -90, 400
+            freq='5min')
+    nlat, slat, alt = 90, 50, 400
     if False: # data preparation
         whichrun = 'run2'
         path = '/home/guod/big/raid4/guod/run_imfby/{:s}c/data/'.format(
                 whichrun)
         fn = (path+'3DALL_t{:s}.bin'.format(k.strftime('%y%m%d_%H%M%S'))
               for k in dt)
-        oo = pd.DataFrame(columns=('time', 'rhomean', 'tempmean', ''))
+        oo = pd.DataFrame(columns=('time', 'rhomean', 'tempmean', 'vdiffmean',
+                                   'itempmean'))
         for k00, k0 in enumerate(fn):
             if not os.path.isfile(k0):
                 continue
@@ -1258,13 +1558,15 @@ def func9():
                     k0,
                     varlist=['Rho', 'Temperature', 'V!Dn!N (north)',
                              'V!Dn!N (east)', 'V!Dn!N (up)', 'V!Di!N (east)',
-                             'V!Di!N (north)'])
+                             'V!Di!N (north)', 'iTemperature'])
             ilat = (g['dLat'][0, :, 0]>slat) & (g['dLat'][0, :, 0]<nlat)
             ilon = (g['dLon'][:, 0, 0]>=0) & (g['dLon'][:, 0, 0]<=360)
             ialt = np.argmin(np.abs(g['Altitude'][0, 0, :]-alt*1000))
             gt = g['time']
-            rho, temp, lat = (g[k][ilon][:, ilat][:, :, ialt] for k in (
-                              'Rho', 'Temperature', 'Latitude'))
+            rho, temp, lat, itemp = (
+                    g[k][ilon][:, ilat][:, :, ialt]
+                    for k in ('Rho', 'Temperature',
+                              'Latitude', 'iTemperature'))
             nnwind, newind, inwind, iewind = (
                     g[k][ilon][:, ilat][:, :, ialt]
                     for k in ( 'V!Dn!N (up)', 'V!Dn!N (east)',
@@ -1273,43 +1575,141 @@ def func9():
             vdiffmean = np.mean(vdiff*np.cos(lat))/np.mean(np.cos(lat))
             rhomean = np.mean(rho*np.cos(lat))/np.mean(np.cos(lat))
             tempmean = np.mean(temp*np.cos(lat))/np.mean(np.cos(lat))
+            itempmean = np.mean(itemp*np.cos(lat))/np.mean(np.cos(lat))
             oo = oo.append(pd.DataFrame(
-                [[gt, rhomean, tempmean, vdiffmean]],
-                columns=('time', 'rhomean', 'tempmean', 'vdiffmean')))
+                [[gt, rhomean, tempmean, vdiffmean, itempmean]],
+                columns=('time', 'rhomean', 'tempmean',
+                         'vdiffmean', 'itempmean')))
         pd.to_pickle(
                 oo, '/home/guod/data/tmp/w3_09_{:s}.dat'.format(whichrun[-1]))
     oo1 = pd.read_pickle('/home/guod/data/tmp/w3_09_1.dat')
     oo2 = pd.read_pickle('/home/guod/data/tmp/w3_09_2.dat')
-    xhour = pd.TimedeltaIndex(oo1['time']-pd.Timestamp('2010-03-23 00:00:00')).total_seconds()/3600
-    fig, ax = plt.subplots(3, 1, sharex=True)
+    xhour = pd.TimedeltaIndex(
+            oo1['time']-pd.Timestamp('2010-03-23 00:00:00')).\
+            total_seconds()/3600
+
+    fig, ax = plt.subplots(3, 1, sharex=True, figsize=(7, 5.5))
     plt.sca(ax[0])
     plt.plot(xhour, oo1['rhomean'], label='Run 1')
     plt.plot(xhour, oo2['rhomean'], label='Run 2')
     plt.legend()
-    plt.ylabel(r'$\rho$ (kg/m^3)')
-    # plt.ylim(4.8*1e-12, 5.2*1e-12)
+    plt.xlim(0, 5)
+    plt.ylim(5.05e-12, 5.2e-12)
 
     plt.sca(ax[1])
     plt.plot(xhour, oo1['tempmean'])
     plt.plot(xhour, oo2['tempmean'])
-    plt.ylabel('T (degree)')
-    plt.xlim(0, 4)
+    plt.xlim(0, 5)
+    plt.ylim(1320, 1380)
     plt.xticks(np.arange(0, 4.1, 0.5))
-    plt.xlabel('Epoch Hour')
 
     plt.sca(ax[2])
-    plt.plot(xhour, oo1['vdiffmean'])
-    plt.plot(xhour, oo2['vdiffmean'])
-    plt.ylabel('Vn-i (m/s)')
-    plt.xlim(0, 4)
-    plt.xticks(np.arange(0, 4.1, 0.5))
-    plt.xlabel('Epoch Hour')
+    plt.plot(xhour, oo1['itempmean'])
+    plt.plot(xhour, oo2['itempmean'])
+    plt.xlim(0, 5)
+    plt.ylim(1400, 1525)
+    plt.xticks(np.arange(0, 5.1, 0.5))
+    mf.subplots_xylabel(
+            ax, 3, 1, xlabel='Epoch (hour)',
+            ylabel=[r'$\rho$ $(kg/m^3)$', '$T_n$ (K)', '$T_i$ (K)'],
+            fontweight='bold')
     return
 
 
+def time_evolution_min_density():
+    dt = pd.date_range(
+            start='2010-03-23 00:00:00', end='2010-03-23 05:00:00',
+            freq='10min')
+    dthour = (dt - pd.Timestamp('2010-03-23 00:00:00'))/pd.Timedelta('1hour')
+    nlat, slat = 90, 50
+    if False: # data preparation
+        whichrun = 'run1'
+        path = '/home/guod/big/raid4/guod/run_imfby/{:s}c/data/'.format(
+                whichrun)
+        fn = (path+'3DALL_t{:s}.bin'.format(k.strftime('%y%m%d_%H%M%S'))
+              for k in dt)
+        oorho = []
+        oolat = []
+        for k00, k0 in enumerate(fn):
+            if not os.path.isfile(k0):
+                continue
+            g = gitm.GitmBin(
+                    k0,
+                    varlist=['Rho', 'Temperature', 'iTemperature',
+                             'V!Dn!N (north)', 'V!Dn!N (east)', 'V!Dn!N (up)',
+                             'V!Di!N (east)', 'V!Di!N (north)'])
+            ilat = (g['dLat'][0, :, 0]>slat) & (g['dLat'][0, :, 0]<nlat)
+            ilon = (g['dLon'][:, 0, 0]>=0) & (g['dLon'][:, 0, 0]<=360)
+            gt = g['time']
+            rho = g['Rho'][ilon, ...][:, ilat, :]
+            lat = g['Latitude'][ilon, ...][:, ilat, :]
+            lon = g['Longitude'][ilon, ...][:, ilat, :]
+            alt = g['Altitude'][0, 0, :]
+            oorhot = alt.copy()
+            oolatt = alt.copy()
+            for k11, k1 in enumerate(alt):
+                rhominidx = np.unravel_index(
+                        np.argmin(rho[..., k11]), rho[..., k11].shape)
+                rhomin = np.min(rho[..., k11])
+                latmin = (lat[rhominidx[0], rhominidx[1], k11])/np.pi*180
+                lonleftidx = (rhominidx[0]-11)%lon.shape[0]
+                lonrightidx = (rhominidx[0]+11)%lon.shape[0]
+                rhomean = (rho[lonleftidx, rhominidx[1], k11] +
+                           rho[lonrightidx, rhominidx[1], k11])/2
+                oorhot[k11] = rhomin/rhomean
+                oolatt[k11] = latmin
+            oorhot = oorhot.reshape(-1, 1)
+            oorho.append(oorhot)
+            oolatt = oolatt.reshape(-1, 1)
+            oolat.append(oolatt)
+        oorho = np.concatenate(oorho, axis=1)
+        oolat = np.concatenate(oolat, axis=1)
+        pd.to_pickle(
+                [dthour, alt, oorho, oolat],
+                '/home/guod/data/tmp/w3_min_density_{:s}.dat'.\
+                format(whichrun[-1]))
+    dthour1, alt1, oorho1, oolat1 = pd.read_pickle(
+            '/home/guod/data/tmp/w3_min_density_1.dat')
+    dthour2, alt2, oorho2, oolat2 = pd.read_pickle(
+            '/home/guod/data/tmp/w3_min_density_2.dat')
+
+    fig, ax = plt.subplots(2, 2, sharex=True, sharey=True, figsize=(8.3, 6))
+
+    plt.sca(ax[0, 0])
+    hc1 = plt.contourf(dthour1, alt1/1000, oorho1, cmap='viridis',
+                 levels=np.linspace(0.5, 1,  21))
+    plt.title('Run 1', fontweight='bold', fontsize='large')
+
+    plt.sca(ax[0, 1])
+    hc2 = plt.contourf(dthour1, alt1/1000, oorho2, cmap='viridis',
+                 levels=np.linspace(0.5, 1,  21))
+    plt.title('Run 2', fontweight='bold', fontsize='large')
+
+    plt.sca(ax[1, 0])
+    hc3 = plt.contourf(dthour1, alt1/1000, oolat1, cmap='viridis',
+                 levels=np.linspace(50, 85,  21))
+
+    plt.sca(ax[1, 1])
+    hc4 = plt.contourf(dthour1, alt1/1000, oolat2, cmap='viridis',
+                 levels=np.linspace(50, 85,  21))
+    plt.xlim(0, 5)
+    plt.ylim(100, 700)
+
+    mf.subplots_xylabel(ax, 2, 2, xlabel='Epoch (hour)',
+                        ylabel='Altitude (km)', fontweight='bold')
+    plt.tight_layout(rect=[0, 0, 0.90, 1])
+    cax1 = mf.subplots_create_cbar_axis(ax[0, 1])
+    plt.colorbar(hc2, cax=cax1)
+    plt.ylabel(r'$\rho_{min}/\rho_b$', fontsize='large', fontweight='bold')
+    cax2 = mf.subplots_create_cbar_axis(ax[1, 1])
+    plt.colorbar(hc4, cax=cax2, ticks=np.arange(50, 90, 5))
+    plt.ylabel('Latitude', fontsize='large', fontweight='bold')
+
+    mf.subplots_create_abcde(ax, direction='row', y=1.02)
+    return
 # END
 #------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    a = func9()
+    a = snapshot_30min()
     plt.show()

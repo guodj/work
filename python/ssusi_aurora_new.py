@@ -141,7 +141,7 @@ def find_parameters_one_file_5(fn, test=False):
     pp1 = np.ones([np.int(2*24/BinMLT), int(1/dratio-1)])*np.nan  # MLats
     pp2 = pd.DataFrame(
             index=np.arange(int(2*24/BinMLT)),
-            columns=('ns', 'mlt', 'datetime', 'eftot', 'mlon'))
+            columns=('ns', 'mlt', 'datetime', 'eftot', 'mlon', 'norbit'))
     pp3 = np.ones([np.int(2*24/BinMLT), int(1/dratio-1)])*np.nan  # ef
     pp4 = np.ones([np.int(2*24/BinMLT), int(1/dratio-1)])*np.nan  # mean energy
 
@@ -216,10 +216,10 @@ def find_parameters_one_file_5(fn, test=False):
             pp3[idpp, :] = pp3t
             pp4[idpp, :] = pp4t
 
-            # ns, MLT, UT, eftot --> pp2
+            # ns, MLT, UT, eftot, orbitn --> pp2
             pp2.iloc[idpp, :] = [
                     k0, k1, date+pd.Timedelta(np.median(utt), 'h'),
-                    eftot, np.median(mlont)]
+                    eftot, np.median(mlont), orbitn]
 
     # exclude NaN
     fp = (np.isnan(pp1[:, 0]))
@@ -227,8 +227,9 @@ def find_parameters_one_file_5(fn, test=False):
     pp2 = pp2.loc[~fp, :]
     pp3 = pp3[~fp]
     pp4 = pp4[~fp]
-    pp2 = pp2.astype({'ns': str, 'mlt': float, 'datetime': np.datetime64,
-                      'eftot': float, 'mlon': float})
+    pp2 = pp2.astype(
+            {'ns': str, 'mlt': float, 'datetime': np.datetime64,
+             'eftot': float, 'mlon': float, 'norbit':int})
     if test: # for test
         vmin = 0
         vmax = 5
@@ -266,7 +267,7 @@ def find_parameters(saveplot=False):
     dst = dst.reindex(imfae.index, method='nearest')
     imfae['Dst'] = dst.values
     print('End of reading solar wind speed, IMF, AE and Dst')
-    for k0 in range(17, 18):  # satellite
+    for k0 in range(16, 18):  # satellite
         for year in (2011, 2012, 2013, 2014, 2015, 2016, 2017):
             pp1, pp2, pp3, pp4 = [], [], [], []
             savefn = 'F{:d}_{:d}.old.dat'.format(k0, year)  # file to save data
@@ -322,6 +323,115 @@ def find_parameters(saveplot=False):
             pp2['nwcf'] = imfaet['nwcf'].values
             pp2['EKL'] = imfaet['EKL'].values
             pd.to_pickle((pp1, pp2, pp3, pp4), savepath+'method5/'+savefn)
+    return
+
+
+def find_parameters_bea(saveplot=False):
+    # Read IMF By, Bz and AE
+    print('Begin to read solar wind speed, IMF, AE and Dst')
+    imfae = omni.get_omni(
+            bdate='2014-1-1', edate='2018-1-1',
+            variables=['Bym', 'Bzm', 'AE', 'V'], res='1m')
+    imfae['Bt'] = np.sqrt(imfae['Bym']**2 + imfae['Bzm']**2)
+    imfae['nwcf'] = (imfae['V']**(4/3)) * (imfae['Bt']**(2/3)) * \
+        (((1-imfae['Bzm']/imfae['Bt'])/2)**(4/3))/100.0
+    imfae['EKL'] = 0.5*imfae['V']*(imfae['Bt']-imfae['Bzm'])/1e6
+    dst = omni.get_omni(bdate='2011-1-1', edate='2018-1-1',
+                        variables=['DST'], res='1h')
+    dst = dst.reindex(imfae.index, method='nearest')
+    imfae['Dst'] = dst.values
+    print('End of reading solar wind speed, IMF, AE and Dst')
+    for k0 in range(16, 18):  # satellite
+        pp1, pp2, pp3, pp4 = [], [], [], []
+        savefn = 'F{:d}.old.bea.dat'.format(k0)  # file to save data
+        for year in (2014, 2015, 2016, 2017):
+            for doy in np.concatenate([np.arange(1, 92), np.arange(274, 367)]): # Oct-March
+                # 00 means full orbit?
+                fn = glob.glob('/home/guod/WD4T/ssusi/ssusi.jhuapl.edu/'
+                               'data/f{:d}/apl/edr-aur/{:d}/{:03d}/'
+                               '*00_DF.NC'.format(k0, year, doy))
+                if not fn:  # empty fn
+                    continue
+                for k33, k3 in enumerate(fn):
+                    print('F{:d}, {:d}-{:03d}, {:s}'.format(
+                        k0, year, doy, k3[-14:-9]))
+                    pp1t, pp2t, pp3t, pp4t = find_parameters_one_file_5(k3)
+                    if np.size(pp1t) != 0:
+                        pp1.append(pp1t)
+                        pp2.append(pp2t)
+                        pp3.append(pp3t)
+                        pp4.append(pp4t)
+
+                        if saveplot:
+                            fig = plt.figure(figsize=(8.7, 4.4))
+                            for k44, k4 in enumerate(['N', 'S']):
+                                ax = plt.subplot(1, 2, k44+1, polar=True)
+                                image_energy_flux_one_file(
+                                        ax, datapath+k3, k4, s=1, vmin=0,
+                                        vmax=5, alpha=1)
+                                fp = (pp2t.ns == k4).values
+                                for k55, k5 in enumerate(range(int(1/dratio-1))):
+                                    r = 90-pp1t[fp, k55]
+                                    theta = pp2t.loc[fp, 'mlt']/12*np.pi
+                                    ax.scatter(theta, r, c='b', s=1, alpha=0.5)
+                                ax.set_title(k4+'H')
+                            plt.tight_layout()
+                            plt.savefig(
+                                    savepath +
+                                    'method5/F{:d}_2013{:02d}{:02d}_{:s}.png'.
+                                    format(k0, k1, k2, k3[-14:-9]))
+                            plt.close(fig)
+                    else:
+                        print('    No parameters found in this file')
+        if not pp1:
+            continue
+        pp1 = np.concatenate(pp1, axis=0)
+        pp2 = pd.concat(pp2, axis=0, ignore_index=True)
+        pp3 = np.concatenate(pp3, axis=0)
+        pp4 = np.concatenate(pp4, axis=0)
+        imfaet = imfae.reindex(pp2['datetime'], method='nearest')
+        pp2['Bym'] = imfaet['Bym'].values
+        pp2['Bzm'] = imfaet['Bzm'].values
+        pp2['AE'] = imfaet['AE'].values
+        pp2['Dst'] = imfaet['Dst'].values
+        pp2['nwcf'] = imfaet['nwcf'].values
+        pp2['EKL'] = imfaet['EKL'].values
+        pd.to_pickle((pp1, pp2, pp3, pp4), savepath+'method5/'+savefn)
+    return
+
+
+def bea_create_file(test=True):
+    if test:
+        pp1, pp2, pp3, pp4 = pd.read_pickle(
+                savepath+'method5/F16.old.bea.dat')
+        fn = ('/home/guod/WD4T/ssusi/ssusi.jhuapl.edu/data/f16/apl/edr-aur/2015'
+              '/005/PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16-SSUSI_PA.APL-EDR-'
+              'AURORA_DD.20150105_SN.57869-00_DF.NC')
+        ax = plt.subplot(111, polar=True)
+        ax = image_energy_flux_one_file(ax, fn, 'S', vmax=5)
+        idx = ((pp2['norbit']==57869) & (pp2['ns']=='S')).values
+        plt.scatter(pp2.iloc[idx]['mlt']/12*np.pi, 90-pp1[idx, -1], c='k', s=10)
+        plt.scatter(pp2.iloc[idx]['mlt']/12*np.pi, 90-pp1[idx, 0], c='k', s=10)
+        plt.show()
+
+    # for sat in ['F16', 'F17']:
+    #     pp1, pp2, pp3, pp4 = pd.read_pickle(
+    #             savepath+'method5/{:s}.old.bea.dat'.format(sat))
+    #     fn = '/home/guod/tmp/{:s}.dat'.format(sat)
+    #     f = open(fn, 'w')
+    #     f.write('# satellite orbit_number year doy hour minute ns MLT equator_bd pole_bd\n')
+    #     for iline in range(pp2.shape[0]):
+    #         if pp2.iloc[iline]['eftot']==0:
+    #             continue
+    #         f.write(sat+' ')
+    #         f.write('%d'%(pp2.iloc[iline]['norbit']))
+    #         f.write(' ')
+    #         f.write(pp2.iloc[iline]['datetime'].strftime('%Y %j %H %M '))
+    #         f.write(pp2.iloc[iline]['ns']+' ')
+    #         f.write('%6.3f' %(pp2.iloc[iline]['mlt']))
+    #         f.write(' ')
+    #         f.write('%5.2f %5.2f'%(pp1[iline, 0], pp1[iline, -1]))
+    #         f.write('\n')
     return
 
 
@@ -1126,9 +1236,12 @@ if __name__ == '__main__':
 
     # find_parameters()
 
+    # find_parameters_bea()
+    bea_create_file()
+
     # aurora_reconstruction_statistics_data()
 
-    aurora_reconstruction_statistics_all('ef', cmap='jet', vmax=10)
+    # aurora_reconstruction_statistics_all('ef', cmap='jet', vmax=10)
 
     # statistics()
 
