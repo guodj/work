@@ -10,7 +10,7 @@ import matplotlib.pyplot as plt
 Re = 6371*1000
 RR = Re+400000
 g = gitm.GitmBin('/home/guod/big/raid4/guod/run_imfby/run2c/data/'
-                 '3DALL_t100323_012500.bin', varlist=[
+                 '3DALL_t100323_013000.bin', varlist=[
                      'Rho', 'V!Dn!N (north)', 'V!Dn!N (east)', 'V!Dn!N (up)'])
 gg.calc_gradient(g, 'Rho', 'gradn', component='north')
 gg.calc_gradient(g, 'Rho', 'grade', component='east')
@@ -33,31 +33,33 @@ vadvect = uwind0*gradr0
 
 eee = rho0*div0
 
+plt.close('all')
+plt.figure(figsize=(9, 9))
 ax, projection = gcc.create_map(
         2, 2, 1, 'polar', nlat=90, slat=50,
         centrallon=g3ca.calculate_centrallon(g, 'polar', useLT=True),
         coastlines=False, dlat=30, useLT=True)
-ax.contourf(lon0, lat0, hadvect+vadvect+eee, transform=ccrs.PlateCarree(),
-            levels = np.linspace(-1e-15, 1e-15, 21), cmap='seismic')
+ax.contourf(lon0, lat0, -(hadvect+vadvect+eee), transform=ccrs.PlateCarree(),
+            levels = np.linspace(-4e-15, 4e-15, 21), cmap='seismic')
 
 ax, projection = gcc.create_map(
         2, 2, 2, 'polar', nlat=90, slat=50,
         centrallon=g3ca.calculate_centrallon(g, 'polar', useLT=True),
         coastlines=False, dlat=30, useLT=True)
-ax.contourf(lon0, lat0, hadvect, transform=ccrs.PlateCarree(),
-            levels = np.linspace(-1e-15, 1e-15, 21), cmap='seismic')
+ax.contourf(lon0, lat0, -hadvect, transform=ccrs.PlateCarree(),
+            levels = np.linspace(-4e-15, 4e-15, 21), cmap='seismic')
 
 ax, projection = gcc.create_map(
         2, 2, 3, 'polar', nlat=90, slat=50,
         centrallon=g3ca.calculate_centrallon(g, 'polar', useLT=True),
         coastlines=False, dlat=30, useLT=True)
-ax.contourf(lon0, lat0, vadvect+eee, transform=ccrs.PlateCarree(),
-            levels = np.linspace(-1e-15, 1e-15, 21), cmap='seismic')
+ax.contourf(lon0, lat0, -(vadvect+eee), transform=ccrs.PlateCarree(),
+            levels = np.linspace(-4e-15, 4e-15, 21), cmap='seismic')
 
-ax, projection = gcc.create_map(
-        2, 2, 4, 'polar', nlat=90, slat=50,
-        centrallon=g3ca.calculate_centrallon(g, 'polar', useLT=True),
-        coastlines=False, dlat=30, useLT=True)
-ax.contourf(lon0, lat0, eee, transform=ccrs.PlateCarree(),
-            levels = np.linspace(-1e-15, 1e-15, 21), cmap='seismic')
+# ax, projection = gcc.create_map(
+#         2, 2, 4, 'polar', nlat=90, slat=50,
+#         centrallon=g3ca.calculate_centrallon(g, 'polar', useLT=True),
+#         coastlines=False, dlat=30, useLT=True)
+# ax.contourf(lon0, lat0, -eee, transform=ccrs.PlateCarree(),
+#             levels = np.linspace(-4e-15, 4e-15, 21), cmap='seismic')
 plt.show()

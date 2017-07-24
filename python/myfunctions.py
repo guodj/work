@@ -150,6 +150,11 @@ def subplots_create_cbar_axis(ax, location='right', pad=0.02, size=0.05):
         y0 = axlc.y0+axlc.height+pad*axlc.height
         width = axlc.width
         height = size*axlc.height
+    elif location=='bottom':
+        x0 = axlc.x0
+        y0 = axlc.y0-pad*axlc.height
+        width = axlc.width
+        height = size*axlc.height
     return plt.axes([x0, y0, width, height])
 
 

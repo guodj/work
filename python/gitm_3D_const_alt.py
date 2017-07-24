@@ -1,4 +1,3 @@
-#!/home/guod/anaconda3/bin/python
 #------------------------------------------------------------------------------
 # By Dongjie Guo, 2016-12-06 10:56, UM
 # Comments: Routine to make contour or scatter plot of GITM output on a polar
@@ -64,6 +63,8 @@ def vector_data(gdata, species, alt=400, ialt=None):
                         alt, else use ialt
 
     Output: lat, lt, nwind, ewind
+    *** Note: Lon raries in x direction, lat varies in y direction. This is ***
+    ***       different with GITM settings.                                 ***
     '''
     # Find altitude index
     if ialt == None:

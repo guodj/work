@@ -28,10 +28,10 @@ def calc_gradient(g, var, name, component='radial'):
         grad = np.gradient(zdata, axis=2) / np.gradient(alt, axis=2)
     if 'north' in component.lower():
         grad = (1.0/(Re+alt))*np.gradient(zdata, axis=1) / \
-               np.gradient(lat, axis=1)
+                np.gradient(lat, axis=1)
     if 'east' in component.lower():
         grad = ((1.0/((Re+alt)*np.sin(np.pi/2-lat))) *
-                 np.gradient(zdata, axis=0) / np.gradient(lon, axis=0))
+                np.gradient(zdata, axis=0) / np.gradient(lon, axis=0))
     g[name] = dmarray(
             grad,
             attrs={'units':'None', 'scale':'linear',
@@ -53,10 +53,10 @@ if __name__ == '__main__':
             centrallon=centrallon, coastlines=False, dlat=10)
     lon, lat, rho = g3ca.contour_data('Rho', g)
     ax.contourf(lon, lat, rho, transform=ccrs.PlateCarree(),
-                levels=np.linspace(1e-12, 7.5e-12, 21))
+                levels=np.linspace(1e-12, 7.5e-12, 21), cmap='viridis')
     lon, lat, gradn = g3ca.contour_data('gradn', g)
     lon, lat, grade = g3ca.contour_data('grade', g)
     lon, lat, ewind, nwind = g3ca.convert_vector(
             lon, lat, grade, gradn, plot_type='polar', projection=projection)
-    ax.quiver(lon, lat, ewind*1e21, nwind*1e21, regrid_shape=30)
+    ax.quiver(lon, lat, ewind*1e21, nwind*1e21, regrid_shape=50)
     plt.show()

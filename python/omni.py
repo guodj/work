@@ -1,12 +1,12 @@
-#--------------------------------------------------------------------------------
-# Functions to handle Omni data.
-#
-# By Dongjie, UM, on Thu Sep 22 01:57:23 CST 2016
-#
-# Contain:
-#     get_omni: Get Omni data.
-#     plot_omni: Plot Omni data
-#--------------------------------------------------------------------------------
+'''
+Functions to handle Omni data.
+
+By Dongjie, UM, on Thu Sep 22 01:57:23 CST 2016
+
+Contain:
+    get_omni: Get Omni data.
+    plot_omni: Plot Omni data
+'''
 
 # Global imports
 import pandas as pd
@@ -17,8 +17,10 @@ import matplotlib.pyplot as plt
 
 OMNIDATADIR = os.environ.get('DATAPATH') + 'omni/'
 def get_omni(bdate, edate,variables,res='1m'):
-    # Get multiple days omni data.
-    # variables should be list or tuple even if only one variable.
+    '''
+    Get multiple days omni data.
+    variables should be list or tuple even if only one variable.
+    '''
     bdate = pd.Timestamp(bdate)
     edate = pd.Timestamp(edate)
     years = np.arange(bdate.year, edate.year+1)
@@ -98,16 +100,18 @@ def get_omni(bdate, edate,variables,res='1m'):
     else:
         return pd.DataFrame()
 
-#----------------------------------------
+
 def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):
-    # ax should be a list of axes
-    # variables should be a list or tuple even if only one variable
-    # kwargs are parameters for plot
-    # Plot variables in panels
-    # res can be '1D','1H','5m','1m'
-    #----------------------------------------
-    # variablename gives the column names in pd.Dataname and the possible names
-    # used in ticklables
+    '''
+    ax should be a list of axes
+    variables should be a list or tuple even if only one variable
+    kwargs are parameters for plot
+    Plot variables in panels
+    res can be '1D','1H','5m','1m'
+    ---------------------------------------
+    variablename gives the column names in pd.Dataname and the possible names
+    used in ticklables
+    '''
     variablename = {'Bx':'$B_x$ (nT)',
                     'Bye':'GSE $B_y$ (nT)', 'Bym':'GSM $B_y$ (nT)',
                     'Bze':'GSE $B_z$ (nT)', 'Bzm':'GSM $B_z$ (nT)',
@@ -128,7 +132,7 @@ def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):
         plt.ylabel(variablename[k0])
     return
 #END
-#--------------------------------------------------------------------------------
+#------------------------------------------------------------------------------
 # TEST
 if __name__ == '__main__':
     # Test plot_omni

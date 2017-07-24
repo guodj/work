@@ -1,4 +1,3 @@
-#!/home/guod/anaconda3/bin/python
 #-------------------------------------------------------------------------------
 # By Dongjie Guo, 2016-01-17 08:58, UM
 # Comments: Routine to calculate the divergence in a spherical coordinate.
@@ -9,9 +8,12 @@
 import gitm
 import numpy as np
 import matplotlib.pyplot as plt
+import gitm_3D_const_alt as g3ca
+from spacepy.datamodel import dmarray
+import gitm_create_coordinate as gcc
+import cartopy.crs as ccrs
 
 def calc_divergence(gdata, neuion='neutral', name='divergence'):
-    from spacepy.datamodel import dmarray
     '''
     calculate the divergence in a spherical coordinate.
     input:
@@ -45,26 +47,32 @@ def calc_divergence(gdata, neuion='neutral', name='divergence'):
                 np.gradient(nwind*np.cos(lat), axis=1) / \
                 np.gradient(lat, axis=1) +
                 np.gradient(ewind, axis=0) / np.gradient(lon, axis=0)))
-    gdata[name] = dmarray(divergence, attrs={'units':'/s', 'scale':'linear',
-                        'name':neuion+' velocity divergence'})
+    gdata[name] = dmarray(
+            divergence, attrs={'units':'/s', 'scale':'linear',
+            'name':neuion+' velocity divergence'})
     return
 
 
 #END
 if __name__ == '__main__':
-    import gitm_3D_const_alt as g3ca
-    from spacepy.datamodel import dmarray
-    path = '/home/guod/WD2T/run_imfby/'
-    gdata = gitm.GitmBin(path+'run2/data/3DALL_t100323_060000.bin')
+    plt.close('all')
+    path = '/home/guod/big/raid4/guod/run_imfby/run2c/data/'
+    gdata = gitm.GitmBin(path+'3DALL_t100323_060000.bin')
     calc_divergence(gdata, 'neu', name='divergence')
 
-    alt = 200
+    alt = 400
     nlat = 90
     slat = 50
-    ax = plt.subplot(polar=True)
-    ax, hc = g3ca.contour_single(
-            ax, 'divergence', 'polar', gdata, alt=alt,
-            nlat=nlat, slat=slat, dlat=10, dlonlt=6,
-            lonlt00='S', nzlevels=20, zcolor=None)
-    plt.colorbar(hc)
+    centrallon = g3ca.calculate_centrallon(gdata, 'polar', useLT=True)
+    ax, projection = gcc.create_map(
+            1, 1, 1, plot_type='polar', nlat=nlat, slat=slat,
+            centrallon=centrallon, coastlines=False, dlat=10)
+    lon0, lat0, div0 = g3ca.contour_data('divergence', gdata, alt=alt)
+    lon, lat, ewind, nwind = g3ca.vector_data(gdata, 'neu', alt=alt)
+    lon, lat, ewind, nwind = g3ca.convert_vector(
+            lon, lat, ewind, nwind, 'polar', projection)
+    hc = ax.contourf(
+            lon0, lat0, div0, levels=np.linspace(-2e-4, 2e-4, 21),
+            transform=ccrs.PlateCarree(), cmap='seismic')
+    ax.quiver(lon, lat, ewind, nwind, regrid_shape=20)
     plt.show()
