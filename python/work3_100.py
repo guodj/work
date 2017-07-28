@@ -906,8 +906,6 @@ def initial_condition():
     cax = mf.subplots_create_cbar_axis(ax, 'bottom', pad=-0.01)
     hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(3, 7)*1e-12,
                        orientation='horizontal')
-    xticklb = [r'$%d\times10^{-12}$' % k for k in np.arange(3, 7)]
-    hcb.ax.set_xticklabels(xticklb)
     hcb.set_label(r'$\rho$ (kg/m$^3$)')
     # ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
     ax.set_title(g['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
@@ -930,10 +928,46 @@ def initial_condition():
     ax.set_title(g['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
     ax.text(0, 1.05, '( b )', transform=ax.transAxes)
 
-    plt.savefig(savepath+'figure1.eps')
+    plt.savefig(savepath+'figure1.old.eps')
 
     return
 
+def IMF_By_change():
+    # IMF By
+    savepath =  '/home/guod/Documents/work/work3paper/figs/'
+    plt.figure()
+    btimeby = pd.Timestamp('2010-03-20 00:00:00')
+    etimeby = pd.Timestamp('2010-03-24 00:00:00')
+    dtby = pd.Timedelta('1min')
+    timeby = pd.date_range(btimeby, etimeby, freq=dtby)
+    epochhour = (timeby - pd.Timestamp('2010-03-23 00:00:00'))\
+            /pd.Timedelta('1hour')
+    fnimf1 = '/home/guod/WD4T/gitm/run_imfby/run1c/imf1.dat'
+    imf1 = pd.read_csv(
+            fnimf1, delim_whitespace=True, comment='#',
+            header=None,
+            names=('year', 'month', 'day', 'hour', 'minute', 'second',
+                   'ms', 'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+            usecols=['by'])
+    imf1 = pd.DataFrame(np.array(imf1), index=timeby, columns=['By'])
+    plt.plot(epochhour, imf1.By, 'b')
+    fnimf2 = '/home/guod/WD4T/gitm/run_imfby/run2c/imf2.dat'
+    imf2 = pd.read_csv(
+            fnimf2, delim_whitespace=True, comment='#',
+            header=None,
+            names=('year', 'month', 'day', 'hour', 'minute', 'second',
+                   'ms', 'bx', 'by', 'bz', 'vx', 'vy', 'vz', 'n', 't'),
+            usecols=['by'])
+    imf2 = pd.DataFrame(np.array(imf2), index=timeby, columns=['By'])
+    plt.plot(epochhour, imf2.By, 'r')
+    plt.legend(['Run 1', 'Run 2'])
+    plt.xlim(-1, 5)
+    plt.xticks(np.arange(-1, 5.1, 0.5))
+    plt.xlabel('Epoch (hour)')
+    plt.ylim([-10, 10])
+    plt.ylabel(r'IMF $B_Y$')
+    plt.savefig(savepath+'figure1.eps')
+    return
 
 def half_hour_condition():
     fn1 = ('/home/guod/big/raid4/guod/run_imfby/run1c/data/'
@@ -962,11 +996,11 @@ def half_hour_condition():
     # run 1 and run 2
     for k11, g in enumerate([g1, g2]):
         if k11==0:
-            abcd = '( a )'
+            abcd = '( d )'
         else:
-            abcd = '( b )'
+            abcd = '( e )'
         ax, projection = gcc.create_map(
-                2, 3, k11+1, 'polar', nlat=nlat, slat=slat, dlat=10,
+                2, 3, k11+4, 'polar', nlat=nlat, slat=slat, dlat=10,
                 centrallon=g3ca.calculate_centrallon(g, 'polar',  useLT=True),
                 coastlines=False)
         lon0, lat0, rho0 = g3ca.contour_data('Rho', g, alt=alt)
@@ -984,8 +1018,6 @@ def half_hour_condition():
         cax = mf.subplots_create_cbar_axis(ax, 'bottom', pad=0.0)
         hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(3, 7)*1e-12,
                            orientation='horizontal')
-        xticklb = [r'$%d\times10^{-12}$' % k for k in np.arange(3, 7)]
-        hcb.ax.set_xticklabels(xticklb)
         if k11==0:
             hcb.set_label(r'$\rho_1$ (kg/m$^3$)')
         else:
@@ -996,11 +1028,11 @@ def half_hour_condition():
 
     for k11, g in enumerate([g1, g2]):
         if k11==0:
-            abcd = '( d )'
+            abcd = '( a )'
         else:
-            abcd = '( e )'
+            abcd = '( b )'
         ax, projection = gcc.create_map(
-                2, 3, k11+4, 'polar', nlat=nlat, slat=slat, dlat=10,
+                2, 3, k11+1, 'polar', nlat=nlat, slat=slat, dlat=10,
                 centrallon=g3ca.calculate_centrallon(g, 'polar',  useLT=True),
                 coastlines=False)
         lon0, lat0, temp0 = g3ca.contour_data('Temperature', g, alt=alt)
@@ -1019,7 +1051,7 @@ def half_hour_condition():
         ax.text(0, 1.05, abcd, transform=ax.transAxes)
 
     ax, projection = gcc.create_map(
-            2, 3, 3, 'polar', nlat=nlat, slat=slat, dlat=10,
+            2, 3, 6, 'polar', nlat=nlat, slat=slat, dlat=10,
             centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
             coastlines=False)
     lon1, lat1, rho1 = g3ca.contour_data('Rho', g1, alt=alt)
@@ -1039,15 +1071,15 @@ def half_hour_condition():
             alpha=0.5, regrid_shape=20)
     ax.quiverkey(hq, 0.93, -0.05, 1000, '1000 m/s')
     cax = mf.subplots_create_cbar_axis(ax, 'bottom', pad=0.0)
-    hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(-30, 30, 10),
+    hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(-30, 31, 10),
                        orientation='horizontal')
     hcb.set_label(r'$100\times\frac{\rho_2-\rho_1}{\rho_1}$')
     # ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
     ax.set_title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-    ax.text(0, 1.05, '( c )', transform=ax.transAxes)
+    ax.text(0, 1.05, '( f )', transform=ax.transAxes)
 
     ax, projection = gcc.create_map(
-            2, 3, 6, 'polar', nlat=nlat, slat=slat, dlat=10,
+            2, 3, 3, 'polar', nlat=nlat, slat=slat, dlat=10,
             centrallon=g3ca.calculate_centrallon(g1, 'polar',  useLT=True),
             coastlines=False)
     lon1, lat1, temp1 = g3ca.contour_data('Temperature', g1, alt=alt)
@@ -1062,7 +1094,7 @@ def half_hour_condition():
     hcb.set_label(r'$T_2-T_1$ (K)')
     # ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
     ax.set_title(g1['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
-    ax.text(0, 1.05, '( f )', transform=ax.transAxes)
+    ax.text(0, 1.05, '( c )', transform=ax.transAxes)
 
     plt.savefig(savepath+'figure2.eps')
     return
@@ -1145,7 +1177,7 @@ def time_evolution_mean_density_temperature():
             ylabel=[r'$\rho$ $(kg/m^3)$', '$T_n$ (K)', '$T_i$ (K)'],
             fontweight='bold')
     mf.subplots_create_abcde(ax, direction='row', x=0.95, y=1.05)
-    plt.savefig('/home/guod/Documents/work/work3paper/figs/figure3.eps')
+    plt.savefig('/home/guod/Documents/work/work3paper/figs/figure4.eps')
     return
 
 
@@ -1208,7 +1240,7 @@ def density_change_reason():
             cax = mf.subplots_create_cbar_axis(ax, 'bottom', pad=0.09)
             hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(-8, 9, 1)*1e-15,
                                orientation='horizontal')
-            hcb.set_label(r'$\vec{v}\cdot\nabla\rho$')
+            hcb.set_label(r'$-\vec{v}\cdot\nabla\rho$')
         # ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
         ax.set_title(g['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
         ax.text(0, 1, abcd[0+k11*3], transform=ax.transAxes)
@@ -1225,7 +1257,7 @@ def density_change_reason():
             cax = mf.subplots_create_cbar_axis(ax, 'bottom', pad=0.09)
             hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(-8, 9, 1)*1e-15,
                                orientation='horizontal')
-            hcb.set_label(r'$\rho\nabla\cdot\vec{v}$')
+            hcb.set_label(r'$-\rho\nabla\cdot\vec{v}$')
         # ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
         ax.set_title(g['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
         ax.text(0, 1, abcd[1+k11*3], transform=ax.transAxes)
@@ -1247,7 +1279,7 @@ def density_change_reason():
         ax.set_title(g['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
         ax.text(0, 1, abcd[2+k11*3], transform=ax.transAxes)
 
-        plt.savefig(savepath+'figure4.eps')
+        plt.savefig(savepath+'figure3.eps')
     return
 
 
@@ -1309,8 +1341,6 @@ def min_density_location():
         cax = mf.subplots_create_cbar_axis(ax, 'bottom', pad=-0.01)
         hcb = plt.colorbar(hc, cax=cax, ticks=np.arange(3, 7)*1e-12,
                            orientation='horizontal')
-        xticklb = [r'$%d\times10^{-12}$' % k for k in np.arange(3, 7)]
-        hcb.ax.set_xticklabels(xticklb)
         hcb.set_label(r'$\rho_2$ (kg/m$^3$)')
         # ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
         ax.set_title(g['time'].strftime('%d-%b-%y %H:%M')+' UT', y=1.05)
@@ -1416,5 +1446,5 @@ def time_evolution_min_density():
 #------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    a = density_change_reason()
+    a = time_evolution_mean_density_temperature()
     plt.show()
