@@ -1085,6 +1085,11 @@ def half_hour_condition():
     lon1, lat1, temp1 = g3ca.contour_data('Temperature', g1, alt=alt)
     lon2, lat2, temp2 = g3ca.contour_data('Temperature', g2, alt=alt)
     lon0, lat0, temp0 = lon1, lat1, temp2-temp1
+    fp = lat0>50
+    maxtemp0 = (temp0[fp]).max()
+    mintemp0 = (temp0[fp]).min()
+    print('max temperature diff: ', maxtemp0)
+    print('min temperature diff: ', mintemp0)
     hc = ax.contourf(lon0, lat0, temp0, transform=ccrs.PlateCarree(),
                      levels=np.linspace(-200, 200, 21), cmap='seismic',
                      extend='both')
@@ -1446,5 +1451,5 @@ def time_evolution_min_density():
 #------------------------------------------------------------
 if __name__ == '__main__':
     plt.close('all')
-    a = time_evolution_mean_density_temperature()
+    a = half_hour_condition()
     plt.show()
