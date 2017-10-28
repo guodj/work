@@ -3,17 +3,57 @@ import gitm
 import numpy as np
 import matplotlib.pyplot as plt
 import gitm_3D_const_alt as g3ca
+import os
+import pickle
+if not os.path.isfile('gitm_batch_variable'):
+    gitm_batch_variable={}
+    gitm_batch_variable['filename']=''
+    gitm_batch_variable['save']='y'
+    gitm_batch_variable['savefilename']=''
+    gitm_batch_variable['variable']=''
+    gitm_batch_variable['log']='n'
+    gitm_batch_variable['lineorcontour']='c'
+    gitm_batch_variable['constant_surface']='1' # 1, const H; 2, const Lon; 3, const Lat
+    gitm_batch_variable['ispolar']='1' # 1, polar; 0, non_polar
+    gitm_batch_variable['NS']='1' # 1, north; 0, south
+    gitm_batch_variable['min_lat']='50.0' # positive for both poles
+    gitm_batch_variable['zmin']='automatic'
+    gitm_batch_variable['zmax']='automatic'
+    gitm_batch_variable['isvector']='y'
+    gitm_batch_variable['neuion']='1' # 1 for neutral wind, 2 for ion drift
+    gitm_batch_variable['scale']='-1' # -1 for automatic
+    pickle.dump(gitm_batch_variable, open('gitm_batch_variable', 'wb'))
+
+pickle.load(open('gitm_batch_variable', 'rb'))
 plt.close('all')
 plt.figure(figsize=(9.35, 5.95))
-fn = input('Enter filename to plot: ')
-fnpdf = input('Enter pdf file name ['+fn+'.pdf]: ')
-if len(fnpdf)==0:
-    fnpdf = fn+'.pdf'
+# gitm file name
+fn = input('Enter filename to plot[%s]: ' % gitm_batch_variable['filename'])
+if len(fn)==0:
+    fn =  gitm_batch_variable['filename']
+gitm_batch_variable['filename']=fn
+# save figure or not
+issave = input('Save figure (y or n)? [%s]: ' % gitm_batch_variable['save'])
+if len(issave)==0:
+    issave = gitm_batch_variable['save']
+gitm_batch_variable['save']=issave
+
 g = gitm.GitmBin(fn)
-vl = list(g.keys())
-for k00, k0 in enumerate(vl):
+variable_names = (
+        'Rho', 'Temperature', 'eTemperature', 'iTemperature',
+        'O(!U3!NP)', 'O(!U1!ND)', 'O!D2!N', 'N!D2!N', 'N(!U4!NS)',
+        'N(!U2!ND)', 'N(!U2!NP)', 'NO', 'HE', 'H', 'CO!D2!N',
+        'V!Dn!N (east)', 'V!Dn!N (north)', 'V!Dn!N (up)',
+        'V!Di!N (east)', 'V!Di!N (north)', 'V!Di!N (up)',
+        'V!Dn!N (up,O(!U3!NP)           )', 'V!Dn!N (up,O!D2!N              )',
+        'V!Dn!N (up,N!D2!N              )', 'V!Dn!N (up,N(!U4!NS)           )',
+        'V!Dn!N (up,NO                  )', 'V!Dn!N (up,He                  )',
+        'O_4SP_!U+!N', 'O!D2!U+!N', 'N!D2!U+!N', 'N!U+!N', 'NO!U+!N',
+        'O(!U2!ND)!U+!N', 'O(!U2!NP)!U+!N', 'H!U+!N', 'He!U+!N', 'e-')
+for k00, k0 in enumerate(variable_names):
     print(k00, '     ', k0)
-vi = int(input('Enter which variable to plot: '))
+vi = int(input('Enter which variable to plot [%s]: '
+                % gitm_batch_variable['variable']))
 log10 = input('Enter whether you want log or not (y/n) [n]: ')
 log10 = True if log10=='y' else False
 lc = input('Enter whether you would like a line plot (l) or contour plot (c) [c]: ')

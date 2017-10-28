@@ -14,21 +14,24 @@ import matplotlib.pyplot as plt
 #------------------------------------------------------------
 # Basic information
 homepath = os.environ.get('HOME')
-btime = pd.Timestamp('2010-03-20 00:00:00')
-etime = pd.Timestamp('2010-03-24 00:00:00')
+btime = pd.Timestamp('2003-03-19 00:00:00')
+etime = pd.Timestamp('2003-03-22 06:00:00')
 dt = pd.Timedelta('1min')
 time = pd.date_range(btime, etime, freq=dt)
 #----------------------------------------
 # Write imf.dat
 dim = time.shape
 imfby1 = np.ones(dim)*5 # run1
-reversalt = etime-pd.Timedelta('24hour')
+reversalt = etime-pd.Timedelta('6hour')
 mm = time>reversalt
 imfby2 = imfby1.copy()
-imfby2[mm] = imfby2[mm]-10
-imfby1 = imfby1+np.random.normal(0, 1, dim)
-imfby2 = imfby2+np.random.normal(0, 1, dim)
-imfbz = np.ones(dim)*-1+np.random.normal(0, 1, dim)
+# imfby2[mm] = imfby2[mm]-10
+# imfby1 = imfby1+np.random.normal(0, 1, dim)
+# imfby2 = imfby2+np.random.normal(0, 1, dim)
+# imfbz = np.ones(dim)*-1+np.random.normal(0, 1, dim)
+imfbz1 = np.ones(dim)-2
+imfbz2 = imfbz1.copy()
+imfbz2[mm] = imfbz2[mm]-2
 imfbx = np.zeros(dim)
 vx = np.ones(dim)*-450
 vy = np.zeros(dim)
@@ -44,7 +47,7 @@ for k00, k0 in enumerate(time):
             k0.minute, k0.second, k0.microsecond))
     # IMF Bx, By, Bz
     fimf1.write('{:8.2f}{:8.2f}{:8.2f}'.format(
-            imfbx[k00], imfby1[k00], imfbz[k00]))
+            imfbx[k00], imfby1[k00], imfbz1[k00]))
     # Solar wind velocity, Vx, Vy, Vz
     fimf1.write('{:9.2f}{:9.2f}{:9.2f}'.format(
             vx[k00], vy[k00], vz[k00]))
@@ -62,7 +65,7 @@ for k00, k0 in enumerate(time):
             k0.minute, k0.second, k0.microsecond))
     # IMF Bx, By, Bz
     fimf2.write('{:8.2f}{:8.2f}{:8.2f}'.format(
-            imfbx[k00], imfby2[k00], imfbz[k00]))
+            imfbx[k00], imfby2[k00], imfbz2[k00]))
     # Solar wind velocity, Vx, Vy, Vz
     fimf2.write('{:9.2f}{:9.2f}{:9.2f}'.format(
             vx[k00], vy[k00], vz[k00]))
@@ -114,7 +117,7 @@ fonsets.close()
 fig1, ax1 = plt.subplots(3, 1, sharex=True, figsize=(7, 8))
 plt.sca(ax1[0])
 plt.title('Run1')
-plt.plot(time, imfby1, 'b', time, imfbz, 'r')
+plt.plot(time, imfby1, 'b', time, imfbz1, 'r')
 hline = [5, -5, -1]
 [plt.axhline(k, linestyle='--', color='gray') for k in hline]
 vline = pd.date_range(btime, etime, freq='1D')
@@ -141,7 +144,7 @@ plt.xlabel('Hours from '+btime.strftime('%Y-%m-%d %H:%M:%S'))
 fig2, ax2 = plt.subplots(3, 1, sharex=True, figsize=(7, 8))
 plt.sca(ax2[0])
 plt.title('Run2')
-plt.plot(time, imfby2, 'b', time, imfbz, 'r')
+plt.plot(time, imfby2, 'b', time, imfbz2, 'r')
 hline = [5, -5, -1]
 [plt.axhline(k, linestyle='--', color='gray') for k in hline]
 vline = pd.date_range(btime, etime, freq='1D')

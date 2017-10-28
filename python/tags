@@ -3,30 +3,9 @@
 !_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
 !_TAG_PROGRAM_NAME	Exuberant Ctags	//
 !_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
-!_TAG_PROGRAM_VERSION	5.8	//
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
 AErange	ssusi_aurora_new.py	/^AErange = np.ones([8, 2])$/;"	v
 AErange	ssusi_aurora_new_2.py	/^AErange = np.ones([8, 2])$/;"	v
-AnchoredText	gitm_create_coordinate.py	/^from matplotlib.offsetbox import AnchoredText$/;"	i
-Apex	champ_grace.py	/^            from apexpy import Apex$/;"	i
-Apex	champ_grace.py	/^        from apexpy import Apex$/;"	i
-Apex	gitm_3D_const_alt_old.py	/^    from apexpy import Apex$/;"	i
-Apex	goce.py	/^            from apexpy import Apex$/;"	i
-Apex	goce.py	/^        from apexpy import Apex$/;"	i
-Apex	ssusi_aurora_new.py	/^from apexpy import Apex$/;"	i
-Apex	ssusi_aurora_new_2.py	/^from apexpy import Apex$/;"	i
-Apex	sth.py	/^    from apexpy import Apex$/;"	i
-Apex	test.py	/^        from apexpy import Apex$/;"	i
-Apex	test.py	/^    from apexpy import Apex as Apex$/;"	i
-Apex	work3_100.py	/^from apexpy import Apex$/;"	i
-AutoMinorLocator	champ_grace.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
-AutoMinorLocator	goce.py	/^        from matplotlib.ticker import AutoMinorLocator$/;"	i
-AutoMinorLocator	work2_101.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
-AutoMinorLocator	work3_100.py	/^from matplotlib.ticker import AutoMinorLocator$/;"	i
-AxesGrid	work3_100.py	/^from mpl_toolkits.axes_grid1 import AxesGrid$/;"	i
-Basemap	champ_grace.py	/^        from mpl_toolkits.basemap import Basemap$/;"	i
-Basemap	goce.py	/^        from mpl_toolkits.basemap import Basemap$/;"	i
-Basemap	plot_3D_global.py	/^from mpl_toolkits.basemap import Basemap$/;"	i
-Basemap	sth.py	/^    from mpl_toolkits.basemap import Basemap$/;"	i
 BinMLT	ssusi_aurora.py	/^BinMLT = 0.25  # MLT range in one bin$/;"	v
 BinMLT	ssusi_aurora_new.py	/^BinMLT = 0.25  # MLT range in one bin$/;"	v
 BinMLT	ssusi_aurora_new_2.py	/^BinMLT = 0.25  # MLT range in one bin$/;"	v
@@ -34,28 +13,12 @@ ChampDensity	champ_grace.py	/^class ChampDensity(pd.DataFrame):$/;"	c
 ChampWind	champ_grace.py	/^class ChampWind(ChampDensity):$/;"	c
 DATADIR	champ_grace.py	/^DATADIR = os.environ.get('DATAPATH')$/;"	v
 DATADIR	work3_100.py	/^DATADIR = os.environ.get('DATAPATH')$/;"	v
-Dataset	ssusi_aurora.py	/^from netCDF4 import Dataset$/;"	i
-Dataset	ssusi_aurora_new.py	/^from netCDF4 import Dataset$/;"	i
-Dataset	ssusi_aurora_new_2.py	/^from netCDF4 import Dataset$/;"	i
-FormatStrFormatter	gitm_3d_test.py	/^from matplotlib.ticker import ScalarFormatter, FormatStrFormatter$/;"	i
-FormatStrFormatter	gitm_comparison_plots.py	/^from matplotlib.ticker import FormatStrFormatter, FuncFormatter$/;"	i
-FormatStrFormatter	gitm_diff_images.py	/^    from matplotlib.ticker import ScalarFormatter, FormatStrFormatter$/;"	i
-FormatStrFormatter	gitm_plot_rout.py	/^    from matplotlib.ticker import FormatStrFormatter, FuncFormatter$/;"	i
-FormatStrFormatter	gitm_sat_plots.py	/^from matplotlib.ticker import FormatStrFormatter, FuncFormatter$/;"	i
-FormatStrFormatter	plot_3D_global.py	/^from matplotlib.ticker import FormatStrFormatter$/;"	i
-FormatStrFormatter	plot_alt_profiles.py	/^from matplotlib.ticker import FormatStrFormatter,MultipleLocator$/;"	i
-FormatStrFormatter	plot_stats.py	/^from matplotlib.ticker import FormatStrFormatter, MultipleLocator$/;"	i
-FuncFormatter	gitm_alt_plots.py	/^from matplotlib.ticker import FuncFormatter$/;"	i
-FuncFormatter	gitm_comparison_plots.py	/^from matplotlib.ticker import FormatStrFormatter, FuncFormatter$/;"	i
-FuncFormatter	gitm_plot_rout.py	/^    from matplotlib.ticker import FormatStrFormatter, FuncFormatter$/;"	i
-FuncFormatter	gitm_sat_plots.py	/^from matplotlib.ticker import FormatStrFormatter, FuncFormatter$/;"	i
-GITM	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-GITM	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
 GOCEDATADIR	goce.py	/^GOCEDATADIR = os.environ.get('DATAPATH') + 'GOCE\/'$/;"	v
 GitmBin	gitm.py	/^class GitmBin(PbData):$/;"	c
 GitmTime	gitm_time.py	/^class GitmTime(PbData):$/;"	c
 GoceData	goce.py	/^class GoceData(pd.DataFrame):$/;"	c
 GpsFile	read_gps_bin.py	/^class GpsFile:$/;"	c
+IMF_By_change	work3_100.py	/^def IMF_By_change():$/;"	f
 LLEFTOT	ssusi_aurora.py	/^LLEFTOT = 10  # lower limit of total energy flux in each bin, for method 1,2$/;"	v
 LLEFTOT	ssusi_aurora_new.py	/^LLEFTOT = 10  # lower limit of total energy flux in each bin, for method 1,2$/;"	v
 LLEFTOT	ssusi_aurora_new_2.py	/^LLEFTOT = 10  # lower limit of total energy flux in each bin, for method 1,2$/;"	v
@@ -70,30 +33,18 @@ LLSMP	ssusi_aurora_new.py	/^LLSMP = 200 # lower limit of samples$/;"	v
 LLSMP	ssusi_aurora_new_2.py	/^LLSMP = 200 # lower limit of samples$/;"	v
 LT_median	champ_grace.py	/^    def LT_median(self):$/;"	m	class:ChampDensity
 LT_median	goce.py	/^    def LT_median(self):$/;"	m	class:GoceData
-LogNorm	plot_3D_global.py	/^from matplotlib.colors import LogNorm$/;"	i
-LogNorm	plot_alt_profiles.py	/^from matplotlib.colors import LogNorm$/;"	i
-MultipleLocator	plot_3D_global.py	/^from matplotlib.ticker import MultipleLocator$/;"	i
-MultipleLocator	plot_alt_profiles.py	/^from matplotlib.ticker import FormatStrFormatter,MultipleLocator$/;"	i
-MultipleLocator	plot_stats.py	/^from matplotlib.ticker import FormatStrFormatter, MultipleLocator$/;"	i
 NS	gitm_batch.py	/^        NS=input('Enter North (1) or South (0) [1]: ')$/;"	v
-NearestNDInterpolator	work3_100.py	/^from scipy.interpolate import NearestNDInterpolator$/;"	i
 OMNIDATADIR	omni.py	/^OMNIDATADIR = os.environ.get('DATAPATH') + 'omni\/'$/;"	v
-OS	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
 PIXELSIZE_GEOMAGNETIC_LATITUDE	ssusi_aurora_new.py	/^PIXELSIZE_GEOMAGNETIC_LATITUDE=0.22077596187591553 # unit: degree$/;"	v
 PIXELSIZE_GEOMAGNETIC_LATITUDE	ssusi_aurora_new_2.py	/^PIXELSIZE_GEOMAGNETIC_LATITUDE=0.22077596187591553 # unit: degree$/;"	v
 PIXELSIZE_GEOMAGNETIC_LONGITUDE	ssusi_aurora_new.py	/^PIXELSIZE_GEOMAGNETIC_LONGITUDE=0.22077596187591553$/;"	v
 PIXELSIZE_GEOMAGNETIC_LONGITUDE	ssusi_aurora_new_2.py	/^PIXELSIZE_GEOMAGNETIC_LONGITUDE=0.22077596187591553$/;"	v
-PbData	gitm.py	/^from spacepy.pybats import PbData$/;"	i
-PbData	gitm_time.py	/^from spacepy.pybats import PbData$/;"	i
 RE	ssusi_aurora_new.py	/^RE = 6371000 # unit: m$/;"	v
 RE	ssusi_aurora_new_2.py	/^RE = 6371000 # unit: m$/;"	v
+RR	tmp.py	/^RR = Re+400000$/;"	v
+Re	tmp.py	/^Re = 6371*1000$/;"	v
 Re	work3_100.py	/^Re = 6371*1000 # Earth radius, unit: m$/;"	v
-ScalarFormatter	gitm_3d_test.py	/^from matplotlib.ticker import ScalarFormatter, FormatStrFormatter$/;"	i
-ScalarFormatter	gitm_diff_images.py	/^    from matplotlib.ticker import ScalarFormatter, FormatStrFormatter$/;"	i
-Temporary	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-Temporary	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-To	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
-Use	work3_100.py	/^from pylab import draw # Use draw()$/;"	i
+Re	work3_101.py	/^Re = 6371*1000 # Earth radius, unit: m$/;"	v
 __author__	sth.py	/^__author__ = 'Guo Dongjie'$/;"	v
 __author__	work4_100.py	/^__author__ = 'Dongjie Guo'$/;"	v
 __init__	champ_grace.py	/^    def __init__(self, btime, etime, satellite='champ', variables=-1,$/;"	m	class:ChampDensity
@@ -120,7 +71,6 @@ a	sth.py	/^    a=f3()$/;"	v
 a	test.py	/^    a = func4()$/;"	v
 a	work3_100.py	/^    a = snapshot_30min()$/;"	v
 add_colorbar	gitm_plot_rout.py	/^def add_colorbar(contour_handle, zmin, zmax, zinc, orient, scale, name, units):$/;"	f
-add_cyclic_point	gitm_3D_const_alt.py	/^from cartopy.util import add_cyclic_point$/;"	i
 add_dipole_fieldline	gitm_plot_rout.py	/^def add_dipole_fieldline(ax, apex_alt, lat_array, alt_units="km",$/;"	f
 add_geomagnetic_equator	gitm_plot_rout.py	/^def add_geomagnetic_equator(ax=None, color="k", linestyle="-",$/;"	f
 add_solar_terminator	gitm_plot_rout.py	/^    def add_solar_terminator(ut, alt=0.0, ax=None, color='k', style="-",$/;"	f
@@ -130,15 +80,13 @@ add_subsolar_point	gitm_plot_rout.py	/^    def add_subsolar_point(ut, ax=None, c
 ae	gitm_create_input_files.py	/^ae = au-al$/;"	v
 aindex	gitm_movie_script.py	/^    aindex = gpr.find_alt_index(gitmbins[0], 1, 1, zalts[z], zunits[z])$/;"	v
 al	gitm_create_input_files.py	/^al = np.ones(dim)*-50+np.round(np.random.normal(0, 5, dim))$/;"	v
-alt	gitm_divergence.py	/^    alt = 200$/;"	v
+alt	gitm_divergence.py	/^    alt = 400$/;"	v
 alt	gitm_vorticity.py	/^    alt = 200$/;"	v
 animate_all	work3_100.py	/^def animate_all():$/;"	f
 animate_den_wind	work3_100.py	/^    def animate_den_wind(i):$/;"	f	function:animate_all
-animation	work3_100.py	/^import matplotlib.animation as animation$/;"	i
 append_data	gitm.py	/^    def append_data(self, varlist):$/;"	m	class:GitmBin
 append_units	gitm.py	/^    def append_units(self):$/;"	m	class:GitmBin
 appendobs	gitm_time.py	/^    def appendobs(self, nplist, keylist, match_method="none", dtdata=None,$/;"	m	class:GitmTime
-argrelextrema	gitm.py	/^        from scipy.signal import argrelextrema$/;"	i
 au	gitm_create_input_files.py	/^au = np.ones(dim)*50+np.round(np.random.normal(0, 5, dim))$/;"	v
 aurora_reconstruction_fit	ssusi_aurora_new.py	/^def aurora_reconstruction_fit($/;"	f
 aurora_reconstruction_fit	ssusi_aurora_new_2.py	/^def aurora_reconstruction_fit($/;"	f
@@ -155,8 +103,6 @@ ax	gitm_3D_const_alt_old.py	/^    ax = plt.subplot(polar=polar)$/;"	v
 ax	gitm_3d_test.py	/^ax=f.add_subplot(111) #make an ax.$/;"	v
 ax	gitm_batch.py	/^        ax = plt.subplot(111)$/;"	v
 ax	gitm_batch.py	/^        ax = plt.subplot(111, polar=True)$/;"	v
-ax	gitm_divergence.py	/^    ax = plt.subplot(polar=True)$/;"	v
-ax	gitm_vorticity.py	/^    ax = plt.subplot(polar=True)$/;"	v
 ax	goce.py	/^    ax = plt.subplot()$/;"	v	class:GoceData
 ax	goce.py	/^    ax = plt.subplot(polar=True)$/;"	v	class:GoceData
 backfile	gitm_diff_images.py	/^        backfile=matchObj.group(1)$/;"	v
@@ -169,10 +115,8 @@ bkey	example_gitm_cindi_plot_script.py	/^        bkey = "{:s}_berr".format(obs_k
 bkey	example_gitm_cindi_plot_script.py	/^        bkey = "{:s}_sig".format(obs_key[0])$/;"	v
 bkey	example_gitm_cindi_plot_script.py	/^    bkey = None$/;"	v
 boxcar_sec	example_gitm_cindi_plot_script.py	/^                                       boxcar_sec=max_tdelt)$/;"	v
-breakpoint	work2_101.py	/^import pdb   # set breakpoint$/;"	i
 btime	gitm_create_input_files.py	/^btime = pd.Timestamp('2010-03-20 00:00:00')$/;"	v
 btime	work4_100.py	/^        btime = betime.loc[k-1,'btime']$/;"	v
-cKDTree	gitm_3D_const_alt_old.py	/^    from scipy.spatial import cKDTree$/;"	i
 calc_2dion	gitm.py	/^    def calc_2dion(self):$/;"	m	class:GitmBin
 calc_deg	gitm.py	/^    def calc_deg(self):$/;"	m	class:GitmBin
 calc_divergence	gitm_divergence.py	/^def calc_divergence(gdata, neuion='neutral', name='divergence'):$/;"	f
@@ -180,25 +124,20 @@ calc_gradient	gitm_gradient.py	/^def calc_gradient(g, var, name, component='radi
 calc_lt	gitm.py	/^    def calc_lt(self):$/;"	m	class:GitmBin
 calc_magdi	gitm.py	/^    def calc_magdi(self):$/;"	m	class:GitmBin
 calc_magvel	gitm.py	/^    def calc_magvel(self):$/;"	m	class:GitmBin
+calc_pressure	gitm_pressure.py	/^def calc_pressure(g):$/;"	f
 calc_tec	gitm.py	/^    def calc_tec(self):$/;"	m	class:GitmBin
 calc_vorticity	gitm_vorticity.py	/^def calc_vorticity(gdata, neuion='neutral', name='nvorticity',$/;"	f
 calculate_centrallon	gitm_3D_const_alt.py	/^def calculate_centrallon(gdata, plot_type='polar', useLT=True):$/;"	f
-cartopy	gitm_3D_const_alt.py	/^import cartopy.crs as ccrs$/;"	i
-cartopy	gitm_create_coordinate.py	/^import cartopy.crs as ccrs$/;"	i
-cartopy	work3_100.py	/^import cartopy.crs as ccrs$/;"	i
 case_substorm	ssusi_aurora_new.py	/^def case_substorm():$/;"	f
 case_substorm	ssusi_aurora_new_2.py	/^def case_substorm():$/;"	f
 cb	gitm_3d_test.py	/^cb=plt.colorbar(cnt)$/;"	v
-ccrs	gitm_3D_const_alt.py	/^import cartopy.crs as ccrs$/;"	i
-ccrs	gitm_create_coordinate.py	/^import cartopy.crs as ccrs$/;"	i
-ccrs	work3_100.py	/^import cartopy.crs as ccrs$/;"	i
-cdf	read_files.py	/^    import netCDF4 as cdf$/;"	i
 center_polar_cap	gitm_plot_rout.py	/^def center_polar_cap(rcenter, redge, r):$/;"	f
 centrallon	gitm_3D_const_alt.py	/^    centrallon = calculate_centrallon(g, pr, useLT)$/;"	v
 centrallon	gitm_create_coordinate.py	/^    centrallon = (12-(gt.hour+gt.minute\/60+gt.second\/3600))*15$/;"	v
-cg	myfunctions.py	/^    import champ_grace as cg$/;"	i
-cg	test.py	/^    import champ_grace as cg$/;"	i
-cg	work2_101.py	/^import champ_grace as cg$/;"	i
+centrallon	gitm_divergence.py	/^    centrallon = g3ca.calculate_centrallon(gdata, 'polar', useLT=True)$/;"	v
+centrallon	gitm_gradient.py	/^    centrallon = g3ca.calculate_centrallon(g, 'polar', useLT=True)$/;"	v
+centrallon	gitm_vorticity.py	/^    centrallon = g3ca.calculate_centrallon(gdata, 'polar', useLT=True)$/;"	v
+centrallon	tmp.py	/^        centrallon=g3ca.calculate_centrallon(g, 'polar', useLT=True),$/;"	v
 choose_contour_map	gitm_plot_rout.py	/^def choose_contour_map(color, center):$/;"	f
 cindi_list	example_gitm_cindi_plot_script.py	/^    cindi_list = f.readlines()$/;"	v
 cindi_ykey	example_gitm_cindi_plot_script.py	/^cindi_ykey = gpr.match_cindi_key(ykey)$/;"	v
@@ -207,7 +146,6 @@ ckeys	example_gitm_cindi_plot_script.py	/^    ckeys = gpr.match_cindi_key("ALL",
 cnt	gitm_3d_test.py	/^cnt=ax.contourf(a['Longitude'][:,:,0]*p,$/;"	v
 com	gitm_movie_script.py	/^        com = string.join(video, " ")$/;"	v
 combine_data_dictionaries	read_files.py	/^def combine_data_dictionaries(data_dicts, *args, **kwargs):$/;"	f
-commands	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
 compare_methods	ssusi_aurora.py	/^def compare_methods():$/;"	f
 contour_data	gitm_3D_const_alt.py	/^def contour_data(zkey, gdata, alt=400, ialt=None):$/;"	f
 contour_diff	gitm_3D_const_alt_old.py	/^def contour_diff($/;"	f
@@ -216,8 +154,6 @@ contourf_date_lat	champ_grace.py	/^    def contourf_date_lat(self, ax, whichcolu
 contourf_date_lat	champ_grace.py	/^    def contourf_date_lat(self, ax, whichcolumn='wind', updown='up', **kwargs):$/;"	m	class:ChampWind
 contourf_date_lat	goce.py	/^    def contourf_date_lat(self, ax, whichcolumn='rho', **kwargs):$/;"	m	class:GoceData
 convert_vector	gitm_3D_const_alt.py	/^def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):$/;"	f
-copy	gitm_plot_rout.py	/^    import copy$/;"	i
-copy	read_files.py	/^    import copy$/;"	i
 create_contour_input_array	gitm_plot_rout.py	/^def create_contour_input_array(hold_key, hold_value, xkey, ykey, zkeys, gdata,$/;"	f
 create_linear_input_array	gitm_plot_rout.py	/^def create_linear_input_array(hold_key, hold_value, xkey, ykeys, gdata, xarray,$/;"	f
 create_map	gitm_create_coordinate.py	/^def create_map(nrow, ncolumn, n, plot_type='polar', nlat=90, slat=-90,$/;"	f
@@ -228,13 +164,11 @@ dMLat	ssusi_aurora_new_2.py	/^dMLat = 1$/;"	v
 datapath	ssusi_aurora.py	/^datapath = '\/home\/guod\/WD4T\/ssusi\/'$/;"	v
 datapath	ssusi_aurora_new.py	/^datapath = '\/home\/guod\/WD4T\/ssusi\/'$/;"	v
 datapath	ssusi_aurora_new_2.py	/^datapath = '\/home\/guod\/WD4T\/ssusi\/'$/;"	v
-datetime	gitm_time.py	/^        from datetime import datetime$/;"	i
-dc	gitm_loc_rout.py	/^    from copy import deepcopy as dc$/;"	i
-dc	gitm_time.py	/^from copy import deepcopy as dc$/;"	i
 declination_of_sun	myfunctions.py	/^def declination_of_sun(doy):$/;"	f
 den	gitm_create_input_files.py	/^den = np.ones(dim)*5$/;"	v
 den	goce.py	/^    den = GoceData('2010-4-1','2010-4-3')$/;"	v	class:GoceData
 density	champ_grace.py	/^    density = ChampDensity('2006-1-1 12:00:00','2006-1-1 13:30:00')$/;"	v	class:ChampWind
+density_change_reason	work3_100.py	/^def density_change_reason():$/;"	f
 diff_fit_statistics	ssusi_aurora_new.py	/^def diff_fit_statistics($/;"	f
 diff_fit_statistics	ssusi_aurora_new_2.py	/^def diff_fit_statistics($/;"	f
 dim	gitm_create_input_files.py	/^dim = time.shape$/;"	v
@@ -242,32 +176,13 @@ dlat	gitm_batch.py	/^        dlat=10$/;"	v
 dlat	gitm_batch.py	/^        dlat=30$/;"	v
 dlonlt	gitm_batch.py	/^        dlonlt=30$/;"	v
 dlonlt	gitm_batch.py	/^        dlonlt=6$/;"	v
-dmarray	gitm.py	/^from spacepy.datamodel import dmarray$/;"	i
-dmarray	gitm_divergence.py	/^    from spacepy.datamodel import dmarray$/;"	i
-dmarray	gitm_gradient.py	/^from spacepy.datamodel import dmarray$/;"	i
-dmarray	gitm_loc_rout.py	/^    from spacepy.datamodel import dmarray$/;"	i
-dmarray	gitm_time.py	/^from spacepy.datamodel import dmarray$/;"	i
-dmarray	gitm_vorticity.py	/^    from spacepy.datamodel import dmarray$/;"	i
-dmarray	work3_100.py	/^from spacepy.datamodel import dmarray$/;"	i
 doy	myfunctions.py	/^    doy = np.arange(1, 365)$/;"	v
 dratio	ssusi_aurora_new.py	/^dratio = 0.05 # flag 5%, 10%, ..., 95% of the total energy flux$/;"	v
-draw	work3_100.py	/^from pylab import draw # Use draw()$/;"	i
-dt	champ_grace.py	/^            import datetime as dt$/;"	i
-dt	gitm.py	/^import datetime as dt$/;"	i
-dt	gitm_comparison_plots.py	/^import datetime as dt$/;"	i
 dt	gitm_create_input_files.py	/^dt = pd.Timedelta('1min')$/;"	v
-dt	gitm_loc_rout.py	/^import datetime as dt$/;"	i
-dt	gitm_plot_rout.py	/^        import datetime as dt$/;"	i
-dt	gitm_sat_plots.py	/^import datetime as dt$/;"	i
-dt	gitm_time.py	/^        import datetime as dt$/;"	i
-dt	load_files.py	/^import datetime as dt$/;"	i
-dt	omni.py	/^import datetime as dt$/;"	i
-dt	plot_3D_global.py	/^import datetime as dt$/;"	i
-dt	read_gps_bin.py	/^import datetime as dt$/;"	i
 earth	gitm_movie_script.py	/^    earth = bool(raw_input('Use map of Earth? (empty for False): '))$/;"	v
 earths	gitm_movie_script.py	/^earths = list()$/;"	v
 edate	work4_100.py	/^    edate ='2003-10-4 16:00:00'$/;"	v
-eig	fit_ellipse.py	/^from numpy.linalg import eig, inv$/;"	i
+eee	tmp.py	/^eee = rho0*div0$/;"	v
 ellipse_angle_of_rotation	fit_ellipse.py	/^def ellipse_angle_of_rotation( a ):$/;"	f
 ellipse_angle_of_rotation2	fit_ellipse.py	/^def ellipse_angle_of_rotation2( a ):$/;"	f
 ellipse_axis_length	fit_ellipse.py	/^def ellipse_axis_length( a ):$/;"	f
@@ -281,6 +196,7 @@ errkey	example_gitm_cindi_plot_script.py	/^    errkey = True$/;"	v
 errkey	example_gitm_cindi_plot_script.py	/^errkey = False$/;"	v
 etime	gitm_create_input_files.py	/^etime = pd.Timestamp('2010-03-24 00:00:00')$/;"	v
 etime	work4_100.py	/^        etime = betime.loc[k-1,'etime']$/;"	v
+ewind0	tmp.py	/^ewind0 = ewind0 + ((2*np.pi)\/(24*3600))*RR+np.cos(lat0*np.pi\/180)$/;"	v
 exp_ticks	gitm_plot_rout.py	/^        def exp_ticks(x, pos):$/;"	f	function:add_colorbar
 extract_data_matched_arrays	gitm_comparison_plots.py	/^def extract_data_matched_arrays(dkey, data_dict, bad_value=np.nan):$/;"	f
 extract_gitm_time_arrays	gitm_comparison_plots.py	/^def extract_gitm_time_arrays(gtime, data_key, ut_index=-1,$/;"	f
@@ -304,6 +220,7 @@ fig	work4_100.py	/^    fig = plt.figure(figsize=[8,8.25])$/;"	v
 figname	gitm_movie_script.py	/^            figname = "%s_%s.png" % (plotfiles[z], sbase[1:len(sbase)])$/;"	v
 filename	example_gitm_cindi_plot_script.py	/^    filename = None$/;"	v
 filename	example_gitm_cindi_plot_script.py	/^filename = raw_input('Output image file (eg Test.png): ')$/;"	v
+filename	work3_101.py	/^filename = '\/home\/guod\/WD2T\/run1c\/data\/3DALL_t100323_000000.bin'$/;"	v
 fimf1	gitm_create_input_files.py	/^fimf1 = open(homepath+'\/tmp\/imf1.dat', 'w')$/;"	v
 fimf2	gitm_create_input_files.py	/^fimf2 = open(homepath+'\/tmp\/imf2.dat', 'w')$/;"	v
 find_alt_index	gitm_plot_rout.py	/^def find_alt_index(gData, ilon, ilat, alt, units="km"):$/;"	f
@@ -330,14 +247,10 @@ find_parameters_one_file_5	ssusi_aurora_new_2.py	/^def find_parameters_one_file_
 find_sunside_twilight_sza	gitm_plot_rout.py	/^    def find_sunside_twilight_sza(ut, lat_top, lat_bot, lon_top, lon_bot,$/;"	f
 fitEllipse	fit_ellipse.py	/^def fitEllipse(x,y):$/;"	f
 fkey	gitm_movie_script.py	/^        fkey = string.join(zkey.split(" "), "")$/;"	v
-fn	gitm_batch.py	/^fn = input('Enter filename to plot: ')$/;"	v
-fn	gitm_vorticity.py	/^    fn = '\/home\/guod\/WD4T\/gitm\/run_imfby\/run2b\/data\/3DALL_t100323_042000.bin'$/;"	v
+fn	gitm_batch.py	/^    fn =  gitm_batch_variable['filename']$/;"	v
+fn	gitm_batch.py	/^fn = input('Enter filename to plot[%s]: ' % gitm_batch_variable['filename'])$/;"	v
+fn	gitm_vorticity.py	/^    fn = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/3DALL_t100323_042000.bin'$/;"	v
 fn	ssusi_aurora.py	/^    fn = (datapath+'PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16'$/;"	v
-fnmatch	ssusi_aurora.py	/^    import fnmatch$/;"	i
-fnmatch	ssusi_aurora_new.py	/^import fnmatch$/;"	i
-fnmatch	ssusi_aurora_new_2.py	/^import fnmatch$/;"	i
-fnpdf	gitm_batch.py	/^    fnpdf = fn+'.pdf'$/;"	v
-fnpdf	gitm_batch.py	/^fnpdf = input('Enter pdf file name ['+fn+'.pdf]: ')$/;"	v
 fonsets	gitm_create_input_files.py	/^fonsets = open(homepath+'\/tmp\/onsets.dat', 'w')$/;"	v
 fourier_fit	ssusi_aurora_new.py	/^def fourier_fit(AErange=(100, 150), test=False):$/;"	f
 fourier_fit	ssusi_aurora_new_2.py	/^def fourier_fit(AErange=(100, 150), test=False):$/;"	f
@@ -349,33 +262,16 @@ func1	work3_100.py	/^def func1():$/;"	f
 func2	test.py	/^def func2():$/;"	f
 func3	work3_100.py	/^def func3():$/;"	f
 func4	test.py	/^def func4():$/;"	f
-func5	work3_100.py	/^def func5():$/;"	f
-func6	work3_100.py	/^def func6():$/;"	f
-func7	work3_100.py	/^def func7():$/;"	f
 g	gitm_3D_const_alt.py	/^    g = gitm.GitmBin($/;"	v
 g	gitm_3D_const_alt_old.py	/^    g = gitm.GitmBin($/;"	v
 g	gitm_batch.py	/^g = gitm.GitmBin(fn)$/;"	v
 g	gitm_create_coordinate.py	/^    g = gitm.GitmBin(gitmfn, varlist=['Rho'])$/;"	v
 g	gitm_gradient.py	/^    g = gitm.GitmBin($/;"	v
-g3ca	gitm_batch.py	/^import gitm_3D_const_alt as g3ca$/;"	i
-g3ca	gitm_divergence.py	/^    import gitm_3D_const_alt as g3ca$/;"	i
-g3ca	gitm_vorticity.py	/^    import gitm_3D_const_alt as g3ca$/;"	i
-g3ca	work3_100.py	/^import gitm_3D_const_alt as g3ca$/;"	i
-gc	myfunctions.py	/^    import goce as gc$/;"	i
-gc	test.py	/^    import gc$/;"	i
-gc	work2_101.py	/^    import gc$/;"	i
-gcc	gitm_3D_const_alt.py	/^import gitm_create_coordinate as gcc$/;"	i
-gcc	gitm_gradient.py	/^import gitm_create_coordinate as gcc$/;"	i
-gcc	work3_100.py	/^import gitm_create_coordinate as gcc$/;"	i
-gcp	example_gitm_cindi_plot_script.py	/^import gitm_comparison_plots as gcp$/;"	i
-gd	work3_100.py	/^import gitm_divergence as gd$/;"	i
-gdata	gitm_divergence.py	/^    gdata = gitm.GitmBin(path+'run2\/data\/3DALL_t100323_060000.bin')$/;"	v
+g	tmp.py	/^g = gitm.GitmBin('\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/'$/;"	v
+g	work3_101.py	/^g = gitm.GitmBin(filename)$/;"	v
+gdata	gitm_divergence.py	/^    gdata = gitm.GitmBin(path+'3DALL_t100323_060000.bin')$/;"	v
 gdata	gitm_vorticity.py	/^    gdata = gitm.GitmBin(fn)$/;"	v
 get_champ_wind	work4_100.py	/^def get_champ_wind(dates):$/;"	f
-get_cmap	gitm_3d_test.py	/^from matplotlib.cm import get_cmap$/;"	i
-get_cmap	gitm_diff_images.py	/^    from matplotlib.cm import get_cmap$/;"	i
-get_cmap	plot_3D_global.py	/^from matplotlib.cm import get_cmap$/;"	i
-get_cmap	plot_alt_profiles.py	/^from matplotlib.cm import get_cmap$/;"	i
 get_date_polarity	work2_101.py	/^def get_date_polarity():$/;"	f
 get_density_dates	work4_100.py	/^def get_density_dates(dates,satellite='champ'):$/;"	f
 get_ialt	gitm_loc_rout.py	/^    def get_ialt(j, iax):$/;"	f	function:gitm_time_obs_loc
@@ -395,31 +291,8 @@ get_solar_terminator_lat_lon	solar_rout.py	/^def get_solar_terminator_lat_lon(ut
 get_solar_terminator_xyz_matrix	solar_rout.py	/^def get_solar_terminator_xyz_matrix(ut, alt=0.0):$/;"	f
 get_terminator_lat_lon_coordinates	solar_rout.py	/^def get_terminator_lat_lon_coordinates(s_vect, z_vect, num_latlon=10):$/;"	f
 get_unflattened_index	gitm_comparison_plots.py	/^    def get_unflattened_index(i):$/;"	f	function:extract_gitm_time_arrays
-ggt	work3_100.py	/^import gitm_gradient as ggt$/;"	i
-gitm	example_gitm_cindi_plot_script.py	/^import gitm$/;"	i
-gitm	gitm_3D_const_alt.py	/^import gitm$/;"	i
-gitm	gitm_3D_const_alt_old.py	/^    import gitm$/;"	i
-gitm	gitm_3D_const_alt_old.py	/^import gitm$/;"	i
-gitm	gitm_3D_global_plots.py	/^from spacepy.pybats import gitm$/;"	i
-gitm	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-gitm	gitm_3d_test.py	/^from spacepy.pybats import gitm$/;"	i
-gitm	gitm_alt_plots.py	/^from spacepy.pybats import gitm$/;"	i
-gitm	gitm_batch.py	/^import gitm$/;"	i
-gitm	gitm_comparison_plots.py	/^from spacepy.pybats import gitm$/;"	i
-gitm	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-gitm	gitm_create_coordinate.py	/^import gitm$/;"	i
-gitm	gitm_diff_images.py	/^    from spacepy.pybats import gitm$/;"	i
-gitm	gitm_divergence.py	/^import gitm$/;"	i
-gitm	gitm_gradient.py	/^import gitm$/;"	i
-gitm	gitm_loc_rout.py	/^    import gitm$/;"	i
-gitm	gitm_movie_script.py	/^import gitm$/;"	i
-gitm	gitm_sat_plots.py	/^import gitm$/;"	i
-gitm	gitm_time.py	/^from spacepy.pybats import gitm$/;"	i
-gitm	gitm_time.py	/^import gitm$/;"	i
-gitm	gitm_vorticity.py	/^import gitm$/;"	i
-gitm	test.py	/^    import gitm$/;"	i
-gitm	work3_100.py	/^import gitm$/;"	i
 gitm_alt_slices	gitm_alt_plots.py	/^def gitm_alt_slices(zkey, gData, lat_index, lon_index, title=None, figname=None,$/;"	f
+gitm_batch_variable	gitm_batch.py	/^    gitm_batch_variable={}$/;"	v
 gitm_global_3D_snapshot	gitm_3D_global_plots.py	/^def gitm_global_3D_snapshot(zkey, gdata, title=None, figname=None, draw=True,$/;"	f
 gitm_inst_loc	gitm_loc_rout.py	/^def gitm_inst_loc(obs_date, obs_lat, obs_lon, obs_alt, dat_keys, obs_type,$/;"	f
 gitm_lat_lt_grid	test.py	/^    def gitm_lat_lt_grid(gitmdata, height):$/;"	f	function:gitm_lat_lt_nspolar
@@ -432,10 +305,6 @@ gitm_net_loc	gitm_loc_rout.py	/^def gitm_net_loc(obs_date, obs_lat, obs_lon, obs
 gitm_single_3D_image	gitm_3D_global_plots.py	/^def gitm_single_3D_image(plot_type, zkey, gdata, title=None, figname=None,$/;"	f
 gitm_single_alt_image	gitm_alt_plots.py	/^def gitm_single_alt_image(plot_type, zkey, gData, lat_index=-1, lon_index=-1,$/;"	f
 gitm_single_nsglobal_3D_image	gitm_3D_global_plots.py	/^def gitm_single_nsglobal_3D_image(zkey, gdata, title=None, figname=None,$/;"	f
-gitm_time	example_gitm_cindi_plot_script.py	/^import gitm_time$/;"	i
-gitm_time	gitm_comparison_plots.py	/^import gitm_time$/;"	i
-gitm_time	gitm_loc_rout.py	/^    import gitm_time$/;"	i
-gitm_time	gitm_sat_plots.py	/^import gitm_time$/;"	i
 gitm_time_obs_loc	gitm_loc_rout.py	/^def gitm_time_obs_loc(gtime, interp_gkey, interp_okey, obs_scale=1.0,$/;"	f
 gitmbins	gitm_movie_script.py	/^gitmbins = gt.load_multiple_gitm_bin(gitmlist)$/;"	v
 gitmfn	gitm_create_coordinate.py	/^    gitmfn='\/home\/guod\/WD4T\/gitm\/run_imfby\/run1c\/data\/3DALL_t100323_040500.bin'$/;"	v
@@ -443,35 +312,14 @@ gitmlist	example_gitm_cindi_plot_script.py	/^gitmlist = raw_input('List of input
 gitmlist	gitm_movie_script.py	/^gitmlist = raw_input('Ordered list of GITM binary files: ')$/;"	v
 gitmmag	example_gitm_cindi_plot_script.py	/^gitmmag = raw_input('Name of GITM 3DMAG or 3DION file: ')$/;"	v
 gitmtype	example_gitm_cindi_plot_script.py	/^gitmtype = raw_input('GITM binary type (3D, 2D, 1D): ')$/;"	v
-glob	gitm_diff_images.py	/^from glob import glob$/;"	i
-glob	ssusi_aurora_new.py	/^import glob$/;"	i
-glob	ssusi_aurora_new_2.py	/^import glob$/;"	i
 glon_to_localtime	gitm_plot_rout.py	/^def glon_to_localtime(ut_datetime, glon, units="degrees"):$/;"	f
-glr	example_gitm_cindi_plot_script.py	/^import gitm_loc_rout as glr$/;"	i
-glr	gitm_plot_rout.py	/^        import gitm_loc_rout as glr$/;"	i
-glr	gitm_time.py	/^        import gitm_loc_rout as glr$/;"	i
-gplots	gitm_movie_script.py	/^import gitm_3D_global_plots as gplots$/;"	i
-gpr	example_gitm_cindi_plot_script.py	/^import gitm_plot_rout as gpr$/;"	i
-gpr	gitm.py	/^        import gitm_plot_rout as gpr$/;"	i
-gpr	gitm_3D_global_plots.py	/^import gitm_plot_rout as gpr$/;"	i
-gpr	gitm_alt_plots.py	/^import gitm_plot_rout as gpr$/;"	i
-gpr	gitm_comparison_plots.py	/^import gitm_plot_rout as gpr$/;"	i
-gpr	gitm_loc_rout.py	/^    import gitm_plot_rout as gpr$/;"	i
-gpr	gitm_movie_script.py	/^import gitm_plot_rout as gpr$/;"	i
-gpr	plot_3D_global.py	/^import gitm_plot_rout as gpr$/;"	i
-gpr	plot_alt_profiles.py	/^import gitm_plot_rout as gpr$/;"	i
-gpt	test.py	/^    import gitm_3D_global_plots as gpt$/;"	i
 great_circle_distance_earth	myfunctions.py	/^def great_circle_distance_earth(lat1,lon1,lat2,lon2):$/;"	f
-griddata	champ_grace.py	/^        from scipy.interpolate import griddata$/;"	i
-griddata	goce.py	/^        from scipy.interpolate import griddata$/;"	i
-griddata	goce.py	/^from scipy.interpolate import griddata$/;"	i
-griddata	test.py	/^    from scipy.interpolate import griddata$/;"	i
-gridspec	plot_alt_profiles.py	/^import matplotlib.gridspec as gridspec$/;"	i
 gt	gitm_create_coordinate.py	/^    gt = g['time']$/;"	v
-gt	gitm_movie_script.py	/^import gitm_time as gt$/;"	i
-gv	work3_100.py	/^import gitm_vorticity as gv$/;"	i
 h	work4_100.py	/^        h = plt.subplot(2,2,k,polar=True)$/;"	v
-h5py	load_files.py	/^    import h5py$/;"	i
+hadvect	tmp.py	/^hadvect = ewind0 * grade0 + nwind0 * gradn0$/;"	v
+half_hour_condition	work3_100.py	/^def half_hour_condition():$/;"	f
+hc	gitm_divergence.py	/^    hc = ax.contourf($/;"	v
+hc	gitm_vorticity.py	/^    hc = ax.contourf($/;"	v
 hc	goce.py	/^    hc = den.satellite_position_lt_lat(mag=False)$/;"	v	class:GoceData
 hline	gitm_create_input_files.py	/^hline = [5, -5, -1]$/;"	v
 homepath	gitm_create_input_files.py	/^homepath = os.environ.get('HOME')$/;"	v
@@ -494,22 +342,9 @@ imfby1	gitm_create_input_files.py	/^imfby1 = np.ones(dim)*5 # run1$/;"	v
 imfby2	gitm_create_input_files.py	/^imfby2 = imfby1.copy()$/;"	v
 imfby2	gitm_create_input_files.py	/^imfby2 = imfby2+np.random.normal(0, 1, dim)$/;"	v
 imfbz	gitm_create_input_files.py	/^imfbz = np.ones(dim)*-1+np.random.normal(0, 1, dim)$/;"	v
-incorporated	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-incorporated	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-integ	gitm.py	/^        import scipy.integrate as integ$/;"	i
-interp1d	gitm.py	/^        from scipy.interpolate import interp1d$/;"	i
-interpolate	gitm_alt_plots.py	/^            from scipy import interpolate$/;"	i
-interpolate	gitm_alt_plots.py	/^from scipy import interpolate$/;"	i
-interpolate	gitm_loc_rout.py	/^    from scipy import interpolate$/;"	i
-interpolate	gitm_plot_rout.py	/^    from scipy import interpolate$/;"	i
-interpolate	test.py	/^    from scipy import interpolate$/;"	i
-into	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-into	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-inv	fit_ellipse.py	/^from numpy.linalg import eig, inv$/;"	i
-is	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-is	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-issue	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
-itemgetter	write_files.py	/^        from operator import itemgetter$/;"	i
+initial_condition	work3_100.py	/^def initial_condition():$/;"	f
+issave	gitm_batch.py	/^    issave = gitm_batch_variable['save']$/;"	v
+issave	gitm_batch.py	/^issave = input('Save figure (y or n)? [%s]: ' % gitm_batch_variable['save'])$/;"	v
 kernel_size	ssusi_aurora.py	/^kernel_size = 3  # for method 5, use its own kernel_size$/;"	v
 lat	gitm_create_coordinate.py	/^    lat = g['Latitude'][0, 2:-2, 0]\/np.pi*180$/;"	v
 lat	myfunctions.py	/^    lat=np.arange(-90, 90)$/;"	v
@@ -521,7 +356,8 @@ latmin	gitm_batch.py	/^        latmin = abs(float(latmin))$/;"	v
 latmin	gitm_batch.py	/^        latmin=input('Enter minimum latitude to plot [50.0] :')$/;"	v
 lc	gitm_batch.py	/^lc = input('Enter whether you would like a line plot (l) or contour plot (c) [c]: ')$/;"	v
 levels	gitm_3D_const_alt.py	/^                levels=np.linspace(zdata0.min(), zdata0.max(), 21))$/;"	v
-lf	example_gitm_cindi_plot_script.py	/^import load_files as lf$/;"	i
+levels	gitm_gradient.py	/^                levels=np.linspace(1e-12, 7.5e-12, 21), cmap='viridis')$/;"	v
+levels	tmp.py	/^            levels = np.linspace(-4e-15, 4e-15, 21), cmap='seismic')$/;"	v
 linc	gitm_movie_script.py	/^linc = 6$/;"	v
 linear_fit_AE	ssusi_aurora_new.py	/^def linear_fit_AE(test=True):$/;"	f
 linear_fit_AE	ssusi_aurora_new_2.py	/^def linear_fit_AE(whichp='ef', test=True):$/;"	f
@@ -553,55 +389,6 @@ matchObj	gitm_diff_images.py	/^    matchObj = re.match(r'-out=(.*)',arg)$/;"	v
 match_cindi_key	gitm_plot_rout.py	/^def match_cindi_key(in_key, out_type="CINDI"):$/;"	f
 match_running_average	gitm_loc_rout.py	/^def match_running_average(ydata_list, xdata, locdata, xmatch, locmatch, xbin,$/;"	f
 match_running_median	gitm_loc_rout.py	/^def match_running_median(ydata_list, xdata, locdata, xmatch, locmatch, xbin,$/;"	f
-math	gitm.py	/^        import math$/;"	i
-math	gitm_3D_global_plots.py	/^import math$/;"	i
-math	gitm_alt_plots.py	/^import math$/;"	i
-math	gitm_comparison_plots.py	/^import math$/;"	i
-math	gitm_loc_rout.py	/^import math$/;"	i
-math	gitm_plot_rout.py	/^    import math$/;"	i
-math	plot_3D_global.py	/^import math$/;"	i
-math	plot_alt_profiles.py	/^import math$/;"	i
-math	solar_rout.py	/^import math$/;"	i
-matplotlib	champ_grace.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_3D_const_alt.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_3D_const_alt_old.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_3D_global_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_3d_test.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_alt_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_batch.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_comparison_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_create_coordinate.py	/^import matplotlib.path as mpath$/;"	i
-matplotlib	gitm_create_coordinate.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_create_input_files.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_diff_images.py	/^    import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_divergence.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_plot_rout.py	/^    import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_sat_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	gitm_vorticity.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	goce.py	/^        import matplotlib.dates as mdates$/;"	i
-matplotlib	goce.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	myfunctions.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	omni.py	/^    import matplotlib.pyplot as plt$/;"	i
-matplotlib	omni.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	plot_3D_global.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	plot_alt_profiles.py	/^import matplotlib.gridspec as gridspec$/;"	i
-matplotlib	plot_alt_profiles.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	plot_stats.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	ssusi_aurora.py	/^import matplotlib.pylab as plt$/;"	i
-matplotlib	ssusi_aurora_new.py	/^import matplotlib.pylab as plt$/;"	i
-matplotlib	ssusi_aurora_new_2.py	/^import matplotlib.pylab as plt$/;"	i
-matplotlib	sth.py	/^    import matplotlib$/;"	i
-matplotlib	sth.py	/^    import matplotlib.pyplot as plt$/;"	i
-matplotlib	sth.py	/^import matplotlib$/;"	i
-matplotlib	sth.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	test.py	/^    import matplotlib.pyplot as plt$/;"	i
-matplotlib	test.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	work2_101.py	/^    import matplotlib.dates as mdates$/;"	i
-matplotlib	work2_101.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	work3_100.py	/^import matplotlib.animation as animation$/;"	i
-matplotlib	work3_100.py	/^import matplotlib.dates as mdates$/;"	i
-matplotlib	work3_100.py	/^import matplotlib.pyplot as plt$/;"	i
-matplotlib	work4_100.py	/^import matplotlib.pyplot as plt$/;"	i
 max	gitm_diff_images.py	/^        max=float(matchObj.group(1))$/;"	v
 max	gitm_diff_images.py	/^max =  1.0e32$/;"	v
 max_alt	example_gitm_cindi_plot_script.py	/^    max_alt = float(raw_input('Width of alt boxcar for ave\/median (in km): '))$/;"	v
@@ -614,27 +401,14 @@ max_lon	example_gitm_cindi_plot_script.py	/^    max_lon = float(raw_input('Width
 max_tdelt	example_gitm_cindi_plot_script.py	/^    max_tdelt = float(raw_input('Maximum allowable seperation (in seconds) between nearest neighbor points: '))$/;"	v
 max_tdelt	example_gitm_cindi_plot_script.py	/^    max_tdelt = float(raw_input('Width of UT boxcar for ave\/median (in sec): '))$/;"	v
 max_tdelt	example_gitm_cindi_plot_script.py	/^max_tdelt = 300.0$/;"	v
-mdates	goce.py	/^        import matplotlib.dates as mdates$/;"	i
-mdates	work2_101.py	/^    import matplotlib.dates as mdates$/;"	i
-mdates	work3_100.py	/^import matplotlib.dates as mdates$/;"	i
-mf	champ_grace.py	/^import myfunctions as mf$/;"	i
-mf	goce.py	/^import myfunctions as mf$/;"	i
-mf	ssusi_aurora.py	/^import myfunctions as mf$/;"	i
-mf	ssusi_aurora_new.py	/^import myfunctions as mf$/;"	i
-mf	ssusi_aurora_new_2.py	/^import myfunctions as mf$/;"	i
-mf	test.py	/^    import myfunctions as mf$/;"	i
-mf	work3_100.py	/^import myfunctions as mf$/;"	i
 min	gitm_diff_images.py	/^        min=float(matchObj.group(1))$/;"	v
 min	gitm_diff_images.py	/^min = -1.0e32$/;"	v
+min_density_location	work3_100.py	/^def min_density_location():$/;"	f
 mm	gitm_create_input_files.py	/^mm = time>reversalt$/;"	v
 module_name	gitm_loc_rout.py	/^module_name = "gitm_loc_rout"$/;"	v
 module_name	load_files.py	/^module_name = "load_files"$/;"	v
 module_name	read_files.py	/^module_name = "read_files"$/;"	v
 module_name	write_files.py	/^module_name = "write_files"$/;"	v
-mpath	gitm_create_coordinate.py	/^import matplotlib.path as mpath$/;"	i
-mpl	gitm_comparison_plots.py	/^import matplotlib as mpl$/;"	i
-mpl	gitm_movie_script.py	/^import matplotlib as mpl$/;"	i
-mpl	gitm_sat_plots.py	/^import matplotlib as mpl$/;"	i
 n	ssusi_aurora_new.py	/^n = 6 # number of fourier fitting terms$/;"	v
 n	ssusi_aurora_new_2.py	/^n = 6 # number of fourier fitting terms$/;"	v
 nBytesFloat	read_gps_bin.py	/^nBytesFloat = 4$/;"	v
@@ -642,8 +416,6 @@ nBytesLong	read_gps_bin.py	/^nBytesLong = 4$/;"	v
 neuion	gitm_batch.py	/^            neuion = 'ion'$/;"	v
 neuion	gitm_batch.py	/^            neuion = 'neutral'$/;"	v
 neuion	gitm_batch.py	/^        neuion = input('Enter plot neutral winds (1) or ions (0) [1]:')$/;"	v
-new	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-new	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
 nlat	gitm_divergence.py	/^    nlat = 90$/;"	v
 nlat	gitm_movie_script.py	/^        nlat = float(raw_input('Northern latitude limit (degrees): '))$/;"	v
 nlat	gitm_movie_script.py	/^        nlat = float(raw_input('Polar latitude limit (degrees): '))$/;"	v
@@ -651,108 +423,29 @@ nlat	gitm_movie_script.py	/^        nlat = slat$/;"	v
 nlat	gitm_vorticity.py	/^    nlat = 90$/;"	v
 nlimits	gitm_movie_script.py	/^nlimits = list()$/;"	v
 nmag	gitm_movie_script.py	/^nmag = np.floor(np.log10(nplots)) + 1$/;"	v
-np	champ_grace.py	/^import numpy as np$/;"	i
-np	fit_ellipse.py	/^import numpy as np$/;"	i
-np	gitm.py	/^import numpy as np$/;"	i
-np	gitm_3D_const_alt.py	/^import numpy as np$/;"	i
-np	gitm_3D_const_alt_old.py	/^import numpy as np$/;"	i
-np	gitm_3D_global_plots.py	/^import numpy as np$/;"	i
-np	gitm_3d_test.py	/^import numpy as np$/;"	i
-np	gitm_alt_plots.py	/^import numpy as np$/;"	i
-np	gitm_batch.py	/^import numpy as np$/;"	i
-np	gitm_comparison_plots.py	/^import numpy as np$/;"	i
-np	gitm_create_coordinate.py	/^import numpy as np$/;"	i
-np	gitm_create_input_files.py	/^import numpy as np$/;"	i
-np	gitm_diff_images.py	/^    import numpy as np$/;"	i
-np	gitm_divergence.py	/^import numpy as np$/;"	i
-np	gitm_gradient.py	/^import numpy as np$/;"	i
-np	gitm_loc_rout.py	/^import numpy as np$/;"	i
-np	gitm_movie_script.py	/^import numpy as np$/;"	i
-np	gitm_plot_rout.py	/^import numpy as np$/;"	i
-np	gitm_sat_plots.py	/^import numpy as np$/;"	i
-np	gitm_time.py	/^import numpy as np$/;"	i
-np	gitm_vorticity.py	/^import numpy as np$/;"	i
-np	goce.py	/^import numpy as np$/;"	i
-np	load_files.py	/^import numpy as np$/;"	i
-np	myfunctions.py	/^import numpy as np$/;"	i
-np	omni.py	/^import numpy as np$/;"	i
-np	plot_3D_global.py	/^import numpy as np$/;"	i
-np	plot_alt_profiles.py	/^import numpy as np$/;"	i
-np	plot_stats.py	/^import numpy as np$/;"	i
-np	read_files.py	/^import numpy as np$/;"	i
-np	read_gps_bin.py	/^import numpy as np$/;"	i
-np	solar_rout.py	/^import numpy as np$/;"	i
-np	ssusi_aurora.py	/^import numpy as np$/;"	i
-np	ssusi_aurora_new.py	/^import numpy as np$/;"	i
-np	ssusi_aurora_new_2.py	/^import numpy as np$/;"	i
-np	sth.py	/^    import numpy as np$/;"	i
-np	sth.py	/^import numpy as np$/;"	i
-np	test.py	/^import numpy as np$/;"	i
-np	work2_101.py	/^import numpy as np$/;"	i
-np	work3_100.py	/^import numpy as np$/;"	i
-np	work4_100.py	/^import numpy as np$/;"	i
-np	write_files.py	/^import numpy as np$/;"	i
 nplots	gitm_movie_script.py	/^nplots = len(gitmbins)$/;"	v
-num2date	gitm_time.py	/^        from matplotlib.dates import num2date$/;"	i
 o	gitm_diff_images.py	/^    o = outfile+'.{}'.format(s)$/;"	v
 obs_key	example_gitm_cindi_plot_script.py	/^            obs_key = ctrack.appendobs([cdata[cindi_ykey]], [cindi_ykey], match,$/;"	v
-omni	ssusi_aurora.py	/^    import omni$/;"	i
-omni	ssusi_aurora_new.py	/^import omni$/;"	i
-omni	ssusi_aurora_new_2.py	/^import omni$/;"	i
-omni	work2_101.py	/^import omni$/;"	i
 omni1	omni.py	/^    omni1 = get_omni('2010-1-1', '2010-12-31', ['AE'])$/;"	v
-op	plot_stats.py	/^import operator as op$/;"	i
-operator	gitm_loc_rout.py	/^    import operator$/;"	i
 orbit_mean	champ_grace.py	/^    def orbit_mean(self,lats=(-85,85),updown='up'):$/;"	m	class:ChampDensity
 orbit_mean	goce.py	/^    def orbit_mean(self,lats=(-85,85),updown='up'):$/;"	m	class:GoceData
-os	champ_grace.py	/^import os$/;"	i
-os	gitm_create_input_files.py	/^import os$/;"	i
-os	goce.py	/^import os$/;"	i
-os	omni.py	/^import os$/;"	i
-os	ssusi_aurora.py	/^    import os$/;"	i
-os	ssusi_aurora_new.py	/^import os$/;"	i
-os	ssusi_aurora_new_2.py	/^import os$/;"	i
-os	work2_101.py	/^import os$/;"	i
-os	work3_100.py	/^import os$/;"	i
-os	work4_100.py	/^import os$/;"	i
 outfile	gitm_diff_images.py	/^        outfile=matchObj.group(1)$/;"	v
 outfile	gitm_diff_images.py	/^outfile = 'image'$/;"	v
 p	gitm_3d_test.py	/^p=180.0\/np.pi$/;"	v
-p3g	gitm_3D_global_plots.py	/^import plot_3D_global as p3g$/;"	i
-p3g	gitm_comparison_plots.py	/^import plot_3D_global as p3g$/;"	i
-pap	gitm_alt_plots.py	/^import plot_alt_profiles as pap$/;"	i
 parameters_fit	ssusi_aurora.py	/^def parameters_fit($/;"	f
 parameters_fit_all	ssusi_aurora.py	/^def parameters_fit_all(method=1):$/;"	f
-path	example_gitm_cindi_plot_script.py	/^from os import path$/;"	i
-path	gitm_3D_const_alt.py	/^    path = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run1c\/data\/'$/;"	v
+path	gitm_3D_const_alt.py	/^    path = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/'$/;"	v
 path	gitm_3D_const_alt_old.py	/^    path = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run1c\/data\/'$/;"	v
-path	gitm_divergence.py	/^    path = '\/home\/guod\/WD2T\/run_imfby\/'$/;"	v
-path	gitm_time.py	/^    from os import path$/;"	i
-path	read_files.py	/^from os import path$/;"	i
-path	write_files.py	/^from os import path$/;"	i
-pd	champ_grace.py	/^import pandas as pd$/;"	i
-pd	gitm_3D_const_alt_old.py	/^    import pandas as pd$/;"	i
-pd	gitm_create_input_files.py	/^import pandas as pd$/;"	i
-pd	goce.py	/^import pandas as pd$/;"	i
-pd	myfunctions.py	/^import pandas as pd$/;"	i
-pd	omni.py	/^import pandas as pd$/;"	i
-pd	ssusi_aurora.py	/^import pandas as pd$/;"	i
-pd	ssusi_aurora_new.py	/^import pandas as pd$/;"	i
-pd	ssusi_aurora_new_2.py	/^import pandas as pd$/;"	i
-pd	sth.py	/^    import pandas as pd$/;"	i
-pd	sth.py	/^import pandas as pd$/;"	i
-pd	work2_101.py	/^import pandas as pd$/;"	i
-pd	work3_100.py	/^import pandas as pd$/;"	i
-pd	work4_100.py	/^import pandas as pd$/;"	i
-pdb	work2_101.py	/^import pdb   # set breakpoint$/;"	i
+path	gitm_divergence.py	/^    path = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/'$/;"	v
 percentile	work2_101.py	/^    def percentile(n):$/;"	f	function:f2
 percentile	work2_101.py	/^    def percentile(n):$/;"	f	function:f3
 percentile_	work2_101.py	/^        def percentile_(x):$/;"	f	function:f2.percentile
 percentile_	work2_101.py	/^        def percentile_(x):$/;"	f	function:f3.percentile
-pi	gitm.py	/^        from numpy import pi$/;"	i
-pi	myfunctions.py	/^from numpy import pi$/;"	i
 plot_3D_alt	plot_alt_profiles.py	/^def plot_3D_alt(ax, x_data, alt_data, z_data, x_name, x_scale, x_units,$/;"	f
 plot_alt_slices	plot_alt_profiles.py	/^def plot_alt_slices(x_data, alt_data, z_data, xdim, x_indices, x_name, x_scale,$/;"	f
+plot_ave_m	work3_101.py	/^def plot_ave_m(show=True):$/;"	f
+plot_coriolis	work3_101.py	/^def plot_coriolis(show=True):$/;"	f
+plot_den_win	work3_101.py	/^def plot_den_win(show=False):$/;"	f
 plot_global_3D_snapshot	plot_3D_global.py	/^def plot_global_3D_snapshot(lat_data, lon_data, z_data, zname, zscale, zunits,$/;"	f
 plot_hist_w_stats	plot_stats.py	/^def plot_hist_w_stats(ax, x_data, x_name, x_units, res=50, norm=1.0,$/;"	f
 plot_lat_lt_stats	plot_stats.py	/^def plot_lat_lt_stats(lat_data, lat_name, lat_units, sza_data, sza_units,$/;"	f
@@ -763,6 +456,7 @@ plot_net_gitm_comp	gitm_comparison_plots.py	/^def plot_net_gitm_comp(plot_type, 
 plot_nsglobal_subfigure	plot_3D_global.py	/^def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,$/;"	f
 plot_omni	omni.py	/^def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):$/;"	f
 plot_polar_3D_global	plot_3D_global.py	/^def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,$/;"	f
+plot_pressure	work3_101.py	/^def plot_pressure(show=True):$/;"	f
 plot_rectangular_3D_global	plot_3D_global.py	/^def plot_rectangular_3D_global(ax, lat_data, lon_data, z_data, zname, zscale,$/;"	f
 plot_sat_gitm_comp	gitm_comparison_plots.py	/^def plot_sat_gitm_comp(sat_datetime, sat_data, gtrack, gkey, skey, tkey, bkey,$/;"	f
 plot_sat_gitm_comp	gitm_sat_plots.py	/^def plot_sat_gitm_comp(sat_datetime, sat_data, gtrack, gkey, skey, tkey, bkey,$/;"	f
@@ -770,43 +464,13 @@ plot_single_3D_image	plot_3D_global.py	/^def plot_single_3D_image(plot_type, lat
 plot_single_alt_image	plot_alt_profiles.py	/^def plot_single_alt_image(plot_type, x_data, alt_data, z_data, x_name, x_scale,$/;"	f
 plot_single_nsglobal_3D_image	plot_3D_global.py	/^def plot_single_nsglobal_3D_image(lat_data, lon_data, z_data, zname, zscale,$/;"	f
 plot_snapshot_subfigure	plot_3D_global.py	/^def plot_snapshot_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,$/;"	f
+plot_temperature	work3_101.py	/^def plot_temperature(show=True):$/;"	f
+plot_v_diff	work3_101.py	/^def plot_v_diff(show=True):$/;"	f
 plotfiles	gitm_movie_script.py	/^plotfiles = list()$/;"	v
 plots	gitm_movie_script.py	/^plots = list()$/;"	v
-plt	champ_grace.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_3D_const_alt.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_3D_const_alt_old.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_3D_global_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_3d_test.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_alt_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_batch.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_comparison_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_create_coordinate.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_create_input_files.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_diff_images.py	/^    import matplotlib.pyplot as plt$/;"	i
-plt	gitm_divergence.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_plot_rout.py	/^    import matplotlib.pyplot as plt$/;"	i
-plt	gitm_sat_plots.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	gitm_vorticity.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	goce.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	myfunctions.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	omni.py	/^    import matplotlib.pyplot as plt$/;"	i
-plt	omni.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	plot_3D_global.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	plot_alt_profiles.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	plot_stats.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	ssusi_aurora.py	/^import matplotlib.pylab as plt$/;"	i
-plt	ssusi_aurora_new.py	/^import matplotlib.pylab as plt$/;"	i
-plt	ssusi_aurora_new_2.py	/^import matplotlib.pylab as plt$/;"	i
-plt	sth.py	/^    import matplotlib.pyplot as plt$/;"	i
-plt	sth.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	test.py	/^    import matplotlib.pyplot as plt$/;"	i
-plt	test.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	work2_101.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	work3_100.py	/^import matplotlib.pyplot as plt$/;"	i
-plt	work4_100.py	/^import matplotlib.pyplot as plt$/;"	i
 pmax	example_gitm_cindi_plot_script.py	/^    pmax = 100.0$/;"	v
 pmin	example_gitm_cindi_plot_script.py	/^    pmin = -100.0$/;"	v
-polar	gitm_3D_const_alt.py	/^    polar = False$/;"	v
+polar	gitm_3D_const_alt.py	/^    polar = True$/;"	v
 polar	gitm_3D_const_alt_old.py	/^    polar = False$/;"	v
 polar	gitm_batch.py	/^        polar = 'polar'$/;"	v
 polar	gitm_batch.py	/^        polar = 'rectangular'$/;"	v
@@ -819,15 +483,12 @@ ptype	gitm_batch.py	/^    ptype = 'Altitude'$/;"	v
 ptype	gitm_batch.py	/^    ptype = 'Latitude'$/;"	v
 ptype	gitm_batch.py	/^    ptype = 'Longitude'$/;"	v
 ptype	gitm_batch.py	/^ptype = input('Enter type of plot to make [1]: ')$/;"	v
-pybats	gitm_comparison_plots.py	/^from spacepy import pybats$/;"	i
-pybats	gitm_sat_plots.py	/^from spacepy import pybats$/;"	i
 quickplot	gitm_diff_images.py	/^def quickplot(infile, outfile, min, max, backfile):$/;"	f
 quiver_champ_wind	work4_100.py	/^def quiver_champ_wind(bdate, edate, pole='N', updown='both', color='b'):$/;"	f
-re	gitm_diff_images.py	/^import re$/;"	i
 read_time	read_gps_bin.py	/^    def read_time(self, InTime):$/;"	m	class:GpsFile
+regrid_shape	gitm_3D_const_alt.py	/^              regrid_shape=30)$/;"	v
 retrieve_key_from_web_name	gitm_plot_rout.py	/^def retrieve_key_from_web_name(name):$/;"	f
 reversalt	gitm_create_input_files.py	/^reversalt = etime-pd.Timedelta('24hour')$/;"	v
-rf	load_files.py	/^import read_files as rf$/;"	i
 rho	gitm_create_coordinate.py	/^    rho = g['Rho'][2:-2, 2:-2, 36]$/;"	v
 s	gitm_diff_images.py	/^    s = repr(i).zfill(4)$/;"	v
 sat_dateloc_ticks	gitm_time.py	/^    def sat_dateloc_ticks(self, x, pos):$/;"	m	class:GitmTime
@@ -835,29 +496,20 @@ satellite_position_lt_lat	champ_grace.py	/^    def satellite_position_lt_lat(sel
 satellite_position_lt_lat	champ_grace.py	/^    def satellite_position_lt_lat(self, ax, nlat=90, slat=0,$/;"	m	class:ChampWind
 satellite_position_lt_lat	goce.py	/^    def satellite_position_lt_lat(self, mag=False, ns='N'):$/;"	m	class:GoceData
 savepath	ssusi_aurora.py	/^savepath = '\/home\/guod\/WD4T\/work4\/'$/;"	v
-savepath	ssusi_aurora_new.py	/^savepath = '\/home\/guod\/WD4T\/work4\/'$/;"	v
+savepath	ssusi_aurora_new.py	/^savepath = '\/home\/guod\/Documents\/work\/ssusi_auroral\/'$/;"	v
 savepath	ssusi_aurora_new_2.py	/^savepath = '\/home\/guod\/WD4T\/work4\/'$/;"	v
 sbase	gitm_movie_script.py	/^    sbase = sfile[-1].split(".")$/;"	v
 sbase	gitm_movie_script.py	/^    sbase = str(int(10**nmag + i))$/;"	v
-scale_units	gitm_3D_const_alt.py	/^              scale_units='inches')$/;"	v
 scaled_ticks	gitm_plot_rout.py	/^            def scaled_ticks(x, pos):$/;"	f	function:add_colorbar.exp_ticks
 scalel	gitm_batch.py	/^        scalel=[None, 10, 50, 100, 200, 250, 500, 750, 1000, 1500, 2000, 3000]$/;"	v
 scalew	gitm_batch.py	/^            scalew = 0$/;"	v
 scalew	gitm_batch.py	/^        scalew = input('Enter velocity factor [-1]:')$/;"	v
 scalew	gitm_batch.py	/^        scalew = int(scalew)$/;"	v
-scipy	gitm.py	/^        import scipy.integrate as integ$/;"	i
-scipy	ssusi_aurora.py	/^import scipy.signal as signal$/;"	i
-scipy	ssusi_aurora_new.py	/^import scipy.signal as signal$/;"	i
-scipy	ssusi_aurora_new_2.py	/^import scipy.signal as signal$/;"	i
 sdate	gitm_movie_script.py	/^    sdate = sbase[0].split("_")$/;"	v
-set	work2_101.py	/^import pdb   # set breakpoint$/;"	i
 set_lt_lat	work4_100.py	/^def set_lt_lat(h, pole='N'):$/;"	f
 set_polar	myfunctions.py	/^def set_polar(ax, ns='N', boundinglat=0, dlat=10, dlon=90, useLT=True):$/;"	f
 set_sat_dateloc_label	gitm_time.py	/^def set_sat_dateloc_label(ax, mlat=True):$/;"	f
 sfile	gitm_movie_script.py	/^    sfile = gitmbins[0].attrs['file'].split("\/")$/;"	v
-signal	ssusi_aurora.py	/^import scipy.signal as signal$/;"	i
-signal	ssusi_aurora_new.py	/^import scipy.signal as signal$/;"	i
-signal	ssusi_aurora_new_2.py	/^import scipy.signal as signal$/;"	i
 slat	gitm_divergence.py	/^    slat = 50$/;"	v
 slat	gitm_movie_script.py	/^        slat = float(raw_input('Equatorial latitude limit (degrees): '))$/;"	v
 slat	gitm_movie_script.py	/^        slat = float(raw_input('Southern latitude limit (degrees): '))$/;"	v
@@ -868,52 +520,14 @@ slimit	gitm_movie_script.py	/^        slimit = slimits[z]$/;"	v
 slimits	gitm_movie_script.py	/^slimits = list()$/;"	v
 smoothps	ssusi_aurora.py	/^smoothps = 5$/;"	v
 snapshot_30min	work3_100.py	/^def snapshot_30min():$/;"	f
-sns	ssusi_aurora.py	/^import seaborn as sns$/;"	i
-sns	ssusi_aurora_new.py	/^import seaborn as sns$/;"	i
-sns	ssusi_aurora_new_2.py	/^import seaborn as sns$/;"	i
-sns	work2_101.py	/^    import seaborn as sns$/;"	i
-sns	work3_100.py	/^import seaborn as sns$/;"	i
-solar	gitm_plot_rout.py	/^    import solar$/;"	i
-solar	solar_rout.py	/^import solar$/;"	i
 solar_zenith_angle	myfunctions.py	/^def solar_zenith_angle(doy, lat, lt):$/;"	f
-spacepy	example_gitm_cindi_plot_script.py	/^import spacepy$/;"	i
-spacepy	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-spacepy	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-spacepy	gitm_movie_script.py	/^import spacepy$/;"	i
 spherical_xyz2lat_lon	solar_rout.py	/^def spherical_xyz2lat_lon(x, y, z):$/;"	f
-sr	gitm_plot_rout.py	/^    import solar_rout as sr$/;"	i
 statistics	ssusi_aurora_new.py	/^def statistics():$/;"	f
 statistics	ssusi_aurora_new_2.py	/^def statistics():$/;"	f
-stats	plot_stats.py	/^from scipy import stats$/;"	i
-stats	ssusi_aurora.py	/^    from scipy import stats$/;"	i
-stats	ssusi_aurora_new.py	/^from scipy import stats$/;"	i
-stats	ssusi_aurora_new_2.py	/^from scipy import stats$/;"	i
-string	example_gitm_cindi_plot_script.py	/^import string$/;"	i
-string	gitm.py	/^        import string$/;"	i
-string	gitm_loc_rout.py	/^import string$/;"	i
-string	gitm_movie_script.py	/^import string$/;"	i
-string	gitm_plot_rout.py	/^    import string$/;"	i
-string	gitm_sat_plots.py	/^import string$/;"	i
-string	gitm_time.py	/^import string$/;"	i
-string	load_files.py	/^import string$/;"	i
-string	plot_3D_global.py	/^import string$/;"	i
-string	plot_alt_profiles.py	/^import string $/;"	i
-string	plot_stats.py	/^import string$/;"	i
-string	read_files.py	/^import string$/;"	i
-string	write_files.py	/^import string$/;"	i
-sub	gitm.py	/^        from re import sub$/;"	i
 subplots_create_abcde	myfunctions.py	/^def subplots_create_abcde(ax, direction='row', x=0.01, y=1.05):$/;"	f
 subplots_create_cbar_axis	myfunctions.py	/^def subplots_create_cbar_axis(ax, location='right', pad=0.02, size=0.05):$/;"	f
 subplots_xylabel	myfunctions.py	/^def subplots_xylabel(ax, nrow, ncol, xlabel, ylabel, mode='L', **kwargs):$/;"	f
-subprocess	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
-subprocess	read_files.py	/^            import subprocess$/;"	i
 subsolar_point	solar_rout.py	/^def subsolar_point(ut):$/;"	f
-sys	gitm.py	/^        import sys$/;"	i
-sys	gitm_3D_const_alt.py	/^import sys$/;"	i
-sys	gitm_create_coordinate.py	/^import sys$/;"	i
-sys	gitm_diff_images.py	/^import sys$/;"	i
-sys	gitm_plot_rout.py	/^    import sys$/;"	i
-sys	plot_alt_profiles.py	/^import sys$/;"	i
 t1	gitm_create_input_files.py	/^t1 = np.zeros(dim)$/;"	v
 t2	gitm_create_input_files.py	/^t2 = np.zeros(dim)$/;"	v
 t3	gitm_create_input_files.py	/^t3 = np.zeros(dim)$/;"	v
@@ -924,18 +538,12 @@ temp	gitm_movie_script.py	/^        temp = nlat$/;"	v
 test_find_parameters_one_file_12	ssusi_aurora.py	/^def test_find_parameters_one_file_12(fn, method=1):$/;"	f
 test_find_parameters_one_file_34	ssusi_aurora.py	/^def test_find_parameters_one_file_34(fn, method=3):$/;"	f
 test_find_parameters_one_file_5	ssusi_aurora.py	/^def test_find_parameters_one_file_5(fn):$/;"	f
-the	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-the	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-the	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
 time	gitm_create_input_files.py	/^time = pd.date_range(btime, etime, freq=dt)$/;"	v
-time	omni.py	/^    from timeit import time$/;"	i
 time1	gitm_create_input_files.py	/^time1 = btime-pd.Timedelta('24hour')$/;"	v
 time2	gitm_create_input_files.py	/^time2 = etime+pd.Timedelta('24hour')$/;"	v
 time_champ_orbit_updown	work4_100.py	/^def time_champ_orbit_updown(bdate, edate, updown='up'):$/;"	f
 time_evolution_mean_density_temperature	work3_100.py	/^def time_evolution_mean_density_temperature():$/;"	f
 time_evolution_min_density	work3_100.py	/^def time_evolution_min_density():$/;"	f
-timedelta	gitm_loc_rout.py	/^from datetime import timedelta$/;"	i
-timedelta	gitm_sat_plots.py	/^from datetime import timedelta$/;"	i
 timek	gitm_create_input_files.py	/^    timek = timetime[k]$/;"	v
 timetime	gitm_create_input_files.py	/^timetime =[time1, time2]$/;"	v
 title	example_gitm_cindi_plot_script.py	/^title = raw_input('Plot title: ')$/;"	v
@@ -945,28 +553,26 @@ tkey	example_gitm_cindi_plot_script.py	/^        tkey = "{:s}_terr".format(obs_k
 tkey	example_gitm_cindi_plot_script.py	/^    tkey = None$/;"	v
 tmax	example_gitm_cindi_plot_script.py	/^    tmax = ctrack['time'][-1]$/;"	v
 tmin	example_gitm_cindi_plot_script.py	/^    tmin = ctrack['time'][0]$/;"	v
-to	gitm_movie_script.py	/^import subprocess # To issue commands to the OS$/;"	i
 transform	gitm_create_coordinate.py	/^                transform=ccrs.PlateCarree())$/;"	v
-unpack	gitm.py	/^        from struct import unpack$/;"	i
-unpack	read_gps_bin.py	/^from struct import unpack$/;"	i
-until	gitm_3D_global_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
-until	gitm_comparison_plots.py	/^import gitm # Temporary until the new GITM is incorporated into spacepy$/;"	i
+transform	gitm_divergence.py	/^            transform=ccrs.PlateCarree(), cmap='seismic')$/;"	v
+transform	gitm_vorticity.py	/^            transform=ccrs.PlateCarree(), cmap='seismic')$/;"	v
 updown	myfunctions.py	/^def updown(lat):$/;"	f
-useLT	gitm_3D_const_alt.py	/^    useLT = False$/;"	v
+useLT	gitm_3D_const_alt.py	/^    useLT = True$/;"	v
 useLT	gitm_batch.py	/^        useLT=False$/;"	v
 useLT	gitm_batch.py	/^        useLT=True$/;"	v
+vadvect	tmp.py	/^vadvect = uwind0*gradr0$/;"	v
+variable_names	gitm_batch.py	/^variable_names = ($/;"	v
 varlist	gitm_3D_const_alt.py	/^            varlist=['Rho', 'V!Dn!N (east)', 'V!Dn!N (north)'])$/;"	v
 varlist	gitm_3D_const_alt_old.py	/^            varlist=['Rho', 'V!Dn!N (east)', 'V!Dn!N (north)'])$/;"	v
-vector_data	gitm_3D_const_alt.py	/^def vector_data($/;"	f
+vector_data	gitm_3D_const_alt.py	/^def vector_data(gdata, species, alt=400, ialt=None):$/;"	f
 vector_diff	gitm_3D_const_alt_old.py	/^def vector_diff($/;"	f
 vector_single	gitm_3D_const_alt_old.py	/^def vector_single($/;"	f
 vectoryn	gitm_batch.py	/^    vectoryn = input('Enter whether you want vectors or not (y\/n) [y]: ')$/;"	v
-vi	gitm_batch.py	/^vi = int(input('Enter which variable to plot: '))$/;"	v
+vi	gitm_batch.py	/^vi = int(input('Enter which variable to plot [%s]: '$/;"	v
 vi2	gitm_batch.py	/^    vi2 = -1$/;"	v
 vi2	gitm_batch.py	/^vi2 = input('Enter second var to plot as line contour (-1 for None) [-1]: ')$/;"	v
 vi2	gitm_batch.py	/^vi2 = int(vi2)$/;"	v
 video	gitm_movie_script.py	/^    video = ('ffmpeg', '-f', 'image2', '-i', "%s_%%%dd.png" % (plotbase, nmag),$/;"	v
-vl	gitm_batch.py	/^vl = list(g.keys())$/;"	v
 vline	gitm_create_input_files.py	/^vline = pd.date_range(btime, etime, freq='1D')$/;"	v
 vx	gitm_create_input_files.py	/^vx = np.ones(dim)*-450$/;"	v
 vy	gitm_create_input_files.py	/^vy = np.zeros(dim)$/;"	v

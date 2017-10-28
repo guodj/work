@@ -20,7 +20,7 @@ LLEFTOTH = 200  # lower limit of total energy flux in one hemisphere
 BinMLT = 0.25  # MLT range in one bin
 LLEFTOT = 10  # lower limit of total energy flux in each bin, for method 1,2
 datapath = '/home/guod/WD4T/ssusi/'
-savepath = '/home/guod/WD4T/work4/'
+savepath = '/home/guod/Documents/work/ssusi_auroral/'
 dratio = 0.05 # flag 5%, 10%, ..., 95% of the total energy flux
 LLSMP = 200 # lower limit of samples
 n = 6 # number of fourier fitting terms
@@ -886,7 +886,7 @@ def fourier_fit_save_parameters():
 def aurora_reconstruction_fit(
         ax, AErange=(0, 50), whichp='ef', vmin=0, vmax=8, cmap='viridis', s=3):
     iAE = int(AErange[0]/50)
-    fg = pd.read_pickle('/home/guod/WD4T/work4/method5/fg.old.dat')
+    fg = pd.read_pickle('/home/guod/Documents/work/ssusi_auroral/method5/fg.old.dat')
     fg = fg[:, :, :, iAE]
     mlt = np.arange(0, 24, 0.1)
     cossin = np.ones((len(mlt), (n+1)*2))*np.nan
@@ -1237,7 +1237,7 @@ if __name__ == '__main__':
     # find_parameters()
 
     # find_parameters_bea()
-    bea_create_file()
+    # bea_create_file()
 
     # aurora_reconstruction_statistics_data()
 
@@ -1249,7 +1249,7 @@ if __name__ == '__main__':
 
     # fourier_fit_save_parameters()
 
-    # aurora_reconstruction_fit_all('ef', vmax=6)
+    aurora_reconstruction_fit_all('ef', vmax=6)
 
     # difference between statistics and fourier fit
     # plt.close('all')
@@ -1288,6 +1288,5 @@ if __name__ == '__main__':
     print('Remaining problems:')
     print('  1, Aurora with complicated structure')
     print('  2, Different total energy, different proportion?')
-    print('  3, Remove dayglow?')
     print('  4, Use median or mean?')
     print('----------------------------------------------------------------')

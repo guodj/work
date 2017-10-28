@@ -35,9 +35,10 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
                         alt, else use ialt
 
     Output: Lat, lon, zdata
-
-    *** Note: Lon raries in x direction, lat varies in y direction. This is ***
-    ***       different with GITM settings.                                 ***
+    ***************************************************************************
+    Note: Lon raries in x direction, lat varies in y direction. This is
+          different with GITM settings.
+    ***************************************************************************
     '''
     # Find altitude index
     if ialt == None:
@@ -63,8 +64,10 @@ def vector_data(gdata, species, alt=400, ialt=None):
                         alt, else use ialt
 
     Output: lat, lt, nwind, ewind
-    *** Note: Lon raries in x direction, lat varies in y direction. This is ***
-    ***       different with GITM settings.                                 ***
+    ***************************************************************************
+    Note: Lon raries in x direction, lat varies in y direction. This is
+          different with GITM settings.
+    ***************************************************************************
     '''
     # Find altitude index
     if ialt == None:

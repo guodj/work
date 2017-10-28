@@ -13,8 +13,8 @@ def create_polar(nrow, ncolumn, n, nlat=90, slat=0, centrallon=0,
     lonticklabel : ticklabel at `top`, `right`, `bottom`, `left`
     centrallon : central longitude at 6 o'clock direction
     '''
-    # In the northern hemisphere, central longitude is at 6 o'clock
-    # In the southern hemisphere, central longitude is at 12 o'clock
+    # In the northern hemisphere, central longitude is at 6 o'clock direction
+    # In the southern hemisphere, central longitude is at 12 o'clock direction
     if nlat*slat<0:
         sys.exit('Input of `nlat` or `slat` is wrong!!!')
     if nlat == 90:
