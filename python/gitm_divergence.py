@@ -50,7 +50,7 @@ def calc_divergence(gdata, neuion='neutral', name='divergence'):
     gdata[name] = dmarray(
             divergence, attrs={'units':'/s', 'scale':'linear',
             'name':neuion+' velocity divergence'})
-    return
+    return gdata
 
 
 #END

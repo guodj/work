@@ -583,7 +583,8 @@ class GitmBin(PbData):
 
                 # Different versions of GITM differ in header capitalization
                 if not nk in name_dict:
-                    print('Do not find '+nk+' in the name list')
+                    pass
+                    # print('Do not find '+nk+' in the name list')
                 #     # Try to capitalize or lowercase the key
                 #     if nk == nk.capitalize():
                 #         nk = k.lower()

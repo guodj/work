@@ -86,7 +86,6 @@ def create_polar(nrow, ncolumn, n, nlat=90, slat=0, centrallon=0,
     verts = np.vstack([np.sin(theta), np.cos(theta)]).T
     circle = mpath.Path(verts * radius + center)
     ax.set_boundary(circle, transform=ax.transAxes)
-
     return ax, projection
 
 def create_rectangular(

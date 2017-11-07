@@ -185,9 +185,30 @@ def func4():
     return
 
 
-if __name__ == '__main__':
-    plt.close('all')
-    import gc
-    gc.collect()
-    a = func4()
+def func5():
+    import gitm
+    import gitm_create_coordinate as gcc
+    import gitm_3D_const_alt as g3ca
+    import cartopy.crs as ccrs
+    g1 = gitm.GitmBin('/home/guod/simulation_output/momentum_analysis/'
+                      'run_150_equinox/data/3DALL_t030321_000002.bin')
+    g2 = gitm.GitmBin('/home/guod/simulation_output/momentum_analysis/'
+                      'run_150_equinox/data/3DALL_t030322_000001.bin')
+    lon1, lat1, rho1 = g3ca.contour_data('Rho', g1, alt=400)
+    lon2, lat2, rho2 = g3ca.contour_data('Rho', g2, alt=400)
+    drho = (rho2-rho1)/rho1
+    ax, projection = gcc.create_polar(1,1,1)
+    hc = ax.contourf(lon1, lat1, drho, transform=ccrs.PlateCarree(),
+                     levels=np.linspace(0, 0.05, 21), extend='both')
+    plt.colorbar(hc)
+    hc = ax.contour(lon1, lat1, drho, transform=ccrs.PlateCarree(),
+                    levels=np.linspace(0, 0.05, 6),colors='r',
+                    extend='both')
+    plt.clabel(hc, inline=1, fontsize=10)
     plt.show()
+    print('good')
+
+
+
+if __name__ == '__main__':
+    func5()

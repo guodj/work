@@ -1,5 +1,5 @@
 % This file was created with JabRef 2.10.
-% Encoding: ISO8859_1
+% Encoding: UTF8
 
 
 @Article{Anderson1988,
@@ -34,7 +34,7 @@
   File                     = {Berthelier1976.pdf:Berthelier1976.pdf:PDF},
   Groups                   = {geomagnetic activity},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and FieldsâMagnetosphere: Interaction between solar wind and magnetosphere},
+  Keywords                 = {Particles and FieldsÃ¢ÂÂMagnetosphere: Interaction between solar wind and magnetosphere},
   Owner                    = {guod},
   Timestamp                = {2015.10.23},
   Url                      = {http://dx.doi.org/10.1029/JA081i025p04546}
@@ -53,10 +53,30 @@
   File                     = {Blanc1980.pdf:Blanc1980.pdf:PDF},
   Groups                   = {ionosphere},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and FieldsâIonosphere: Electric fields, Particles and FieldsâIonosphere: Ionospheric disturbances, Particles and FieldsâIonosphere: Plasma motion, convection, or circulation},
+  Keywords                 = {Particles and FieldsÃ¢ÂÂIonosphere: Electric fields, Particles and FieldsÃ¢ÂÂIonosphere: Ionospheric disturbances, Particles and FieldsÃ¢ÂÂIonosphere: Plasma motion, convection, or circulation},
   Owner                    = {guod},
   Timestamp                = {2016.03.21},
   Url                      = {http://dx.doi.org/10.1029/JA085iA04p01669}
+}
+
+@Article{Boyle1997,
+  Title                    = {Empirical polar cap potentials},
+  Author                   = {Boyle, C. B. and Reiff, P. H. and Hairston, M. R.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1997},
+  Number                   = {A1},
+  Pages                    = {111--125},
+  Volume                   = {102},
+
+  __markedentry            = {[guod:]},
+  Abstract                 = {DMSP satellite plasma flow data from 1987–1990 are used to derive empirical models of the polar cap potential for quasi-steady interplanetary magnetic field (IMF) conditions. The large data set, due to the high duty cycle and nearly Sun synchronous DMSP orbits, allowed very stringent data selection criteria. The analysis indicates that a good description of the unskewed (Heppner Maynard pattern A) steady state polar cap potential is ΦA = 10−4v2+11.7B sin3 (θ/2) kV, where v is the solar wind velocity in kilometers per second, B is the magnitude of the interplanetary magnetic field in nanoteslas, and θ = arccos (Bz/|B|)GSM. The IMF-dependent contribution to the cross polar cap potential does not depend significantly on solar wind pressure. Functional forms for the potential do benefit from inclusion of an IMF independent term proportional to the solar wind flow energy. Best fits to IMF-independent contributions to the steady state polar cap potential yield ∼16 kV for vsw = 400 kilometers per second. During steady IMF the total unskewed polar cap potential drop is shown to be approximately ΦA = 16.5 + 15.5 Kp kV. The distribution of potential around the polar cap is examined as a function of magnetic local time. A sinusoidal distribution is an excellent description of the distribution, and more complex forms are not justified by this data set. Analysis of this data set shows no evidence of saturation of the polar cap potential for large |MF|. A simple unified description of the polar cap potential at all magnetic local times (MLT) and IMF, Φ(IMF, MLT) = −4.1 + 0.5 sin ((2π/24) MLT + 0.056 + 0.015 Byeff) (1.1 × 10–4 v2 + 11.1 B sin3 (θ/2)) kV, is generated, where Byeff is By (−BY) in the northern (southern) hemisphere. If IMF data is unavailable, the polar cap potential is well described by ΦA(Kp, MLT) = − 4.1 + 1/2 sin ((2π/24) MLT + ϕHM)(16.4 + 15.2 Kp) kV, where ÖϕHM is a small phase correction of (−0.054, −0.031, 0.040) for Heppner-Maynard convection patterns (BC, A, DE), respectively.},
+  Doi                      = {10.1029/96JA01742},
+  File                     = {Boyle1997.pdf:Boyle1997.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Polar cap ionosphere, Electric fields, Magnetospheric configuration and dynamics, Solar wind/magnetosphere interactions},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.02},
+  Url                      = {http://dx.doi.org/10.1029/96JA01742}
 }
 
 @Article{Brinkman2016,
@@ -193,7 +213,7 @@
 
   Doi                      = {10.1029/JA093IA04P02749},
   File                     = {Clauer1988.pdf:Clauer1988.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·},
   ISSN                     = {2156-2202},
   Keywords                 = {Polar cap phenomena, Electric fields, Cusp, Magnetopause and boundary layers},
   Owner                    = {guod},
@@ -288,7 +308,7 @@
 
   Doi                      = {10.1029/90JA02063},
   File                     = {Cowley1991.pdf:Cowley1991.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·, ionosphere, particle precipitation, work3},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·, ionosphere, particle precipitation, work3},
   ISSN                     = {2156-2202},
   Keywords                 = {Ionosphere/magnetosphere interactions, Current systems, Electric fields, Plasma convection, Polar cap ionosphere},
   Owner                    = {guod},
@@ -308,7 +328,7 @@
   File                     = {Crooker1979.pdf:Crooker1979.pdf:PDF},
   Groups                   = {magnetosphere, cusp, work2},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and FieldsâMagnetosphere: Interaction between solar wind and magnetosphere, Particles and FieldsâMagnetosphere: Magnetopause, Particles and FieldsâMagnetosphere: Magnetospheric configuration, Particles and FieldsâMagnetosphere: Plasma motion, convection, or circulation},
+  Keywords                 = {Particles and FieldsÃ¢ÂÂMagnetosphere: Interaction between solar wind and magnetosphere, Particles and FieldsÃ¢ÂÂMagnetosphere: Magnetopause, Particles and FieldsÃ¢ÂÂMagnetosphere: Magnetospheric configuration, Particles and FieldsÃ¢ÂÂMagnetosphere: Plasma motion, convection, or circulation},
   Owner                    = {guod},
   Timestamp                = {2016.04.26},
   Url                      = {http://dx.doi.org/10.1029/JA084iA03p00951}
@@ -344,7 +364,7 @@
 
   Doi                      = {10.1029/2005JA011518},
   File                     = {Crowley2006.pdf:Crowley2006.pdf:PDF},
-  Groups                   = {MITå«æ},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ},
   ISSN                     = {2156-2202},
   Keywords                 = {Thermosphere: composition and chemistry, Ionospheric disturbances, Electric fields, Midlatitude ionosphere, Ionosphere/atmosphere interactions, composition, ionosphere, winds},
   Owner                    = {guod},
@@ -402,8 +422,6 @@
   Number                   = {3},
   Pages                    = {69 - 74},
   Volume                   = {18},
-
-  __markedentry            = {[guod:]},
   Abstract                 = {Abstract A cellular structure was recently discovered /1,2/ in the neutral density of the lower thermosphere at high latitudes using the NCAR-TGCM. This paper describes the density cell morphology for equinox solar minimum. Density data from the S85-1 satellite accelerometer are presented which confirm the existence of the high latitude cells over a range of magnetic activity levels. This discovery provides a new framework for the analysis and interpretation of density data from both past and future experiments.},
   Doi                      = {https://doi.org/10.1016/0273-1177(95)00841-2},
   File                     = {Crowley1996a.pdf:Crowley1996a.pdf:PDF},
@@ -430,14 +448,12 @@
 
 * Data Analysis
 
-* Conclusions
-
-},
+* Conclusions},
   Booktitle                = {The Upper Mesosphere and Lower Thermosphere: A Review of Experiment and Theory},
   Doi                      = {10.1029/GM087p0339},
   File                     = {Crowley2013.pdf:Crowley2013.pdf:PDF},
   ISBN                     = {9781118664247},
-  Keywords                 = {Mesosphere—Research, Thermosphere—Research},
+  Keywords                 = {MesosphereâResearch, ThermosphereâResearch},
   Url                      = {http://dx.doi.org/10.1029/GM087p0339}
 }
 
@@ -603,7 +619,7 @@
 
   Doi                      = {10.1029/2005JA011368},
   File                     = {Deng2006.pdf:Deng2006.pdf:PDF},
-  Groups                   = {MITå«æ},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ},
   ISSN                     = {2156-2202},
   Keywords                 = {Thermosphere: energy deposition, Ionosphere/atmosphere interactions, Polar cap ionosphere, Modeling and forecasting, Polar cap phenomena, neutral wind, convection E field, solar EUV, particle precipitation, GITM model},
   Owner                    = {guod},
@@ -755,12 +771,12 @@
   Pages                    = {4373--4385},
   Volume                   = {104},
 
-  Abstract                 = {Thermospheric densities near 200 km from the Satellite Electrostatic Triaxial Accelerometer (SETA) experiment during July and December 1983 are analyzed to reveal two types of longitude structures: (1) the so-called âlongitude/UTâ variation which has been noted in higher-altitude satellite data and incorporated into the mass spectrometer incoherent scatter extension-90 (MSISE-90) empirical model [Hedin, 1991] and (2) âhigher-order structuresâ in the form of longitudinal wave patterns which have not previously been mentioned in the thermosphere-ionosphere literature. The longitude/UT variation in the SETA densities shares many similarities with that embodied in the MSISE-90 model, except for some differences in symmetry about the equator. Interpretation concerning the origin of the observed variation is handicapped by the Sun-synchronous limitations of the satellite orbit and by the convolution of high-latitude heating effects being mapped into the geographic frame while solar-driven latitudinal variations are mapped into the geomagnetic frame. An unambiguous separation of these effects is not possible with the present orbital constraints. The space-time Fourier analysis method of Salby [1982a, b] is applied in an attempt to quantitatively characterize the higher-order structure in the data. The nature of the satellite sampling introduces ambiguities into the determination of zonal wavenumbers and periodicities. There is evidence of s = 1 and s = 2 stationary features, eastward propagating Kelvin waves, and a number of westward propagating waves with zonal wavenumbers s = 0 to s = 6 and periods between 6 and 10 hours. Meyer and Forbes [1997] have recently shown the latter class of waves, referred to as Lamb waves in an isothermal nondissipative atmosphere, to represent the preferred response to broadband forcing of the thermosphere. The present observations may represent the existence of Lamb waves in the thermosphere.},
+  Abstract                 = {Thermospheric densities near 200 km from the Satellite Electrostatic Triaxial Accelerometer (SETA) experiment during July and December 1983 are analyzed to reveal two types of longitude structures: (1) the so-called Ã¢ÂÂlongitude/UTÃ¢ÂÂ variation which has been noted in higher-altitude satellite data and incorporated into the mass spectrometer incoherent scatter extension-90 (MSISE-90) empirical model [Hedin, 1991] and (2) Ã¢ÂÂhigher-order structuresÃ¢ÂÂ in the form of longitudinal wave patterns which have not previously been mentioned in the thermosphere-ionosphere literature. The longitude/UT variation in the SETA densities shares many similarities with that embodied in the MSISE-90 model, except for some differences in symmetry about the equator. Interpretation concerning the origin of the observed variation is handicapped by the Sun-synchronous limitations of the satellite orbit and by the convolution of high-latitude heating effects being mapped into the geographic frame while solar-driven latitudinal variations are mapped into the geomagnetic frame. An unambiguous separation of these effects is not possible with the present orbital constraints. The space-time Fourier analysis method of Salby [1982a, b] is applied in an attempt to quantitatively characterize the higher-order structure in the data. The nature of the satellite sampling introduces ambiguities into the determination of zonal wavenumbers and periodicities. There is evidence of s = 1 and s = 2 stationary features, eastward propagating Kelvin waves, and a number of westward propagating waves with zonal wavenumbers s = 0 to s = 6 and periods between 6 and 10 hours. Meyer and Forbes [1997] have recently shown the latter class of waves, referred to as Lamb waves in an isothermal nondissipative atmosphere, to represent the preferred response to broadband forcing of the thermosphere. The present observations may represent the existence of Lamb waves in the thermosphere.},
   Doi                      = {10.1029/1998JA900036},
   File                     = {Forbes1999.pdf:Forbes1999.pdf:PDF},
   Groups                   = {density and composition},
   ISSN                     = {2156-2202},
-  Keywords                 = {Magnetospheric Physics: Magnetosphereâouter, MHD waves and instabilities, Meteorology and Atmospheric Dynamics: Thermospheric dynamics, Meteorology and Atmospheric Dynamics: Waves and tides},
+  Keywords                 = {Magnetospheric Physics: MagnetosphereÃ¢ÂÂouter, MHD waves and instabilities, Meteorology and Atmospheric Dynamics: Thermospheric dynamics, Meteorology and Atmospheric Dynamics: Waves and tides},
   Owner                    = {guod},
   Timestamp                = {2015.10.09},
   Url                      = {http://dx.doi.org/10.1029/1998JA900036}
@@ -812,9 +828,9 @@
   Booktitle                = {Midlatitude Ionospheric Dynamics and Disturbances},
   Doi                      = {10.1029/181GM18},
   File                     = {Fuller-Rowell2013.pdf:Fuller-Rowell2013.pdf:PDF},
-  Groups                   = {review, MITå«æ, dynamics},
+  Groups                   = {review, MITÃ¥ÂÂ«Ã¦ÂÂ, dynamics},
   ISBN                     = {9781118666555},
-  Keywords                 = {IonosphereâResearch, Ionospheric storms, Sudden ionospheric disturbances, Space environment},
+  Keywords                 = {IonosphereÃ¢ÂÂResearch, Ionospheric storms, Sudden ionospheric disturbances, Space environment},
   Owner                    = {guod},
   Timestamp                = {2016.04.25},
   Url                      = {http://dx.doi.org/10.1029/181GM18}
@@ -867,7 +883,7 @@
 
   Doi                      = {10.1002/2015JA021112},
   File                     = {Guo2015.pdf:Guo2015.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·, density and composition, work2},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·, density and composition, work2},
   ISSN                     = {2169-9402},
   Keywords                 = {Thermosphere: energy deposition, Pressure, density, and temperature, Solar/planetary relationships, Thermospheric dynamics, Solar effects, thermospheric mass density, solar wind sector structure, corotating interaction region},
   Owner                    = {guod},
@@ -903,7 +919,7 @@
   Pages                    = {4229--4248},
   Volume                   = {90},
 
-  Abstract                 = {A statistical study has been completed using data from the Defense Meteorological Satellite Program F2 and F4 and the Satellite Test Program P78-1 satellites to determine the average characteristics of auroral electron precipitation as a function of magnetic local time, magnetic latitude, and geomagnetic activity as measured by Kp. The characteristics were determined for each whole number value of Kp from 0 to 5 and for Kp ≥ 6-. At each level of Kp, the high-latitude region was gridded, and the average electron spectrum in the energy range from 50 eV to 20 keV was determined in each grid element. The results show that the high-latitude precipitation region separates into two parts based on the electron average energy. There is a region of relatively hot electrons (EAVE ≥ 600 eV). In this region, the electron average energies are highest on the morningside of the oval. There are two average energy maxima at each Kp level: one postmidnight and the other prenoon. The hot electron region is generally not continuous in MLT but shows a gap between 1200 and 1800 MLT. The hotter electrons carry most of the energy flux into the oval. The energy flux on the nightside increases with Kp, while the level at noon increases with Kp when Kp is small but decreases at higher Kp. The average energy of the hot electrons increases from Kp = 0 to Kp = 3 but is approximately constant for higher Kp. In the second region, average energies are low (EAVE < 600 eV). This region extends from the poleward edge of the hot electron region to the pole. The precipitating electrons in this region carry the majority of the number flux at high latitudes. The largest number fluxes are found on the dayside. The highest fluxes are confined to a crescent-shaped region centered slightly prenoon and extending in MLT over most of dayside and, in some cases, into the nightside. There is a prenoon maximum in the number flux that shows little variability in MLT or in intensity with Kp. The average energy shows a minimum typically between 1100 and 1200 MLT and located toward the poleward edge of the crescent-shaped region of highest integral number flux. We identify the cusp as the region near the average energy minimum and the cleft as the crescent-shaped region.},
+  Abstract                 = {A statistical study has been completed using data from the Defense Meteorological Satellite Program F2 and F4 and the Satellite Test Program P78-1 satellites to determine the average characteristics of auroral electron precipitation as a function of magnetic local time, magnetic latitude, and geomagnetic activity as measured by Kp. The characteristics were determined for each whole number value of Kp from 0 to 5 and for Kp â¥ 6-. At each level of Kp, the high-latitude region was gridded, and the average electron spectrum in the energy range from 50 eV to 20 keV was determined in each grid element. The results show that the high-latitude precipitation region separates into two parts based on the electron average energy. There is a region of relatively hot electrons (EAVE â¥ 600 eV). In this region, the electron average energies are highest on the morningside of the oval. There are two average energy maxima at each Kp level: one postmidnight and the other prenoon. The hot electron region is generally not continuous in MLT but shows a gap between 1200 and 1800 MLT. The hotter electrons carry most of the energy flux into the oval. The energy flux on the nightside increases with Kp, while the level at noon increases with Kp when Kp is small but decreases at higher Kp. The average energy of the hot electrons increases from Kp = 0 to Kp = 3 but is approximately constant for higher Kp. In the second region, average energies are low (EAVE < 600 eV). This region extends from the poleward edge of the hot electron region to the pole. The precipitating electrons in this region carry the majority of the number flux at high latitudes. The largest number fluxes are found on the dayside. The highest fluxes are confined to a crescent-shaped region centered slightly prenoon and extending in MLT over most of dayside and, in some cases, into the nightside. There is a prenoon maximum in the number flux that shows little variability in MLT or in intensity with Kp. The average energy shows a minimum typically between 1100 and 1200 MLT and located toward the poleward edge of the crescent-shaped region of highest integral number flux. We identify the cusp as the region near the average energy minimum and the cleft as the crescent-shaped region.},
   Doi                      = {10.1029/JA090iA05p04229},
   File                     = {Hardy1985.pdf:Hardy1985.pdf:PDF},
   Groups                   = {work4},
@@ -996,7 +1012,7 @@
   Pages                    = {2871--2879},
   Volume                   = {77},
 
-  Abstract                 = {Measurements of neutral N2, O, and He densities from Ogo 6 over the south polar region during magnetically quiet periods in late August and early September 1969 indicate that N2 densities, when they are extrapolated to a common altitude, maximize at about 0800 UT near 70Â° invariant latitude. The density of He has a minimum at this time, and the density of O has a slight maximum. It is proposed that these phenomena are the result of cyclic variations in soft electron precipitation, which heats the thermosphere either directly or through enhanced Joule heating. This heat energy would increase the gas temperature, the increase in the gas temperature leading to the N2 increase, and would vary the composition by generation of a wind system.},
+  Abstract                 = {Measurements of neutral N2, O, and He densities from Ogo 6 over the south polar region during magnetically quiet periods in late August and early September 1969 indicate that N2 densities, when they are extrapolated to a common altitude, maximize at about 0800 UT near 70ÃÂ° invariant latitude. The density of He has a minimum at this time, and the density of O has a slight maximum. It is proposed that these phenomena are the result of cyclic variations in soft electron precipitation, which heats the thermosphere either directly or through enhanced Joule heating. This heat energy would increase the gas temperature, the increase in the gas temperature leading to the N2 increase, and would vary the composition by generation of a wind system.},
   Doi                      = {10.1029/JA077I016P02871},
   File                     = {Hedin1972.pdf:Hedin1972.pdf:PDF},
   Groups                   = {density and composition, work2},
@@ -1015,7 +1031,7 @@
   Pages                    = {1--9},
   Volume                   = {84},
 
-  Abstract                 = {Measurements of N2, O, He, and Ar densities from neutral gas mass spectrometers on four satellites (Ogo 6, Aeros A, AE-C, and AE-D) and inferred O2 and H densities from an ion mass spectrometer on AE-C have been combined to produce a model of longitude/universal time (UT) variations in thermospheric neutral temperature and composition. The longitude/UT model is an extension of the mass spectrometer-incoherent scatter thermospheric model and uses spherical harmonic terms dependent on geographic latitude, longitude, and universal time. The terms which depend only on longitude indicate a temperature enhancement of about 30Â°K somewhat equatorward of the magnetic poles. The temperature varies also in universal time, the greatest enhancement being about 30Â°K near 2130 UT in the northern hemisphere and about 70Â°K near 0930 UT in the southern hemisphere. The extrapolated 120-km variations are generally in phase for Ar and O2 and out of phase for He, O, and H. Changes during magnetic storms are relatively small. The combined longitude and UT variations reflect the influence of the earth's magnetic field but indicate that the variations may not be simply represented in magnetic coordinates. The longitude/UT model helps reduce differences in the local time variation between the incoherent scatter stations.},
+  Abstract                 = {Measurements of N2, O, He, and Ar densities from neutral gas mass spectrometers on four satellites (Ogo 6, Aeros A, AE-C, and AE-D) and inferred O2 and H densities from an ion mass spectrometer on AE-C have been combined to produce a model of longitude/universal time (UT) variations in thermospheric neutral temperature and composition. The longitude/UT model is an extension of the mass spectrometer-incoherent scatter thermospheric model and uses spherical harmonic terms dependent on geographic latitude, longitude, and universal time. The terms which depend only on longitude indicate a temperature enhancement of about 30ÃÂ°K somewhat equatorward of the magnetic poles. The temperature varies also in universal time, the greatest enhancement being about 30ÃÂ°K near 2130 UT in the northern hemisphere and about 70ÃÂ°K near 0930 UT in the southern hemisphere. The extrapolated 120-km variations are generally in phase for Ar and O2 and out of phase for He, O, and H. Changes during magnetic storms are relatively small. The combined longitude and UT variations reflect the influence of the earth's magnetic field but indicate that the variations may not be simply represented in magnetic coordinates. The longitude/UT model helps reduce differences in the local time variation between the incoherent scatter stations.},
   Doi                      = {10.1029/JA084IA01P00001},
   File                     = {Hedin1979.pdf:Hedin1979.pdf:PDF},
   Groups                   = {density and composition, work2},
@@ -1048,7 +1064,7 @@
 @Article{Heelis1982,
   Title                    = {A model of the high-latitude ionospheric convection pattern},
   Author                   = {Heelis, R. A. and Lowell, J. K. and Spiro, R. W.},
-  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Journal                  = {J. Geophys. Res.},
   Year                     = {1982},
   Number                   = {A8},
   Pages                    = {6339--6345},
@@ -1059,7 +1075,7 @@
   File                     = {Heelis1982.pdf:Heelis1982.pdf:PDF},
   Groups                   = {work3},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and Fields—Ionosphere: Electric fields, Particles and Fields—Ionosphere: Plasma motion, convection, or circulation},
+  Keywords                 = {Particles and FieldsâIonosphere: Electric fields, Particles and FieldsâIonosphere: Plasma motion, convection, or circulation},
   Url                      = {http://dx.doi.org/10.1029/JA087iA08p06339}
 }
 
@@ -1071,7 +1087,7 @@
   Note                     = {2016SW001530},
   Pages                    = {n/a--n/a},
 
-  Abstract                 = {A large dataset of auroral poleward/equatorward boundary, which are automatically identified from more than 60,000 images acquired by POLAR ultraviolet imager, is used to study the variation of auroral boundaries associated with the interplanetary/geomagnetic environments and dynamic parameters of the magnetosphere. A total number of 3,805,000/1,215,000 points for poleward/equatorward boundary were identified from the dataset. It is found that the poleward/equatorward boundaries show an equatorward movement with the increase of Kan-Lee electric field. The poleward/equatorward boundaries in the nightside sector (1800-0600 MLT) show an equatorward motion with the increase of the value of IMF By and the north-south electric field. The equatorward boundary (1800-0300 MLT) shows a quasi-linear equatorward displacement with the increase of solar wind dynamic pressure and speed. The poleward boundary (excluding midday sector) and equatorward boundary expand equatorward with the increase of AE index. The auroral oval boundary model with input parameters of the three components of IMF, solar wind speed and density, and AE is developed by using multivariate regression method. Evaluation of the model shows that the mean absolute deviation of the model in every MLT sector is 1.3-2.1° MLAT for the poleward boundary and 1.3-2.5° MLAT for the equatorward boundary, respectively, when input parameters are within valid value coverage (three components of IMF are each from -8 to +8 nT, and the values of solar wind speed and density, and AE are not more than 550 km/s, 20/cm-3, and 520 nT, respectively).},
+  Abstract                 = {A large dataset of auroral poleward/equatorward boundary, which are automatically identified from more than 60,000 images acquired by POLAR ultraviolet imager, is used to study the variation of auroral boundaries associated with the interplanetary/geomagnetic environments and dynamic parameters of the magnetosphere. A total number of 3,805,000/1,215,000 points for poleward/equatorward boundary were identified from the dataset. It is found that the poleward/equatorward boundaries show an equatorward movement with the increase of Kan-Lee electric field. The poleward/equatorward boundaries in the nightside sector (1800-0600 MLT) show an equatorward motion with the increase of the value of IMF By and the north-south electric field. The equatorward boundary (1800-0300 MLT) shows a quasi-linear equatorward displacement with the increase of solar wind dynamic pressure and speed. The poleward boundary (excluding midday sector) and equatorward boundary expand equatorward with the increase of AE index. The auroral oval boundary model with input parameters of the three components of IMF, solar wind speed and density, and AE is developed by using multivariate regression method. Evaluation of the model shows that the mean absolute deviation of the model in every MLT sector is 1.3-2.1Â° MLAT for the poleward boundary and 1.3-2.5Â° MLAT for the equatorward boundary, respectively, when input parameters are within valid value coverage (three components of IMF are each from -8 to +8 nT, and the values of solar wind speed and density, and AE are not more than 550âkm/s, 20/cm-3, and 520 nT, respectively).},
   Doi                      = {10.1002/2016SW001530},
   File                     = {Hu2017.pdf:Hu2017.pdf:PDF},
   Groups                   = {work4},
@@ -1146,7 +1162,7 @@
   File                     = {Kan1979.pdf:Kan1979.pdf:PDF},
   Groups                   = {work4},
   ISSN                     = {1944-8007},
-  Keywords                 = {Particles and Fields—Magnetosphere: Interaction between solar wind and magnetosphere},
+  Keywords                 = {Particles and FieldsâMagnetosphere: Interaction between solar wind and magnetosphere},
   Url                      = {http://dx.doi.org/10.1029/GL006i007p00577}
 }
 
@@ -1166,6 +1182,23 @@
   Owner                    = {guod},
   Timestamp                = {2016.07.11},
   Unique-id                = {{ISI:000318432300014}}
+}
+
+@Article{Killeen1984,
+  Title                    = {An analysis of the high-latitude thermospheric wind pattern calculated by a thermospheric general circulation model: 1. Momentum forcing},
+  Author                   = {Killeen, T. L. and Roble, R. G.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {1984},
+  Number                   = {A9},
+  Pages                    = {7509--7522},
+  Volume                   = {89},
+  Abstract                 = {Previous studies have shown that the wind, temperature, and composition structures calculated by the National Center for Atmospheric Research (NCAR) thermospheric general circulation model (TGCM) were in reasonable agreement with measurements made by the Dynamics Explorer 2 satellite over the southern hemisphere polar cap during October 1981. The winds at F region heights follow but generally lag behind the two-cell ion-drift pattern of magnetospheric convection. A diagnostic package for the TGCM has been developed to calculate the magnitude and direction of the various terms in the hydrodynamic and thermodynamic equations within the model. The package has been used to decompose the thermospheric momentum equations at each hour of universal time for a 24 hour “steady state” run of the TGCM. Displaced geomagnetic and geographic poles are considered, and a 60-kV cross-tail potential is assumed for the magnetospheric convection model. The individual momentum forcing terms for constant-pressure levels z = 1 (300 km) and z = −4 (120 km) are presented to illustrate the balance of forces acting on the neutral gas at F and E region altitudes over the southern hemisphere polar cap. The results show that at F region altitudes the largest forces in the “steady state” are due to ion drag induced by sunward-drifting ions on the dawnside and duskside of the auroral oval/polar cap boundary. There is a universal time dependence of thermospheric momentum forcing due to the diurnal oscillation of the convection pattern with respect to the solar terminator. At F region altitudes the basic balance of forces is between ion drag and pressure, whereas at E region altitudes Coriolis and advection forces also have significant contributions. The lower thermosphere cold, low-pressure cyclonic circulation and the warm, high-pressure anticyclonic circulation calculated by the TGCM on the dawnside and duskside of the polar cap, respectively, show a near gradient flow balance. The ion-drag, Coriolis, and pressure forces are in approximate balance on both sides of the polar cap with the advection force enhancing and diminishing the strength of the dawn and dusk vortices, respectively.},
+  Doi                      = {10.1029/JA089iA09p07509},
+  File                     = {Killeen1984.pdf:Killeen1984.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.01},
+  Url                      = {http://dx.doi.org/10.1029/JA089iA09p07509}
 }
 
 @Article{Knipp2011,
@@ -1200,7 +1233,7 @@
 
   Doi                      = {10.1029/2011JA016938},
   File                     = {Kwak2011.pdf:Kwak2011.pdf:PDF;Kwak2011a.pdf:Kwak2011a.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·, density and composition},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·, density and composition},
   ISSN                     = {2156-2202},
   Keywords                 = {Thermosphere: composition and chemistry, Thermosphere: energy deposition, interplanetary magnetic field, sector polarity, thermospheric density},
   Owner                    = {guod},
@@ -1218,7 +1251,7 @@
   Pages                    = {1356--1368},
   Volume                   = {119},
 
-  Abstract                 = {We analyze the vertical component of vorticity and the horizontal divergence of the high-latitude neutral wind field in the lower thermosphere during the southern summer time for different interplanetary magnetic field (IMF) conditions with the aid of the National Center for Atmospheric Research thermosphere ionosphere electrodynamics general circulation model, with the following results. (1) The mean neutral wind pattern in the high-latitude lower thermosphere is dominated by rotational flow, imparted primarily through the ion drag force rather than by horizontally divergent flow. (2) The vertical vorticity depends on the IMF. (3) The difference vertical vorticity, obtained by subtracting values with zero IMF from those with nonzero IMF, is much larger than the difference horizontal divergence for all IMF conditions. (4) The effects of IMF penetrate down to 106 km altitude. To determine the processes forcing strong rotational flow in the high-latitude lower thermospheric wind fields, a term analysis of the vorticity equation is also performed, with the following results. (1) The primary forcing term that determines variations of the vertical vorticity is ion drag. This forcing is closely related to the flow of field-aligned current between the ionosphere and magnetosphere. Significant contributions to variations of the vorticity, however, can be made by the horizontal advection term. (2) The effects of the IMF on the ion drag forcing are seen down to around 106 km altitude. (3) The continual forcing of magnetic zonal mean By-dependent vertical vorticity by ion drag can lead to strong polar vortices.},
+  Abstract                 = {We analyze the vertical component of vorticity and the horizontal divergence of the high-latitude neutral wind field in the lower thermosphere during the southern summer time for different interplanetary magnetic field (IMF) conditions with the aid of the National Center for Atmospheric Research thermosphere ionosphere electrodynamics general circulation model, with the following results. (1) The mean neutral wind pattern in the high-latitude lower thermosphere is dominated by rotational flow, imparted primarily through the ion drag force rather than by horizontally divergent flow. (2) The vertical vorticity depends on the IMF. (3) The difference vertical vorticity, obtained by subtracting values with zero IMF from those with nonzero IMF, is much larger than the difference horizontal divergence for all IMF conditions. (4) The effects of IMF penetrate down to 106âkm altitude. To determine the processes forcing strong rotational flow in the high-latitude lower thermospheric wind fields, a term analysis of the vorticity equation is also performed, with the following results. (1) The primary forcing term that determines variations of the vertical vorticity is ion drag. This forcing is closely related to the flow of field-aligned current between the ionosphere and magnetosphere. Significant contributions to variations of the vorticity, however, can be made by the horizontal advection term. (2) The effects of the IMF on the ion drag forcing are seen down to around 106âkm altitude. (3) The continual forcing of magnetic zonal mean By-dependent vertical vorticity by ion drag can lead to strong polar vortices.},
   Doi                      = {10.1002/2013JA019589},
   File                     = {Kwak2014.pdf:Kwak2014.pdf:PDF},
   Groups                   = {work3},
@@ -1245,6 +1278,25 @@
   Owner                    = {guod},
   Timestamp                = {2015.10.14},
   Url                      = {http://dx.doi.org/10.1029/2008JA013882}
+}
+
+@Article{Kwak2007,
+  Title                    = {Dependence of the high-latitude lower thermospheric momentum forcing on the interplanetary magnetic field},
+  Author                   = {Kwak, Y.-S. and Richmond, A. D. and Roble, R. G.},
+  Journal                  = {Journal of Geophysical Research: Space Physics},
+  Year                     = {2007},
+  Note                     = {A06316},
+  Number                   = {A6},
+  Pages                    = {n/a--n/a},
+  Volume                   = {112},
+  Abstract                 = {We analyze the forces acting on the high-latitude lower thermospheric wind system below 170 km for Southern Hemisphere summer conditions, as a function of the interplanetary magnetic field (IMF) direction, on the basis of numerical simulations. The pattern and magnitude of the forces and their relative contributions to the wind system vary strongly with respect to the direction of the IMF. At higher altitudes, above 130 km, for negative By, strong anticyclonic winds are accelerated primarily by rotational Pedersen ion drag and are maintained by an approximate balance among the divergent/convergent Coriolis, horizontal advection, and relatively weak pressure-gradient accelerations. For positive By, the pressure-gradient acceleration is increased, while the inertial forces are reduced. For negative Bz, in comparison with negative and positive By, the winds and forces extend to lower latitudes. The patterns of the accelerations for positive Bz are similar to those for negative Bz, but the magnitudes tend to be significantly smaller. At lower altitudes, below 120 km, the horizontal advection acceleration is less important but still contributes significantly to the maintenance of the neutral circulation in the polar cap region for positive By. The difference of winds and forces above 130 km for negative and positive By, with respect to winds and forces for zero IMF, show a simple structure with a strong anticyclonic or cyclonic vortex near the pole, respectively, centered differently for the two By directions. The difference of winds and forces for negative and positive Bz are more complex than those for negative and positive By and extend to lower latitudes. Below 120 km, the difference of winds and forces for negative and positive By are much stronger near the pole than for negative and positive Bz, indicating that the IMF By component tends to dominate effects on the neutral winds in the polar cap at low thermospheric altitudes. For all IMF conditions, at higher altitudes, the rotational ion-drag acceleration makes the dominant contribution to the neutral velocity tendency. This feature is most pronounced when the IMF Bz is negative.},
+  Doi                      = {10.1029/2006JA012208},
+  File                     = {Kwak2007.pdf:Kwak2007.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Thermosphere: energy deposition, Ionosphere/atmosphere interactions, Ionosphere/magnetosphere interactions, Momentum forcing, high-latitude lower thermosphere, interplanetary magnetic field},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.01},
+  Url                      = {http://dx.doi.org/10.1029/2006JA012208}
 }
 
 @Article{Luhr2004,
@@ -1328,7 +1380,7 @@
 
   Doi                      = {10.1029/2008JA013433},
   File                     = {Lei2008.pdf:Lei2008.pdf:PDF},
-  Groups                   = {MITå«æ, density and composition, Lei},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ, density and composition, Lei},
   ISSN                     = {2156-2202},
   Keywords                 = {Thermosphere: energy deposition, Space and satellite communication, Coronal holes, Periodic oscillations, thermospheric density, fast solar wind streams},
   Owner                    = {guod},
@@ -1345,7 +1397,7 @@
   Pages                    = {427--437},
   Volume                   = {274},
 
-  Abstract                 = {The solar minimum of 2008 was exceptionally quiet, with sunspot numbers at their lowest in 75 years. During this unique solar-minimum epoch, however, solar-wind high-speed streams emanating from near-equatorial coronal holes occurred frequently and were the primary contributor to the recurrent geomagnetic activity at Earth. These conditions enabled the isolation of forcing by geomagnetic activity on the preconditioned solar minimum state of the upper atmosphere caused by Corotating Interaction Regions (CIRs). Thermosphere density observations around 400Â km from the CHAMP satellite are used to study the thermosphere density response to solar-wind high-speed streams/CIRs. Superposed epoch results show that the thermosphere density responds to high-speed streams globally, and the density at 400 km changes by 75\% on average. The relative changes of neutral density are comparable at different latitudes, although its variability is largest at high latitudes. In addition, the response of thermosphere density to high-speed streams is larger at night than in daytime, indicating the preconditioning effect of the thermosphere response to storms. Finally, the thermosphere density variations at the periods of 9 and 13.5Â days associated with CIRs are linked to the spatial distribution of low\thinspace--\thinspacemiddle latitude coronal holes on the basis of the EUVI observations from STEREO.},
+  Abstract                 = {The solar minimum of 2008 was exceptionally quiet, with sunspot numbers at their lowest in 75 years. During this unique solar-minimum epoch, however, solar-wind high-speed streams emanating from near-equatorial coronal holes occurred frequently and were the primary contributor to the recurrent geomagnetic activity at Earth. These conditions enabled the isolation of forcing by geomagnetic activity on the preconditioned solar minimum state of the upper atmosphere caused by Corotating Interaction Regions (CIRs). Thermosphere density observations around 400Ã km from the CHAMP satellite are used to study the thermosphere density response to solar-wind high-speed streams/CIRs. Superposed epoch results show that the thermosphere density responds to high-speed streams globally, and the density at 400 km changes by 75\% on average. The relative changes of neutral density are comparable at different latitudes, although its variability is largest at high latitudes. In addition, the response of thermosphere density to high-speed streams is larger at night than in daytime, indicating the preconditioning effect of the thermosphere response to storms. Finally, the thermosphere density variations at the periods of 9 and 13.5Ã days associated with CIRs are linked to the spatial distribution of low\thinspace--\thinspacemiddle latitude coronal holes on the basis of the EUVI observations from STEREO.},
   Doi                      = {10.1007/s11207-010-9563-y},
   File                     = {Lei2010.pdf:Lei2010.pdf:PDF},
   Groups                   = {density and composition, Lei},
@@ -1366,7 +1418,7 @@
 
   Doi                      = {10.1029/2007JA012807},
   File                     = {Lei2008b.pdf:Lei2008b.pdf:PDF},
-  Groups                   = {MITå«æ, Lei},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ, Lei},
   ISSN                     = {2156-2202},
   Keywords                 = {Ionospheric disturbances, Ionospheric storms, Ionosphere/magnetosphere interactions, Ionospheric dynamics, Ion chemistry and composition, Ionospheric disturbances, magnetosphere-ionosphere-thermosphere coupling, magnetic storm},
   Owner                    = {guod},
@@ -1452,7 +1504,7 @@
 
 @Article{Liu2005,
   Title                    = {Global distribution of the thermospheric total mass density derived from CHAMP},
-  Author                   = {Liu, H. and LÃ¼hr, H. and Henize, V. and KÃ¶hler, W.},
+  Author                   = {Liu, H. and LÃÂ¼hr, H. and Henize, V. and KÃÂ¶hler, W.},
   Journal                  = {J. Geophys. Res.},
   Year                     = {2005},
   Note                     = {A04301},
@@ -1683,7 +1735,7 @@
   Journal                  = {J. Atmos. Sol-terr. Phy},
   Year                     = {2009},
   Note                     = {High Speed Solar Wind Streams and Geospace InteractionsHigh Speed Solar Wind Streams and Geospace Interactions},
-  Number                   = {10â11},
+  Number                   = {10Ã¢ÂÂ11},
   Pages                    = {1032 - 1044},
   Volume                   = {71},
 
@@ -1706,7 +1758,7 @@
   Pages                    = {3747--3759},
   Volume                   = {118},
 
-  Abstract                 = {OVATION-SM, an empirical model for different types of auroral energy flux, has been developed. OVATION-SM is a linear combination of the SME index (or square root of SME index for monoenergetic auroras), time since the last substorm onset, and time until the next substorm onset. Because OVATION-SM is based on ground magnetometer data and products of that data, it is possible to calculate continuous auroral power at a 1 min cadence for 30+ years. OVATION-SM captures the gross auroral morphology, including onsets and other brightening and dimming events. The detailed spatial auroral morphology is beyond the scope of the current version of OVATION-SM. OVATION-SM explains more than 70% of the variance in Polar UV Imager nightside auroral power, which makes it a better predictor of nightside auroral power than any other model currently available.},
+  Abstract                 = {OVATION-SM, an empirical model for different types of auroral energy flux, has been developed. OVATION-SM is a linear combination of the SME index (or square root of SME index for monoenergetic auroras), time since the last substorm onset, and time until the next substorm onset. Because OVATION-SM is based on ground magnetometer data and products of that data, it is possible to calculate continuous auroral power at a 1âmin cadence for 30+ years. OVATION-SM captures the gross auroral morphology, including onsets and other brightening and dimming events. The detailed spatial auroral morphology is beyond the scope of the current version of OVATION-SM. OVATION-SM explains more than 70% of the variance in Polar UV Imager nightside auroral power, which makes it a better predictor of nightside auroral power than any other model currently available.},
   Doi                      = {10.1002/jgra.50343},
   File                     = {Mitchell2013.pdf:Mitchell2013.pdf:PDF},
   Groups                   = {work4},
@@ -1908,7 +1960,7 @@
 
 @Article{Proelss2011,
   Title                    = {Density Perturbations in the Upper Atmosphere Caused by the Dissipation of Solar Wind Energy},
-  Author                   = {PrÃ¶lss, GerdW.},
+  Author                   = {PrÃÂ¶lss, GerdW.},
   Journal                  = {Surv. Geophys.},
   Year                     = {2011},
   Number                   = {2},
@@ -1985,7 +2037,7 @@
 
 @Article{Qian2011,
   Title                    = {Progress in observations and simulations of global change in the upper atmosphere},
-  Author                   = {Qian, Liying and LaÅ¡toviÄka, Jan and Roble, Raymond G. and Solomon, Stanley C.},
+  Author                   = {Qian, Liying and LaÃÂ¡toviÃÂka, Jan and Roble, Raymond G. and Solomon, Stanley C.},
   Journal                  = {J. Geophys. Res.},
   Year                     = {2011},
   Note                     = {A00H03},
@@ -2121,7 +2173,7 @@
   File                     = {Richmond1975.pdf:Richmond1975.pdf:PDF},
   Groups                   = {thermosphere},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and FieldsâIonosphere: High-latitude ionospheric currents, Particles and FieldsâIonosphere: Ionospheric disturbances, Particles and FieldsâIonosphere: Plasma motion, convection, or circulation},
+  Keywords                 = {Particles and FieldsÃ¢ÂÂIonosphere: High-latitude ionospheric currents, Particles and FieldsÃ¢ÂÂIonosphere: Ionospheric disturbances, Particles and FieldsÃ¢ÂÂIonosphere: Plasma motion, convection, or circulation},
   Owner                    = {guod},
   Timestamp                = {2016.04.29},
   Url                      = {http://dx.doi.org/10.1029/JA080i019p02839}
@@ -2129,7 +2181,7 @@
 
 @Article{Ridley2006,
   Title                    = {The global ionosphere-thermosphere model},
-  Author                   = {A.J. Ridley and Y. Deng and G. TÃ³th},
+  Author                   = {A.J. Ridley and Y. Deng and G. TÃÂ³th},
   Journal                  = {J. Atmos. Sol-terr. Phy},
   Year                     = {2006},
   Number                   = {8},
@@ -2138,7 +2190,7 @@
 
   Doi                      = {http://dx.doi.org/10.1016/j.jastp.2006.01.008},
   File                     = {Ridley2006.pdf:Ridley2006.pdf:PDF},
-  Groups                   = {MITå«æ, thermosphere, ionosphere},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ, thermosphere, ionosphere},
   ISSN                     = {1364-6826},
   Keywords                 = {Thermosphere},
   Owner                    = {guod},
@@ -2148,7 +2200,7 @@
 
 @Article{Ridley2014,
   Title                    = {Exploring the efficacy of different electric field models in driving a model of the plasmasphere},
-  Author                   = {Ridley, A.âJ. and Dodger, A. M. and Liemohn, M. W.},
+  Author                   = {Ridley, A.Ã¢ÂÂJ. and Dodger, A. M. and Liemohn, M. W.},
   Journal                  = {J. Geophys. Res.},
   Year                     = {2014},
   Number                   = {6},
@@ -2194,7 +2246,7 @@
 
   Doi                      = {10.1029/JA092IA08P08745},
   File                     = {Roble1987.pdf:Roble1987.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·, thermosphere},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·, thermosphere},
   ISSN                     = {2156-2202},
   Keywords                 = {Thermosphere: composition and chemistry, Ionosphere/atmosphere interactions, Modeling and forecasting},
   Owner                    = {guod},
@@ -2272,7 +2324,7 @@
   File                     = {Russell1973.pdf:Russell1973.pdf:PDF},
   Groups                   = {geomagnetic activity, work2},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and FieldsâMagnetosphere: General or miscellaneous},
+  Keywords                 = {Particles and FieldsÃ¢ÂÂMagnetosphere: General or miscellaneous},
   Owner                    = {guod},
   Timestamp                = {2015.10.10},
   Url                      = {http://dx.doi.org/10.1029/JA078i001p00092}
@@ -2336,30 +2388,30 @@
 @Article{Schoendorf1995,
   Title                    = {Interpretation of an unusual high latitude density decrease in terms of thermospheric density cells},
   Author                   = {Schoendorf, J. and Crowley, G.},
-  Journal                  = {Geophysical Research Letters},
+  Journal                  = {Geophys. Res. Lett.},
   Year                     = {1995},
   Number                   = {22},
   Pages                    = {3023--3026},
   Volume                   = {22},
 
-  Abstract                 = {The discovery of a cellular structure in the high latitude thermospheric (120–350 km) neutral density provides a new framework in which to interpret high latitude density data. During geomagnetically active times, above about 170 km, the cells consist of density enhancements near noon and midnight and depletions near dawn and dusk. In this paper, a previously unexplained observation is presented and interpreted in terms of the cells. In general the high latitude neutral density is expected to increase during magnetically active conditions. On the contrary, the SETA-1 satellite measured a 40% density decrease near 200 km during the geomagnetic storm of April 3, 1979. In the past, such ‘anomalous’ observations have often been attributed to the inseparability of density and winds in accelerometer measurements. We first show that the depletion cannot be caused by winds, and then show that the depletion is a natural consequence of the cellular structure inherent in the mass density at 200 km.},
+  Abstract                 = {The discovery of a cellular structure in the high latitude thermospheric (120â350 km) neutral density provides a new framework in which to interpret high latitude density data. During geomagnetically active times, above about 170 km, the cells consist of density enhancements near noon and midnight and depletions near dawn and dusk. In this paper, a previously unexplained observation is presented and interpreted in terms of the cells. In general the high latitude neutral density is expected to increase during magnetically active conditions. On the contrary, the SETA-1 satellite measured a 40% density decrease near 200 km during the geomagnetic storm of April 3, 1979. In the past, such âanomalousâ observations have often been attributed to the inseparability of density and winds in accelerometer measurements. We first show that the depletion cannot be caused by winds, and then show that the depletion is a natural consequence of the cellular structure inherent in the mass density at 200 km.},
   Doi                      = {10.1029/95GL02226},
   File                     = {Schoendorf1995.pdf:Schoendorf1995.pdf:PDF},
   ISSN                     = {1944-8007},
-  Keywords                 = {Atmospheric Composition and Structure: Thermosphere—composition and chemistry, Atmospheric Composition and Structure: Pressure, density, and temperature},
+  Keywords                 = {Atmospheric Composition and Structure: Thermosphereâcomposition and chemistry, Atmospheric Composition and Structure: Pressure, density, and temperature},
   Url                      = {http://dx.doi.org/10.1029/95GL02226}
 }
 
 @Article{Schoendorf1996,
-  Title                    = {Neutral density cells in the high latitude thermosphere—2. Mechanisms},
+  Title                    = {Neutral density cells in the high latitude thermosphereâ2. Mechanisms},
   Author                   = {J. Schoendorf and G. Crowley and R.G. Roble},
-  Journal                  = {Journal of Atmospheric and Terrestrial Physics},
+  Journal                  = {J. Atmos. Terr. Phys.},
   Year                     = {1996},
   Number                   = {15},
   Pages                    = {1769 - 1781},
   Volume                   = {58},
 
-  Abstract                 = {NCAR-TIGCM simulations predict mesoscale cellular structures in the high latitude neutral density at altitudes from 120–350 km. During magnetically active conditions, the density structure at 200 km consists of low-density cells near dawn and dusk and high-density cells near noon and midnight. Mechanisms causing the structured density cells are a result of thermosphere-ionosphere coupling and can be explained in terms of dynamic meteorology. For example, at high latitudes ion drag causes the neutral circulation to flow cyclonically in the dawn sector and anticyclonically in the dusk sector. Low densities are contained within the cyclonic circulation at all altitudes. Below about 170 km, the densities inside the anticyclonic flow are high, while above that altitude densities within the anticyclonic flow are low. While typical dynamic meteorology explains low densities in the centre of cyclonic circulation and high densities inside anticyclonic circulation, the dusk low-density cell in the centre of anticyclonic flow is unexpected. The anticyclonic dusk low-density cell is explained by anomalous antibaric flow due to high-speed winds. 120 km and 200 km altitudes are used to demonstrate the relationship between the high latitude densities and winds as well as the effect of joule heating and auroral particle precipitation on the density structures. },
+  Abstract                 = {NCAR-TIGCM simulations predict mesoscale cellular structures in the high latitude neutral density at altitudes from 120â350 km. During magnetically active conditions, the density structure at 200 km consists of low-density cells near dawn and dusk and high-density cells near noon and midnight. Mechanisms causing the structured density cells are a result of thermosphere-ionosphere coupling and can be explained in terms of dynamic meteorology. For example, at high latitudes ion drag causes the neutral circulation to flow cyclonically in the dawn sector and anticyclonically in the dusk sector. Low densities are contained within the cyclonic circulation at all altitudes. Below about 170 km, the densities inside the anticyclonic flow are high, while above that altitude densities within the anticyclonic flow are low. While typical dynamic meteorology explains low densities in the centre of cyclonic circulation and high densities inside anticyclonic circulation, the dusk low-density cell in the centre of anticyclonic flow is unexpected. The anticyclonic dusk low-density cell is explained by anomalous antibaric flow due to high-speed winds. 120 km and 200 km altitudes are used to demonstrate the relationship between the high latitude densities and winds as well as the effect of joule heating and auroral particle precipitation on the density structures. },
   Doi                      = {http://dx.doi.org/10.1016/0021-9169(95)00166-2},
   File                     = {Schoendorf1996.pdf:Schoendorf1996.pdf:PDF},
   Groups                   = {work3},
@@ -2368,15 +2420,15 @@
 }
 
 @Article{Schoendorf1996a,
-  Title                    = {Neutral density cells in the high latitude thermosphere—1. Solar maximum cell morphology and data analysis},
+  Title                    = {Neutral density cells in the high latitude thermosphereâ1. Solar maximum cell morphology and data analysis},
   Author                   = {J. Schoendorf and G. Crowley and R.G. Roble and F.A. Marcos},
-  Journal                  = {Journal of Atmospheric and Terrestrial Physics},
+  Journal                  = {J. Atmos. Terr. Phys.},
   Year                     = {1996},
   Number                   = {15},
   Pages                    = {1751 - 1768},
   Volume                   = {58},
 
-  Abstract                 = {A new high latitude thermospheric neutral density structure has been revealed in NCAR-TIGCM simulations at 120–350 km altitude. The structure consists of density cells above 50° latitude with radii of approximately 1000 km. There are between two to four cells present depending on the altitude and magnetic activity. For example, at 200 km under magnetically active conditions, the density structure consists of four cells: low density cells are located near dawn and dusk and high density cells are located near noon and midnight. Density variations among the cells range from 5 to 50% for magnetically quiet and active conditions respectively. The cells are present at all seasons, for a wide range of magnetic activity levels, and at solar minimum and solar maximum. The density cell morphology is established for equinox solar maximum as a function of altitude and magnetic activity. Departures of the cell structure from this morphology due to seasonal and solar cycles are discussed. The cell morphology provides a new framework in which to interpret lower thermospheric density data. Data to test and confirm the model predictions were provided by the SETA-1 satellite.},
+  Abstract                 = {A new high latitude thermospheric neutral density structure has been revealed in NCAR-TIGCM simulations at 120â350 km altitude. The structure consists of density cells above 50Â° latitude with radii of approximately 1000 km. There are between two to four cells present depending on the altitude and magnetic activity. For example, at 200 km under magnetically active conditions, the density structure consists of four cells: low density cells are located near dawn and dusk and high density cells are located near noon and midnight. Density variations among the cells range from 5 to 50% for magnetically quiet and active conditions respectively. The cells are present at all seasons, for a wide range of magnetic activity levels, and at solar minimum and solar maximum. The density cell morphology is established for equinox solar maximum as a function of altitude and magnetic activity. Departures of the cell structure from this morphology due to seasonal and solar cycles are discussed. The cell morphology provides a new framework in which to interpret lower thermospheric density data. Data to test and confirm the model predictions were provided by the SETA-1 satellite.},
   Doi                      = {http://dx.doi.org/10.1016/0021-9169(95)00165-4},
   File                     = {Schoendorf1996a.pdf:Schoendorf1996a.pdf:PDF},
   ISSN                     = {0021-9169},
@@ -2450,7 +2502,7 @@
 
   Doi                      = {10.1016/J.ASR.2004.02.020},
   File                     = {Storz2005.pdf:Storz2005.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·, thermosphere},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·, thermosphere},
   ISSN                     = {0273-1177},
   Keywords                 = {Space weather},
   Owner                    = {guod},
@@ -2536,7 +2588,7 @@
   File                     = {Svalgaard1973.pdf:Svalgaard1973.pdf:PDF},
   Groups                   = {geomagnetic activity},
   ISSN                     = {2156-2202},
-  Keywords                 = {Particles and FieldsâIonosphere: General or miscellaneous, Particles and FieldsâMagnetosphere: General or miscellaneous},
+  Keywords                 = {Particles and FieldsÃ¢ÂÂIonosphere: General or miscellaneous, Particles and FieldsÃ¢ÂÂMagnetosphere: General or miscellaneous},
   Owner                    = {guod},
   Timestamp                = {2015.10.23},
   Url                      = {http://dx.doi.org/10.1029/JA078i013p02064}
@@ -2544,7 +2596,7 @@
 
 @Article{Tenfjord2015,
   Title                    = {How the IMF By induces a By component in the closed magnetosphere - and how it leads to asymmetric currents and convection patterns in the two hemispheres},
-  Author                   = {Tenfjord, P. and Ãstgaard, N. and Snekvik, K. and Laundal, K. M. and Reistad, J. and Haaland, S. and Milan, S. E.},
+  Author                   = {Tenfjord, P. and ÃÂstgaard, N. and Snekvik, K. and Laundal, K. M. and Reistad, J. and Haaland, S. and Milan, S. E.},
   Journal                  = {J. Geophys. Res.},
   Year                     = {2015},
   Note                     = {2015JA021579},
@@ -2600,7 +2652,7 @@
 }
 
 @Article{Tsurutani2005,
-  Title                    = {Nonlinear AlfvÃ©n waves, discontinuities, proton perpendicular acceleration, and magnetic holes/decreases in interplanetary space and the magnetosphere: intermediate shocks?},
+  Title                    = {Nonlinear AlfvÃÂ©n waves, discontinuities, proton perpendicular acceleration, and magnetic holes/decreases in interplanetary space and the magnetosphere: intermediate shocks?},
   Author                   = {Tsurutani, B. T. and Lakhina, G. S. and Pickett, J. S. and Guarnieri, F. L. and Lin, N. and Goldstein, B. E.},
   Journal                  = {Nonlinear Processes Geophys.},
   Year                     = {2005},
@@ -2614,6 +2666,44 @@
   Owner                    = {guod},
   Timestamp                = {2016.03.30},
   Url                      = {http://www.nonlin-processes-geophys.net/12/321/2005/}
+}
+
+@Article{Walterscheid2008,
+  Title                    = {Spin-down circulation of high-latitude ion drag-driven gyres},
+  Author                   = {Walterscheid, R. L. and Brinkman, D. G.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2008},
+  Note                     = {A04304},
+  Number                   = {A4},
+  Pages                    = {n/a--n/a},
+  Volume                   = {113},
+  Abstract                 = {We have used a model of thermospheric gyres with simplified geometry (azimuthally symmetric cylindrical coordinates) to study the spin-down of high-latitude gyres spun-up into rapid motion by ion drag. Winds are spun-up for an hour subject only to circumgyre ion-drag forcing from strong radial electric fields with peak values of ±75 mV m−1 centered at a radial distance of 1500 km. The winds in the core of the jets approach 500 ms−1. After the forcing ceases the winds begin to diminish owing to viscous forces. Ekman forcing drives a strong divergent circulation in the radius-height plane that continues for several hours after ion-drag forcing has ceased. This radial circulation is opposite to the circulation driven by agradient forcing during spin-up. The circulation is significantly stronger for cyclonic rather than anticyclonic gyres. This caused peak wind for the circumgyre flow to be different for cyclonic and anticyclonic gyres, but the difference is not too marked. However, the location of the maximum and the wind at fixed altitudes below the peak can be quite different. The jet in the cyclonic gyre peaks higher, and the gradients in the anticyclonic gyre below the jet core are much better maintained.},
+  Doi                      = {10.1029/2007JA012682},
+  File                     = {Walterscheid2008.pdf:Walterscheid2008.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Ionosphere/atmosphere interactions, General circulation, high-latitude circulation, spin-down circulation, Ekman forcing},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.01},
+  Url                      = {http://dx.doi.org/10.1029/2007JA012682}
+}
+
+@Article{Walterscheid2003,
+  Title                    = {Spin-up circulation of high-latitude ion drag-driven gyres},
+  Author                   = {Walterscheid, R. L. and Brinkman, D. G.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2003},
+  Note                     = {1304},
+  Number                   = {A7},
+  Pages                    = {n/a--n/a},
+  Volume                   = {108},
+  Abstract                 = {We have used a model of thermospheric gyres with simplified geometry (azimuthally symmetric cylindrical coordinate) to study dynamical adjustment for high-latitude gyres spun-up into rapid motion by ion drag. In our simulations, winds are spun-up for an hour subject only to circumgyre ion drag forcing from strong radial electric fields with peak values of ±75 mV m−1 centered at a radial distance of 1500 km. The winds in the core of the jets approach 500 m s−1. The major finding is that the imbalance between the inertial forces (centrifugal and Coriolis) and the pressure gradient force during the spin-up of high-latitude gyres drives a strong radial circulation, and this circulation is a significant contributor to the radial circulation forced by all sources. This agradient circulation attempts to establish a gradient-wind balance between the inertial and pressure gradient forces. A feature of general circulation model simulations of the high-latitude lower thermosphere is that, subtracting the warming of the whole polar cap due to Joule heating, the counterrotating gyres driven into motion by ion convection have opposite thermal polarities, with the cyclonic gyre developing a cold core (low density) and the anticyclonic gyre a warm core (high density). We suggest that this is accomplished by the radial circulation forced by the aforementioned imbalance between the inertial and pressure gradient forces. While diabatic heating over the polar cap acts to elevate the temperature (raise the density) over the polar cap as a whole, the changes induced by the dynamically induced circulation account for the fact that cyclonic gyres in the lower thermosphere are relatively colder and denser and the anticyclonic gyres are relatively warmer and less dense. We also examine the radial circulation forced by the initial stages of spin-down and show that the spin-down circulation is significant.},
+  Doi                      = {10.1029/2002JA009642},
+  File                     = {Walterscheid2003.pdf:Walterscheid2003.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Ionosphere/atmosphere interactions, Meteorology and Atmospheric Dynamics: Thermospheric dynamics, Meteorology and Atmospheric Dynamics: General circulation, Meteorology and Atmospheric Dynamics: Theoretical modeling, geostrophic adjustment, spin-up circulation, high-latitude gyres, ion drag driven gyres, high-latitude density cells, polar cap gyres},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.01},
+  Url                      = {http://dx.doi.org/10.1029/2002JA009642}
 }
 
 @Article{Walterscheid2015,
@@ -2636,6 +2726,43 @@
   Url                      = {http://dx.doi.org/10.1002/2015JA021122}
 }
 
+@Article{Walterscheid2009,
+  Title                    = {Large-scale instabilities of the lower thermosphere during an active period},
+  Author                   = {Walterscheid, R. L. and Crowley, G.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {2009},
+  Note                     = {A07306},
+  Number                   = {A7},
+  Pages                    = {n/a--n/a},
+  Volume                   = {114},
+  Abstract                 = {We have simulated the high-latitude thermosphere during active periods with a general circulation model and have examined the instability of the thermospheric polar jets spun up by ion drag. We find that the jets are unstable as a result of strong vertical shears on the bottom side (baroclinic) and strong lateral shears on the flanks (barotropic). We have analyzed the model output for evidence of structures indicative of instability and have found a disturbance in the region of strong vertical shear indicative of baroclinic instability and structures at higher altitudes indicative of barotropic instability. Our finding suggests that it may be possible to understand high-latitude structures such as density cells in the framework of instabilities. These structures are presently not included in empirical models used for density prediction in the upper atmosphere.},
+  Doi                      = {10.1029/2008JA013892},
+  File                     = {Walterscheid2009.pdf:Walterscheid2009.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Polar meteorology, baroclininc instability, barotropic instability, themospheric instabilities},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.01},
+  Url                      = {http://dx.doi.org/10.1029/2008JA013892}
+}
+
+@Article{Walterscheid1986,
+  Title                    = {Viscous pumping and the spin-down of thermospheric gyres and jets},
+  Author                   = {Walterscheid, R. L. and Schubert, G.},
+  Journal                  = {J. Geophys. Res.},
+  Year                     = {1986},
+  Number                   = {A9},
+  Pages                    = {10147--10155},
+  Volume                   = {91},
+  Abstract                 = {Strong gyres and jets can be generated at auroral latitudes in the thermosphere by enhanced electric fields during geomagnetic substorms. Typical height profiles of ion density suggest that the ion drag force should generate large curvature in the vertical profile of the winds in the highly viscous region of the thermosphere above about 200 km. It is proposed that the poststorm spin-down of these gyres and jets proceeds via Ekman circulations driven by the curvatures in the height profiles of the winds. Analytic and numerical calculations of the ageostrophic winds forced by curvature in model geostrophic wind profiles show that the ageostrophic wind speeds and directions depend mainly on the kinematic viscosity in the region of curvature and the total change in shear in the geostrophic wind. Ageostrophic wind speeds for typical thermospheric jets can exceed 200 m s−1 (about 50% of the jet winds). Spin-down times of thermospheric jets and cyclonic gyres by the Ekman pumping mechanism are estimated at ≲6 hours.},
+  Doi                      = {10.1029/JA091iA09p10147},
+  File                     = {Walterscheid1986.pdf:Walterscheid1986.pdf:PDF},
+  ISSN                     = {2156-2202},
+  Keywords                 = {Ionosphere/atmosphere interactions, Meteorology and Atmospheric Dynamics: Thermospheric dynamics},
+  Owner                    = {guod},
+  Timestamp                = {2017.11.01},
+  Url                      = {http://dx.doi.org/10.1029/JA091iA09p10147}
+}
+
 @Article{WanWX2014,
   Title                    = {Recent investigation on the coupling between the ionosphere and upper atmosphere},
   Author                   = {Wan W X, Xu J Y.},
@@ -2646,7 +2773,7 @@
 
   Doi                      = {10.1007/s11430-014-4923-3},
   File                     = {WanWX2014.pdf:WanWX2014.pdf:PDF},
-  Groups                   = {MITå«æ},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ},
   Owner                    = {guod},
   Timestamp                = {2016.04.28}
 }
@@ -2663,7 +2790,7 @@
 
   Doi                      = {10.1029/2008GL035155},
   File                     = {Wang2008.pdf:Wang2008.pdf:PDF},
-  Groups                   = {MITå«æ},
+  Groups                   = {MITÃ¥ÂÂ«Ã¦ÂÂ},
   ISSN                     = {1944-8007},
   Keywords                 = {Electric fields, Ionosphere/magnetosphere interactions, Ionospheric dynamics, Ionospheric disturbances, Modeling and forecasting, ionosphere, penetration electric field, dynamo},
   Owner                    = {guod},
@@ -2768,7 +2895,7 @@
 
   Doi                      = {10.1029/2005JA011274},
   File                     = {Wilson2006.pdf:Wilson2006.pdf:PDF},
-  Groups                   = {å¶å®æä»¶, åºå½ç³è¯·, thermosphere, work2},
+  Groups                   = {Ã¥ÂÂ¶Ã¥Â®ÂÃ¦ÂÂÃ¤Â»Â¶, Ã¥ÂÂºÃ¥ÂÂ½Ã§ÂÂ³Ã¨Â¯Â·, thermosphere, work2},
   ISSN                     = {2156-2202},
   Keywords                 = {Ionosphere/magnetosphere interactions, Electric fields, Current systems, Auroral ionosphere, Joule heating},
   Owner                    = {guod},
@@ -2778,7 +2905,7 @@
 
 @Article{Xu2013a,
   Title                    = {An observational and theoretical study of the longitudinal variation in neutral temperature induced by aurora heating in the lower thermosphere},
-  Author                   = {Xu, Jiyao and Smith, A. K. and Wang, Wenbin and Jiang, Guoying and Yuan, Wei and Gao, Hong and Yue, Jia and Funke, B. and LÃ³pez-Puertas, M. and Russell, James M.},
+  Author                   = {Xu, Jiyao and Smith, A. K. and Wang, Wenbin and Jiang, Guoying and Yuan, Wei and Gao, Hong and Yue, Jia and Funke, B. and LÃÂ³pez-Puertas, M. and Russell, James M.},
   Journal                  = {J. Geophys. Res.},
   Year                     = {2013},
   Pages                    = {7410--7425},
@@ -2952,11 +3079,11 @@
   Author                   = {Y. Zhang and L.J. Paxton},
   Journal                  = {Journal of Atmospheric and Solar-Terrestrial Physics},
   Year                     = {2008},
-  Number                   = {8–9},
+  Number                   = {8â9},
   Pages                    = {1231 - 1242},
   Volume                   = {70},
 
-  Abstract                 = {In this paper, a new empirical formulation of the mean energy and energy flux of precipitating electrons in the auroral oval is presented. Global far ultraviolet (FUV) observations by Thermosphere Ionosphere Mesosphere Energetics and Dynamics (TIMED)/Global Ultraviolet Imager (GUVI) (N2 Lyman–Birge–Hopfield small (LBHS) 140.0–150.0 nm and Lyman–Birge–Hopfield long (LBHL) 165.0–180.0 nm) are used to estimate the mean energy (Eo) and energy flux (Q) of precipitating electrons based on an auroral model (Boltzman Three Constituent—B3C) and airglow model (Atmospheric Ultraviolet Radiance Integrated Code—AURIC). For the first time, a FUV-based and Kp-dependent model of global auroral products (Eo, Q) was developed using 4 years (2002–2005) of \{GUVI\} data and Epstein function fitting. This FUV-based model covers all Kp ranges (0–9). Due to the large spatial coverage of \{FUV\} auroral images, the \{FUV\} measurements lead to a more consistent estimation of the auroral hemispheric power. The model described here will be useful in a number of applications: global ionosphere/thermosphere simulations, space weather forecasting and nowcasting, and global ionospheric models. },
+  Abstract                 = {In this paper, a new empirical formulation of the mean energy and energy flux of precipitating electrons in the auroral oval is presented. Global far ultraviolet (FUV) observations by Thermosphere Ionosphere Mesosphere Energetics and Dynamics (TIMED)/Global Ultraviolet Imager (GUVI) (N2 LymanâBirgeâHopfield small (LBHS) 140.0â150.0 nm and LymanâBirgeâHopfield long (LBHL) 165.0â180.0 nm) are used to estimate the mean energy (Eo) and energy flux (Q) of precipitating electrons based on an auroral model (Boltzman Three ConstituentâB3C) and airglow model (Atmospheric Ultraviolet Radiance Integrated CodeâAURIC). For the first time, a FUV-based and Kp-dependent model of global auroral products (Eo, Q) was developed using 4 years (2002â2005) of \{GUVI\} data and Epstein function fitting. This FUV-based model covers all Kp ranges (0â9). Due to the large spatial coverage of \{FUV\} auroral images, the \{FUV\} measurements lead to a more consistent estimation of the auroral hemispheric power. The model described here will be useful in a number of applications: global ionosphere/thermosphere simulations, space weather forecasting and nowcasting, and global ionospheric models. },
   Doi                      = {http://dx.doi.org/10.1016/j.jastp.2008.03.008},
   File                     = {Zhang2008.pdf:Zhang2008.pdf:PDF},
   Groups                   = {work4},
@@ -3068,7 +3195,11 @@
 @comment{jabref-meta: groupstree:
 0 AllEntriesGroup:;
 1 ExplicitGroup:neutral density cell\;0\;Crowley1989\;Crowley1996\;Cro
-wley1996a\;Crowley2006a\;Crowley2013\;Schlegel2005\;Schoendorf1995\;Sc
-hoendorf1996\;Schoendorf1996a\;;
+wley1996a\;Crowley2006a\;Crowley2013\;Killeen1984\;Kwak2007\;Schlegel2
+005\;Schoendorf1995\;Schoendorf1996\;Schoendorf1996a\;Walterscheid1986
+\;Walterscheid2003\;Walterscheid2008\;Walterscheid2009\;Walterscheid20
+15\;;
+1 ExplicitGroup:polar cap potential\;0\;Boyle1997\;Heelis1982\;Weimer1
+995\;Weimer1996\;Weimer2001\;Weimer2005\;;
 }
 
