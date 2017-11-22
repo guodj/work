@@ -116,28 +116,32 @@ def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
 if __name__ == '__main__':
     # test
     plt.close('all')
-    path = '/home/guod/big/raid4/guod/run_imfby/run2c/data/'
-    #path = '/home/guod/tmp/'
+    path = '/home/guod/tmp/'
     g = gitm.GitmBin(
-            path+'3DALL_t100323_060000.bin',
-            varlist=['Rho', 'V!Dn!N (east)', 'V!Dn!N (north)'])
+            path+'3DMOM_t030322_001000.bin',
+            varlist=['NeuPressureGrad (up)', 'GravityForce',
+                'VGradV (up)', 'CentriForce (up)', 'CoriolisForce (up)',
+                'ViscosityForce (up)','SpheGeomForce (up)'])
+    g['forces'] = g['NeuPressureGrad (up)']+g['GravityForce']+g['VGradV (up)']+\
+            g['CentriForce (up)']+g['CoriolisForce (up)']+\
+            g['SpheGeomForce (up)']+g['ViscosityForce (up)']
 
     # Tested parameters
     polar = True
     useLT = True
-    nlat, slat, dlat, dlon = 90, 50, 10, 90
+    nlat, slat, dlat, dlon = 90, 0, 10, 90
     #-----------------------
     pr = 'pol' if polar else 'rec'
     centrallon = calculate_centrallon(g, pr, useLT)
     ax, projection = gcc.create_map(
             1,1,1, pr, nlat, slat, centrallon, coastlines=False, dlat=dlat,
             dlon=dlon, useLT=useLT, lonticklabel=(1, 1, 1, 1), aspect=1.5)
-    lon0, lat0, zdata0 = contour_data('Rho', g, alt=400)
-    ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),
-                levels=np.linspace(zdata0.min(), zdata0.max(), 21))
-    lon0, lat0, ewind, nwind = vector_data(g, 'neutral', alt=400)
-    lon0, lat0, ewind, nwind = convert_vector(
-            lon0, lat0, ewind, nwind, plot_type=pr, projection=projection)
-    ax.quiver(lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
-              regrid_shape=30)
+    lon0, lat0, zdata0 = contour_data('forces', g, alt=400)
+    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),cmap='jet')
+    plt.colorbar(hc)
+    # lon0, lat0, ewind, nwind = vector_data(g, 'neutral', alt=400)
+    # lon0, lat0, ewind, nwind = convert_vector(
+    #         lon0, lat0, ewind, nwind, plot_type=pr, projection=projection)
+    # ax.quiver(lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
+    #           regrid_shape=30)
     plt.show()
