@@ -45,7 +45,7 @@ def plot_animation_den_win(show=False, f107=150, which_alt=400):
 
     # save path
     path = '/home/guod/Documents/work/fig/density_cell/' \
-           + 'why_no_low_density_cell_at_high_latitude/iondrift_with_or_not/'
+           + 'why_no_low_density_cell_at_high_latitude/animation/'
     fig = plt.figure(figsize=[8,9])
     # read gitm data
     def animate_den_wind(i):
@@ -123,7 +123,7 @@ def plot_animation_den_win(show=False, f107=150, which_alt=400):
             fig, animate_den_wind, frames=len(fn1))
     Writer = animation.writers['ffmpeg']
     writer = Writer(fps=15, metadata=dict(artist='Me'), bitrate=1800)
-    anim.save(path+'den_wind_70.mp4',writer=writer)
+    anim.save(path+'den_wind_70.wmv',writer=writer)
     return
 
 
@@ -1978,5 +1978,5 @@ def plot_animation_vert_coriolis():
 if __name__=='__main__':
     import gc
     plt.close('all')
-    plot_animation_vert_coriolis()
+    plot_animation_den_win()
     gc.collect()

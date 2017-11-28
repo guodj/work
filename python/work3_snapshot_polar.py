@@ -15,17 +15,18 @@ from cartopy.util import add_cyclic_point
 import matplotlib.animation as animation
 import glob
 import pandas as pd
-import gitm_divergence as gd
+import gitm_divergence_new as gd
+import gitm_gradient_new as gg
 sns.set('paper', 'whitegrid')
 
 def plot_den_win(show=True, save=True):
-    apex = Apex(date=2010)
+    apex = Apex(date=2003)
     qlat, qlon = apex.convert(-90, 0, source='apex', dest='geo', height=400)
 
     plt.close('all')
     plt.figure(figsize=(7.26, 9.25))
     for ialt, alt in enumerate([120, 200, 300, 400, 500, 600]):
-        alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, :]/1000-alt))
+        alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, 2:-2]/1000-alt))+2
         alt_str = '%6.2f' % (g['Altitude'][0, 0, alt_ind]/1000)
         ax, projection = gcc.create_map(
                 3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
@@ -43,7 +44,7 @@ def plot_den_win(show=True, save=True):
                 projection=projection)
         hq = ax.quiver(
                 lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
-                alpha=0.5, regrid_shape=20)
+                regrid_shape=20)
         ax.quiverkey(hq, 0.93, -0.1, 1000, '1000 m/s')
         hc = plt.colorbar(hc, pad=0.17)
         hc.set_label(r'$\rho$ (kg/m$^3$)')
@@ -381,33 +382,12 @@ def plot_ave_m_diff(show=True, save=True):
 
 
 def plot_vert_rhodivv_diff(show=True, save=True):
-    # density change (shrink)
-    lon1 = np.array(g1a['Longitude'])
-    lat1 = np.array(g1a['Latitude'])
-    alt1 = np.array(g1a['Altitude'])
-    Re = 6371*1000 # Earth radius, unit: m
-    RR = Re+alt1
-    omega = 2*np.pi/(24*3600)
-    rho1 = np.array(g1a['Rho'])
-    nwind1 = np.array(g1a['V!Dn!N (north)'])
-    ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
-    uwind1 = np.array(g1a['V!Dn!N (up)'])
-    rhodivv1 = rho1*(1.0/(RR**2) * np.gradient((RR**2)*uwind1, axis=2)\
-                     / np.gradient(alt1, axis=2))
+    velr = np.array(g1a['V!Dn!N (up)'])
+    rhodivv1 = np.array(g1a['Rho'])*gd.calc_divergence_up(g1a, velr)
 
-    # density change (no shrink)
-    lon2 = np.array(g2a['Longitude'])
-    lat2 = np.array(g2a['Latitude'])
-    alt2 = np.array(g2a['Altitude'])
-    Re = 6371*1000 # Earth radius, unit: m
-    RR = Re+alt2
-    omega = 2*np.pi/(24*3600)
-    rho2 = np.array(g2a['Rho'])
-    nwind2 = np.array(g2a['V!Dn!N (north)'])
-    ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
-    uwind2 = np.array(g2a['V!Dn!N (up)'])
-    rhodivv2 = rho2*(1.0/(RR**2) * np.gradient((RR**2)*uwind2, axis=2) \
-                     / np.gradient(alt2, axis=2))
+    velr = np.array(g2a['V!Dn!N (up)'])
+    rhodivv2 = np.array(g2a['Rho'])*gd.calc_divergence_up(g2a, velr)
+
     g1a['vert_rhodivv_diff'] = rhodivv1-rhodivv2
 
     apex = Apex(date=2003)
@@ -452,37 +432,29 @@ def plot_vert_rhodivv_diff(show=True, save=True):
 
 
 def plot_hozt_rhodivv_diff(show=True, save=True):
-    # density change (shrink)
-    lon1 = np.array(g1a['Longitude'])
+
     lat1 = np.array(g1a['Latitude'])
     alt1 = np.array(g1a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
     RR = Re+alt1
     omega = 2*np.pi/(24*3600)
-    rho1 = np.array(g1a['Rho'])
     nwind1 = np.array(g1a['V!Dn!N (north)'])
     ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
-    uwind1 = np.array(g1a['V!Dn!N (up)'])
-    rhodivv1 = rho1 * (1.0/(RR*np.cos(lat1))
-            * (np.gradient(nwind1*np.cos(lat1), axis=1)
-            / np.gradient(lat1, axis=1)
-            + np.gradient(ewind1, axis=0) / np.gradient(lon1, axis=0)))
+    rhodivv1 = g1a['Rho'] \
+            * (gd.calc_divergence_north(g1a, nwind1)\
+             + gd.calc_divergence_east(g1a, ewind1))
 
-    # density change (no shrink)
-    lon2 = np.array(g2a['Longitude'])
     lat2 = np.array(g2a['Latitude'])
     alt2 = np.array(g2a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
     RR = Re+alt2
     omega = 2*np.pi/(24*3600)
-    rho2 = np.array(g2a['Rho'])
     nwind2 = np.array(g2a['V!Dn!N (north)'])
     ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
-    uwind2 = np.array(g2a['V!Dn!N (up)'])
-    rhodivv2 = rho2 * (1.0/(RR*np.cos(lat2))
-            * (np.gradient(nwind2*np.cos(lat2), axis=1)
-            / np.gradient(lat2, axis=1)
-            + np.gradient(ewind2, axis=0) / np.gradient(lon2, axis=0)))
+    rhodivv2 = g2a['Rho'] \
+            * (gd.calc_divergence_north(g2a, nwind2)\
+             + gd.calc_divergence_east(g2a, ewind2))
+
     g1a['hozt_rhodivv_diff'] = rhodivv1-rhodivv2
 
     apex = Apex(date=2003)
@@ -529,33 +501,12 @@ def plot_hozt_rhodivv_diff(show=True, save=True):
 
 
 def plot_vert_vgradrho_diff(show=True, save=True):
-    # density change (shrink)
-    lon1 = np.array(g1a['Longitude'])
-    lat1 = np.array(g1a['Latitude'])
-    alt1 = np.array(g1a['Altitude'])
-    Re = 6371*1000 # Earth radius, unit: m
-    RR = Re+alt1
-    omega = 2*np.pi/(24*3600)
     rho1 = np.array(g1a['Rho'])
-    nwind1 = np.array(g1a['V!Dn!N (north)'])
-    ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
-    uwind1 = np.array(g1a['V!Dn!N (up)'])
-    vgradrho1 = uwind1 * (np.gradient(rho1, axis=2)
-                / np.gradient(alt1, axis=2))
+    vgradrho1 = g1a['V!Dn!N (up)']*gg.calc_gradient_up(g1a, rho1)
 
-    # density change (no shrink)
-    lon2 = np.array(g2a['Longitude'])
-    lat2 = np.array(g2a['Latitude'])
-    alt2 = np.array(g2a['Altitude'])
-    Re = 6371*1000 # Earth radius, unit: m
-    RR = Re+alt2
-    omega = 2*np.pi/(24*3600)
     rho2 = np.array(g2a['Rho'])
-    nwind2 = np.array(g2a['V!Dn!N (north)'])
-    ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
-    uwind2 = np.array(g2a['V!Dn!N (up)'])
-    vgradrho2 = uwind2 * (np.gradient(rho2, axis=2)
-                / np.gradient(alt2, axis=2))
+    vgradrho2 = g2a['V!Dn!N (up)']*gg.calc_gradient_up(g2a, rho2)
+
     g1a['vgradrho_diff'] = vgradrho1-vgradrho2
 
     apex = Apex(date=2003)
@@ -601,7 +552,6 @@ def plot_vert_vgradrho_diff(show=True, save=True):
 
 def plot_hozt_vgradrho_diff(show=True, save=True):
     # density change (shrink)
-    lon1 = np.array(g1a['Longitude'])
     lat1 = np.array(g1a['Latitude'])
     alt1 = np.array(g1a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -610,14 +560,10 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
     rho1 = np.array(g1a['Rho'])
     nwind1 = np.array(g1a['V!Dn!N (north)'])
     ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
-    uwind1 = np.array(g1a['V!Dn!N (up)'])
-    vgradrho1 = nwind1 * ((1.0/RR)*np.gradient(rho1, axis=1)
-                          / np.gradient(lat1, axis=1))\
-              + ewind1 * ((1.0/(RR*np.cos(lat1)))*np.gradient(rho1, axis=0)
-                          / np.gradient(lon1, axis=0))
+    vgradrho1 = nwind1*gg.calc_gradient_north(g1a, rho1) \
+              + ewind1*gg.calc_gradient_east(g1a, rho1)
 
     # density change (no shrink)
-    lon2 = np.array(g2a['Longitude'])
     lat2 = np.array(g2a['Latitude'])
     alt2 = np.array(g2a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -626,11 +572,8 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
     rho2 = np.array(g2a['Rho'])
     nwind2 = np.array(g2a['V!Dn!N (north)'])
     ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
-    uwind2 = np.array(g2a['V!Dn!N (up)'])
-    vgradrho2 = nwind2 * ((1.0/RR)*np.gradient(rho2, axis=1)
-                          / np.gradient(lat2, axis=1))\
-              + ewind2 * ((1.0/(RR*np.cos(lat2)))*np.gradient(rho2, axis=0)
-                          / np.gradient(lon2, axis=0))
+    vgradrho2 = nwind2*gg.calc_gradient_north(g2a, rho2) \
+              + ewind2*gg.calc_gradient_east(g2a, rho2)
     g1a['hozt_vgradrho_diff'] = vgradrho1-vgradrho2
 
     apex = Apex(date=2003)
@@ -676,7 +619,6 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
 
 def plot_divrhov_diff(show=True, save=True):
     # density change (shrink)
-    lon1 = np.array(g1a['Longitude'])
     lat1 = np.array(g1a['Latitude'])
     alt1 = np.array(g1a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -686,14 +628,11 @@ def plot_divrhov_diff(show=True, save=True):
     nwind1 = np.array(g1a['V!Dn!N (north)'])
     ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
     uwind1 = np.array(g1a['V!Dn!N (up)'])
-    div_rhov1 = (
-            1.0/(RR**2)
-          * np.gradient((RR**2)*rho1*uwind1, axis=2) / np.gradient(alt1, axis=2)
-          + 1.0/(RR*np.cos(lat1))
-          * (np.gradient(rho1*nwind1*np.cos(lat1), axis=1) / np.gradient(lat1, axis=1)
-             + np.gradient(rho1*ewind1, axis=0) / np.gradient(lon1, axis=0)))
+
+    div_rhov1 = gd.calc_divergence_up(g1a, rho1*uwind1) \
+              + gd.calc_divergence_north(g1a, rho1*nwind1)\
+              + gd.calc_divergence_east(g1a, rho1*ewind1)
     # density change (no shrink)
-    lon2 = np.array(g2a['Longitude'])
     lat2 = np.array(g2a['Latitude'])
     alt2 = np.array(g2a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -703,12 +642,9 @@ def plot_divrhov_diff(show=True, save=True):
     nwind2 = np.array(g2a['V!Dn!N (north)'])
     ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
     uwind2 = np.array(g2a['V!Dn!N (up)'])
-    div_rhov2 = (
-            1.0/(RR**2)
-          * np.gradient((RR**2)*rho2*uwind2, axis=2) / np.gradient(alt2, axis=2)
-          + 1.0/(RR*np.cos(lat2))
-          * (np.gradient(rho2*nwind2*np.cos(lat2), axis=1) / np.gradient(lat2, axis=1)
-             + np.gradient(rho2*ewind2, axis=0) / np.gradient(lon2, axis=0)))
+    div_rhov2 = gd.calc_divergence_up(g2a, rho2*uwind2) \
+              + gd.calc_divergence_north(g2a, rho2*nwind2)\
+              + gd.calc_divergence_east(g2a, rho2*ewind2)
     g1a['divrhov_diff'] = div_rhov1-div_rhov2
 
     apex = Apex(date=2003)
@@ -1152,6 +1088,19 @@ def plot_all_forces(show=True, save=True):
 
 if __name__=='__main__':
     import gc
+    import gitm
+    #----------------------------------
+    # fn1 = '/home/guod/simulation_output/momentum_analysis/'\
+    #      'run_shrink_iondrift_3_continue/data/3DALL_t030322_040000.bin'
+    # fn2 = '/home/guod/simulation_output/momentum_analysis/'\
+    #      'run_no_shrink_iondrift_3/data/3DALL_t030322_040000.bin'
+    # g1 = gitm.GitmBin(fn1)
+    # g2 = gitm.GitmBin(fn2)
+    # g=g2
+    # nlat, slat = -40, -90
+    # plot_den_win(show=True, save=False)
+    #-----------------------------------
+
     from PyPDF2 import PdfFileMerger, PdfFileReader
     Re = 6371*1000 # Earth radius, unit: m
 
@@ -1215,12 +1164,12 @@ if __name__=='__main__':
         # outpdf_vert_vgradrho.append(PdfFileReader(open(spath+'06_vert_vgradrho_diff_%s.pdf' % tstring, 'rb')))
         # plot_hozt_vgradrho_diff(show=False)
         # outpdf_hozt_vgradrho.append(PdfFileReader(open(spath+'08_hozt_vgradrho_diff_%s.pdf' % tstring, 'rb')))
-        # plot_divrhov_diff(show=False)
-        # outpdf_divrhov.append(PdfFileReader(open(spath+'09_divrhov_diff_%s.pdf' % tstring, 'rb')))
+        plot_divrhov_diff(show=False)
+        outpdf_divrhov.append(PdfFileReader(open(spath+'09_divrhov_diff_%s.pdf' % tstring, 'rb')))
         # plot_vert_pressure_gradient(show=False)
         # outpdf_vert_gradp.append(PdfFileReader(open(spath+'10_vert_gradp_diff_%s.pdf' % tstring, 'rb')))
-        plot_vert_forces(show=False)
-        outpdf_vert_force.append(PdfFileReader(open(spath+'11_vert_force_diff_%s.pdf' % tstring, 'rb')))
+        # plot_vert_forces(show=False)
+        # outpdf_vert_force.append(PdfFileReader(open(spath+'11_vert_force_diff_%s.pdf' % tstring, 'rb')))
 
     #outpdf_den_win.write(spath+'01_den_win_diff.pdf')
     #outpdf_temperature.write(spath+'02_temperature_diff.pdf')
@@ -1229,7 +1178,8 @@ if __name__=='__main__':
     #outpdf_vert_rhodivv.write(spath+'05_vert_rhodivv_diff.pdf')
     #outpdf_hozt_rhodivv.write(spath+'07_hozt_rhodivv_diff.pdf')
     #outpdf_vert_vgradrho.write(spath+'06_vert_vgradrho_diff.pdf')
-    #outpdf_divrhov.write(spath+'09_divrhov_diff.pdf')
+    #outpdf_hozt_vgradrho.write(spath+'08_hozt_vgradrho_diff.pdf')
+    outpdf_divrhov.write(spath+'09_divrhov_diff.pdf')
     #outpdf_vert_gradp.write(spath+'10_vert_gradp_diff.pdf')
-    outpdf_vert_force.write(spath+'11_vert_force.pdf')
+    #outpdf_vert_force.write(spath+'11_vert_force.pdf')
     gc.collect()
