@@ -17,6 +17,7 @@ import glob
 import pandas as pd
 import gitm_divergence_new as gd
 import gitm_gradient_new as gg
+import calc_rusanov as cr
 sns.set('paper', 'whitegrid')
 
 def plot_den_win(show=True, save=True):
@@ -383,10 +384,12 @@ def plot_ave_m_diff(show=True, save=True):
 
 def plot_vert_rhodivv_diff(show=True, save=True):
     velr = np.array(g1a['V!Dn!N (up)'])
-    rhodivv1 = np.array(g1a['Rho'])*gd.calc_divergence_up(g1a, velr)
+    #rhodivv1 = np.array(g1a['Rho'])*gd.calc_divergence_up(g1a, velr)
+    rhodivv1 = np.array(g1a['Rho'])*cr.calc_div_vert(g1a['Altitude'], velr)
 
     velr = np.array(g2a['V!Dn!N (up)'])
-    rhodivv2 = np.array(g2a['Rho'])*gd.calc_divergence_up(g2a, velr)
+    #rhodivv2 = np.array(g2a['Rho'])*gd.calc_divergence_up(g2a, velr)
+    rhodivv2 = np.array(g2a['Rho'])*cr.calc_div_vert(g2a['Altitude'], velr)
 
     g1a['vert_rhodivv_diff'] = rhodivv1-rhodivv2
 
@@ -1105,7 +1108,7 @@ if __name__=='__main__':
     Re = 6371*1000 # Earth radius, unit: m
 
     trange = pd.date_range(
-            '2003-03-22 00:00:00', '2003-03-22 04:00:00', freq='10min')
+            '2003-03-22 00:00:00', '2003-03-22 00:30:00', freq='10min')
     spath = '/home/guod/Documents/work/fig/density_cell/'\
             'why_no_low_density_cell_at_high_latitude/snapshot/'
     outpdf_den_win = PdfFileMerger()
@@ -1156,16 +1159,16 @@ if __name__=='__main__':
         # outpdf_pressure.append(PdfFileReader(open(spath+'03_pressure_diff_%s.pdf' % tstring, 'rb')))
         # plot_ave_m_diff(show=False)
         # outpdf_ave_m.append(PdfFileReader(open(spath+'04_ave_m_diff_%s.pdf' % tstring, 'rb')))
-        # plot_vert_rhodivv_diff(show=False)
-        # outpdf_vert_rhodivv.append(PdfFileReader(open(spath+'05_vert_rhodivv_diff_%s.pdf' % tstring, 'rb')))
+        plot_vert_rhodivv_diff(show=False)
+        outpdf_vert_rhodivv.append(PdfFileReader(open(spath+'05_vert_rhodivv_diff_%s.pdf' % tstring, 'rb')))
         # plot_hozt_rhodivv_diff(show=False)
         # outpdf_hozt_rhodivv.append(PdfFileReader(open(spath+'07_hozt_rhodivv_diff_%s.pdf' % tstring, 'rb')))
         # plot_vert_vgradrho_diff(show=False)
         # outpdf_vert_vgradrho.append(PdfFileReader(open(spath+'06_vert_vgradrho_diff_%s.pdf' % tstring, 'rb')))
         # plot_hozt_vgradrho_diff(show=False)
         # outpdf_hozt_vgradrho.append(PdfFileReader(open(spath+'08_hozt_vgradrho_diff_%s.pdf' % tstring, 'rb')))
-        plot_divrhov_diff(show=False)
-        outpdf_divrhov.append(PdfFileReader(open(spath+'09_divrhov_diff_%s.pdf' % tstring, 'rb')))
+        # plot_divrhov_diff(show=False)
+        # outpdf_divrhov.append(PdfFileReader(open(spath+'09_divrhov_diff_%s.pdf' % tstring, 'rb')))
         # plot_vert_pressure_gradient(show=False)
         # outpdf_vert_gradp.append(PdfFileReader(open(spath+'10_vert_gradp_diff_%s.pdf' % tstring, 'rb')))
         # plot_vert_forces(show=False)
@@ -1175,11 +1178,11 @@ if __name__=='__main__':
     #outpdf_temperature.write(spath+'02_temperature_diff.pdf')
     #outpdf_pressure.write(spath+'03_pressure_diff.pdf')
     #outpdf_ave_m.write(spath+'04_ave_m_diff.pdf')
-    #outpdf_vert_rhodivv.write(spath+'05_vert_rhodivv_diff.pdf')
+    outpdf_vert_rhodivv.write(spath+'05_vert_rhodivv_diff.pdf')
     #outpdf_hozt_rhodivv.write(spath+'07_hozt_rhodivv_diff.pdf')
     #outpdf_vert_vgradrho.write(spath+'06_vert_vgradrho_diff.pdf')
     #outpdf_hozt_vgradrho.write(spath+'08_hozt_vgradrho_diff.pdf')
-    outpdf_divrhov.write(spath+'09_divrhov_diff.pdf')
+    #outpdf_divrhov.write(spath+'09_divrhov_diff.pdf')
     #outpdf_vert_gradp.write(spath+'10_vert_gradp_diff.pdf')
     #outpdf_vert_force.write(spath+'11_vert_force.pdf')
     gc.collect()
