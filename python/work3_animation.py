@@ -24,11 +24,11 @@ def plot_animation_den_win(show=False, f107=150, which_alt=400):
     timeidx = pd.DatetimeIndex(start=stime, end=etime, freq='5min')
     if f107==150:
         fp1 = '/home/guod/simulation_output/momentum_analysis/'\
-              + 'run_shrink_iondrift_2_continue/data/'
+              + 'run_shrink_iondrift_3_continue/data/'
         fn1 = [glob.glob(fp1+'3DALL_t'+k.strftime('%y%m%d_%H%M')+'*.bin')[0]
                for k in timeidx]
         fp2 = '/home/guod/simulation_output/momentum_analysis/'\
-              + 'run_no_shrink_iondrift_2/data/'
+              + 'run_no_shrink_iondrift_3/data/'
         fn2 = [glob.glob(fp2+'3DALL_t'+k.strftime('%y%m%d_%H%M')+'*.bin')[0]
                for k in timeidx]
         rholevels = np.linspace(6e-12, 10e-12, 21)

@@ -26,6 +26,7 @@ def plot_den_win(show=True, save=True):
 
     plt.close('all')
     plt.figure(figsize=(7.26, 9.25))
+    g = g2a
     for ialt, alt in enumerate([120, 200, 300, 400, 500, 600]):
         alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, 2:-2]/1000-alt))+2
         alt_str = '%6.2f' % (g['Altitude'][0, 0, alt_ind]/1000)
@@ -33,12 +34,16 @@ def plot_den_win(show=True, save=True):
                 3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
                 centrallon=g3ca.calculate_centrallon(g, 'polar',  useLT=True),
                 coastlines=False)
+        # density
         lon0, lat0, zdata0 = g3ca.contour_data('Rho', g, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
         hc = ax.contourf(lon0, lat0, zdata0, 21,
                          transform=ccrs.PlateCarree(), cmap='jet',
                          extend='both')
+        hc = plt.colorbar(hc, pad=0.17)
+        hc.set_label(r'$\rho$ (kg/m$^3$)')
+        # wind
         lon0, lat0, ewind, nwind = g3ca.vector_data(g, 'neutral', alt=alt)
         lon0, lat0, ewind, nwind = g3ca.convert_vector(
                 lon0, lat0, ewind, nwind, plot_type='polar',
@@ -47,19 +52,28 @@ def plot_den_win(show=True, save=True):
                 lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
                 regrid_shape=20)
         ax.quiverkey(hq, 0.93, -0.1, 1000, '1000 m/s')
-        hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$\rho$ (kg/m$^3$)')
+        # hq = ax.streamplot(
+        #         lon0, lat0, ewind, nwind)
         ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        # rho difference
+        # lon3, lat3, zdata3 = g3ca.contour_data('Rho', g1a, alt=alt)
+        # lon4, lat4, zdata4 = g3ca.contour_data('Rho', g2a, alt=alt)
+        # diffrho = 100*(zdata4-zdata3)/zdata3
+        # hc = ax.contour(
+        #         lon4, lat4, diffrho, [-10], transform=ccrs.PlateCarree(),
+        #         colors='g',linestyles='-')
         plt.title('%s km' % alt_str, y=1.05)
+    plt.text(0.5, 0.95, 'Time: '+tstring, fontsize=15,
+            horizontalalignment='center', transform=plt.gcf().transFigure)
     if show:
         plt.show()
     if save:
-        plt.savefig(spath+'den_win.pdf')
+        plt.savefig(spath+'01_den_win_run2_%s.pdf' %tstring)
     return
 
 
 def plot_den_win_diff(show=True, save=True):
-    apex = Apex(date=2010)
+    apex = Apex(date=2003)
     qlat, qlon = apex.convert(-90, 0, source='apex', dest='geo', height=400)
 
     plt.close('all')
@@ -71,6 +85,7 @@ def plot_den_win_diff(show=True, save=True):
                 3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
                 centrallon=g3ca.calculate_centrallon(g1a, 'polar',  useLT=True),
                 coastlines=False)
+        # density difference
         lon1, lat1, zdata1 = g3ca.contour_data('Rho', g1a, alt=alt)
         lon2, lat2, zdata2 = g3ca.contour_data('Rho', g2a, alt=alt)
         fp = (lat1[:,0]>slat) & (lat1[:,0]<nlat)
@@ -79,6 +94,9 @@ def plot_den_win_diff(show=True, save=True):
         hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-20,20,21),
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
+        hc = plt.colorbar(hc, pad=0.17)
+        hc.set_label(r'$100*\frac{\rho2-\rho1}{\rho1}$ (%)')
+        # wind difference
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
         lon0, lat0 = lon1, lat1
@@ -89,9 +107,14 @@ def plot_den_win_diff(show=True, save=True):
                 lon0, lat0, ewind0, nwind0, scale=1000, scale_units='inches',
                 regrid_shape=20, headwidth=5)
         ax.quiverkey(hq, 0.93, -0.1, 300, '500 m/s')
-        hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$100*\frac{\rho2-\rho1}{\rho1}$ (%)')
         ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        # rho difference
+        lon3, lat3, zdata3 = g3ca.contour_data('Rho', g1a, alt=alt)
+        lon4, lat4, zdata4 = g3ca.contour_data('Rho', g2a, alt=alt)
+        diffrho = 100*(zdata4-zdata3)/zdata3
+        hc = ax.contour(
+                lon4, lat4, diffrho, [-10], transform=ccrs.PlateCarree(),
+                colors='g',linestyles='-')
         plt.title('%s km' % alt_str, y=1.05)
     plt.text(0.5, 0.95, 'Time: '+tstring, fontsize=15,
             horizontalalignment='center', transform=plt.gcf().transFigure)
@@ -133,13 +156,14 @@ def plot_ion_drift(show=True,save=True):
 
 
 def plot_temperature(show=True, save=True):
-    apex = Apex(date=2010)
+    apex = Apex(date=2003)
     qlat, qlon = apex.convert(90, 0, source='apex', dest='geo', height=400)
 
     plt.close('all')
     plt.figure(figsize=(7.26, 9.25))
+    g = g2a
     for ialt, alt in enumerate([120, 200, 300, 400, 500, 600]):
-        alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, :]/1000-alt))
+        alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, 2:-2]/1000-alt))+2
         alt_str = '%6.2f' % (g['Altitude'][0, 0, alt_ind]/1000)
         ax, projection = gcc.create_map(
                 3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
@@ -158,7 +182,7 @@ def plot_temperature(show=True, save=True):
     if show:
         plt.show()
     if save:
-        plt.savefig(spath+'temperature.pdf')
+        plt.savefig(spath+'02_temperature_run2_%s.pdf' % tstring)
     return
 
 
@@ -175,17 +199,36 @@ def plot_temperature_diff(show=True, save=True):
                 3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
                 centrallon=g3ca.calculate_centrallon(g1a, 'polar',  useLT=True),
                 coastlines=False)
+        # temperature
         lon1, lat1, zdata1 = g3ca.contour_data('Temperature', g1a, alt=alt)
         lon2, lat2, zdata2 = g3ca.contour_data('Temperature', g2a, alt=alt)
         fp = (lat1[:,0]>slat) & (lat1[:,0]<nlat)
-        lon0, lat0, zdata0 = lon1[fp, :], lat1[fp,:], \
-                             (100*(zdata2-zdata1)/zdata1)[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-20,20,21),
+        lon0, lat0, zdata0 = lon1[fp, :], lat1[fp,:], (zdata2-zdata1)[fp,:]
+        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-80,80,21),
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
         hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$100*\frac{T_2-T_1}{T_1}$ (%)')
+        hc.set_label(r'$T_2-T_1$ (K)')
+        # geomagnetic pole
         ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        # wind difference
+        lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
+        lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
+        lon0, lat0 = lon1, lat1
+        lon0, lat0, ewind0, nwind0 = g3ca.convert_vector(
+                lon0, lat0, ewind2-ewind1, nwind2-nwind1, plot_type='polar',
+                projection=projection)
+        hq = ax.quiver(
+                lon0, lat0, ewind0, nwind0, scale=1000, scale_units='inches',
+                regrid_shape=20, headwidth=5)
+        ax.quiverkey(hq, 0.93, -0.1, 300, '500 m/s')
+        # rho difference
+        lon3, lat3, zdata3 = g3ca.contour_data('Rho', g1a, alt=alt)
+        lon4, lat4, zdata4 = g3ca.contour_data('Rho', g2a, alt=alt)
+        diffrho = 100*(zdata4-zdata3)/zdata3
+        hc = ax.contour(
+                lon4, lat4, diffrho, [-10], transform=ccrs.PlateCarree(),
+                colors='g',linestyles='-')
         plt.title('%s km' % alt_str, y=1.05)
     plt.text(0.5, 0.95, 'Time: '+tstring, fontsize=15,
             horizontalalignment='center', transform=plt.gcf().transFigure)
@@ -291,24 +334,23 @@ def plot_pressure_diff(show=True, save=True):
 
 
 def plot_ave_m(show=True, save=True):
-    global g
+    g=g1a
     Re = 6371*1000 # Earth radius, unit: m
     ave_m = ((g['O(!U3!NP)']*16 + g['O!D2!N']*32 + g['N!D2!N']*28 +
               g['N(!U4!NS)']*14 + g['NO']*30 + g['N(!U2!ND)']*14 +
-              g['N(!U2!NP)']*14 + g['H']*2 + g['He']*4 + g['CO!D2!N']*44 +
+              g['N(!U2!NP)']*14 + g['H']*1 + g['He']*4 + g['CO!D2!N']*44 +
               g['O(!U1!ND)']*16) /
              (g['O(!U3!NP)']+g['O!D2!N']+g['N!D2!N']+g['N(!U4!NS)']+g['NO']+
               g['N(!U2!ND)']+g['N(!U2!NP)']+g['H']+g['He']+g['CO!D2!N']+
               g['O(!U1!ND)']))
-    g['ave_m'] = dmarray(
-            ave_m, attrs={'units':'', 'scale':'linear', 'name':'ave_m'})
-    apex = Apex(date=2010)
-    qlat, qlon = apex.convert(90, 0, source='apex', dest='geo', height=400)
+    g['ave_m'] = ave_m
+    apex = Apex(date=2003)
+    qlat, qlon = apex.convert(-90, 0, source='apex', dest='geo', height=400)
 
     plt.close('all')
     plt.figure(figsize=(7.26, 9.25))
     for ialt, alt in enumerate([120, 200, 300, 400, 500, 600]):
-        alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, :]/1000-alt))
+        alt_ind = np.argmin(np.abs(g['Altitude'][0, 0, 2:-2]/1000-alt))+2
         alt_str = '%6.2f' % (g['Altitude'][0, 0, alt_ind]/1000)
         ax, projection = gcc.create_map(
                 3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
@@ -327,7 +369,7 @@ def plot_ave_m(show=True, save=True):
     if show:
         plt.show()
     if save:
-        plt.savefig(spath+'ave_m.pdf')
+        plt.savefig(spath+'04_ave_m_%s.pdf' % tstring)
     return
 
 
@@ -335,21 +377,19 @@ def plot_ave_m_diff(show=True, save=True):
     Re = 6371*1000 # Earth radius, unit: m
     ave_m1 = ((g1a['O(!U3!NP)']*16 + g1a['O!D2!N']*32 + g1a['N!D2!N']*28 +
               g1a['N(!U4!NS)']*14 + g1a['NO']*30 + g1a['N(!U2!ND)']*14 +
-              g1a['N(!U2!NP)']*14 + g1a['H']*2 + g1a['He']*4 + g1a['CO!D2!N']*44 +
+              g1a['N(!U2!NP)']*14 + g1a['H']*1 + g1a['He']*4 + g1a['CO!D2!N']*44 +
               g1a['O(!U1!ND)']*16) /
              (g1a['O(!U3!NP)']+g1a['O!D2!N']+g1a['N!D2!N']+g1a['N(!U4!NS)']+g1a['NO']+
               g1a['N(!U2!ND)']+g1a['N(!U2!NP)']+g1a['H']+g1a['He']+g1a['CO!D2!N']+
               g1a['O(!U1!ND)']))
     ave_m2 = ((g2a['O(!U3!NP)']*16 + g2a['O!D2!N']*32 + g2a['N!D2!N']*28 +
               g2a['N(!U4!NS)']*14 + g2a['NO']*30 + g2a['N(!U2!ND)']*14 +
-              g2a['N(!U2!NP)']*14 + g2a['H']*2 + g2a['He']*4 + g2a['CO!D2!N']*44 +
+              g2a['N(!U2!NP)']*14 + g2a['H']*1 + g2a['He']*4 + g2a['CO!D2!N']*44 +
               g2a['O(!U1!ND)']*16) /
              (g2a['O(!U3!NP)']+g2a['O!D2!N']+g2a['N!D2!N']+g2a['N(!U4!NS)']+g2a['NO']+
               g2a['N(!U2!ND)']+g2a['N(!U2!NP)']+g2a['H']+g2a['He']+g2a['CO!D2!N']+
               g2a['O(!U1!ND)']))
-    g1a['ave_m_diff'] = dmarray(
-            100*(ave_m2-ave_m1)/ave_m1,
-            attrs={'units':'', 'scale':'linear', 'name':'ave_m'})
+    g1a['ave_m_diff'] = ave_m2-ave_m1
 
     apex = Apex(date=2003)
     qlat, qlon = apex.convert(-90, 0, source='apex', dest='geo', height=400)
@@ -366,11 +406,11 @@ def plot_ave_m_diff(show=True, save=True):
         lon0, lat0, zdata0 = g3ca.contour_data('ave_m_diff', g1a, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-20,20,21),
+        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-1,1,21),
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
         hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$100*\frac{M_2-M_1}{M_1}$ (%)')
+        hc.set_label(r'$M_2-M_1$')
         ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
         plt.title('%s km' % alt_str, y=1.05)
     plt.text(0.5, 0.95, 'Time: '+tstring, fontsize=15,
@@ -384,12 +424,10 @@ def plot_ave_m_diff(show=True, save=True):
 
 def plot_vert_rhodivv_diff(show=True, save=True):
     velr = np.array(g1a['V!Dn!N (up)'])
-    #rhodivv1 = np.array(g1a['Rho'])*gd.calc_divergence_up(g1a, velr)
-    rhodivv1 = np.array(g1a['Rho'])*cr.calc_div_vert(g1a['Altitude'], velr)
+    rhodivv1 = cr.calc_div_vert(g1a['Altitude'], velr)
 
     velr = np.array(g2a['V!Dn!N (up)'])
-    #rhodivv2 = np.array(g2a['Rho'])*gd.calc_divergence_up(g2a, velr)
-    rhodivv2 = np.array(g2a['Rho'])*cr.calc_div_vert(g2a['Altitude'], velr)
+    rhodivv2 = cr.calc_div_vert(g2a['Altitude'], velr)
 
     g1a['vert_rhodivv_diff'] = rhodivv1-rhodivv2
 
@@ -408,11 +446,13 @@ def plot_vert_rhodivv_diff(show=True, save=True):
         lon0, lat0, zdata0 = g3ca.contour_data('vert_rhodivv_diff', g1a, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, levels=den_change_label[ialt],
+        hc = ax.contourf(lon0, lat0, zdata0, levels=np.linspace(-1,1,21)*1e-4,
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
-        hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$\rho\nabla\cdot\vec{u}$ (up)')
+        hcb = plt.colorbar(hc, pad=0.17)
+        hcb.set_label(r'$\nabla\cdot\vec{u}$ (up)')
+        hcb.formatter.set_powerlimits((-2,2))
+        hcb.update_ticks()
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
         lon0, lat0 = lon1, lat1
@@ -442,10 +482,9 @@ def plot_hozt_rhodivv_diff(show=True, save=True):
     RR = Re+alt1
     omega = 2*np.pi/(24*3600)
     nwind1 = np.array(g1a['V!Dn!N (north)'])
-    ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
-    rhodivv1 = g1a['Rho'] \
-            * (gd.calc_divergence_north(g1a, nwind1)\
-             + gd.calc_divergence_east(g1a, ewind1))
+    ewind1 = np.array(g1a['V!Dn!N (east)'])# + omega*RR*np.cos(lat1)
+    rhodivv1 = cr.calc_div_hozt(
+            g1a['Longitude'], g1a['Latitude'], g1a['Altitude'], nwind1, ewind1)
 
     lat2 = np.array(g2a['Latitude'])
     alt2 = np.array(g2a['Altitude'])
@@ -453,10 +492,11 @@ def plot_hozt_rhodivv_diff(show=True, save=True):
     RR = Re+alt2
     omega = 2*np.pi/(24*3600)
     nwind2 = np.array(g2a['V!Dn!N (north)'])
-    ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
-    rhodivv2 = g2a['Rho'] \
-            * (gd.calc_divergence_north(g2a, nwind2)\
-             + gd.calc_divergence_east(g2a, ewind2))
+    ewind2 = np.array(g2a['V!Dn!N (east)']) #+ omega*RR*np.cos(lat2)
+    rhodivv2 = cr.calc_div_hozt(
+            g2a['Longitude'], g2a['Latitude'], g2a['Altitude'], nwind2, ewind2)
+    #rhodivv2 = g2a['Rho']*(gd.calc_divergence_north(g2a, nwind2)\
+    #                      +gd.calc_divergence_east(g2a, ewind2))
 
     g1a['hozt_rhodivv_diff'] = rhodivv1-rhodivv2
 
@@ -477,11 +517,13 @@ def plot_hozt_rhodivv_diff(show=True, save=True):
         lon0, lat0, zdata0 = g3ca.contour_data('hozt_rhodivv_diff', g1a, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, levels=den_change_label[ialt],
+        hc = ax.contourf(lon0, lat0, zdata0, levels=np.linspace(-1,1,21)*1e-4,
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
-        hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$\rho\nabla\cdot\vec{u}$ (horizontal)')
+        hcb = plt.colorbar(hc, pad=0.17)
+        hcb.formatter.set_powerlimits((0,0))
+        hcb.update_ticks()
+        hcb.set_label(r'$\nabla\cdot\vec{u}$ (horizontal)')
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
         lon0, lat0 = lon1, lat1
@@ -503,12 +545,88 @@ def plot_hozt_rhodivv_diff(show=True, save=True):
     return
 
 
+def plot_hozt_divvi_diff(show=True, save=True):
+
+    lat1 = np.array(g1a['Latitude'])
+    alt1 = np.array(g1a['Altitude'])
+    Re = 6371*1000 # Earth radius, unit: m
+    RR = Re+alt1
+    omega = 2*np.pi/(24*3600)
+    nwind1 = 0.1*np.array(g1a['V!Di!N (north)'])
+    ewind1 = 0.1*np.array(g1a['V!Di!N (east)']) # + omega*RR*np.cos(lat1)
+    rhodivv1 = cr.calc_div_hozt(
+            g1a['Longitude'], g1a['Latitude'], g1a['Altitude'], nwind1, ewind1)
+
+    lat2 = np.array(g2a['Latitude'])
+    alt2 = np.array(g2a['Altitude'])
+    Re = 6371*1000 # Earth radius, unit: m
+    RR = Re+alt2
+    omega = 2*np.pi/(24*3600)
+    nwind2 = np.array(g2a['V!Di!N (north)'])
+    ewind2 = np.array(g2a['V!Di!N (east)'])# + omega*RR*np.cos(lat2)
+    rhodivv2 = cr.calc_div_hozt(
+            g2a['Longitude'], g2a['Latitude'], g2a['Altitude'], nwind2, ewind2)
+
+    g1a['hozt_rhodivv_diff'] = rhodivv1-rhodivv2
+
+    apex = Apex(date=2003)
+    qlat, qlon = apex.convert(-90, 0, source='apex', dest='geo', height=400)
+
+    plt.close('all')
+    plt.figure(figsize=(7.26, 9.25))
+    for ialt, alt in enumerate([120, 200, 300, 400, 500, 600]):
+        alt_ind = np.argmin(np.abs(g1a['Altitude'][0, 0, :]/1000-alt))
+        alt_ind = np.min([alt_ind,g1a['Altitude'].shape[2]-3])
+        alt_ind = np.max([alt_ind,2])
+        alt_str = '%6.2f' % (g1a['Altitude'][0, 0, alt_ind]/1000)
+        ax, projection = gcc.create_map(
+                3, 2, ialt+1, 'polar', nlat=nlat, slat=slat, dlat=10,
+                centrallon=g3ca.calculate_centrallon(g1a, 'polar',  useLT=True),
+                coastlines=False)
+        lon0, lat0, zdata0 = g3ca.contour_data('hozt_rhodivv_diff', g1a, alt=alt)
+        fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
+        lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
+        hc = ax.contourf(lon0, lat0, zdata0, levels=np.linspace(-4,4,21)*1e-4,
+                         transform=ccrs.PlateCarree(), cmap='seismic',
+                         extend='both')
+        hcb = plt.colorbar(hc, pad=0.17)
+        hcb.formatter.set_powerlimits((0,0))
+        hcb.update_ticks()
+        hcb.set_label(r'$\nabla\cdot\vec{v_i}$ (horizontal)')
+        lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'ion', alt=alt)
+        lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'ion', alt=alt)
+        ewind1, nwind1 = 0.1*ewind1, 0.1*nwind1
+        lon0, lat0 = lon1, lat1
+        lon0, lat0, ewind0, nwind0 = g3ca.convert_vector(
+                lon0, lat0, ewind2-ewind1, nwind2-nwind1, plot_type='polar',
+                projection=projection)
+        hq = ax.quiver(
+                lon0, lat0, ewind0, nwind0, scale=1000, scale_units='inches',
+                regrid_shape=20, headwidth=5)
+        ax.quiverkey(hq, 0.93, -0.1, 300, '2500 m/s')
+        ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
+        plt.title('%s km' % alt_str, y=1.05)
+    plt.text(0.5, 0.95, 'Time: '+tstring, fontsize=15,
+            horizontalalignment='center', transform=plt.gcf().transFigure)
+    if show:
+        plt.show()
+    if save:
+        plt.savefig(spath+'07_hozt_divvi_diff_%s.pdf' % tstring)
+    return
+
+
 def plot_vert_vgradrho_diff(show=True, save=True):
     rho1 = np.array(g1a['Rho'])
-    vgradrho1 = g1a['V!Dn!N (up)']*gg.calc_gradient_up(g1a, rho1)
+    #vgradrho1 = g1a['V!Dn!N (up)']*gg.calc_gradient_up(g1a, rho1)
+    vgradrho1 = \
+            g1a['V!Dn!N (up)']\
+            *cr.calc_rusanov_alts_ausm(g1a['Altitude'],rho1)/g1a['Rho']
 
     rho2 = np.array(g2a['Rho'])
-    vgradrho2 = g2a['V!Dn!N (up)']*gg.calc_gradient_up(g2a, rho2)
+    #vgradrho2 = g2a['V!Dn!N (up)']*gg.calc_gradient_up(g2a, rho2)
+    vgradrho2 = \
+            g2a['V!Dn!N (up)']\
+            *cr.calc_rusanov_alts_ausm(g2a['Altitude'],rho2)/g2a['Rho']
 
     g1a['vgradrho_diff'] = vgradrho1-vgradrho2
 
@@ -527,11 +645,13 @@ def plot_vert_vgradrho_diff(show=True, save=True):
         lon0, lat0, zdata0 = g3ca.contour_data('vgradrho_diff', g1a, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, den_change_label[ialt],
+        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-1,1,21)*1e-4,
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
-        hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$\vec{u}\cdot\nabla\rho$ (up)')
+        hcb = plt.colorbar(hc, pad=0.17)
+        hcb.formatter.set_powerlimits((0,0))
+        hcb.update_ticks()
+        hcb.set_label(r'$\vec{u}\cdot\frac{\nabla\rho}{\rho}$ (up)')
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
         lon0, lat0 = lon1, lat1
@@ -555,6 +675,7 @@ def plot_vert_vgradrho_diff(show=True, save=True):
 
 def plot_hozt_vgradrho_diff(show=True, save=True):
     # density change (shrink)
+    lon1 = np.array(g1a['Longitude'])
     lat1 = np.array(g1a['Latitude'])
     alt1 = np.array(g1a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -563,10 +684,11 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
     rho1 = np.array(g1a['Rho'])
     nwind1 = np.array(g1a['V!Dn!N (north)'])
     ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
-    vgradrho1 = nwind1*gg.calc_gradient_north(g1a, rho1) \
-              + ewind1*gg.calc_gradient_east(g1a, rho1)
+    vgradrho1 = (nwind1*cr.calc_rusanov_lats(lat1,alt1,rho1)\
+               +ewind1*cr.calc_rusanov_lons(lon1,lat1,alt1,rho1))/rho1
 
     # density change (no shrink)
+    lon2 = np.array(g2a['Longitude'])
     lat2 = np.array(g2a['Latitude'])
     alt2 = np.array(g2a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -575,8 +697,8 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
     rho2 = np.array(g2a['Rho'])
     nwind2 = np.array(g2a['V!Dn!N (north)'])
     ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
-    vgradrho2 = nwind2*gg.calc_gradient_north(g2a, rho2) \
-              + ewind2*gg.calc_gradient_east(g2a, rho2)
+    vgradrho2 = (nwind2*cr.calc_rusanov_lats(lat2,alt2,rho2)\
+               +ewind2*cr.calc_rusanov_lons(lon2,lat2,alt2,rho2))/rho2
     g1a['hozt_vgradrho_diff'] = vgradrho1-vgradrho2
 
     apex = Apex(date=2003)
@@ -594,11 +716,13 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
         lon0, lat0, zdata0 = g3ca.contour_data('hozt_vgradrho_diff', g1a, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, den_change_label[ialt],
+        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-1,1,21)*1e-4,
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
         hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$\vec{u}\cdot\nabla\rho$ (horizontal)')
+        hc.formatter.set_powerlimits((0,0))
+        hc.update_ticks()
+        hc.set_label(r'$\vec{u}\cdot\frac{\nabla\rho}{\rho}$ (horizontal)')
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
         lon0, lat0 = lon1, lat1
@@ -622,6 +746,7 @@ def plot_hozt_vgradrho_diff(show=True, save=True):
 
 def plot_divrhov_diff(show=True, save=True):
     # density change (shrink)
+    lon1 = np.array(g1a['Longitude'])
     lat1 = np.array(g1a['Latitude'])
     alt1 = np.array(g1a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -631,11 +756,11 @@ def plot_divrhov_diff(show=True, save=True):
     nwind1 = np.array(g1a['V!Dn!N (north)'])
     ewind1 = np.array(g1a['V!Dn!N (east)']) + omega*RR*np.cos(lat1)
     uwind1 = np.array(g1a['V!Dn!N (up)'])
+    div_rhov1 = (cr.calc_div_hozt(lon1, lat1, alt1, rho1*nwind1, rho1*ewind1)\
+               +cr.calc_div_vert(alt1, rho1*uwind1))/rho1
 
-    div_rhov1 = gd.calc_divergence_up(g1a, rho1*uwind1) \
-              + gd.calc_divergence_north(g1a, rho1*nwind1)\
-              + gd.calc_divergence_east(g1a, rho1*ewind1)
     # density change (no shrink)
+    lon2 = np.array(g2a['Longitude'])
     lat2 = np.array(g2a['Latitude'])
     alt2 = np.array(g2a['Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
@@ -645,9 +770,8 @@ def plot_divrhov_diff(show=True, save=True):
     nwind2 = np.array(g2a['V!Dn!N (north)'])
     ewind2 = np.array(g2a['V!Dn!N (east)']) + omega*RR*np.cos(lat2)
     uwind2 = np.array(g2a['V!Dn!N (up)'])
-    div_rhov2 = gd.calc_divergence_up(g2a, rho2*uwind2) \
-              + gd.calc_divergence_north(g2a, rho2*nwind2)\
-              + gd.calc_divergence_east(g2a, rho2*ewind2)
+    div_rhov2 = (cr.calc_div_hozt(lon2, lat2, alt2, rho2*nwind2, rho2*ewind2)\
+               +cr.calc_div_vert(alt2, rho2*uwind2))/rho2
     g1a['divrhov_diff'] = div_rhov1-div_rhov2
 
     apex = Apex(date=2003)
@@ -665,11 +789,13 @@ def plot_divrhov_diff(show=True, save=True):
         lon0, lat0, zdata0 = g3ca.contour_data('divrhov_diff', g1a, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
-        hc = ax.contourf(lon0, lat0, zdata0, den_change_label[ialt],
+        hc = ax.contourf(lon0, lat0, zdata0, np.linspace(-1,1,21)*1e-4,
                          transform=ccrs.PlateCarree(), cmap='seismic',
                          extend='both')
         hc = plt.colorbar(hc, pad=0.17)
-        hc.set_label(r'$\nabla\cdot(\rho\vec{u})$')
+        hc.formatter.set_powerlimits((0,0))
+        hc.update_ticks()
+        hc.set_label(r'$\frac{\nabla\cdot(\rho\vec{u})}{\rho}$')
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1a, 'neutral', alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2a, 'neutral', alt=alt)
         lon0, lat0 = lon1, lat1
@@ -1092,31 +1218,36 @@ def plot_all_forces(show=True, save=True):
 if __name__=='__main__':
     import gc
     import gitm
+    import gitm_create_coordinate as gcc
     #----------------------------------
-    # fn1 = '/home/guod/simulation_output/momentum_analysis/'\
-    #      'run_shrink_iondrift_3_continue/data/3DALL_t030322_040000.bin'
-    # fn2 = '/home/guod/simulation_output/momentum_analysis/'\
-    #      'run_no_shrink_iondrift_3/data/3DALL_t030322_040000.bin'
-    # g1 = gitm.GitmBin(fn1)
-    # g2 = gitm.GitmBin(fn2)
-    # g=g2
-    # nlat, slat = -40, -90
-    # plot_den_win(show=True, save=False)
+    #    fn1 = '/home/guod/simulation_output/momentum_analysis/'\
+    #         'run_shrink_iondrift_3_continue/data/3DALL_t030322_000004.bin'
+    #    fn2 = '/home/guod/simulation_output/momentum_analysis/'\
+    #         'run_no_shrink_iondrift_3/data/3DALL_t030322_040000.bin'
+    #    fn3 = '/home/guod/tmp/3DALL_t030319_000000.bin'
+    #    g1 = gitm.GitmBin(fn1)
+    #    g2 = gitm.GitmBin(fn2)
+    #    g3 = gitm.GitmBin(fn3)
+    #    g1a=g3
+    #    tstring = '0000'
+    #    nlat, slat = -40, -90
+    #    plot_den_win(show=True, save=False)
     #-----------------------------------
-
     from PyPDF2 import PdfFileMerger, PdfFileReader
     Re = 6371*1000 # Earth radius, unit: m
 
     trange = pd.date_range(
-            '2003-03-22 00:00:00', '2003-03-22 00:30:00', freq='10min')
+            '2003-03-22 00:00:00', '2003-03-22 04:00:00', freq='10min')
     spath = '/home/guod/Documents/work/fig/density_cell/'\
-            'why_no_low_density_cell_at_high_latitude/snapshot/'
+            'why_no_low_density_cell_at_high_latitude/snapshot_polar/'
+    outpdf_den_win_diff = PdfFileMerger()
     outpdf_den_win = PdfFileMerger()
     outpdf_temperature = PdfFileMerger()
     outpdf_pressure = PdfFileMerger()
     outpdf_ave_m = PdfFileMerger()
     outpdf_vert_rhodivv = PdfFileMerger()
     outpdf_hozt_rhodivv = PdfFileMerger()
+    outpdf_hozt_divvi = PdfFileMerger()
     outpdf_vert_vgradrho = PdfFileMerger()
     outpdf_hozt_vgradrho = PdfFileMerger()
     outpdf_divrhov = PdfFileMerger()
@@ -1131,38 +1262,45 @@ if __name__=='__main__':
     for t in trange:
         tstring = t.strftime('%H%M')
         filename = glob.glob(
-                '/home/guod/simulation_output/momentum_analysis/run_shrink_iondrift_3_continue'\
+                '/home/guod/simulation_output/momentum_analysis/run_shrink_iondrift_4_c1'\
                 '/data/3DALL_t030322_%s*.bin' % tstring)[0]
         g1a = gitm.GitmBin(filename)
+        # filename = glob.glob(
+        #         '/home/guod/simulation_output/momentum_analysis/run_shrink_iondrift_3_continue'\
+        #         '/data/3DMOM_t030322_%s*.bin' % tstring)[0]
+        # g1m = gitm.GitmBin(filename)
         filename = glob.glob(
-                '/home/guod/simulation_output/momentum_analysis/run_shrink_iondrift_3_continue'\
-                '/data/3DMOM_t030322_%s*.bin' % tstring)[0]
-        g1m = gitm.GitmBin(filename)
-        filename = glob.glob(
-                '/home/guod/simulation_output/momentum_analysis/run_no_shrink_iondrift_3'\
+                '/home/guod/simulation_output/momentum_analysis/run_no_shrink_iondrift_4_1'\
                 '/data/3DALL_t030322_%s*.bin' % tstring)[0]
         g2a = gitm.GitmBin(filename)
-        filename = glob.glob(
-                '/home/guod/simulation_output/momentum_analysis/run_no_shrink_iondrift_3'\
-                '/data/3DMOM_t030322_%s*.bin' % tstring)[0]
-        g2m = gitm.GitmBin(filename)
+        # filename = glob.glob(
+        #         '/home/guod/simulation_output/momentum_analysis/run_no_shrink_iondrift_3'\
+        #         '/data/3DMOM_t030322_%s*.bin' % tstring)[0]
+        # g2m = gitm.GitmBin(filename)
 
         gp.calc_pressure(g1a)
         gp.calc_pressure(g2a)
         nlat, slat = -40, -90
 
         # plot_den_win_diff(show=False)
-        # outpdf_den_win.append(PdfFileReader(open(spath+'01_den_win_diff_%s.pdf' % tstring, 'rb')))
-        # plot_temperature_diff(show=False)
-        # outpdf_temperature.append(PdfFileReader(open(spath+'02_temperature_diff_%s.pdf' % tstring, 'rb')))
+        # outpdf_den_win_diff.append(PdfFileReader(open(spath+'01_den_win_diff_%s.pdf' % tstring, 'rb')))
+        # plot_den_win(show=False)
+        # outpdf_den_win.append(PdfFileReader(open(spath+'01_den_win_run2_%s.pdf' % tstring, 'rb')))
+        # plot_temperature(show=False)
+        # outpdf_temperature.append(PdfFileReader(open(spath+'02_temperature_run2_%s.pdf' % tstring, 'rb')))
+        plot_temperature_diff(show=False)
+        outpdf_temperature.append(PdfFileReader(open(spath+'02_temperature_diff_%s.pdf' % tstring, 'rb')))
         # plot_pressure_diff(show=False)
         # outpdf_pressure.append(PdfFileReader(open(spath+'03_pressure_diff_%s.pdf' % tstring, 'rb')))
         # plot_ave_m_diff(show=False)
         # outpdf_ave_m.append(PdfFileReader(open(spath+'04_ave_m_diff_%s.pdf' % tstring, 'rb')))
-        plot_vert_rhodivv_diff(show=False)
-        outpdf_vert_rhodivv.append(PdfFileReader(open(spath+'05_vert_rhodivv_diff_%s.pdf' % tstring, 'rb')))
+        # plot_ave_m(show=False)
+        # outpdf_ave_m.append(PdfFileReader(open(spath+'04_ave_m_%s.pdf' % tstring, 'rb')))
+        # plot_vert_rhodivv_diff(show=False)
+        # outpdf_vert_rhodivv.append(PdfFileReader(open(spath+'05_vert_rhodivv_diff_%s.pdf' % tstring, 'rb')))
         # plot_hozt_rhodivv_diff(show=False)
         # outpdf_hozt_rhodivv.append(PdfFileReader(open(spath+'07_hozt_rhodivv_diff_%s.pdf' % tstring, 'rb')))
+        # plot_hozt_divvi_diff(show=False)
         # plot_vert_vgradrho_diff(show=False)
         # outpdf_vert_vgradrho.append(PdfFileReader(open(spath+'06_vert_vgradrho_diff_%s.pdf' % tstring, 'rb')))
         # plot_hozt_vgradrho_diff(show=False)
@@ -1174,11 +1312,14 @@ if __name__=='__main__':
         # plot_vert_forces(show=False)
         # outpdf_vert_force.append(PdfFileReader(open(spath+'11_vert_force_diff_%s.pdf' % tstring, 'rb')))
 
-    #outpdf_den_win.write(spath+'01_den_win_diff.pdf')
-    #outpdf_temperature.write(spath+'02_temperature_diff.pdf')
+    #outpdf_den_win_diff.write(spath+'01_den_win_diff.pdf')
+    #outpdf_den_win.write(spath+'01_den_win_run2.pdf')
+    #outpdf_temperature.write(spath+'02_temperature.pdf')
+    outpdf_temperature.write(spath+'02_temperature_diff.pdf')
     #outpdf_pressure.write(spath+'03_pressure_diff.pdf')
     #outpdf_ave_m.write(spath+'04_ave_m_diff.pdf')
-    outpdf_vert_rhodivv.write(spath+'05_vert_rhodivv_diff.pdf')
+    #outpdf_ave_m.write(spath+'04_ave_m.pdf')
+    #outpdf_vert_rhodivv.write(spath+'05_vert_rhodivv_diff.pdf')
     #outpdf_hozt_rhodivv.write(spath+'07_hozt_rhodivv_diff.pdf')
     #outpdf_vert_vgradrho.write(spath+'06_vert_vgradrho_diff.pdf')
     #outpdf_hozt_vgradrho.write(spath+'08_hozt_vgradrho_diff.pdf')

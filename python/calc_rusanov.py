@@ -240,6 +240,7 @@ if __name__ == '__main__':
     from cartopy.util import add_cyclic_point
     import cartopy.crs as ccrs
     import matplotlib.pyplot as plt
+    import gitm_divergence_new as gd
     alt=400
     g1 = gitm.GitmBin('/home/guod/simulation_output/momentum_analysis/'
             'run_shrink_iondrift_3_continue/data/3DALL_t030322_013000.bin')
@@ -250,9 +251,7 @@ if __name__ == '__main__':
     velu = g1['V!Dn!N (up)']
     rho = g1['Rho']
 
-    #zdata1 = velu*calc_rusanov_alts_ausm(alts,rho)
     zdata1 = calc_div_vert(alts, rho*velu)+calc_div_hozt(lons, lats, alts, rho*veln,rho*vele)
-    #zdata1 = rho*calc_div_hozt(lons, lats, alts, veln, vele)
     dglat = np.array(g1['dLat'][0,2:-2,0])
     dglon = np.array(g1['dLon'][2:-2,0,0])
     zdata1, dglon = add_cyclic_point(zdata1[2:-2,2:-2,alt_ind].T, coord=dglon, axis=1)
@@ -264,20 +263,30 @@ if __name__ == '__main__':
     vele = g2['V!Dn!N (east)']+(2*np.pi)/(24*3600)*(6371*1000+alts)*np.cos(lats)
     velu = g2['V!Dn!N (up)']
     rho = g2['Rho']
-    #zdata2 = velu*calc_rusanov_alts_ausm(alts,rho)
-    zdata2 = calc_div_vert(alts, rho*velu)+calc_div_hozt(lons, lats, alts, rho*veln,rho*vele)
-    #zdata2 = rho*calc_div_hozt(lons, lats, alts, veln, vele)
+    zdata2 = calc_rusanov_lats(lats,alts,veln) - np.tan(lats)*veln/(6371*1000+alts)
+    zdata22 = gd.calc_divergence_north(g2,veln)
+    # zdata2 = calc_rusanov_lons(lons,lats,alts,vele)
+    # zdata22 = gd.calc_divergence_east(g2,vele)
+    #zdata2 = calc_div_hozt(lons, lats, alts, veln, vele)
+    #zdata22 = gd.calc_divergence_north(g2,veln)+gd.calc_divergence_east(g2,vele)
     dglat = np.array(g2['dLat'][0,2:-2,0])
     dglon = np.array(g2['dLon'][2:-2,0,0])
-    zdata2, dglon = add_cyclic_point(zdata2[2:-2,2:-2,alt_ind].T, coord=dglon, axis=1)
+    zdata2, dglon1 = add_cyclic_point(zdata2[2:-2,2:-2,alt_ind].T, coord=dglon, axis=1)
+    zdata22, dglon1 = add_cyclic_point(zdata22[2:-2,2:-2,alt_ind].T, coord=dglon, axis=1)
 
-    dglon,dglat = np.meshgrid(dglon, dglat)
+    dglon,dglat = np.meshgrid(dglon1, dglat)
     gt = g1['time']
     centrallon = (0-(gt.hour+gt.minute/60+gt.second/3600))*15
-    ax, projection = gcc.create_map(
-            1, 1, 1, 'polar', nlat=-40, slat=-90, centrallon=centrallon,
+    ax1, projection = gcc.create_map(
+            1, 2, 1, 'polar', nlat=-40, slat=-90, centrallon=centrallon,
             useLT=True, dlat=10)
-    ax.contourf(np.array(dglon), np.array(dglat), np.array(zdata1-zdata2),
-                levels=np.linspace(-5,5,21)*1e-16,transform=ccrs.PlateCarree(),
+    ax2, projection = gcc.create_map(
+            1, 2, 2, 'polar', nlat=-40, slat=-90, centrallon=centrallon,
+            useLT=True, dlat=10)
+    hct= ax1.contourf(np.array(dglon), np.array(dglat), np.array(zdata22),
+                levels=np.linspace(-2,2,21)*1e-4,transform=ccrs.PlateCarree(),
+                cmap='seismic',extend='both')
+    hct= ax2.contourf(np.array(dglon), np.array(dglat), np.array(zdata2-zdata22),
+                levels=np.linspace(-2,2,21)*1e-4,transform=ccrs.PlateCarree(),
                 cmap='seismic',extend='both')
     plt.show()

@@ -42,8 +42,8 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
     '''
     # Find altitude index
     if ialt == None:
-        altitude = gdata['Altitude'][0, 0, :]
-        ialt = np.argmin(abs(altitude-alt*1000)) # in GITM, unit of alt is m
+        altitude = gdata['Altitude'][0, 0, 2:-2]
+        ialt = np.argmin(abs(altitude-alt*1000))+2 # in GITM, unit of alt is m
 
     # Find the data
     lon0 = np.array(gdata['dLon'][2:-2, 0, 0])

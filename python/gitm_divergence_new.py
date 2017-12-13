@@ -29,10 +29,15 @@ def calc_divergence_north(g, datan):
                      for k in ['Latitude', 'Longitude', 'Altitude'])
     Re = 6371*1000 # Earth radius, unit: m
     RR = Re+alt
+    #divn[2:-2, 2:-2, 2:-2] = \
+    #        1.0/(RR*np.cos(lat)) \
+    #        * np.gradient(datan[2:-2, 2:-2, 2:-2]*np.cos(lat), axis=1, edge_order=2) \
+    #        / np.gradient(lat, axis=1, edge_order=2)
     divn[2:-2, 2:-2, 2:-2] = \
-            1.0/(RR*np.cos(lat)) \
-            * np.gradient(datan[2:-2, 2:-2, 2:-2]*np.cos(lat), axis=1, edge_order=2) \
-            / np.gradient(lat, axis=1, edge_order=2)
+            1.0/RR \
+            * (np.gradient(datan[2:-2, 2:-2, 2:-2], axis=1, edge_order=2) \
+               / np.gradient(lat, axis=1, edge_order=2)
+               -datan[2:-2,2:-2,2:-2]*np.tan(lat))
     for ialt, alt1 in enumerate(g['Altitude'][0, 0, 2:-2]):
         divn[2:-2, 2, ialt+2] = np.mean(divn[2:-2, 3, ialt+2])
         divn[2:-2, -2, ialt+2] = np.mean(divn[2:-2, -3, ialt+2])

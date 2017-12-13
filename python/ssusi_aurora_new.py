@@ -12,7 +12,7 @@ from scipy import stats
 from apexpy import Apex
 import fnmatch
 import omni
-sns.set('paper', 'whitegrid')
+sns.set('talk', 'whitegrid')
 
 # global variables
 LLP1 = 200  # Lower limit of pixels in one bin
@@ -71,7 +71,7 @@ def image_energy_flux_one_file(
     r = 90-MLat
     theta = MLT/12*np.pi
     hs = ax.scatter(theta, r, s=s, c=variable, vmin=vmin,
-                    vmax=vmax, alpha=alpha, cmap='jet')
+                    vmax=vmax, alpha=alpha, cmap='rainbow')
     # Set polar coordinates
     mf.set_polar(
             ax, ns='N', boundinglat=50,
@@ -1222,17 +1222,24 @@ def case_substorm():
     return ae
 
 if __name__ == '__main__':
-    # plt.close('all')
-    # sat = 'f16'
-    # year = 2011
-    # doy = 160
-    # path = '/home/guod/WD4T/ssusi/ssusi.jhuapl.edu/data/{:s}/'\
-    #        'apl/edr-aur/{:d}/{:03d}/'.format(sat, year, doy)
-    # fns = os.listdir(path)
-    # for fn in fns:
-    #     print(fn)
-    #     find_parameters_one_file_5(path+fn, test=True)
-    # plt.show()
+    plt.close('all')
+    sat = 'f16'
+    year = 2011
+    doy = 160
+    fn = '/home/guod/tmp/'\
+         'PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16-SSUSI_PA.APL-EDR-AURORA_DD.20110609_SN.39419-01_DF.NC'
+    ax = plt.subplot(111, polar=True)
+    image_energy_flux_one_file(
+        ax, fn, 'S', vmin=0, vmax=12, s=2, alpha=0.8, kernel_size=1)
+    pp1,pp2,pp3,pp4 = find_parameters_one_file_5(fn, test=False)
+    fp = ((pp2.ns == 'S') &(pp2.eftot != 0)).values
+    for k11 in [1, -1]:
+        r = 90-pp1[fp, k11]
+        theta = pp2.loc[fp, 'mlt']/12*np.pi
+        ax.scatter(theta, r, c='k', s=10)
+    mf.set_polar(ax, 'N', boundinglat=50)
+
+    plt.show()
 
     # find_parameters()
 
@@ -1249,7 +1256,7 @@ if __name__ == '__main__':
 
     # fourier_fit_save_parameters()
 
-    aurora_reconstruction_fit_all('ef', vmax=6)
+    # aurora_reconstruction_fit_all('ef', vmax=6)
 
     # difference between statistics and fourier fit
     # plt.close('all')
