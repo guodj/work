@@ -7,22 +7,20 @@
 
 import gitm
 import numpy as np
-import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 from cartopy.util import add_cyclic_point
-import gitm_create_coordinate as gcc
 import sys
 
 
 def calculate_centrallon(gdata, plot_type='polar', useLT=True):
-    centrallon = 0
+    centrallon = 0 # if useLT=False
     if useLT:
         gt = gdata['time']
         ut = (gt.hour + gt.minute/60 + gt.second/3600)
         if 'po' in plot_type:
-            centrallon = (0-ut)*15
+            centrallon = (0-ut)*15 # polar
         else:
-            centrallon = (12-ut)*15
+            centrallon = (12-ut)*15 # rectangular
     return centrallon
 
 def contour_data(zkey, gdata, alt=400, ialt=None):
@@ -37,7 +35,7 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
     Output: Lat, lon, zdata
     ***************************************************************************
     Note: Lon raries in x direction, lat varies in y direction. This is
-          different with GITM settings.
+          different with GITM.
     ***************************************************************************
     '''
     # Find altitude index
@@ -51,12 +49,11 @@ def contour_data(zkey, gdata, alt=400, ialt=None):
     zdata0 = np.array(gdata[zkey][2:-2, 2:-2, ialt])
     zdata0, lon0 = add_cyclic_point(zdata0.T, coord=lon0, axis=1)
     lon0, lat0 = np.meshgrid(lon0, lat0)
-    return np.array(lon0), np.array(lat0), np.array(zdata0)
+    return lon0, lat0, zdata0
 
 
 def vector_data(gdata, species, alt=400, ialt=None):
     '''
-    Obtain data for _vector_plot.
     Input: gdata      = gitm bin structure
            species    = 'neutral' or 'ion'
            alt        = altitude (default 400 km)
@@ -66,7 +63,7 @@ def vector_data(gdata, species, alt=400, ialt=None):
     Output: lat, lt, nwind, ewind
     ***************************************************************************
     Note: Lon raries in x direction, lat varies in y direction. This is
-          different with GITM settings.
+          different with GITM.
     ***************************************************************************
     '''
     # Find altitude index
@@ -86,10 +83,12 @@ def vector_data(gdata, species, alt=400, ialt=None):
     nwind, lon0 = add_cyclic_point(nwind.T, coord=lon0, axis=1)
     ewind = add_cyclic_point(ewind.T, axis=1)
     lon0, lat0 = np.meshgrid(lon0, lat0)
-    return np.array(lon0), np.array(lat0), np.array(ewind), np.array(nwind)
+    return lon0, lat0, ewind, nwind
 
 
 def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
+    # This function mainly converts any vector in the (lon, lat) coordinates
+    # to other coordinates.
     if 'po' in plot_type:
         if projection is None:
             sys.exit('projection is not given')
@@ -111,37 +110,55 @@ def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
         return lon0, lat0, ewind, nwind
 
 
+def test(g, alt=400, zstr='Rho', vector=True, neuion='neu', useLT=True):
+    import gitm_create_coordinate as gcc
+    import matplotlib.pyplot as plt
+    plt.close('all')
+    plt.figure(figsize=[8.38,8.12])
+    # Tested parameters
+    polar = [True, True, False]
+    nrow = [2,2,2]
+    ncol = [2,2,1]
+    nax = [1,2,2]
+    nlat = [90, -30, 90]
+    slat = [30, -90, -90]
+    dlat = [10, 10, 30]
+    for k in range(3):
+        ipolar = polar[k]
+        pr = 'pol' if ipolar else 'rec'
+        centrallon = calculate_centrallon(g, pr, useLT)
+        ax, projection = gcc.create_map(
+                nrow[k],ncol[k],nax[k], pr, nlat[k], slat[k], centrallon,
+                coastlines=False, dlat=dlat[k],
+                useLT=useLT, lonticklabel=(1, 1, 1, 1))
+        ialt = np.argmin(np.abs(g['Altitude'][0,0,:]/1000-alt))
+        # contour
+        lon0, lat0, zdata0 = contour_data(zstr, g, ialt=ialt)
+        fplat = (lat0[:,0]>=slat[k]) & (lat0[:,0]<=nlat[k])
+        lon0, lat0, zdata0 = (k[fplat,:] for k in [lon0, lat0, zdata0])
+        # hc = ax.contourf(lon0, lat0, zdata0, 21,
+        #         transform=ccrs.PlateCarree(),cmap='jet', extend='both')
+        # vector
+        if vector:
+            lon0, lat0, ewind0, nwind0 = vector_data(g,neuion,alt=alt)
+            lon0, lat0, ewind0, nwind0 = convert_vector(
+                lon0, lat0, ewind0, nwind0, pr, projection)
+            hq = ax.quiver(
+                lon0,lat0,ewind0,nwind0,scale=500,scale_units='inches',
+                regrid_shape=20)
+
+        # title
+        plt.title(zstr+' at '+'%.2f km' % (g['Altitude'][0,0,ialt]/1000),y=1.05)
+    plt.show()
+    return
+
+
+
+
 #END
 #------------------------------------------------------------------------------
 if __name__ == '__main__':
-    # test
-    plt.close('all')
-    path = '/home/guod/tmp/'
-    g = gitm.GitmBin(
-            path+'3DMOM_t030322_001000.bin',
-            varlist=['NeuPressureGrad (up)', 'GravityForce',
-                'VGradV (up)', 'CentriForce (up)', 'CoriolisForce (up)',
-                'ViscosityForce (up)','SpheGeomForce (up)'])
-    g['forces'] = g['NeuPressureGrad (up)']+g['GravityForce']+g['VGradV (up)']+\
-            g['CentriForce (up)']+g['CoriolisForce (up)']+\
-            g['SpheGeomForce (up)']+g['ViscosityForce (up)']
-
-    # Tested parameters
-    polar = True
-    useLT = True
-    nlat, slat, dlat, dlon = 90, 0, 10, 90
-    #-----------------------
-    pr = 'pol' if polar else 'rec'
-    centrallon = calculate_centrallon(g, pr, useLT)
-    ax, projection = gcc.create_map(
-            1,1,1, pr, nlat, slat, centrallon, coastlines=False, dlat=dlat,
-            dlon=dlon, useLT=useLT, lonticklabel=(1, 1, 1, 1), aspect=1.5)
-    lon0, lat0, zdata0 = contour_data('forces', g, alt=400)
-    hc = ax.contourf(lon0, lat0, zdata0, transform=ccrs.PlateCarree(),cmap='jet')
-    plt.colorbar(hc)
-    # lon0, lat0, ewind, nwind = vector_data(g, 'neutral', alt=400)
-    # lon0, lat0, ewind, nwind = convert_vector(
-    #         lon0, lat0, ewind, nwind, plot_type=pr, projection=projection)
-    # ax.quiver(lon0, lat0, ewind, nwind, scale=1500, scale_units='inches',
-    #           regrid_shape=30)
-    plt.show()
+    path = '/home/guod/simulation_output/momentum_analysis/run_no_shrink_iondrift_4_1'
+    fn = path+'/data/3DALL_t030322_003002.bin'
+    g = gitm.GitmBin(fn)
+    test(g,alt=400, zstr='Temperature', useLT=True)
