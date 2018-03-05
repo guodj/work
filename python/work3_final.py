@@ -81,6 +81,7 @@ def figure1_2(run=1):
         lon0, lat0, zdata0 = g3ca.contour_data('Temperature', g, alt=alt)
         fp = (lat0[:,0]>slat) & (lat0[:,0]<nlat)
         lon0, lat0, zdata0 = lon0[fp, :], lat0[fp,:], zdata0[fp,:]
+        print(np.max(zdata0))
         hc = ax.contourf(
             lon0, lat0, zdata0, templevels[ialt], transform=ccrs.PlateCarree(),
             cmap='jet', extend='both')
@@ -371,7 +372,7 @@ def figure4_6(alt=130):
                     lon0, lat0, ewind2-ewind1, nwind2-nwind1,
                     plot_type='polar', projection=projection)
             hq = ax.quiver(
-                    lon0, lat0, ewind0, nwind0, scale=1000,
+                    lon0, lat0, ewind0, nwind0, scale=800,
                     scale_units='inches', regrid_shape=20, headwidth=5)
             ax.scatter(qlon, qlat, color='k', transform=ccrs.PlateCarree())
             if idc==0:
@@ -427,14 +428,12 @@ def figure5_7(iialt=2):
 
     #--------------------------------------------------------------------------
     plt.sca(ax[0])
-    if iialt == 2:
-        levels = np.linspace(-10, 10, 21)
-    else:
-        levels = np.linspace(-5, 5, 21)
+    levels = np.linspace(-20, 20, 41)
     plt.contourf(
         xtime, lat, rho[:,iialt, iilt, :].T,
         levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
+    hcb.set_ticks(levels[::10])
     hcb.set_label(r'$\rho_d$ (%)')
     plt.ylabel('Latitude')
     plt.text(0.05,0.8,'(a)',transform=plt.gca().transAxes, color='r')
@@ -445,23 +444,26 @@ def figure5_7(iialt=2):
     #--------------------------------------------------------------------------
     plt.sca(ax[1])
     if iialt == 2:
-        levels = np.linspace(-200, 200, 21)
+        levels = np.linspace(-200, 200, 41)
     else:
-        levels = np.linspace(-30, 30, 21)
+        levels = np.linspace(-50, 50, 41)
     plt.contourf(
         xtime, lat, ewind[:,iialt, iilt, :].T,
         levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
-    hcb.set_label(r'East $u_d$ (m/s)')
+    hcb.set_ticks(levels[::10])
+    hcb.set_label(r'Zonal $u_d$ (m/s)')
     plt.ylabel('Latitude')
     plt.text(0.05,0.8,'(b)',transform=plt.gca().transAxes, color='r')
 
     #--------------------------------------------------------------------------
     plt.sca(ax[2])
+    levels = np.linspace(-5,5,41)*1e-5
     plt.contourf(
         xtime, lat, divrhov[:,iialt, iilt, :].T,
-        levels=np.linspace(-5,5,21)*1e-5, cmap='seismic', extend='both')
+        levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
+    hcb.set_ticks(levels[::10])
     hcb.formatter.set_powerlimits((0,0))
     hcb.update_ticks()
     hcb.set_label(r'$-\frac{\nabla\cdot(\rho U)}{\rho}$')
@@ -470,10 +472,12 @@ def figure5_7(iialt=2):
 
     #--------------------------------------------------------------------------
     plt.sca(ax[3])
+    levels = np.linspace(-5,5,41)*1e-5
     plt.contourf(
         xtime, lat, vdivv[:,iialt, iilt, :].T,
-        levels=np.linspace(-5,5,21)*1e-5, cmap='seismic', extend='both')
+        levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
+    hcb.set_ticks(levels[::10])
     hcb.formatter.set_powerlimits((0,0))
     hcb.update_ticks()
     hcb.set_label(r'$-\nabla\cdot w$')
@@ -482,10 +486,12 @@ def figure5_7(iialt=2):
 
     #--------------------------------------------------------------------------
     plt.sca(ax[4])
+    levels = np.linspace(-5,5,41)*1e-5
     plt.contourf(
         xtime, lat, hdivv[:,iialt, iilt, :].T,
-        levels=np.linspace(-5,5,21)*1e-5, cmap='seismic', extend='both')
+        levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
+    hcb.set_ticks(levels[::10])
     hcb.formatter.set_powerlimits((0,0))
     hcb.update_ticks()
     hcb.set_label(r'$-\nabla\cdot u$')
@@ -494,10 +500,12 @@ def figure5_7(iialt=2):
 
     #--------------------------------------------------------------------------
     plt.sca(ax[5])
+    levels = np.linspace(-5,5,41)*1e-5
     plt.contourf(
         xtime, lat, vgradrho[:,iialt, iilt, :].T,
-        levels=np.linspace(-5,5,21)*1e-5, cmap='seismic', extend='both')
+        levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
+    hcb.set_ticks(levels[::10])
     hcb.formatter.set_powerlimits((0,0))
     hcb.update_ticks()
     hcb.set_label(r'$-w\cdot\frac{\nabla\rho}{\rho}$')
@@ -506,10 +514,12 @@ def figure5_7(iialt=2):
 
     #--------------------------------------------------------------------------
     plt.sca(ax[6])
+    levels = np.linspace(-5,5,41)*1e-5
     plt.contourf(
         xtime, lat, hgradrho[:,iialt, iilt, :].T,
-        levels=np.linspace(-5,5,21)*1e-5, cmap='seismic', extend='both')
+        levels=levels, cmap='seismic', extend='both')
     hcb = plt.colorbar(extendrect=True, pad=0.05, aspect=10)
+    hcb.set_ticks(levels[::10])
     hcb.formatter.set_powerlimits((0,0))
     hcb.update_ticks()
     hcb.set_label(r'$-u\cdot\frac{\nabla\rho}{\rho}$')
@@ -532,6 +542,8 @@ def figure5_7(iialt=2):
                     'why_no_low_density_cell_at_high_latitude/figure7.eps')
 
     return
+
+
 if __name__ == '__main__':
     fn1 = '/home/guod/simulation_output/momentum_analysis/'\
           'run_shrink_iondrift_4_c1/data/3DALL_t030322_060000.bin'
@@ -541,10 +553,10 @@ if __name__ == '__main__':
     g2 = gitm.GitmBin(fn2)
     ut = g1['time'].hour +g1['time'].minute/60
     nlat, slat= -30, -90
-    #figure1_2(run=1)
-    #figure1_2(run=2)
-    #figure3()
+    figure1_2(run=1)
+    figure1_2(run=2)
+    # figure3()
     # figure4_6(alt=130)
     # figure4_6(alt=300)
-    figure5_7(iialt=0) # 0 for 129, 2 for 300
-    figure5_7(iialt=2) # 0 for 129, 2 for 300
+    # figure5_7(iialt=0) # 0 for 129, 2 for 300
+    # figure5_7(iialt=2) # 0 for 129, 2 for 300
