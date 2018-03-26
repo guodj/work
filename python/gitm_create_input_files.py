@@ -21,12 +21,12 @@ time = pd.date_range(btime, etime, freq=dt)
 #----------------------------------------
 # Write imf.dat
 dim = time.shape
-imfby1 = np.ones(dim)*5 # run1
+imfby1 = np.ones(dim)*0 # run1
 reversalt = etime-pd.Timedelta('6hour')
 mm = time>reversalt
 imfby2 = imfby1.copy()
 imfby2[mm] = imfby2[mm]+4.9
-imfbz1 = np.ones(dim)*-1
+imfbz1 = np.ones(dim)*-5
 imfbz2 = imfbz1.copy()
 imfbz2[mm] = imfbz2[mm]-1.1
 imfbx = np.zeros(dim)

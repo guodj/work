@@ -83,6 +83,7 @@ al	gitm_create_input_files.py	/^al = np.ones(dim)*-50+np.round(np.random.normal(
 alt	calc_rusanov.py	/^    alt=400$/;"	v
 alt	gitm_divergence.py	/^    alt = 400$/;"	v
 alt	gitm_vorticity.py	/^    alt = 200$/;"	v
+alt	vni_test.py	/^alt = g['Altitude'][2:-2,2:-2,2:-2]\/1000$/;"	v
 alt2	work3_why_no_cell_high_alt.py	/^alt2 = np.array(g2['Altitude'])$/;"	v
 alt_ind	calc_rusanov.py	/^    alt_ind = np.argmin(np.abs(g1['Altitude'][0,0,:]-alt*1000))$/;"	v
 alts	work3_lat_time.py	/^    alts = [130, 200, 300, 400, 500, 600]$/;"	v
@@ -160,7 +161,6 @@ case_substorm	ssusi_aurora_new_2.py	/^def case_substorm():$/;"	f
 cb	gitm_3d_test.py	/^cb=plt.colorbar(cnt)$/;"	v
 center_polar_cap	gitm_plot_rout.py	/^def center_polar_cap(rcenter, redge, r):$/;"	f
 centrallon	calc_rusanov.py	/^    centrallon = (0-(gt.hour+gt.minute\/60+gt.second\/3600))*15$/;"	v
-centrallon	gitm_create_coordinate.py	/^    centrallon = (12-(gt.hour+gt.minute\/60+gt.second\/3600))*15$/;"	v
 centrallon	gitm_divergence.py	/^    centrallon = g3ca.calculate_centrallon(gdata, 'polar', useLT=True)$/;"	v
 centrallon	gitm_gradient.py	/^    centrallon = g3ca.calculate_centrallon(g, 'polar', useLT=True)$/;"	v
 centrallon	gitm_vorticity.py	/^    centrallon = g3ca.calculate_centrallon(gdata, 'polar', useLT=True)$/;"	v
@@ -289,15 +289,18 @@ find_parameters_one_file_5	ssusi_aurora_new_2.py	/^def find_parameters_one_file_
 find_sunside_twilight_sza	gitm_plot_rout.py	/^    def find_sunside_twilight_sza(ut, lat_top, lat_bot, lon_top, lon_bot,$/;"	f
 fitEllipse	fit_ellipse.py	/^def fitEllipse(x,y):$/;"	f
 fkey	gitm_movie_script.py	/^        fkey = string.join(zkey.split(" "), "")$/;"	v
-fn	gitm_3D_const_alt.py	/^    fn = path+'\/data\/3DALL_t030322_003002.bin'$/;"	v
 fn	gitm_batch.py	/^    fn =  gitm_batch_variable['filename']$/;"	v
 fn	gitm_batch.py	/^fn = input('Enter filename to plot[%s]: ' % gitm_batch_variable['filename'])$/;"	v
 fn	gitm_vorticity.py	/^    fn = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/3DALL_t100323_042000.bin'$/;"	v
 fn	ssusi_aurora.py	/^    fn = (datapath+'PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16'$/;"	v
 fn	ssusi_aurora_new.py	/^         'PS.APL_V0105S024CE0018_SC.U_DI.A_GP.F16-SSUSI_PA.APL-EDR-AURORA_DD.20110609_SN.39419-01_DF.NC'$/;"	v
 fn1	work3_final.py	/^          'run_shrink_iondrift_4_c1\/data\/3DALL_t030322_060000.bin'$/;"	v
+fn1	work3_ut.py	/^    fn1 = path+'\/3DALL_t030322_060000.bin'$/;"	v
+fn1	work3_ut.py	/^    fn1 = path+'\/3DALL_t030322_060001.bin'$/;"	v
 fn1	work3_why_no_cell_high_alt.py	/^     'run_shrink_iondrift_4_c1\/data\/3DALL_t030322_060000.bin'$/;"	v
 fn2	work3_final.py	/^          'run_no_shrink_iondrift_4_1\/data\/3DALL_t030322_060000.bin'$/;"	v
+fn2	work3_ut.py	/^    fn2 = path+'\/3DALL_t030322_180001.bin'$/;"	v
+fn2	work3_ut.py	/^    fn2 = path+'\/3DALL_t030322_180002.bin'$/;"	v
 fn2	work3_why_no_cell_high_alt.py	/^     'run_no_shrink_iondrift_4_1\/data\/3DALL_t030322_060000.bin'$/;"	v
 fns1	work3_lat_time.py	/^    fns1 = [glob.glob(fp1+'3DALL_t'+k.strftime('%y%m%d_%H%M')+'*.bin')[0]$/;"	v
 fns2	work3_lat_time.py	/^    fns2 = [glob.glob(fp2+'3DALL_t'+k.strftime('%y%m%d_%H%M')+'*.bin')[0]$/;"	v
@@ -317,13 +320,12 @@ func2	test.py	/^def func2():$/;"	f
 func3	work3_100.py	/^def func3():$/;"	f
 func4	test.py	/^def func4():$/;"	f
 func5	test.py	/^def func5():$/;"	f
-g	gitm_3D_const_alt.py	/^    g = gitm.GitmBin(fn)$/;"	v
 g	gitm_3D_const_alt_old.py	/^    g = gitm.GitmBin($/;"	v
 g	gitm_batch.py	/^g = gitm.GitmBin(fn)$/;"	v
-g	gitm_create_coordinate.py	/^    g = gitm.GitmBin(gitmfn, varlist=['Rho'])$/;"	v
 g	gitm_gradient.py	/^    g = gitm.GitmBin($/;"	v
 g	gradient.py	/^    g = gitm.GitmBin($/;"	v
 g	tmp.py	/^g = gitm.GitmBin('\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/'$/;"	v
+g	vni_test.py	/^g=gitm.GitmBin('\/home\/guod\/simulation_output\/momentum_analysis\/'$/;"	v
 g1	calc_rusanov.py	/^    g1 = gitm.GitmBin('\/home\/guod\/simulation_output\/momentum_analysis\/'$/;"	v
 g1	work3_final.py	/^    g1 = gitm.GitmBin(fn1)$/;"	v
 g1	work3_why_no_cell_high_alt.py	/^g1 = gitm.GitmBin(fn1)$/;"	v
@@ -374,7 +376,6 @@ gitm_single_alt_image	gitm_alt_plots.py	/^def gitm_single_alt_image(plot_type, z
 gitm_single_nsglobal_3D_image	gitm_3D_global_plots.py	/^def gitm_single_nsglobal_3D_image(zkey, gdata, title=None, figname=None,$/;"	f
 gitm_time_obs_loc	gitm_loc_rout.py	/^def gitm_time_obs_loc(gtime, interp_gkey, interp_okey, obs_scale=1.0,$/;"	f
 gitmbins	gitm_movie_script.py	/^gitmbins = gt.load_multiple_gitm_bin(gitmlist)$/;"	v
-gitmfn	gitm_create_coordinate.py	/^    gitmfn='\/home\/guod\/WD4T\/gitm\/run_imfby\/run1c\/data\/3DALL_t100323_040500.bin'$/;"	v
 gitmlist	example_gitm_cindi_plot_script.py	/^gitmlist = raw_input('List of input GITM binaries: ')$/;"	v
 gitmlist	gitm_movie_script.py	/^gitmlist = raw_input('Ordered list of GITM binary files: ')$/;"	v
 gitmmag	example_gitm_cindi_plot_script.py	/^gitmmag = raw_input('Name of GITM 3DMAG or 3DION file: ')$/;"	v
@@ -384,7 +385,6 @@ gradp_label	work3_snapshot_polar.py	/^        [np.linspace(-0.035, 0.035,21),np.
 gradrho_rho	work3_why_no_cell_high_alt.py	/^gradrho_rho = np.sqrt(cr.calc_rusanov_lats(lat2,alt2,rho2)**2 +$/;"	v
 great_circle_distance_earth	myfunctions.py	/^def great_circle_distance_earth(lat1,lon1,lat2,lon2):$/;"	f
 gt	calc_rusanov.py	/^    gt = g1['time']$/;"	v
-gt	gitm_create_coordinate.py	/^    gt = g['time']$/;"	v
 h	work4_100.py	/^        h = plt.subplot(2,2,k,polar=True)$/;"	v
 hadvect	tmp.py	/^hadvect = ewind0 * grade0 + nwind0 * gradn0$/;"	v
 half_hour_condition	work3_100.py	/^def half_hour_condition():$/;"	f
@@ -417,15 +417,14 @@ image_energy_flux_one_file	ssusi_aurora_new_2.py	/^def image_energy_flux_one_fil
 imf_by_effect	ssusi_aurora_new.py	/^def imf_by_effect($/;"	f
 imf_by_effect	ssusi_aurora_new_2.py	/^def imf_by_effect($/;"	f
 imfbx	gitm_create_input_files.py	/^imfbx = np.zeros(dim)$/;"	v
-imfby1	gitm_create_input_files.py	/^imfby1 = np.ones(dim)*5 # run1$/;"	v
+imfby1	gitm_create_input_files.py	/^imfby1 = np.ones(dim)*0 # run1$/;"	v
 imfby2	gitm_create_input_files.py	/^imfby2 = imfby1.copy()$/;"	v
-imfbz1	gitm_create_input_files.py	/^imfbz1 = np.ones(dim)*-1$/;"	v
+imfbz1	gitm_create_input_files.py	/^imfbz1 = np.ones(dim)*-5$/;"	v
 imfbz2	gitm_create_input_files.py	/^imfbz2 = imfbz1.copy()$/;"	v
 initial_condition	work3_100.py	/^def initial_condition():$/;"	f
 issave	gitm_batch.py	/^    issave = gitm_batch_variable['save']$/;"	v
 issave	gitm_batch.py	/^issave = input('Save figure (y or n)? [%s]: ' % gitm_batch_variable['save'])$/;"	v
 kernel_size	ssusi_aurora.py	/^kernel_size = 3  # for method 5, use its own kernel_size$/;"	v
-lat	gitm_create_coordinate.py	/^    lat = g['Latitude'][0, 2:-2, 0]\/np.pi*180$/;"	v
 lat	myfunctions.py	/^    lat=np.arange(-90, 90)$/;"	v
 lat2	work3_why_no_cell_high_alt.py	/^lat2 = np.array(g2['Latitude'])$/;"	v
 lat2arglat	myfunctions.py	/^def lat2arglat(lat):$/;"	f
@@ -455,7 +454,6 @@ load_multiple_gitm_bin	gitm_time.py	/^def load_multiple_gitm_bin(filelist, magfi
 loadnetCDF_data	read_files.py	/^def loadnetCDF_data(filename, mult=False, *args, **kwargs):$/;"	f
 localtime_to_glon	gitm_plot_rout.py	/^def localtime_to_glon(ut_datetime, localtime):$/;"	f
 log10	gitm_batch.py	/^log10 = input('Enter whether you want log or not (y\/n) [n]: ')$/;"	v
-lon	gitm_create_coordinate.py	/^    lon = g['Longitude'][2:-2, 0, 0]\/np.pi*180$/;"	v
 lon2	work3_why_no_cell_high_alt.py	/^lon2 = np.array(g2['Longitude'])$/;"	v
 lon_lt_ticks	gitm.py	/^    def lon_lt_ticks(self, x, pos):$/;"	m	class:GitmBin
 lsize	example_gitm_cindi_plot_script.py	/^lsize = path.getsize(cindilist)$/;"	v
@@ -527,15 +525,17 @@ outpdf_vert_wind	work3_snapshot_alt_lat.py	/^    outpdf_vert_wind = PdfFileMerge
 p	gitm_3d_test.py	/^p=180.0\/np.pi$/;"	v
 parameters_fit	ssusi_aurora.py	/^def parameters_fit($/;"	f
 parameters_fit_all	ssusi_aurora.py	/^def parameters_fit_all(method=1):$/;"	f
-path	gitm_3D_const_alt.py	/^    path = '\/home\/guod\/simulation_output\/momentum_analysis\/run_no_shrink_iondrift_4_1'$/;"	v
 path	gitm_3D_const_alt_old.py	/^    path = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run1c\/data\/'$/;"	v
 path	gitm_divergence.py	/^    path = '\/home\/guod\/big\/raid4\/guod\/run_imfby\/run2c\/data\/'$/;"	v
 path	work3_animation_polar.py	/^           'why_no_low_density_cell_at_high_latitude\/animation_all_day\/'$/;"	v
+path	work3_ut.py	/^    path = 'D:\/simulation_results\/low_density_cell\/run_no_shrink_dipole_1_1\/UA\/data'$/;"	v
+path	work3_ut.py	/^    path = 'D:\/simulation_results\/low_density_cell\/run_no_shrink_igrf_1_1\/UA\/data'$/;"	v
 pdtime	work3_basic.py	/^    pdtime = pd.Timestamp(time)$/;"	v
 percentile	work2_101.py	/^    def percentile(n):$/;"	f	function:f2
 percentile	work2_101.py	/^    def percentile(n):$/;"	f	function:f3
 percentile_	work2_101.py	/^        def percentile_(x):$/;"	f	function:f2.percentile
 percentile_	work2_101.py	/^        def percentile_(x):$/;"	f	function:f3.percentile
+plot_06ut_18ut	work3_ut.py	/^def plot_06ut_18ut():$/;"	f
 plot_3D_alt	plot_alt_profiles.py	/^def plot_3D_alt(ax, x_data, alt_data, z_data, x_name, x_scale, x_units,$/;"	f
 plot_all	work3_lat_time.py	/^def plot_all():$/;"	f
 plot_alt_slices	plot_alt_profiles.py	/^def plot_alt_slices(x_data, alt_data, z_data, xdim, x_indices, x_name, x_scale,$/;"	f
@@ -570,10 +570,13 @@ plot_mult_alt_images	plot_alt_profiles.py	/^def plot_mult_alt_images(plot_type, 
 plot_net_gitm_comp	gitm_comparison_plots.py	/^def plot_net_gitm_comp(plot_type, lon_data, lat_data, obs_data, obs_name,$/;"	f
 plot_nsglobal_subfigure	plot_3D_global.py	/^def plot_nsglobal_subfigure(f, nsub, isub, lat_data, lon_data, z_data, zname,$/;"	f
 plot_omni	omni.py	/^def plot_omni(ax, bdate, edate, variables, res='1hour', **kwargs):$/;"	f
+plot_one_meridian	work3_ut.py	/^def plot_one_meridian():$/;"	f
 plot_polar_3D_global	plot_3D_global.py	/^def plot_polar_3D_global(ax, nsub, lat_data, lon_data, z_data, zname, zscale,$/;"	f
+plot_polar_contour_vector	work3_ut.py	/^def plot_polar_contour_vector($/;"	f
 plot_rectangular_3D_global	plot_3D_global.py	/^def plot_rectangular_3D_global(ax, lat_data, lon_data, z_data, zname, zscale,$/;"	f
 plot_rho	work3_lat_time.py	/^def plot_rho(read=True):$/;"	f
 plot_rho_diff	work3_snapshot_alt_lat.py	/^def plot_rho_diff(show=True, save=False):$/;"	f
+plot_rho_wind_ut	work3_ut.py	/^def plot_rho_wind_ut():$/;"	f
 plot_sat_gitm_comp	gitm_comparison_plots.py	/^def plot_sat_gitm_comp(sat_datetime, sat_data, gtrack, gkey, skey, tkey, bkey,$/;"	f
 plot_sat_gitm_comp	gitm_sat_plots.py	/^def plot_sat_gitm_comp(sat_datetime, sat_data, gtrack, gkey, skey, tkey, bkey,$/;"	f
 plot_single_3D_image	plot_3D_global.py	/^def plot_single_3D_image(plot_type, lat_data, lon_data, z_data, zname, zscale,$/;"	f
@@ -611,14 +614,16 @@ ptype	gitm_batch.py	/^ptype = input('Enter type of plot to make [1]: ')$/;"	v
 quickplot	gitm_diff_images.py	/^def quickplot(infile, outfile, min, max, backfile):$/;"	f
 quiver_champ_wind	work4_100.py	/^def quiver_champ_wind(bdate, edate, pole='N', updown='both', color='b'):$/;"	f
 r	ssusi_aurora_new.py	/^        r = 90-pp1[fp, k11]$/;"	v
+read	gitm_new.py	/^def read(filename, varlist=None, newfile=True):$/;"	f
 read_time	read_gps_bin.py	/^    def read_time(self, InTime):$/;"	m	class:GpsFile
 retrieve_key_from_web_name	gitm_plot_rout.py	/^def retrieve_key_from_web_name(name):$/;"	f
 reversalt	gitm_create_input_files.py	/^reversalt = etime-pd.Timedelta('6hour')$/;"	v
 rho	calc_rusanov.py	/^    rho = g1['Rho']$/;"	v
 rho	calc_rusanov.py	/^    rho = g2['Rho']$/;"	v
-rho	gitm_create_coordinate.py	/^    rho = g['Rho'][2:-2, 2:-2, 36]$/;"	v
+rho	vni_test.py	/^rho = g['Rho'][2:-2,2:-2,2:-2]$/;"	v
 rho	work3_why_no_cell_high_alt.py	/^    rho = g['Rho']$/;"	v
 rho2	work3_why_no_cell_high_alt.py	/^rho2 = np.array(g2['Rho'])$/;"	v
+rhoi	vni_test.py	/^rhoi = 1.66e-27*($/;"	v
 s	gitm_diff_images.py	/^    s = repr(i).zfill(4)$/;"	v
 sat	ssusi_aurora_new.py	/^    sat = 'f16'$/;"	v
 sat_dateloc_ticks	gitm_time.py	/^    def sat_dateloc_ticks(self, x, pos):$/;"	m	class:GitmTime
@@ -669,7 +674,7 @@ t4	gitm_create_input_files.py	/^t4 = np.zeros(dim)$/;"	v
 t5	gitm_create_input_files.py	/^t5 = np.zeros(dim)$/;"	v
 tem	gitm_create_input_files.py	/^tem = np.ones(dim)*50000$/;"	v
 temp	gitm_movie_script.py	/^        temp = nlat$/;"	v
-test	gitm_3D_const_alt.py	/^def test(g, alt=400, zstr='Rho', vector=True, neuion='neu', useLT=True):$/;"	f
+test	gitm_3D_const_alt.py	/^def test(g, alt=400, contour=True, zstr='Rho', vector=True, neuion='neu', useLT=True):$/;"	f
 test_find_parameters_one_file_12	ssusi_aurora.py	/^def test_find_parameters_one_file_12(fn, method=1):$/;"	f
 test_find_parameters_one_file_34	ssusi_aurora.py	/^def test_find_parameters_one_file_34(fn, method=3):$/;"	f
 test_find_parameters_one_file_5	ssusi_aurora.py	/^def test_find_parameters_one_file_5(fn):$/;"	f
@@ -694,7 +699,6 @@ tmax	example_gitm_cindi_plot_script.py	/^    tmax = ctrack['time'][-1]$/;"	v
 tmin	example_gitm_cindi_plot_script.py	/^    tmin = ctrack['time'][0]$/;"	v
 trange	work3_snapshot_alt_lat.py	/^    trange = pd.date_range($/;"	v
 trange	work3_snapshot_polar.py	/^    trange = pd.date_range($/;"	v
-transform	gitm_create_coordinate.py	/^                transform=ccrs.PlateCarree())$/;"	v
 transform	gitm_divergence.py	/^            transform=ccrs.PlateCarree(), cmap='seismic')$/;"	v
 transform	gitm_vorticity.py	/^            transform=ccrs.PlateCarree(), cmap='seismic')$/;"	v
 tstrday	work3_snapshot_polar.py	/^        tstrday = t.strftime('%d')$/;"	v
@@ -722,7 +726,10 @@ vi2	gitm_batch.py	/^    vi2 = -1$/;"	v
 vi2	gitm_batch.py	/^vi2 = input('Enter second var to plot as line contour (-1 for None) [-1]: ')$/;"	v
 vi2	gitm_batch.py	/^vi2 = int(vi2)$/;"	v
 video	gitm_movie_script.py	/^    video = ('ffmpeg', '-f', 'image2', '-i', "%s_%%%dd.png" % (plotbase, nmag),$/;"	v
+vin	vni_test.py	/^vin = g['Collision(in)'][2:-2,2:-2,2:-2]$/;"	v
 vline	gitm_create_input_files.py	/^vline = pd.date_range(btime, etime, freq='1D')$/;"	v
+vni	vni_test.py	/^vni = rhoi\/rho*vin$/;"	v
+vni_ave	vni_test.py	/^vni_ave = []$/;"	v
 vx	gitm_create_input_files.py	/^vx = np.ones(dim)*-450$/;"	v
 vy	gitm_create_input_files.py	/^vy = np.zeros(dim)$/;"	v
 vz	gitm_create_input_files.py	/^vz = np.zeros(dim)$/;"	v

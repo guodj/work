@@ -1,7 +1,6 @@
 import matplotlib.pyplot as plt
 import cartopy.crs as ccrs
 import numpy as np
-import gitm
 import matplotlib.path as mpath
 from matplotlib.offsetbox import AnchoredText
 import sys
@@ -133,19 +132,4 @@ def create_map(nrow, ncolumn, n, plot_type='polar', nlat=90, slat=-90,
                 aspect=aspect)
     return ax, projection
 if __name__ == '__main__':
-    plt.close('all')
-    plt.figure(figsize=(10, 10))
-    gitmfn='/home/guod/WD4T/gitm/run_imfby/run1c/data/3DALL_t100323_040500.bin'
-    g = gitm.GitmBin(gitmfn, varlist=['Rho'])
-    gt = g['time']
-    centrallon = (12-(gt.hour+gt.minute/60+gt.second/3600))*15
-    ax, projection = create_map(
-            1, 1, 1, 'polar', nlat=90, slat=0, centrallon=centrallon,
-            useLT=True, dlat=30)
-    lon = g['Longitude'][2:-2, 0, 0]/np.pi*180
-    lat = g['Latitude'][0, 2:-2, 0]/np.pi*180
-    rho = g['Rho'][2:-2, 2:-2, 36]
-    ax.contourf(np.array(lon), np.array(lat), np.array(rho).T,
-                transform=ccrs.PlateCarree())
-    plt.show()
-
+    pass

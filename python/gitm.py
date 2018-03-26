@@ -90,10 +90,10 @@ class GitmBin(PbData):
         self.calc_lt()
         self.append_units()
 
-        if magfile or filename.find("3DION") >= 0:
-            self.attrs['magfile']=magfile
-            self.calc_magdi()
-            self.calc_magvel()
+        #if magfile or filename.find("3DION") >= 0:
+        #    self.attrs['magfile']=magfile
+        #    self.calc_magdi()
+        #    self.calc_magvel()
 
     def __repr__(self):
         return 'GITM binary output file %s' % (self.attrs['file'])

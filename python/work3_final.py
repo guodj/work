@@ -1,17 +1,17 @@
 #Global imports
 import numpy as np
 import matplotlib.pyplot as plt
-from apexpy import Apex
-import gitm
+from aacmgv2 import convert
+import gitm_new as gitm
 import gitm_3D_const_alt as g3ca
 import gitm_create_coordinate as gcc
 import cartopy.crs as ccrs
 import calc_rusanov as cr
 import pandas as pd
 import glob
+import datetime as dt
 
 def figure1_2(run=1):
-    apex = Apex(date=2003)
     plt.close('all')
     plt.figure(figsize=(8.28, 9.25))
     if run==1:
@@ -287,8 +287,8 @@ def figure4_6(alt=130):
         fn2 = glob.glob(
             '/home/guod/simulation_output/momentum_analysis/'\
             'run_no_shrink_iondrift_4_1/data/3DALL_t%s*.bin' % strtime)
-        g1 = gitm.GitmBin(fn1[0])
-        g2 = gitm.GitmBin(fn2[0])
+        g1 = gitm.read(fn1[0])
+        g2 = gitm.read(fn2[0])
 
         lon1 = np.array(g1['Longitude'])
         lat1 = np.array(g1['Latitude'])
@@ -549,8 +549,8 @@ if __name__ == '__main__':
           'run_shrink_iondrift_4_c1/data/3DALL_t030322_060000.bin'
     fn2 = '/home/guod/simulation_output/momentum_analysis/'\
           'run_no_shrink_iondrift_4_1/data/3DALL_t030322_060000.bin'
-    g1 = gitm.GitmBin(fn1)
-    g2 = gitm.GitmBin(fn2)
+    g1 = gitm.read(fn1)
+    g2 = gitm.read(fn2)
     ut = g1['time'].hour +g1['time'].minute/60
     nlat, slat= -30, -90
     figure1_2(run=1)

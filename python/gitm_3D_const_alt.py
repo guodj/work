@@ -5,7 +5,6 @@
 #           time/longitude.
 #------------------------------------------------------------------------------
 
-import gitm
 import numpy as np
 import cartopy.crs as ccrs
 from cartopy.util import add_cyclic_point
@@ -110,7 +109,7 @@ def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
         return lon0, lat0, ewind, nwind
 
 
-def test(g, alt=400, zstr='Rho', vector=True, neuion='neu', useLT=True):
+def test(g, alt=400, contour=True, zstr='Rho', vector=True, neuion='neu', useLT=True):
     import gitm_create_coordinate as gcc
     import matplotlib.pyplot as plt
     plt.close('all')
@@ -133,18 +132,19 @@ def test(g, alt=400, zstr='Rho', vector=True, neuion='neu', useLT=True):
                 useLT=useLT, lonticklabel=(1, 1, 1, 1))
         ialt = np.argmin(np.abs(g['Altitude'][0,0,:]/1000-alt))
         # contour
-        lon0, lat0, zdata0 = contour_data(zstr, g, ialt=ialt)
-        fplat = (lat0[:,0]>=slat[k]) & (lat0[:,0]<=nlat[k])
-        lon0, lat0, zdata0 = (k[fplat,:] for k in [lon0, lat0, zdata0])
-        # hc = ax.contourf(lon0, lat0, zdata0, 21,
-        #         transform=ccrs.PlateCarree(),cmap='jet', extend='both')
+        if contour:
+            lon0, lat0, zdata0 = contour_data(zstr, g, ialt=ialt)
+            fplat = (lat0[:,0]>=slat[k]) & (lat0[:,0]<=nlat[k])
+            lon0, lat0, zdata0 = (k[fplat,:] for k in [lon0, lat0, zdata0])
+            hc = ax.contourf(lon0, lat0, zdata0, 21,
+                    transform=ccrs.PlateCarree(),cmap='jet', extend='both')
         # vector
         if vector:
             lon0, lat0, ewind0, nwind0 = vector_data(g,neuion,alt=alt)
             lon0, lat0, ewind0, nwind0 = convert_vector(
                 lon0, lat0, ewind0, nwind0, pr, projection)
             hq = ax.quiver(
-                lon0,lat0,ewind0,nwind0,scale=500,scale_units='inches',
+                lon0,lat0,ewind0,nwind0,scale=1500,scale_units='inches',
                 regrid_shape=20)
 
         # title
@@ -152,13 +152,7 @@ def test(g, alt=400, zstr='Rho', vector=True, neuion='neu', useLT=True):
     plt.show()
     return
 
-
-
-
 #END
 #------------------------------------------------------------------------------
 if __name__ == '__main__':
-    path = '/home/guod/simulation_output/momentum_analysis/run_no_shrink_iondrift_4_1'
-    fn = path+'/data/3DALL_t030322_003002.bin'
-    g = gitm.GitmBin(fn)
-    test(g,alt=400, zstr='Temperature', useLT=True)
+    pass
