@@ -1,7 +1,7 @@
 #Global imports
 import numpy as np
 import matplotlib.pyplot as plt
-import gitm
+import gitm_new as gitm
 import glob
 import pandas as pd
 import calc_rusanov as cr
@@ -11,7 +11,7 @@ def plot_rho(read=True):
     if read:
         rho = []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
             rho1, rho2 = g1['Rho'], g2['Rho']
             rhod = 100*(rho2 - rho1)/rho1
             rhot1 = []
@@ -44,7 +44,7 @@ def plot_ewind(read=True):
     if read:
         ewind= []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
             ewind1, ewind2 = g1['V!Dn!N (east)'], g2['V!Dn!N (east)']
             ewindd = ewind2 - ewind1
             ewindt1 = []
@@ -77,7 +77,7 @@ def plot_divrhov_rho(read=True):
     if read:
         divrhov = []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
             # density change (shrink)
             lon1 = np.array(g1['Longitude'])
             lat1 = np.array(g1['Latitude'])
@@ -139,7 +139,7 @@ def plot_vert_divv(read=True):
     if read:
         divv = []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
             velr = np.array(g1['V!Dn!N (up)'])
             div_v1 = cr.calc_div_vert(g1['Altitude'], velr)
 
@@ -177,7 +177,7 @@ def plot_hozt_divv(read=True):
     if read:
         divv = []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
             lat1 = np.array(g1['Latitude'])
             alt1 = np.array(g1['Altitude'])
             Re = 6371*1000 # Earth radius, unit: m
@@ -231,7 +231,7 @@ def plot_vert_vgradrho_rho(read=True):
     if read:
         gradrho = []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
             rho1 = np.array(g1['Rho'])
             vgradrho1 = \
                 g1['V!Dn!N (up)'] \
@@ -273,7 +273,7 @@ def plot_hozt_vgradrho_rho(read=True):
     if read:
         gradrho = []
         for fn1, fn2 in zip(fns1,fns2):
-            g1, g2 = gitm.GitmBin(fn1), gitm.GitmBin(fn2)
+            g1, g2 = gitm.read(fn1), gitm.read(fn2)
 
             lon1 = np.array(g1['Longitude'])
             lat1 = np.array(g1['Latitude'])
@@ -447,16 +447,16 @@ if __name__=='__main__':
     spath = '/home/guod/Documents/work/fig/density_cell/' \
             'why_no_low_density_cell_at_high_latitude/time_lat/lt07/'
 
-    alts = [130, 200, 300, 400, 500, 600]
+    alts = [150, 200, 300, 400, 500, 600]
     lts = [6, 7, 8, 9, 10, 11, 12]
     iialt = 2
     iilt = 1
-    #plot_rho(read=False)
-    #plot_ewind(read=False)
-    #plot_divrhov_rho(read=False)
-    #plot_vert_divv(read=False)
-    #plot_hozt_divv(read=False)
-    #plot_vert_vgradrho_rho(read=False)
-    #plot_hozt_vgradrho_rho(read=False)
-    plot_all()
+    plot_rho(read=True)
+    plot_ewind(read=True)
+    plot_divrhov_rho(read=True)
+    plot_vert_divv(read=True)
+    plot_hozt_divv(read=True)
+    plot_vert_vgradrho_rho(read=True)
+    plot_hozt_vgradrho_rho(read=True)
+    #plot_all()
     gc.collect()

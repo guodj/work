@@ -109,7 +109,7 @@ def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
         return lon0, lat0, ewind, nwind
 
 
-def test(g, alt=400, contour=True, zstr='Rho', vector=True, neuion='neu', useLT=True):
+def test(g, alt=400, contour=True, zstr='Rho',levels=None, vector=True, neuion='neu', scale=200, useLT=True):
     import gitm_create_coordinate as gcc
     import matplotlib.pyplot as plt
     plt.close('all')
@@ -136,15 +136,16 @@ def test(g, alt=400, contour=True, zstr='Rho', vector=True, neuion='neu', useLT=
             lon0, lat0, zdata0 = contour_data(zstr, g, ialt=ialt)
             fplat = (lat0[:,0]>=slat[k]) & (lat0[:,0]<=nlat[k])
             lon0, lat0, zdata0 = (k[fplat,:] for k in [lon0, lat0, zdata0])
-            hc = ax.contourf(lon0, lat0, zdata0, 21,
+            hc = ax.contourf(lon0, lat0, zdata0, 21 if levels is None else levels,
                     transform=ccrs.PlateCarree(),cmap='jet', extend='both')
+            print(np.max(zdata0), np.min(zdata0))
         # vector
         if vector:
             lon0, lat0, ewind0, nwind0 = vector_data(g,neuion,alt=alt)
             lon0, lat0, ewind0, nwind0 = convert_vector(
                 lon0, lat0, ewind0, nwind0, pr, projection)
             hq = ax.quiver(
-                lon0,lat0,ewind0,nwind0,scale=1500,scale_units='inches',
+                lon0,lat0,ewind0,nwind0,scale=scale,scale_units='inches',
                 regrid_shape=20)
 
         # title
@@ -155,4 +156,17 @@ def test(g, alt=400, contour=True, zstr='Rho', vector=True, neuion='neu', useLT=
 #END
 #------------------------------------------------------------------------------
 if __name__ == '__main__':
+    import gitm_new as gitm
+    import gitm_pressure
+    fn1 ='/home/guod/tmp/3DTHM_t030323_000004.bin'
+    fn2 ='/home/guod/tmp/3DALL_t030323_000004.bin'
+    g1 = gitm.read(fn1)
+    g2 = gitm.read(fn2)
+    fn = '/home/guod/simulation_output/momentum_analysis/run_shrink_no_tides_1_c1/UA/data/3DALL_t030322_060000.bin'
+    fn = '/home/guod/tmp/3DALL_t030311_000002.bin'
+    g = gitm.read(fn)
+    gitm_pressure.calc_pressure(g)
+    g2['totalenergy']=g1['EUV Heating']+g1['Auroral Heating']+g1['Joule Heating']+\
+                     g1['Conduction']+g1['NO Cooling']+g1['O Cooling']+g1['Chemical Heating']
+    test(g, alt=300, zstr='Rho', scale=1200)
     pass
