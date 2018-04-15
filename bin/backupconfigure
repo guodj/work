@@ -1,6 +1,6 @@
 #!/bin/bash
 cfdir="$HOME"/configure_files/
-rsync -a "$HOME"/{.vimrc,.bashrc,.gitconfig,.muttrc,.msmtprc,.tmux.conf} "$cfdir"
+rsync -a "$HOME"/{.vimrc,.bashrc,.gitconfig,.muttrc,.msmtprc,.tmux.conf,.Xmodmap} "$cfdir"
 rsync -a "$HOME"/.config/matplotlib/matplotlibrc "$cfdir".config/matplotlib/
 cd "$cfdir"
 read -p "Commit description: " desc

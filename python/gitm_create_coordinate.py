@@ -7,7 +7,7 @@ import sys
 
 def create_polar(nrow, ncolumn, n, nlat=90, slat=0, centrallon=0,
                  coastlines=True, lonticklabel=(1, 1, 1, 1),
-                 dlat=10, useLT=True, **kw):
+                 dlat=10, useLT=True, olat=True, **kw):
     '''
     lonticklabel : ticklabel at `top`, `right`, `bottom`, `left`
     centrallon : central longitude at 6 o'clock direction
@@ -65,12 +65,13 @@ def create_polar(nrow, ncolumn, n, nlat=90, slat=0, centrallon=0,
         lat = np.ones(lon.shape)*k
         ax.plot(lon, lat, '--', color='gray', lw=0.5,
                 transform=ccrs.PlateCarree())
-    at = AnchoredText('{:.0f}\u00B0'.format(boundinglat),
-                      loc=2, frameon=False,
-                      bbox_to_anchor=[0.5+0.5*np.sin(np.pi/4),
-                                      0.5-0.5*np.cos(np.pi/4)],
-                      pad=0, borderpad=0.12, prop=dict(weight='bold'),
-                      bbox_transform=ax.transAxes)
+    if olat:
+        at = AnchoredText('{:.0f}\u00B0'.format(boundinglat),
+                          loc=2, frameon=False,
+                          bbox_to_anchor=[0.5+0.5*np.sin(np.pi/4),
+                                          0.5-0.5*np.cos(np.pi/4)],
+                          pad=0, borderpad=0.12, prop=dict(weight='bold'),
+                          bbox_transform=ax.transAxes)
     ax.add_artist(at)
 
     # boundary
@@ -119,12 +120,12 @@ def create_rectangular(
 
 def create_map(nrow, ncolumn, n, plot_type='polar', nlat=90, slat=-90,
                centrallon=0, coastlines=True, dlat=30, dlon=90, useLT=True,
-               aspect=1, lonticklabel=(1, 1, 1, 1)):
+               aspect=1, lonticklabel=(1, 1, 1, 1), olat=True):
     if 'po' in plot_type:
         ax, projection = create_polar(
                 nrow, ncolumn, n, nlat=nlat, slat=slat, centrallon=centrallon,
                 coastlines=coastlines, lonticklabel=lonticklabel, dlat=dlat,
-                useLT=useLT)
+                useLT=useLT,olat=olat)
     else:
         ax, projection = create_rectangular(
                 nrow, ncolumn, n, nlat=nlat, slat=slat, centrallon=centrallon,

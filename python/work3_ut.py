@@ -27,7 +27,7 @@ def plot_polar_contour_vector(
     ax, projection = gcc.create_map(
             nrow, ncol, iax, 'pol', nlat, slat, centrallon,
             coastlines=coastlines, dlat=10,
-            useLT=useLT, lonticklabel=(0, 0, 1, 1))
+            useLT=useLT, lonticklabel=(1, 1, 1, 1))
     hc = []
     hq = []
     # contour
@@ -55,7 +55,7 @@ def plot_polar_contour_vector_diff(
     ax, projection = gcc.create_map(
             nrow, ncol, iax, 'pol', nlat, slat, centrallon,
             coastlines=coastlines, dlat=10,
-            useLT=useLT, lonticklabel=(0, 0, 1, 1))
+            useLT=useLT, lonticklabel=(1, 1, 1, 1))
     hc = []
     hq = []
     # contour
@@ -76,7 +76,9 @@ def plot_polar_contour_vector_diff(
             regrid_shape=20))
     return ax, projection, hc, hq
 
-def plot_06ut_18ut():
+def plot_06ut_18ut(ns='SH',alt=150,tf=[True,False,False,False,False,False]):
+    # 0:rho and wind; 1: diff rho and wind; 2:ion drag; 3:vni
+    # 4:ion density; 5:electron density; 6:ion convection
     path = '/home/guod/simulation_output/momentum_analysis/run_shrink_dipole_1_c1/UA/data'
     fn1 = path+'/3DALL_t030322_060002.bin'
     fn2 = path+'/3DALL_t030322_180002.bin'
@@ -97,237 +99,240 @@ def plot_06ut_18ut():
     fn2 = path+'/3DALL_t030322_180002.bin'
     g22 = [gitm.read(fn1), gitm.read(fn2)] # no shrink, igrf
 
-    #  # Rho and wind
-    #  plt.figure(1, figsize=(8, 7.55))
-    #  nlat, slat, alt = -30, -90, 300
-    #  #nlat, slat, alt = 90, 30, 300
-    #  glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  for k in range(4):
-    #      gtemp = g22 if k in [0, 1] else g21
-    #      ax, projection, hc, hq = plot_polar_contour_vector(
-    #          2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='Rho',
-    #          vector=True, neuion='neu', useLT=True, coastlines=False,
-    #          levels=np.linspace(1e-11, 4e-11, 21))
-    #      if k in [0, 1]:
-    #          ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-    #          ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-    #      if k in [0, 1]:
-    #          plt.title('UT: '+gtemp[k%2]['time'].strftime('%H%M'), y=1.03)
-    #      if k in [0, 2]:
-    #          text = 'IGRF' if k==0 else 'Dipole'
-    #          plt.text(
-    #              -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-    #              transform=plt.gca().transAxes, rotation=90)
-    #  plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    #  cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    #  plt.colorbar(
-    #      hc[0], cax=cax, orientation='horizontal',
-    #      ticks=np.arange(1e-11, 4.1e-11, 1e-11))
-    #  cax.set_xlabel(r'$\rho (kg/m^3)$')
-
-    #  # Difference Rho and wind
-    #  plt.figure(2, figsize=(8, 7.55))
-    #  nlat, slat, alt = -30, -90, 300
-    #  #nlat, slat, alt = 90, 30, 300
-    #  glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  glatn, glonn = convert( 90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  for k in range(4):
-    #      gtemp1 = g12 if k in [0, 1] else g11
-    #      gtemp2 = g22 if k in [0, 1] else g21
-    #      ax, projection, hc, hq = plot_polar_contour_vector_diff(
-    #          2, 2, k+1, gtemp1[k%2], gtemp2[k%2], nlat, slat, alt, contour=True,
-    #          zstr='Rho', vector=True, neuion='neu', useLT=True,
-    #          coastlines=False, levels=np.linspace(-30, 30, 21))
-    #      if k in [0, 1]:
-    #          ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-    #          ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-    #      if k in [0, 1]:
-    #          plt.title('UT: '+gtemp1[k%2]['time'].strftime('%H%M'), y=1.03)
-    #      if k in [0, 2]:
-    #          text = 'IGRF' if k==0 else 'Dipole'
-    #          plt.text(
-    #              -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-    #              transform=plt.gca().transAxes, rotation=90)
-    #  plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    #  cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    #  plt.colorbar(
-    #      hc[0], cax=cax, orientation='horizontal',
-    #      ticks=np.arange(-30, 31, 10))
-    #  cax.set_xlabel(r'$\rho_d (\%)$')
-
-    # ion drag
-    #  plt.figure(1, figsize=(8, 7.55))
-    #  nlat, slat, alt = -30, -90, 300
-    #  nlat, slat, alt = 90, 30, 300
-    #  glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  for k in range(4):
-    #      gtemp = g22 if k in [0, 1] else g21
-    #      calc_rhoi(gtemp[0])
-    #      calc_rhoi(gtemp[1])
-    #      gtemp[0]['iondrag'] = \
-    #          gtemp[0]['rhoi']/gtemp[0]['Rho']*gtemp[0]['Collision(in)']*\
-    #          np.sqrt((gtemp[0]['V!Di!N (east)']-gtemp[0]['V!Dn!N (east)'])**2 +\
-    #                  (gtemp[0]['V!Di!N (north)']-gtemp[0]['V!Dn!N (north)'])**2)
-    #      gtemp[1]['iondrag'] = \
-    #          gtemp[1]['rhoi']/gtemp[1]['Rho']*gtemp[1]['Collision(in)']*\
-    #          np.sqrt((gtemp[1]['V!Di!N (east)']-gtemp[1]['V!Dn!N (east)'])**2 +\
-    #                  (gtemp[1]['V!Di!N (north)']-gtemp[1]['V!Dn!N (north)'])**2)
-    #      ax, projection, hc, hq = plot_polar_contour_vector(
-    #          2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='iondrag',
-    #          vector=False, neuion='neu', useLT=True, coastlines=False,
-    #          levels=np.linspace(0, 0.2, 21))
-    #      if k in [0, 1]:
-    #          ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-    #          ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-    #      if k in [0, 1]:
-    #          plt.title('UT: '+gtemp[k%2]['time'].strftime('%H%M'), y=1.03)
-    #      if k in [0, 2]:
-    #          text = 'IGRF' if k==0 else 'Dipole'
-    #          plt.text(
-    #              -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-    #              transform=plt.gca().transAxes, rotation=90)
-    #  plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    #  cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    #  plt.colorbar(
-    #      hc[0], cax=cax, orientation='horizontal',
-    #      ticks=np.arange(0, 0.21, 0.05))
-    #  cax.set_xlabel(r'Ion Drag $(m/s^2)$')
-
-    #  # vni
-    #  plt.figure(1, figsize=(8, 7.55))
-    #  nlat, slat, alt = -30, -90, 300
-    #  nlat, slat, alt = 90, 30, 300
-    #  glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  for k in range(4):
-    #      gtemp = g22 if k in [0, 1] else g21
-    #      calc_rhoi(gtemp[0])
-    #      calc_rhoi(gtemp[1])
-    #      gtemp[0]['vni'] = \
-    #          gtemp[0]['rhoi']/gtemp[0]['Rho']*gtemp[0]['Collision(in)']
-    #      gtemp[1]['vni'] = \
-    #          gtemp[1]['rhoi']/gtemp[1]['Rho']*gtemp[1]['Collision(in)']
-    #      ax, projection, hc, hq = plot_polar_contour_vector(
-    #          2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='vni',
-    #          vector=False, neuion='neu', useLT=True, coastlines=False,
-    #          levels=np.linspace(0, 0.001, 21))
-    #      if k in [0, 1]:
-    #          ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-    #          ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-    #      if k in [0, 1]:
-    #          plt.title('UT: '+gtemp[k%2]['time'].strftime('%H%M'), y=1.03)
-    #      if k in [0, 2]:
-    #          text = 'IGRF' if k==0 else 'Dipole'
-    #          plt.text(
-    #              -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-    #              transform=plt.gca().transAxes, rotation=90)
-    #  plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    #  cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    #  plt.colorbar(
-    #      hc[0], cax=cax, orientation='horizontal',
-    #      ticks=np.arange(0, 0.0012, 0.0002))
-    #  cax.set_xlabel(r'$\nu_{ni}$ $(s^{-1})$')
-
-    #  # ion density
-    #  plt.figure(1, figsize=(8, 7.55))
-    #  nlat, slat, alt = -30, -90, 300
-    #  #nlat, slat, alt = 90, 30, 300
-    #  glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  for k in range(4):
-    #      gtemp = g22 if k in [0, 1] else g21
-    #      calc_rhoi(gtemp[0])
-    #      calc_rhoi(gtemp[1])
-    #      ax, projection, hc, hq = plot_polar_contour_vector(
-    #          2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='rhoi',
-    #          vector=False, neuion='neu', useLT=True, coastlines=False,
-    #          levels=np.linspace(0, 3e-14, 21))
-    #      if k in [0, 1]:
-    #          ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-    #          ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-    #      if k in [0, 1]:
-    #          plt.title('UT: '+gtemp[k%2]['time'].strftime('%H%M'), y=1.03)
-    #      if k in [0, 2]:
-    #          text = 'IGRF' if k==0 else 'Dipole'
-    #          plt.text(
-    #              -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-    #              transform=plt.gca().transAxes, rotation=90)
-    #  plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    #  cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    #  plt.colorbar(
-    #      hc[0], cax=cax, orientation='horizontal',
-    #      ticks=np.arange(0, 3.1e-14, 5e-15))
-    #  cax.set_xlabel(r'$\rho_i$ $(kg/m^3)$')
-
-    #  #  electron density
-    #  plt.figure(1, figsize=(8, 7.55))
-    #  nlat, slat, alt = -30, -90, 300
-    #  nlat, slat, alt = 90, 30, 300
-    #  glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    #  for k in range(4):
-    #      gtemp = g22 if k in [0, 1] else g21
-    #      calc_rhoi(gtemp[0])
-    #      calc_rhoi(gtemp[1])
-    #      ax, projection, hc, hq = plot_polar_contour_vector(
-    #          2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='e-',
-    #          vector=False, neuion='neu', useLT=True, coastlines=False,
-    #          levels=np.linspace(0, 1.5e12, 21))
-    #      if k in [0, 1]:
-    #          ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-    #          ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-    #      if k in [0, 1]:
-    #          plt.title('UT: '+gtemp[k%2]['time'].strftime('%H%M'), y=1.03)
-    #      if k in [0, 2]:
-    #          text = 'IGRF' if k==0 else 'Dipole'
-    #          plt.text(
-    #              -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-    #              transform=plt.gca().transAxes, rotation=90)
-    #  plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    #  cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    #  plt.colorbar(
-    #      hc[0], cax=cax, orientation='horizontal',
-    #      ticks=np.arange(0, 1.6e12, 0.3e12))
-    #  cax.set_xlabel(r'Ne ($m^{-3}$)')
-
-    # ion convection
-    plt.figure(1, figsize=(8, 7.55))
-    nlat, slat, alt = -30, -90, 300
-    nlat, slat, alt = 90, 30, 300
+    if ns == 'SH':
+        nlat, slat = -30, -90
+    elif ns == 'NH':
+        nlat, slat = 90, 30
     glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
     glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    for k in range(4):
-        gtemp = g22 if k in [0, 1] else g21
-        gtemp[0]['vi'] = np.sqrt(
-            gtemp[0]['V!Di!N (east)']**2 + gtemp[0]['V!Di!N (north)']**2)
-        gtemp[1]['vi'] = np.sqrt(
-            gtemp[1]['V!Di!N (east)']**2 + gtemp[1]['V!Di!N (north)']**2)
-        ax, projection, hc, hq = plot_polar_contour_vector(
-            2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='vi',
-            vector=True, neuion='ion', useLT=True, coastlines=False,
-            levels=np.linspace(0, 1000, 21))
-        if k in [0, 1]:
-            ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
-            ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
-        if k in [0, 1]:
-            plt.title('UT: '+gtemp[k%2]['time'].strftime('%H%M'), y=1.03)
-        if k in [0, 2]:
-            text = 'IGRF' if k==0 else 'Dipole'
-            plt.text(
-                -0.2, 0.5, text, fontsize=14, verticalalignment='center',
-                transform=plt.gca().transAxes, rotation=90)
-    plt.subplots_adjust(bottom=0.13,top=0.94, wspace=0.1, hspace=0.1)
-    cax = plt.axes([0.3, 0.08, 0.4, 0.02])
-    plt.colorbar(
-        hc[0], cax=cax, orientation='horizontal',
-        ticks=np.arange(0, 1001, 200))
-    cax.set_xlabel(r'Vi (m/s)')
+    # Rho and wind
+    if tf[0]:
+        plt.figure(1, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp = g22 if k in [0, 1] else g21
+            ax, projection, hc, hq = plot_polar_contour_vector(
+                2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='Rho',
+                vector=True, neuion='neu', useLT=True, coastlines=False,
+                levels=np.linspace(0.8e-9, 2e-9, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp[k%2]['time'].strftime('%H'), y=1.05)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(1e-19, 4.1e-19, 1e-19))
+        cax.set_xlabel(r'$\rho (kg/m^3)$')
+        plt.savefig(savepath+'2'+ns+'RhoWind.jpeg')
+        plt.savefig(savepath+'2'+ns+'RhoWind.eps')
+
+    # Difference Rho and wind
+    if tf[1]:
+        plt.figure(2, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp1 = g12 if k in [0, 1] else g11
+            gtemp2 = g22 if k in [0, 1] else g21
+            ax, projection, hc, hq = plot_polar_contour_vector_diff(
+                2, 2, k+1, gtemp1[k%2], gtemp2[k%2], nlat, slat, alt, contour=True,
+                zstr='Rho', vector=True, neuion='neu', useLT=True,
+                coastlines=False, levels=np.linspace(-30, 30, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp1[k%2]['time'].strftime('%H'), y=1.05)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(-30, 31, 10))
+        cax.set_xlabel(r'$\delta\rho$ (%)')
+        plt.savefig(savepath+'3SHDiffRhoWind.jpeg')
+        plt.savefig(savepath+'3SHDiffRhoWind.eps')
+
+    # ion drag
+    if tf[2]:
+        plt.figure(1, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp = g22 if k in [0, 1] else g21
+            calc_rhoi(gtemp[0])
+            calc_rhoi(gtemp[1])
+            gtemp[0]['iondrag'] = \
+                gtemp[0]['rhoi']/gtemp[0]['Rho']*gtemp[0]['Collision(in)']*\
+                np.sqrt((gtemp[0]['V!Di!N (east)']-gtemp[0]['V!Dn!N (east)'])**2 +\
+                        (gtemp[0]['V!Di!N (north)']-gtemp[0]['V!Dn!N (north)'])**2)
+            gtemp[1]['iondrag'] = \
+                gtemp[1]['rhoi']/gtemp[1]['Rho']*gtemp[1]['Collision(in)']*\
+                np.sqrt((gtemp[1]['V!Di!N (east)']-gtemp[1]['V!Dn!N (east)'])**2 +\
+                        (gtemp[1]['V!Di!N (north)']-gtemp[1]['V!Dn!N (north)'])**2)
+            ax, projection, hc, hq = plot_polar_contour_vector(
+                2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='iondrag',
+                vector=False, neuion='neu', useLT=True, coastlines=False,
+                levels=np.linspace(0, 0.2, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp[k%2]['time'].strftime('%H'), y=1.05)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(0, 0.21, 0.05))
+        cax.set_xlabel(r'Ion Drag $(m/s^2)$')
+
+    # vni
+    if tf[3]:
+        plt.figure(1, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp = g22 if k in [0, 1] else g21
+            calc_rhoi(gtemp[0])
+            calc_rhoi(gtemp[1])
+            gtemp[0]['vni'] = \
+                gtemp[0]['rhoi']/gtemp[0]['Rho']*gtemp[0]['Collision(in)']
+            gtemp[1]['vni'] = \
+                gtemp[1]['rhoi']/gtemp[1]['Rho']*gtemp[1]['Collision(in)']
+            ax, projection, hc, hq = plot_polar_contour_vector(
+                2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='vni',
+                vector=False, neuion='neu', useLT=True, coastlines=False,
+                levels=np.linspace(0, 0.001, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp[k%2]['time'].strftime('%H'), y=1.03)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(0, 0.0012, 0.0002))
+        cax.set_xlabel(r'$\nu_{ni}$ $(s^{-1})$')
+
+    # ion density
+    if tf[4]:
+        plt.figure(1, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp = g22 if k in [0, 1] else g21
+            calc_rhoi(gtemp[0])
+            calc_rhoi(gtemp[1])
+            ax, projection, hc, hq = plot_polar_contour_vector(
+                2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='rhoi',
+                vector=False, neuion='neu', useLT=True, coastlines=False,
+                levels=np.linspace(0, 3e-14, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp[k%2]['time'].strftime('%H'), y=1.03)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(0, 3.1e-14, 5e-15))
+        cax.set_xlabel(r'$\rho_i$ $(kg/m^3)$')
+
+    #  electron density
+    if tf[5]:
+        plt.figure(1, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp = g22 if k in [0, 1] else g21
+            calc_rhoi(gtemp[0])
+            calc_rhoi(gtemp[1])
+            ax, projection, hc, hq = plot_polar_contour_vector(
+                2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='e-',
+                vector=False, neuion='neu', useLT=True, coastlines=False,
+                levels=np.linspace(0, 1.5e12, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp[k%2]['time'].strftime('%H'), y=1.03)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(0, 1.6e12, 0.3e12))
+        cax.set_xlabel(r'Ne ($m^{-3}$)')
+
+    # ion convection
+    if tf[6]:
+        plt.figure(1, figsize=(8, 7.55))
+        for k in range(4):
+            gtemp = g22 if k in [0, 1] else g21
+            gtemp[0]['vi'] = np.sqrt(
+                gtemp[0]['V!Di!N (east)']**2 + gtemp[0]['V!Di!N (north)']**2)
+            gtemp[1]['vi'] = np.sqrt(
+                gtemp[1]['V!Di!N (east)']**2 + gtemp[1]['V!Di!N (north)']**2)
+            ax, projection, hc, hq = plot_polar_contour_vector(
+                2, 2, k+1, gtemp[k%2], nlat, slat, alt, contour=True, zstr='vi',
+                vector=True, neuion='ion', useLT=True, coastlines=False,
+                levels=np.linspace(0, 1000, 21))
+            if k in [0, 1]:
+                ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=55, c='k')
+                ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=55, c='k')
+            ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=55, c='w',zorder=100)
+            if k in [0, 1]:
+                plt.title('UT: '+gtemp[k%2]['time'].strftime('%H'), y=1.03)
+            if k in [0, 2]:
+                text = 'IGRF' if k==0 else 'Dipole'
+                plt.text(
+                    -0.2, 0.5, text, fontsize=14, verticalalignment='center',
+                    transform=plt.gca().transAxes, rotation=90)
+        plt.subplots_adjust(bottom=0.13,top=0.93, wspace=0.15, hspace=0.15)
+        cax = plt.axes([0.3, 0.08, 0.4, 0.02])
+        plt.colorbar(
+            hc[0], cax=cax, orientation='horizontal',
+            ticks=np.arange(0, 1001, 200))
+        cax.set_xlabel(r'Vi (m/s)')
     return
 
-def plot_rho_wind_ut():
-    path = 'D:/simulation_results/low_density_cell/run_shrink_igrf_1_c1/UA/data'
+def plot_rho_wind_ut(ns='SH'):
+    path = '/home/guod/simulation_output/momentum_analysis/run_shrink_igrf_1_c1/data'
     fn01 = path+'/3DALL_t030323_000000.bin'
     fn02 = path+'/3DALL_t030323_030002.bin'
     fn03 = path+'/3DALL_t030323_060003.bin'
@@ -338,7 +343,7 @@ def plot_rho_wind_ut():
     fn08 = path+'/3DALL_t030323_210001.bin'
     fn09 = path+'/3DALL_t030324_000000.bin'
     fn1 = [fn01, fn02, fn03, fn04, fn05, fn06, fn07, fn08, fn09]
-    path = 'D:/simulation_results/low_density_cell/run_no_shrink_igrf_1_1/UA/data'
+    path = '/home/guod/simulation_output/momentum_analysis/run_no_shrink_igrf_1_1/data'
     fn01 = path+'/3DALL_t030323_000000.bin'
     fn02 = path+'/3DALL_t030323_030000.bin'
     fn03 = path+'/3DALL_t030323_060001.bin'
@@ -350,18 +355,21 @@ def plot_rho_wind_ut():
     fn09 = path+'/3DALL_t030324_000000.bin'
     fn2 = [fn01, fn02, fn03, fn04, fn05, fn06, fn07, fn08, fn09]
 
-    #nlat, slat = -30, -90
-    nlat, slat = 90, 30
+    if ns=='SH':
+        nlat, slat = -30, -90
+    elif ns=='NH':
+        nlat, slat = 90, 30
     alt = 300
     glats, glons = convert(-90, 0, 0, date=dt.date(2003,1,1), a2g=True)
     glatn, glonn = convert(90, 0, 0, date=dt.date(2003,1,1), a2g=True)
-    fig1 = plt.figure(1, figsize=(8,7.75))
-    fig2 = plt.figure(2, figsize=(8,7.75))
-    fig2 = plt.figure(3, figsize=(8,7.75))
-    for k in range(9):
+    fig1 = plt.figure(1, figsize=(4.3,7.75))
+    fig2 = plt.figure(2, figsize=(4.3,7.75))
+    fig2 = plt.figure(3, figsize=(4.3,7.75))
+    for k in range(8):
         g1, g2 = gitm.read(fn1[k]), gitm.read(fn2[k])
 
-        title = 'UT: '+g1['time'].strftime('%H%M')
+        title = 'UT: '+g1['time'].strftime('%H')
+
         lon1, lat1, rho1 = g3ca.contour_data('Rho', g1, alt=alt)
         lon2, lat2, rho2 = g3ca.contour_data('Rho', g2, alt=alt)
         lon0, lat0, rho0 = lon1, lat1, 100*(rho2-rho1)/rho1
@@ -369,61 +377,75 @@ def plot_rho_wind_ut():
         lon1, lat1, ewind1, nwind1 = g3ca.vector_data(g1,'neu',alt=alt)
         lon2, lat2, ewind2, nwind2 = g3ca.vector_data(g2,'neu',alt=alt)
 
-        if k in [0, 3]:
+        if k ==0:
+            lonticklabel = [1, 0, 0, 1]
+        elif k==1:
+            lonticklabel = [1, 1, 0, 0]
+        elif k in [2, 4]:
             lonticklabel = [0, 0, 0, 1]
-        elif k in [7, 8]:
-            lonticklabel = [0, 0, 1, 0]
+        elif k in [3, 5]:
+            lonticklabel = [0, 1, 0, 0]
         elif k==6:
             lonticklabel = [0, 0, 1, 1]
-        else:
-            lonticklabel = [0, 0, 0, 0]
+        elif k==7:
+            lonticklabel = [0, 1, 1, 0]
+        olat=False if k<7 else True
 
+        # No shrink
         plt.figure(1)
         centrallon = g3ca.calculate_centrallon(g1, 'pol', useLT=True)
         ax, projection = gcc.create_map(
-            3,3,k+1, 'pol', nlat, slat, centrallon, coastlines=False,
-            dlat=10, useLT=True, lonticklabel=lonticklabel)
-        ax.contourf(lon2, lat2, rho2, np.linspace(1e-11, 4e-11),
+            4,2,k+1, 'pol', nlat, slat, centrallon, coastlines=False,
+            dlat=10, useLT=True, lonticklabel=lonticklabel, olat=olat)
+        hc1 = ax.contourf(lon2, lat2, rho2, np.linspace(1e-11, 4e-11),
             transform=ccrs.PlateCarree(),cmap='jet', extend='both')
         lon9, lat9, ewind9, nwind9 = g3ca.convert_vector(
             lon2, lat2, ewind2, nwind2, 'pol', projection)
-        ax.quiver(
+        hq1 = ax.quiver(
             lon9,lat9,ewind9,nwind9,scale=1500,scale_units='inches',
             regrid_shape=20)
         ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=35, c='k')
         ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=35, c='k')
-        plt.title(title)
+        ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=35, c='w', zorder=100)
+        ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=35, c='w', zorder=100)
+        plt.title(title,x=0,y=0.93)
 
+        # shrink
         plt.figure(2)
         centrallon = g3ca.calculate_centrallon(g1, 'pol', useLT=True)
         ax, projection = gcc.create_map(
-            3,3,k+1, 'pol', nlat, slat, centrallon, coastlines=False,
-            dlat=10, useLT=True, lonticklabel=lonticklabel)
-        ax.contourf(lon1, lat1, rho1, np.linspace(1e-11, 4e-11),
+            4,2,k+1, 'pol', nlat, slat, centrallon, coastlines=False,
+            dlat=10, useLT=True, lonticklabel=lonticklabel,olat=olat)
+        hc2 = ax.contourf(lon1, lat1, rho1, np.linspace(1e-11, 4e-11),
             transform=ccrs.PlateCarree(),cmap='jet', extend='both')
         lon9, lat9, ewind9, nwind9 = g3ca.convert_vector(
             lon1, lat1, ewind1, nwind1, 'pol', projection)
-        ax.quiver(
+        hq2 = ax.quiver(
             lon9,lat9,ewind9,nwind9,scale=1500,scale_units='inches',
             regrid_shape=20)
         ax.scatter(glons, glats, transform=ccrs.PlateCarree(), s=35, c='k')
         ax.scatter(glonn, glatn, transform=ccrs.PlateCarree(), s=35, c='k')
-        plt.title(title)
+        ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=35, c='w', zorder=100)
+        ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=35, c='w', zorder=100)
+        plt.title(title,x=0,y=0.93)
 
+        # difference
         plt.figure(3)
         centrallon = g3ca.calculate_centrallon(g1, 'pol', useLT=True)
         ax, projection = gcc.create_map(
-            3,3,k+1, 'pol', nlat, slat, centrallon, coastlines=False,
-            dlat=10, useLT=True, lonticklabel=lonticklabel)
-        ax.contourf(lon0, lat0, rho0, np.linspace(-30, 30, 21),
+            4,2,k+1, 'pol', nlat, slat, centrallon, coastlines=False,
+            dlat=10, useLT=True, lonticklabel=lonticklabel,olat=olat)
+        hc3 = ax.contourf(lon0, lat0, rho0, np.linspace(-30, 30, 21),
             transform=ccrs.PlateCarree(),cmap='jet', extend='both')
         lon9, lat9, ewind9, nwind9 = g3ca.convert_vector(
             lon2, lat2, ewind2-ewind1, nwind2-nwind1, 'pol', projection)
-        ax.quiver(
+        hq3 = ax.quiver(
             lon9,lat9,ewind9,nwind9,scale=1500,scale_units='inches',
             regrid_shape=20)
         ax.scatter(glons, glats, transform=ccrs.Geodetic(), s=35, c='k')
         ax.scatter(glonn, glatn, transform=ccrs.Geodetic(), s=35, c='k')
+        ax.scatter(0, 90, transform=ccrs.PlateCarree(), s=35, c='w', zorder=100)
+        ax.scatter(0, -90, transform=ccrs.PlateCarree(), s=35, c='w', zorder=100)
         #if k==2:
         #    ut1 = g1['time'].hour+g1['time'].minute/60
         #    onlat = np.linspace(-90,-30, 30)
@@ -442,17 +464,38 @@ def plot_rho_wind_ut():
         #               linewidths=0)
         #    ax.scatter(onlon2, onlat, s=5, c='y', transform=ccrs.PlateCarree(),
         #               linewidths=0)
-        plt.title(title)
+        plt.title(title,x=0,y=0.93)
+
 
     plt.figure(1)
     plt.subplots_adjust(
-        hspace=0.2, wspace=0, left=0.05, right=0.95, top=0.95, bottom=0.05)
+        hspace=0, wspace=0, left=0.05, right=0.95, top=0.95, bottom=0.12)
+    cax = plt.axes([0.25,0.07,0.5,0.02])
+    hcb = plt.colorbar(
+        hc1,cax=cax,orientation='horizontal',ticks=np.arange(1,5,1)*1e-11)
+    hcb.set_label(r'$\rho$ (kg/$m^3$)')
+    plt.savefig(savepath+'1'+ns+'NoShrinkIGRFAllUT.eps')
+    plt.savefig(savepath+'1'+ns+'NoShrinkIGRFAllUT.jpeg')
+
     plt.figure(2)
     plt.subplots_adjust(
-        hspace=0.2, wspace=0, left=0.05, right=0.95, top=0.95, bottom=0.05)
+        hspace=0, wspace=0, left=0.05, right=0.95, top=0.95, bottom=0.12)
+    cax = plt.axes([0.25,0.07,0.5,0.02])
+    hcb = plt.colorbar(
+        hc2,cax=cax,orientation='horizontal',ticks=np.arange(1,5,1)*1e-11)
+    hcb.set_label(r'$\rho$ (kg/$m^3$)')
+    plt.savefig(savepath+'1'+ns+'ShrinkIGRFAllUT.eps')
+    plt.savefig(savepath+'1'+ns+'ShrinkIGRFAllUT.jpeg')
+
     plt.figure(3)
     plt.subplots_adjust(
-        hspace=0.2, wspace=0, left=0.05, right=0.95, top=0.95, bottom=0.05)
+        hspace=0, wspace=0, left=0.05, right=0.95, top=0.95, bottom=0.12)
+    cax = plt.axes([0.25,0.07,0.5,0.02])
+    hcb = plt.colorbar(
+        hc3,cax=cax,orientation='horizontal',ticks=np.arange(-30,31,15))
+    hcb.set_label(r'$\delta\rho$ (%)')
+    plt.savefig(savepath+'1'+ns+'DiffIGRFAllUT.eps')
+    plt.savefig(savepath+'1'+ns+'DiffIGRFAllUT.jpeg')
     return
 
 def plot_one_meridian():
@@ -514,6 +557,7 @@ if __name__ == '__main__':
     path = 'D:/simulation_results/low_density_cell/run_no_shrink_igrf_1_1/UA/data'
     fn1 = path+'/3DALL_t030322_060001.bin'
     fn2 = path+'/3DALL_t030322_180002.bin'
+    savepath ='/home/guod/Documents/Work/DensityCell/UTVariation/paper/'
 
     #  g = gitm.read(fn1)
     #  g['rhoi']=1.66e-27*(
@@ -577,11 +621,13 @@ if __name__ == '__main__':
 
     #  plt.show()
 
-    #　plot_rho_wind_ut()
-    #　plt.show()
+    # plt.close('all')
+    # plot_rho_wind_ut(ns='SH')
+    #plt.show()
 
-    plot_06ut_18ut()
-    plt.show()
+    plt.close('all')
+    plot_06ut_18ut(ns='SH', alt=150, tf=[1,0,0,0,0,0,0])
+    #plt.show()
 
     #plot_one_meridian()
     #plt.show()
