@@ -1,5 +1,5 @@
 #!/bin/bash
-workdir="$HOME"/work/
+workdir="$HOME"/Documents/work/
 cd "$workdir"
 read -p "Commit description: " desc
 git add --all
