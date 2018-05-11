@@ -30,10 +30,10 @@ def get_sblist():
         index_col='dates')
     sblist.replace(['+,-','-,+'], ['away-toward','toward-away'], inplace=True)
     doy = sblist.index.dayofyear
-    sblist.ix[(doy>=35)  & (doy<=125),'season'] = 'me'
-    sblist.ix[(doy>=221) & (doy<=311),'season'] = 'se'
-    sblist.ix[(doy>125) & (doy<221),'season'] = 'js'
-    sblist.ix[(doy>311) | (doy<35),'season'] = 'ds'
+    sblist.loc[(doy>=35)  & (doy<=125),'season'] = 'me'
+    sblist.loc[(doy>=221) & (doy<=311),'season'] = 'se'
+    sblist.loc[(doy>125) & (doy<221),'season'] = 'js'
+    sblist.loc[(doy>311) | (doy<35),'season'] = 'ds'
     return sblist
 
 
@@ -52,7 +52,7 @@ def get_date_polarity():
     date_polarity = pd.DataFrame()
     alist = []
     for row in sblist.itertuples():
-        # row = ('1926-01-29', 'away-toward', 21, 5)
+        # row = ('1926-01-29', '+,-', 21, 5)
         index = (row[0] + pd.TimedeltaIndex(range(-row[2], row[3]), 'd'))
         value = list(row[2]*row[1][0]+row[3]*row[1][2])
         df = pd.DataFrame(value, index=index, columns=['polarity'])
@@ -61,10 +61,10 @@ def get_date_polarity():
     date_polarity = date_polarity.groupby(level=0).first()
     date_polarity.replace(['+','-'],['away','toward'],inplace=True)
     doy = date_polarity.index.dayofyear
-    date_polarity.ix[(doy>=35)  & (doy<=125),'season'] = 'me'
-    date_polarity.ix[(doy>=221) & (doy<=311),'season'] = 'se'
-    date_polarity.ix[(doy>125) & (doy<221),'season'] = 'js'
-    date_polarity.ix[(doy>311) | (doy<35),'season'] = 'ds'
+    date_polarity.loc[(doy>=35)  & (doy<=125),'season'] = 'me'
+    date_polarity.loc[(doy>=221) & (doy<=311),'season'] = 'se'
+    date_polarity.loc[(doy>125) & (doy<221),'season'] = 'js'
+    date_polarity.loc[(doy>311) | (doy<35),'season'] = 'ds'
     date_polarity.sort_index(axis=0, level=0, inplace=True)
     return date_polarity
 
@@ -83,16 +83,16 @@ def f1():
               np.arange(-4, 5, 2), np.arange(0, 401, 100)]
     data = [pd.DataFrame(),pd.DataFrame()]
     nn = [0, 0]
-    if False:  # data preparation
+    if True:  # data preparation
         for k00, k0 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k0]
             for k1 in sbtmp.index:
                 bdate = k1-pd.Timedelta('3D')
                 edate = k1+pd.Timedelta('3D')
-                data_tmp = get_omni(bdate, edate, index_name, res='1h')
+                data_tmp = omni.get_omni(bdate, edate, index_name, res='1h')
                 if not data_tmp.empty:
                     nn[k00] = nn[k00]+1
-                    print(nn, k1, k0)
+                    print('[AT, TA]: ',nn, k1, k0)
                     data_tmp['epochday'] = (
                             data_tmp.index - k1)/pd.Timedelta('1D')
                     data[k00] = data[k00].append(data_tmp)
@@ -205,7 +205,7 @@ def f2():
     # [[ATN,ATS],[TAN,TAS]]
     density = [[pd.DataFrame(),pd.DataFrame()],[pd.DataFrame(),pd.DataFrame()]]
     sbn = [0,0]
-    if False:
+    if True:
         for k00,k in enumerate(['away-toward','toward-away']):
             sbtmp = sblist[sblist.sbtype==k]
             for k1 in sbtmp.index:
@@ -517,7 +517,7 @@ def f3():
     date_polarity = date_polarity['2002-1-1':'2010-12-31']
 
     # IMF Bx, By, Bz and AE
-    if False:
+    if True:
         print('Reading IMF data from 2002 to 2010...')
         baea = omni.get_omni(
                 '2002-1-1', '2011-1-1',
@@ -775,9 +775,11 @@ def f3():
 # END
 #-------------------------------------------------------------------------------
 if __name__=='__main__':
-    import seaborn as sns
-    plt.close('all')
-    a = f3()
-    plt.show()
-    import gc
-    gc.collect()
+    #import seaborn as sns
+    #plt.close('all')
+    f1()
+    #f2()
+    #a = f3()
+    #plt.show()
+    #import gc
+    #gc.collect()
