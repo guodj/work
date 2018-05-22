@@ -94,7 +94,7 @@ def f1():
                     nn[k00] = nn[k00]+1
                     print('[AT, TA]: ',nn, k1, k0)
                     data_tmp['epochday'] = (
-                            data_tmp.index - k1)/pd.Timedelta('1D')
+                        data_tmp.index - k1)/pd.Timedelta('1D')
                     data[k00] = data[k00].append(data_tmp)
         pd.to_pickle(data, os.environ.get('DATAPATH') + 'tmp/w2_07.dat')
     # END of data preperation
@@ -102,8 +102,8 @@ def f1():
     # IMF and AE index
     data = pd.read_pickle(os.environ.get('DATAPATH') + 'tmp/w2_07.dat')
     datagroup = [
-            data[k].groupby([data[k].index.month,np.floor(data[k].epochday*24)])
-            for k in [0,1]]
+        data[k].groupby([data[k].index.month,np.floor(data[k].epochday*24)])
+        for k in [0,1]]
     datagroup = [datagroup[k].median() for k in [0,1]]
     for k in [0,1]:
         datagroup[k].index.names = ('month', 'epochhour')
@@ -116,20 +116,20 @@ def f1():
             plt.sca(ax[k11,k00])
             data1 = datagroup[k00][k1]
             hc2 = plt.contourf(data1.columns, data1.index/24, data1.values,
-                    levels=levels[k11], cmap='bwr', extend='both')
+                levels=levels[k11], cmap='bwr', extend='both')
             plt.xlim([1,13])
             plt.xticks(np.arange(1, 14))
             plt.gca().set_xticklabels('')
             plt.gca().set_xticks(np.arange(1.5, 13.5, 1),  minor=True)
             plt.ylim([-3, 3])
             plt.yticks(np.arange(-3, 4, 1), fontsize=13)
-            plt.tick_params(axis='both', which='major',
-                            direction='out', length=3.5)
+            plt.tick_params(
+                axis='both', which='major', direction='out', length=3.5)
             plt.tick_params(axis='both', which='minor', length=0)
             if k00 is 1:
                 axpo = np.array(plt.gca().get_position())
                 cax = plt.gcf().add_axes(
-                        (axpo[1,0]-0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
+                    (axpo[1,0]-0.005,axpo[0,1],0.01,axpo[1,1]-axpo[0,1]))
                 cbar = plt.colorbar(mappable=hc2,cax=cax,ticks=cticks[k11])
                 cbar.set_label(tl[k11])
                 plt.tick_params('both', length=0)
