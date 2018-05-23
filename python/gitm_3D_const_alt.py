@@ -109,11 +109,12 @@ def convert_vector(lon0, lat0, ewind, nwind, plot_type, projection):
         return lon0, lat0, ewind, nwind
 
 
-def test(g, alt=400, contour=True, zstr='Rho',levels=None, vector=True, neuion='neu', scale=200, useLT=True):
+def test(g, alt=400, contour=True, zstr='Rho',levels=None, vector=True,
+         neuion='neu', scale=500, useLT=True):
     import gitm_create_coordinate as gcc
     import matplotlib.pyplot as plt
     plt.close('all')
-    plt.figure(figsize=[8.38,8.12])
+    fig = plt.figure(figsize=[8.38,8.12])
     # Tested parameters
     polar = [True, True, False]
     nrow = [2,2,2]
@@ -151,22 +152,10 @@ def test(g, alt=400, contour=True, zstr='Rho',levels=None, vector=True, neuion='
         # title
         plt.title(zstr+' at '+'%.2f km' % (g['Altitude'][0,0,ialt]/1000),y=1.05)
     plt.show()
-    return
+    return fig, hc
 
 #END
 #------------------------------------------------------------------------------
 if __name__ == '__main__':
-    import gitm_new as gitm
-    import gitm_pressure
-    fn1 ='/home/guod/tmp/3DTHM_t030323_000004.bin'
-    fn2 ='/home/guod/tmp/3DALL_t030323_000004.bin'
-    g1 = gitm.read(fn1)
-    g2 = gitm.read(fn2)
-    fn = '/home/guod/simulation_output/momentum_analysis/run_shrink_no_tides_1_c1/UA/data/3DALL_t030322_060000.bin'
-    fn = '/home/guod/tmp/3DALL_t030311_000002.bin'
-    g = gitm.read(fn)
-    gitm_pressure.calc_pressure(g)
-    g2['totalenergy']=g1['EUV Heating']+g1['Auroral Heating']+g1['Joule Heating']+\
-                     g1['Conduction']+g1['NO Cooling']+g1['O Cooling']+g1['Chemical Heating']
-    test(g, alt=300, zstr='Rho', scale=1200)
     pass
+
