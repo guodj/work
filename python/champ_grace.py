@@ -45,8 +45,8 @@ class ChampDensity(pd.DataFrame):
                  *args, **kwargs):
         super(ChampDensity, self).__init__(*args, **kwargs)
         self._read(btime, etime, satellite, variables)
-        if not self.empty:
-            self.variables = tuple(self.columns)
+        # if not self.empty:
+        #     self.variables = tuple(self.columns)
 
     def _read(self, bdate, edate, satellite, variables):
         """ get champ or grace density data during specified period.

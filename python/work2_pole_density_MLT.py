@@ -1,5 +1,4 @@
 #-------------------------------------------------------------------------------
-# For the second project
 # By Dongjie, USTC, Sat Sep 17 09:32:19 CST 2016
 #-------------------------------------------------------------------------------
 
@@ -12,6 +11,8 @@ import pdb   # set breakpoint
 import champ_grace as cg
 import omni
 import os
+from aacgmv2 import convert_mlt
+import datetime as dt
 
 
 def get_sblist():
@@ -83,7 +84,7 @@ def f1():
               np.arange(-4, 5, 2), np.arange(0, 401, 100)]
     data = [pd.DataFrame(),pd.DataFrame()]
     nn = [0, 0]
-    if True:  # data preparation
+    if False:  # data preparation
         for k00, k0 in enumerate(['away-toward', 'toward-away']):
             sbtmp = sblist[sblist.sbtype==k0]
             for k1 in sbtmp.index:
@@ -517,7 +518,7 @@ def f3():
     date_polarity = date_polarity['2002-1-1':'2010-12-31']
 
     # IMF Bx, By, Bz and AE
-    if True:
+    if False:
         print('Reading IMF data from 2002 to 2010...')
         baea = omni.get_omni(
                 '2002-1-1', '2011-1-1',
@@ -590,11 +591,11 @@ def f3():
             plt.sca(ax[k11, k00])
             baettt = baett.pivot('month', 'uthour', k1)
             # Extend month and ut
-            baettt.ix[:, baettt.columns[0]-1] = baettt.ix[:, baettt.columns[-1]]
-            baettt.ix[:, baettt.columns[-2]+1] = baettt.ix[:, baettt.columns[0]]
+            baettt.loc[:, baettt.columns[0]-1] = baettt.loc[:, baettt.columns[-1]]
+            baettt.loc[:, baettt.columns[-2]+1] = baettt.loc[:, baettt.columns[0]]
             baettt = baettt.sort_index(axis=1)
-            baettt.ix[baettt.index[0]-1, :] = baettt.ix[baettt.index[-1], :]
-            baettt.ix[baettt.index[-2]+1, :] = baettt.ix[baettt.index[0], :]
+            baettt.loc[baettt.index[0]-1, :] = baettt.loc[baettt.index[-1], :]
+            baettt.loc[baettt.index[-2]+1, :] = baettt.loc[baettt.index[0], :]
             baettt = baettt.sort_index(axis=0)
             x = baettt.columns # uthour
             y = baettt.index # month
@@ -611,12 +612,12 @@ def f3():
             plt.tick_params(axis='x', which='minor', direction='out', length=2)
             plt.tick_params(axis='y', which='minor', direction='out', length=3, width=1.2)
             plt.text(
-                    0, 1.08, '('+plb[k11, k00]+')',
+                    0.1, 0.83, '('+plb[k11, k00]+')',bbox=dict(facecolor='grey', alpha=0.5),
                     transform=plt.gca().transAxes)
             if k11 == 0:
                 plt.title(k0)
             if k00 == 0:
-                plt.ylabel('Month')
+                plt.ylabel('month')
             if k00 == 1:
                 axp = plt.gca().get_position()
                 cax = plt.axes([0.85, axp.y0, 0.01, axp.height])
@@ -624,7 +625,7 @@ def f3():
                              extend='neither', ticks=cl)
                 plt.ylabel(ctt[k11])
                 plt.tick_params(axis='both', which='major', length=2)
-        for k11, k1 in enumerate(['South', 'North']):
+        for k11, k1 in enumerate(['south', 'north']):
             rhot = rho[k00][k11]
             rhot['month'] = rhot.index.month
             rhot['uthour'] = rhot.index.hour+0.5
@@ -632,21 +633,33 @@ def f3():
             rhott = rhott.reset_index()
             plt.sca(ax[3+k11, k00])
             rhottt = rhott.pivot('month', 'uthour', 'rrho400')
-            # Extend month and ut
-            rhottt.ix[:, rhottt.columns[0]-1] = rhottt.ix[:, rhottt.columns[-1]]
-            rhottt.ix[:, rhottt.columns[-2]+1] = rhottt.ix[:, rhottt.columns[0]]
+            # extend month and ut
+            rhottt.loc[:, rhottt.columns[0]-1] = rhottt.loc[:, rhottt.columns[-1]]
+            rhottt.loc[:, rhottt.columns[-2]+1] = rhottt.loc[:, rhottt.columns[0]]
             rhottt = rhottt.sort_index(axis=1)
-            rhottt.ix[rhottt.index[0]-1, :] = rhottt.ix[rhottt.index[-1], :]
-            rhottt.ix[rhottt.index[-2]+1, :] = rhottt.ix[rhottt.index[0], :]
+            rhottt.loc[rhottt.index[0]-1, :] = rhottt.loc[rhottt.index[-1], :]
+            rhottt.loc[rhottt.index[-2]+1, :] = rhottt.loc[rhottt.index[0], :]
             rhottt = rhottt.sort_index(axis=0)
             hc = plt.contourf(x, y, rhottt, levels=np.linspace(-20, 20, 11),
                               extend='both', cmap='seismic')
-            print('  ', k1, ' Density max (%): ', rhottt.max().max())
-            print('  ', k1, ' Density min (%): ', rhottt.min().min())
-            if k1 is 'South':
-                plt.axvline(15+37/60, 0, 1, c='k', ls='--')
-            if k1 is 'North':
-                plt.axvline(5+25/60, 0, 1, c='k', ls='--')
+            print('  ', k1, ' density max (%): ', rhottt.max().max())
+            print('  ', k1, ' density min (%): ', rhottt.min().min())
+            if k1 is 'south':
+                #plt.axvline(15+37/60, 0, 1, c='k', ls='--')
+                utx = np.arange(0,25,6)
+                uts = [convert_mlt(19,dtime=dt.datetime(2003,2,23,k)) for k in utx%24]
+                [plt.text(k1, 13, '%.0f'%k2, horizontalalignment='center')
+                 for k1, k2 in zip(utx, uts)]
+                if k00==0:
+                    plt.text(-0.2,1.08,'MLT',transform=plt.gca().transAxes)
+            if k1 is 'north':
+                #plt.axvline(5+25/60, 0, 1, c='k', ls='--')
+                utx = np.arange(0,25,6)
+                utn = [convert_mlt(170,dtime=dt.datetime(2003,2,23,k)) for k in utx%24]
+                [plt.text(k1, 13, '%.0f'%k2, horizontalalignment='center')
+                 for k1, k2 in zip(utx, utn)]
+                if k00==0:
+                    plt.text(-0.2,1.08,'MLT',transform=plt.gca().transAxes)
             plt.xlim(0, 24)
             plt.xticks(np.arange(0, 25, 6))
             plt.ylim(-0.001, 12.001)
@@ -659,7 +672,7 @@ def f3():
             plt.tick_params(axis='x', which='minor', direction='out', length=2)
             plt.tick_params(axis='y', which='minor', direction='out', length=3, width=1.2)
             plt.text(
-                    0, 1.08, '('+plb[k11+3, k00]+')',
+                    0.1, 0.83, '('+plb[k11+3, k00]+')', bbox=dict(facecolor='grey', alpha=0.5),
                     transform=plt.gca().transAxes)
             if k00 == 0:
                 plt.ylabel('Month')
@@ -698,8 +711,8 @@ def f3():
         rhottt.columns = ['median', 'p25', 'p75']
         plt.sca(ax[k00])
         # Extend ut
-        rhottt.ix[rhottt.index[0]-1, :] = rhottt.ix[rhottt.index[-1], :]
-        rhottt.ix[rhottt.index[-2]+1, :] = rhottt.ix[rhottt.index[0], :]
+        rhottt.loc[rhottt.index[0]-1, :] = rhottt.loc[rhottt.index[-1], :]
+        rhottt.loc[rhottt.index[-2]+1, :] = rhottt.loc[rhottt.index[0], :]
         rhottt = rhottt.sort_index(axis=0)
         hp = plt.plot(rhottt.index, rhottt['median'], 'b')
         print('  Density max (%): ', rhottt['median'].max())
@@ -776,10 +789,10 @@ def f3():
 #-------------------------------------------------------------------------------
 if __name__=='__main__':
     #import seaborn as sns
-    #plt.close('all')
-    f1()
+    plt.close('all')
+    #f1()
     #f2()
-    #a = f3()
-    #plt.show()
+    a = f3()
+    plt.show()
     #import gc
     #gc.collect()
