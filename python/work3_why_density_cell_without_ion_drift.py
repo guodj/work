@@ -9,10 +9,12 @@ import gitm_create_coordinate as gcc
 import matplotlib.pyplot as plt
 import numpy as np
 import os
+import gitm_pressure as gp
 
 gallfn = '/Users/guod/data/GITMOutput/run_shrink_notides_tmp/UA/data/3DALL_t030323_000004.bin'
 gthmfn = '/Users/guod/data/GITMOutput/run_shrink_notides_tmp/UA/data/3DTHM_t030323_000004.bin'
 gall = gitm.read(gallfn)
+gp.calc_pressure(gall)
 gthm = gitm.read(gthmfn)
 savepath='/Users/guod/tmp/'
 
@@ -29,7 +31,13 @@ def multiple_alts_const_alt():
         fig, hc = g3ca.test(
             gall, alt=alt, contour=True, zstr='Temperature',levels=None, vector=True,
             neuion='neu', scale=500, useLT=True)
+        plt.colorbar(hc)
         plt.savefig(savepath+str(alt)+'/002_Temperature.png')
+        fig, hc = g3ca.test(
+            gall, alt=alt, contour=True, zstr='pressure',levels=None, vector=True,
+            neuion='neu', scale=500, useLT=True)
+        plt.colorbar(hc)
+        plt.savefig(savepath+str(alt)+'/003_Pressure.png')
     print('Distributions of energy terms at different heights.')
     for alt in [100, 105, 110, 115, 120, 125, 135, 145]:
         if not os.path.exists(savepath+str(alt)):
@@ -37,31 +45,31 @@ def multiple_alts_const_alt():
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='EUV Heating',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_EUVHeating.png')
+        plt.savefig(savepath+str(alt)+'/004_EUVHeating.png')
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='Conduction',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_Conduction.png')
+        plt.savefig(savepath+str(alt)+'/004_Conduction.png')
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='Chemical Heating',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_ChemicalHeating.png')
+        plt.savefig(savepath+str(alt)+'/004_ChemicalHeating.png')
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='Auroral Heating',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_AuroralHeating.png')
+        plt.savefig(savepath+str(alt)+'/004_AuroralHeating.png')
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='Joule Heating',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_JouleHeating.png')
+        plt.savefig(savepath+str(alt)+'/004_JouleHeating.png')
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='NO Cooling',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_NOCooling.png')
+        plt.savefig(savepath+str(alt)+'/004_NOCooling.png')
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='O Cooling',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_OCooling.png')
+        plt.savefig(savepath+str(alt)+'/004_OCooling.png')
         gthm['total energy'] =\
             gthm['EUV Heating'] + gthm['Conduction'] + \
             gthm['Chemical Heating'] + gthm['Auroral Heating'] + \
@@ -69,7 +77,7 @@ def multiple_alts_const_alt():
         fig, hc = g3ca.test(
             gthm, alt=alt, contour=True, zstr='total energy',
             levels=np.linspace(-0.01, 0.01, 21), vector=False)
-        plt.savefig(savepath+str(alt)+'/003_TotalEnergy.png')
+        plt.savefig(savepath+str(alt)+'/004_TotalEnergy.png')
         pass
     return
 
@@ -103,20 +111,24 @@ def height_profile_all():
         fig, hc = height_profile(
             gall, var='Rho', whichlt=lt, altmin=100, altmax=150, log=True,
             vector=True, levels=None)
-        plt.savefig(savepath+'004_height_profile_rho_%02d.png'%lt)
+        plt.savefig(savepath+'005_height_profile_rho_%02d.png'%lt)
         fig, hc = height_profile(
             gall, var='Temperature', whichlt=lt, altmin=100, altmax=150, log=False,
             vector=True, levels=None)
-        plt.savefig(savepath+'004_height_profile_temperature_%02d.png'%lt)
+        plt.savefig(savepath+'005_height_profile_temperature_%02d.png'%lt)
+        fig, hc = height_profile(
+            gall, var='pressure', whichlt=lt, altmin=100, altmax=150, log=True,
+            vector=True, levels=None)
+        plt.savefig(savepath+'005_height_profile_pressure_%02d.png'%lt)
         fig, hc = height_profile(
             gall, var='V!Dn!N (up)', whichlt=lt, altmin=100, altmax=150, log=False,
             vector=False, levels=np.linspace(-0.5,0.5,21), cmap='seismic')
-        plt.savefig(savepath+'004_height_profile_vup_%02d.png'%lt)
+        plt.savefig(savepath+'005_height_profile_vup_%02d.png'%lt)
 
 
 if __name__ == '__main__':
     plt.close('all')
-    multiple_alts_const_alt()
+    #multiple_alts_const_alt()
     height_profile_all()
 
 
