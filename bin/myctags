@@ -1,9 +1,9 @@
 #!/bin/bash
-cd $HOME/work/python
+cd $HOME/Documents/work/python
 ctags -R .
-cd $HOME/work/matlab
+cd $HOME/Documents/work/matlab
 ctags -R .
-cd $HOME/work/idl
-ctags -R .
-cd $HOME/work/python
+#cd $HOME/Documents/work/idl
+#ctags -R .
+cd $HOME/Documents/work/python
 ctags -R .
