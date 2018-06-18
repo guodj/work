@@ -125,6 +125,35 @@ def multiple_alts_const_alt():
             levels=np.linspace(-2e-5, 2e-5, 21), vector=False)
         plt.savefig(savepath+str(alt)+'/005_hozt_vgradrho.png')
         plt.colorbar(hc)
+    print('Distributions of momentum terms at different heights.')
+    for alt in [100, 105, 110, 115, 120, 125, 135, 145]:
+        if not os.path.exists(savepath+str(alt)):
+            os.mkdir(savepath+str(alt))
+        fig, hc = g3ca.test(
+            gall, alt=alt, contour=True, zstr='div_rhov',
+            levels=np.linspace(-2e-5, 2e-5, 21), vector=False)
+        plt.savefig(savepath+str(alt)+'/005_Div_rhov.png')
+        plt.colorbar(hc)
+        fig, hc = g3ca.test(
+            gall, alt=alt, contour=True, zstr='vert_divv',
+            levels=np.linspace(-2e-5, 2e-5, 21), vector=False)
+        plt.savefig(savepath+str(alt)+'/005_vert_divv.png')
+        plt.colorbar(hc)
+        fig, hc = g3ca.test(
+            gall, alt=alt, contour=True, zstr='hozt_divv',
+            levels=np.linspace(-2e-5, 2e-5, 21), vector=False)
+        plt.savefig(savepath+str(alt)+'/005_hozt_divv.png')
+        plt.colorbar(hc)
+        fig, hc = g3ca.test(
+            gall, alt=alt, contour=True, zstr='vert_vgradrho',
+            levels=np.linspace(-2e-5, 2e-5, 21), vector=False)
+        plt.savefig(savepath+str(alt)+'/005_vert_vgradrho.png')
+        plt.colorbar(hc)
+        fig, hc = g3ca.test(
+            gall, alt=alt, contour=True, zstr='hozt_vgradrho',
+            levels=np.linspace(-2e-5, 2e-5, 21), vector=False)
+        plt.savefig(savepath+str(alt)+'/005_hozt_vgradrho.png')
+        plt.colorbar(hc)
     return
 
 def height_profile(g, var='Rho', whichlt=12, altmin=100, altmax=150, log=True,
